@@ -5,6 +5,7 @@ LARAEDUV2 adalah aplikasi web yang dirancang untuk membantu proses manajemen pem
 
 ## Blueprint Pengembangan
 * Autentikasi dengan multi role
+* Activity log
 
 ## Tekonologi yang Digunakan
 * **Framework:** Laravel 11
