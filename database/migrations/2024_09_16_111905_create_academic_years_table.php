@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('academic_years', function (Blueprint $table) {
-            $table->ulid('id')->primary();
+            $table->id();
             $table->string('year');
             $table->enum('semester', ['ganjil', 'genap']);
             $table->foreignId('teacher_id')->nullable();

@@ -10,7 +10,7 @@ use Spatie\Activitylog\LogOptions;
 
 class AcademicYear extends Model
 {
-    use HasFactory, HasUlids;
+    use HasFactory;
     use LogsActivity;
 
     protected $fillable = [
@@ -23,10 +23,12 @@ class AcademicYear extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logOnly([
-            'year',
-            'semester',
-            'teacher_id',
-        ]);
+            ->useLogName('Academic Year')
+            ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}")
+            ->logOnly([
+                'year',
+                'semester',
+                'teacher_id',
+            ]);
     }
 }
