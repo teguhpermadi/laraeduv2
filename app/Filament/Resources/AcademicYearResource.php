@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AcademicYearResource\Pages;
 use App\Filament\Resources\AcademicYearResource\RelationManagers;
 use App\Models\AcademicYear;
+use App\Models\Teacher;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -38,6 +39,9 @@ class AcademicYearResource extends Resource
                     ->label(__('academic-year.create.semester'))
                     ->options(['ganjil' => 'ganjil', 'genap' => 'genap'])
                     ->required(),
+                Select::make('teacher_id')
+                    ->label(__('academic-year.create.teacher_id'))
+                    ->options(Teacher::all()->pluck('name', 'id'))
             ]);
     }
 

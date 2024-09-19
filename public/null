@@ -1,26 +1,65 @@
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
-now()
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+Teacher::all()
+use App\Models\Teacher;
+use Illuminate\Support\Facades\Storage;
+
+
+Storage::url()
+use App\Models\Teacher;
+use Illuminate\Support\Facades\Storage;
+
+Teacher::all()
+Storage::url()
+use App\Models\Teacher;
+use Illuminate\Support\Facades\Storage;
+
+Teacher::find(3)
+
+use App\Models\Teacher;
+use Illuminate\Support\Facades\Storage;
+
+Teacher::find(4)
+
+use App\Models\Teacher;
+use Illuminate\Support\Facades\Storage;
+
+$t = Teacher::find(4);
+
+Storage::url($t->signature)
+use App\Models\Teacher;
+use Illuminate\Support\Facades\Storage;
+
+$t = Teacher::find(4);
+
+Storage::url($t->signature)
