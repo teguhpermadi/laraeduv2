@@ -21,13 +21,23 @@ class AcademicYearResource extends Resource
     protected static ?string $model = AcademicYear::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    
+    public static function getNavigationLabel(): string
+    {
+        return __('academic-year.list.academic_year');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('year')->required(),
-                Select::make('semester')->options(['ganjil', 'genap'])->required(),
+                TextInput::make('year')
+                    ->label(__('academic-year.create.year'))
+                    ->required(),
+                Select::make('semester')
+                    ->label(__('academic-year.create.semester'))
+                    ->options(['ganjil' => 'ganjil', 'genap' => 'genap'])
+                    ->required(),
             ]);
     }
 
@@ -35,8 +45,10 @@ class AcademicYearResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('year'),
-                TextColumn::make('semester'),
+                TextColumn::make('year')
+                    ->label(__('academic-year.list.year')),
+                TextColumn::make('semester')
+                    ->label(__('academic-year.list.semester')),
             ])
             ->filters([
                 //
