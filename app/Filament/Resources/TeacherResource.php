@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TeacherResource\Pages;
 use App\Filament\Resources\TeacherResource\RelationManagers;
+use App\Filament\Resources\TeacherResource\Widgets\TeacherWidget;
 use App\Jobs\UserableJob;
 use App\Models\Teacher;
 use Filament\Forms;
