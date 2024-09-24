@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('nuptk')->nullable();
             $table->string('photo')->nullable();
             $table->timestamps();
+            $table->softDeletes($column = 'deleted_at', $precision = 0);
         });
     }
 
