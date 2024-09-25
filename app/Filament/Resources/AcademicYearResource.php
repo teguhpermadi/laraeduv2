@@ -53,6 +53,8 @@ class AcademicYearResource extends Resource
                     ->label(__('academic-year.list.year')),
                 TextColumn::make('semester')
                     ->label(__('academic-year.list.semester')),
+                TextColumn::make('teacher.name')
+                    ->label(__('academic-year.list.teacher_id')),
             ])
             ->filters([
                 //
