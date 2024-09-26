@@ -33,6 +33,7 @@ class AcademicYearResource extends Resource
         return $form
             ->schema([
                 TextInput::make('year')
+                    ->mask('9999/9999')
                     ->label(__('academic-year.create.year'))
                     ->required(),
                 Select::make('semester')

@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\AcademicYearResource\Widgets\AcademicYearWidget;
 use App\Filament\Resources\StudentResource\Widgets\StudentWidget;
 use App\Filament\Resources\TeacherResource\Widgets\TeacherWidget;
 use App\Providers\Filament\Auth\Login;
@@ -45,6 +46,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+                AcademicYearWidget::class,
                 TeacherWidget::class,
                 StudentWidget::class,
             ])
