@@ -10,6 +10,7 @@ use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -22,6 +23,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
+use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 use Rmsramos\Activitylog\ActivitylogPlugin;
 use Rmsramos\Activitylog\Resources\ActivitylogResource;
 
@@ -68,6 +71,11 @@ class AdminPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make(),
                 ActivitylogPlugin::make()
                     ->resource(ActivitylogResource::class),
+                FilamentEditProfilePlugin::make()
+                    ->setSort(1)
+                    ->setIcon('heroicon-o-user')
+                    ->shouldShowDeleteAccountForm(false)
+                    ->shouldShowAvatarForm(),
             ]);
     }
 }
