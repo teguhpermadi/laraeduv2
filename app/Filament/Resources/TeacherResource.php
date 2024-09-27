@@ -132,6 +132,7 @@ class TeacherResource extends Resource
             ],
             [
                 'name' => $name,
+                'username' => fake()->numerify(Str::replace(' ', '', $name) . '_##'),
                 'email' => Str::replace(' ', '', $name) . '@laraedu.com',
                 'password' => Hash::make('password'),
             ]

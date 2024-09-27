@@ -58,4 +58,9 @@ class User extends Authenticatable
             ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}")
             ->logOnly(['*']);
     }
+
+    public function userable()
+    {
+        return $this->hasOne(Userable::class);
+    }
 }
