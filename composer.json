@@ -12,7 +12,8 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "rmsramos/activitylog": "^1.0",
-        "spatie/laravel-activitylog": "^4.8"
+        "spatie/laravel-activitylog": "^4.8",
+        "stechstudio/filament-impersonate": "^3.14"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
