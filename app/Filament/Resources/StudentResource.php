@@ -59,7 +59,8 @@ class StudentResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label(__('student.name')),
+                    ->label(__('student.name'))
+                    ->searchable(),
                 TextColumn::make('gender')
                     ->label(__('student.gender')),
                 TextColumn::make('nis')
