@@ -63,7 +63,8 @@ class User extends Authenticatable implements HasAvatar
         return LogOptions::defaults()
             ->useLogName('User')
             ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}")
-            ->logOnly(['*']);
+            ->logOnly(['*'])
+            ->logExcept(['last_activity']);
     }
 
     // public function getLastActivityAttribute()
