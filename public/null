@@ -1,15 +1,94 @@
-User::find(2)l
-User::find(2)
-User::find(2)->userable
-User::find(2)->userable->userable
-fake()->randomDigit(2)
-fake()->randomDigit(2)
-fake()->randomDigit(2)
-fake()->randomDigit(2)
-fake()->randomDigit(2, true)
-fake()->randomDigit(2, true)
-fake()->randomDigit(2, true)
-fake()->randomDigit()
-fake()->randomDigit()
-fake()->randomDigit()
-fake()->randomDigit()
+User::find(1);
+use Carbon\Carbon;
+
+$lastActivity = User::find(1)->last_activity;
+
+$lastActivityCarbon = Carbon::createFromTimestamp($lastActivity);
+use Carbon\Carbon;
+
+$lastActivity = User::find(1)->last_activity;
+
+$lastActivityCarbon = Carbon::createFromTimestamp($lastActivity);
+
+
+$selisihMenit = now()->diffInMinutes($lastActivityCarbon);
+use Carbon\Carbon;
+
+$lastActivity = User::find(1)->last_activity;
+
+$lastActivityCarbon = Carbon::createFromTimestamp($lastActivity);
+
+
+$selisihMenit = now()->diffInMinutes($lastActivityCarbon);
+use Carbon\Carbon;
+
+$lastActivity = User::find(1)->last_activity;
+
+
+
+
+
+use Carbon\Carbon;
+
+$lastActivity = User::find(1);
+
+
+
+
+
+use Carbon\Carbon;
+
+$lastActivity = User::find(1)->last_activity;
+
+
+
+
+
+use Carbon\Carbon;
+
+$lastActivity = User::find(1)->last_activity;
+
+
+
+
+
+use Carbon\Carbon;
+
+$lastActivity = User::find(1)->last_activity;
+
+
+
+
+
+use Carbon\Carbon;
+
+$lastActivity = User::find(1)->last_activity;
+
+
+
+
+
+use Carbon\Carbon;
+
+$lastActivity = User::find(1)->last_activity;
+
+
+
+
+
+use Carbon\Carbon;
+
+$lastActivity = User::find(1)->last_activity;
+
+
+
+
+
+use Carbon\Carbon;
+
+$lastActivity = User::find(1)->last_activity;
+
+
+
+
+

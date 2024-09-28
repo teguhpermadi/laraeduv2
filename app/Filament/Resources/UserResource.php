@@ -44,6 +44,8 @@ class UserResource extends Resource
                 TextColumn::make('name'),
                 TextColumn::make('username'),
                 TextColumn::make('email'),
+                TextColumn::make('last_activity')
+                    ->since(),
             ])
             ->filters([
                 //

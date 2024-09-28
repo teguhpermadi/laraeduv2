@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use App\Filament\Resources\AcademicYearResource\Widgets\AcademicYearWidget;
 use App\Filament\Resources\StudentResource\Widgets\StudentWidget;
 use App\Filament\Resources\TeacherResource\Widgets\TeacherWidget;
+use App\Http\Middleware\UpdateLastActivity;
 use App\Providers\Filament\Auth\Login;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
@@ -63,6 +64,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                UpdateLastActivity::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

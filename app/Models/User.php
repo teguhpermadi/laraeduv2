@@ -4,7 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Carbon\Carbon;
 use Filament\Models\Contracts\HasAvatar;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -30,6 +32,7 @@ class User extends Authenticatable implements HasAvatar
         'email',
         'password',
         'avatar_url',
+        'last_activity',
     ];
 
     /**
@@ -62,6 +65,18 @@ class User extends Authenticatable implements HasAvatar
             ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}")
             ->logOnly(['*']);
     }
+
+    // public function getLastActivityAttribute()
+    // {
+    //     return Carbon::parse($this->last_activity)->diffForHumans(); // Output: "2 hours ago"
+    // }
+
+    // protected function lastActivity(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn (string $value) => now()->diffInMinutes($value),
+    //     );
+    // }
 
     public function getFilamentAvatarUrl(): ?string
     {
