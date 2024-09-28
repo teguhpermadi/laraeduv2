@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Resources\AcademicYearResource\Widgets\AcademicYearWidget;
 use App\Filament\Resources\StudentResource\Widgets\StudentWidget;
+use App\Filament\Resources\TeacherGradeResource\Widgets\TeacherGradeWidget;
 use App\Filament\Resources\TeacherResource\Widgets\TeacherWidget;
 use App\Filament\Resources\UserResource\Widgets\UserOnlineWidget;
 use App\Http\Middleware\UpdateLastActivity;
@@ -55,6 +56,7 @@ class AdminPanelProvider extends PanelProvider
                 UserOnlineWidget::class,
                 TeacherWidget::class,
                 StudentWidget::class,
+                TeacherGradeWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
