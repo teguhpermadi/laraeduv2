@@ -8,9 +8,9 @@ use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TeacherGrade>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\StudentGrade>
  */
-class TeacherGradeFactory extends Factory
+class StudentGradeFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -21,7 +21,7 @@ class TeacherGradeFactory extends Factory
     {
         return [
             'academic_year_id' => AcademicYear::all()->random()->id,
-            'teacher_id' => Student::all()->random()->id,
+            'student_id' => Student::all()->random()->id,
             'grade_id' => Grade::all()->random()->id,
         ];
     }

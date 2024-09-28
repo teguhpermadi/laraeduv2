@@ -1,94 +1,14 @@
-User::find(1);
-use Carbon\Carbon;
+Teacher::all()
+App\Models\StudentGrade::all()
+use App\Models\StudentGrade;
 
-$lastActivity = User::find(1)->last_activity;
+StudentGrade::factory(1)->make()
+use App\Models\StudentGrade;
 
-$lastActivityCarbon = Carbon::createFromTimestamp($lastActivity);
-use Carbon\Carbon;
+StudentGrade::factory(10)->make()
+use App\Models\StudentGrade;
 
-$lastActivity = User::find(1)->last_activity;
+StudentGrade::factory(10)->make()->toArray()
+use App\Models\StudentGrade;
 
-$lastActivityCarbon = Carbon::createFromTimestamp($lastActivity);
-
-
-$selisihMenit = now()->diffInMinutes($lastActivityCarbon);
-use Carbon\Carbon;
-
-$lastActivity = User::find(1)->last_activity;
-
-$lastActivityCarbon = Carbon::createFromTimestamp($lastActivity);
-
-
-$selisihMenit = now()->diffInMinutes($lastActivityCarbon);
-use Carbon\Carbon;
-
-$lastActivity = User::find(1)->last_activity;
-
-
-
-
-
-use Carbon\Carbon;
-
-$lastActivity = User::find(1);
-
-
-
-
-
-use Carbon\Carbon;
-
-$lastActivity = User::find(1)->last_activity;
-
-
-
-
-
-use Carbon\Carbon;
-
-$lastActivity = User::find(1)->last_activity;
-
-
-
-
-
-use Carbon\Carbon;
-
-$lastActivity = User::find(1)->last_activity;
-
-
-
-
-
-use Carbon\Carbon;
-
-$lastActivity = User::find(1)->last_activity;
-
-
-
-
-
-use Carbon\Carbon;
-
-$lastActivity = User::find(1)->last_activity;
-
-
-
-
-
-use Carbon\Carbon;
-
-$lastActivity = User::find(1)->last_activity;
-
-
-
-
-
-use Carbon\Carbon;
-
-$lastActivity = User::find(1)->last_activity;
-
-
-
-
-
+StudentGrade::all()
