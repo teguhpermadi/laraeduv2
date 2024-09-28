@@ -81,7 +81,8 @@ class TeacherResource extends Resource
                 Action::make('Userable')
                     ->action(function (Teacher $teacher) {
                         self::userable($teacher);
-                    }),
+                    })
+                    ->hidden(fn (Teacher $record) => $record->userable()->exists()),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),

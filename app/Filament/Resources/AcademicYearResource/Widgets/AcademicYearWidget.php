@@ -15,7 +15,7 @@ class AcademicYearWidget extends Widget implements HasForms
 
     protected static string $view = 'filament.resources.academic-year-resource.widgets.academic-year-widget';
 
-    protected int | string | array $columnSpan = 'full';
+    // protected int | string | array $columnSpan = 'full';
  
     public ?array $data = [];
 

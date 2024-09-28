@@ -45,4 +45,9 @@ class Teacher extends Model
     {
         return $this->hasMany(AcademicYear::class);
     }
+
+    public function userable()
+    {
+        return $this->morphOne(Userable::class, 'userable');
+    }
 }
