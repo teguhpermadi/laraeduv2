@@ -1,14 +1,18 @@
-Teacher::all()
-App\Models\StudentGrade::all()
 use App\Models\StudentGrade;
 
-StudentGrade::factory(1)->make()
+Grade::all()
 use App\Models\StudentGrade;
 
-StudentGrade::factory(10)->make()
+Grade::with('teacherGrade')
 use App\Models\StudentGrade;
 
-StudentGrade::factory(10)->make()->toArray()
+Grade::with('teacherGrade')->get()
 use App\Models\StudentGrade;
 
-StudentGrade::all()
+Grade::with('teacherGrade')->find(4)
+use App\Models\StudentGrade;
+
+Grade::with('teacherGrade')->find(4)
+TeacherGrade::all()
+Grade::withCount('studentGrade')
+Grade::withCount('studentGrade')->get()

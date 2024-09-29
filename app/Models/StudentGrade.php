@@ -28,4 +28,19 @@ class StudentGrade extends Model
             ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}")
             ->logOnly(['*']);
     }
+
+    public function academic()
+    {
+        return $this->belongsTo(AcademicYear::class);
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
+
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class);
+    }
 }

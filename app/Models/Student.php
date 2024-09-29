@@ -45,4 +45,9 @@ class Student extends Model
             $builder->orderBy('id', 'asc');
         });
     }
+
+    public function studentGrade()
+    {
+        return $this->hasMany(StudentGrade::class);
+    }
 }

@@ -29,4 +29,13 @@ class Grade extends Model
             ->logExcept(['created_at', 'updated_at']);
     }
     
+    public function teacherGrade()
+    {
+        return $this->hasMany(TeacherGrade::class);
+    }
+
+    public function studentGrade()
+    {
+        return $this->hasMany(StudentGrade::class);
+    }
 }

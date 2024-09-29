@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\GradeResource\Pages;
 use App\Filament\Resources\GradeResource\RelationManagers;
+use App\Filament\Resources\GradeResource\RelationManagers\StudentGradeRelationManager;
+use App\Filament\Resources\GradeResource\RelationManagers\TeacherGradeRelationManager;
 use App\Models\Grade;
 use App\PhaseEnum;
 use Filament\Forms;
@@ -22,11 +24,6 @@ class GradeResource extends Resource
     protected static ?string $model = Grade::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    public static function getModelLabel(): string
-    {
-        return __('grade.grade');
-    }
 
     public static function form(Form $form): Form
     {
@@ -56,6 +53,10 @@ class GradeResource extends Resource
                     ->label(__('grade.grade.name')),
                 TextColumn::make('phase')
                     ->label(__('grade.phase')),
+                TextColumn::make('teacherGrade.teacher.name'),
+                TextColumn::make('student_grade_count')
+                    ->counts('studentGrade')
+                    ->suffix(' siswa'),
             ])
             ->filters([
                 //
@@ -73,7 +74,8 @@ class GradeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TeacherGradeRelationManager::class,
+            StudentGradeRelationManager::class,
         ];
     }
 
