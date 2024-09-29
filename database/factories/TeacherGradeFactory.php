@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\AcademicYear;
 use App\Models\Grade;
-use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +21,7 @@ class TeacherGradeFactory extends Factory
     {
         return [
             'academic_year_id' => AcademicYear::all()->random()->id,
-            'teacher_id' => Student::all()->random()->id,
+            'teacher_id' => Teacher::all()->random()->id,
             'grade_id' => Grade::all()->random()->id,
         ];
     }
