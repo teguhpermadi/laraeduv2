@@ -15,6 +15,6 @@ class TeacherGradeSeeder extends Seeder
     {
         $data = TeacherGrade::factory(10)->make()->toArray();
 
-        TeacherGrade::upsert($data, ['academic_year_id', 'grade_id', 'teacher_id']);
+        TeacherGrade::upsert($data, ['academic_year_id', 'grade_id'], ['teacher_id']);
     }
 }

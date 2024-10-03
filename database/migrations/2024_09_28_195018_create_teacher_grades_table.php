@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('teacher_id')->constrained('teachers')->cascadeOnDelete();
             $table->timestamps();
 
-            $table->unique(['academic_year_id', 'teacher_id', 'grade_id'], 'teacher_grades_uniques');
+            $table->unique(['academic_year_id', 'grade_id'], 'teacher_grades_uniques');
         });
     }
 

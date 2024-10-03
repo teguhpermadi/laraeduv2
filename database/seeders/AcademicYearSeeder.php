@@ -13,6 +13,6 @@ class AcademicYearSeeder extends Seeder
      */
     public function run(): void
     {
-        AcademicYear::factory(3)->create();
+        AcademicYear::factory(2)->create();
     }
 }
