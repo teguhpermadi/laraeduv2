@@ -26,11 +26,8 @@ class AcademicYear extends Model
         return LogOptions::defaults()
             ->useLogName('Academic Year')
             ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}")
-            ->logOnly([
-                'year',
-                'semester',
-                'teacher_id',
-            ]);
+            ->logOnly(['*'])
+            ->logExcept(['created_at', 'updated_at']);
     }
 
     protected static function booted(): void
