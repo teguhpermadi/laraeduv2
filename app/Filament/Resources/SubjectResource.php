@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SubjectResource\Pages;
 use App\Filament\Resources\SubjectResource\RelationManagers;
+use App\Filament\Resources\SubjectResource\RelationManagers\TeacherSubjectRelationManager;
 use App\Models\Subject;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
@@ -67,7 +68,7 @@ class SubjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TeacherSubjectRelationManager::class,
         ];
     }
 

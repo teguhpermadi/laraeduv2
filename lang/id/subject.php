@@ -6,5 +6,8 @@ return [
     'subject' => 'Mata Pelajaran',
     'name' => 'Mata Pelajaran',
     'code' => 'Kode Mata Pelajaran',
-    'order' => 'Urutan'
+    'order' => 'Urutan',
+    'grade.name' => 'Nama Kelas',
+    'teacher.name' => 'Guru Pengampu',
+    'time_allocation' => 'Alokasi Waktu',
 ];

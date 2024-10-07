@@ -29,5 +29,8 @@ class Subject extends Model
             ->logExcept(['created_at', 'updated_at']);
     }
 
-
+    public function teacherSubject()
+    {
+        return $this->hasMany(TeacherSubject::class);
+    }
 }
