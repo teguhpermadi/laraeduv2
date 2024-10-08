@@ -18,7 +18,7 @@ class GradeFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->word(),
+            'name' => fake()->randomElement(['kelas A', 'kelas B', 'kelas C', 'kelas D', 'kelas E', 'kelas F']),
             'grade' => fake()->randomElement([1,2,3,4,5,6]),
             'phase' => fake()->randomElement(PhaseEnum::class),
         ];

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
@@ -30,7 +31,7 @@ class TeacherSubject extends Model
 
     public function academic()
     {
-        return $this->belongsTo(AcademicYear::class);
+        return $this->belongsTo(AcademicYear::class, 'academic_year_id');
     }
 
     public function teacher()
@@ -51,5 +52,39 @@ class TeacherSubject extends Model
     public function studentGrade()
     {
         return $this->hasMany(StudentGrade::class, 'grade_id', 'grade_id');
+    }
+
+    public function competency()
+    {
+        return $this->hasMany(Competency::class, 'teacher_subject_id');
+    }
+
+    public function scopeMySubject(Builder $query, $teacher_id = null):void 
+    {
+        if(is_null($teacher_id)){
+            $teacher_id = auth()->user()->userable->userable_id;
+        }
+
+        $query->where('teacher_id', $teacher_id)->with('subject');
+    }
+
+    public function scopeMySubjectByGrade(Builder $query, $grade_id, $teacher_id = null):void
+    {
+        if(is_null($teacher_id)){
+            $teacher_id = auth()->user()->userable->userable_id;
+        }
+
+        $query->where('teacher_id', $teacher_id)
+            ->where('grade_id', $grade_id)
+            ->with('subject');
+    }
+
+    public function scopeMyGrade(Builder $query, $teacher_id = null):void
+    {
+        if(is_null($teacher_id)){
+            $teacher_id = auth()->user()->userable->userable_id;
+        }
+
+        $query->where('teacher_id', $teacher_id)->with('grade');
     }
 }

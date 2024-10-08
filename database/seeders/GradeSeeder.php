@@ -13,6 +13,8 @@ class GradeSeeder extends Seeder
      */
     public function run(): void
     {
-        Grade::factory(5)->create();
+        $grade = Grade::factory(3)->make()->toArray();
+
+        Grade::upsert($grade, uniqueBy:['name', 'grade'], update: ['grade']);
     }
 }

@@ -13,6 +13,9 @@ class CompetencySeeder extends Seeder
      */
     public function run(): void
     {
-        Competency::factory(50)->create();
+        $competencies = Competency::factory(5)->make()->toArray();
+        foreach ($competencies as $competency) {
+            Competency::create($competency);
+        }
     }
 }
