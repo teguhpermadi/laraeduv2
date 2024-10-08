@@ -47,4 +47,9 @@ class TeacherSubject extends Model
     {
         return $this->belongsTo(Subject::class);
     }
+
+    public function studentGrade()
+    {
+        return $this->hasMany(StudentGrade::class, 'grade_id', 'grade_id');
+    }
 }

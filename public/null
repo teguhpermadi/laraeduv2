@@ -1,18 +1,13 @@
-use App\Models\StudentGrade;
+Competency::all()
+App\Models\Competency::all()
+App\Models\Competency::with('studentCompetency')->get()
+App\Models\Competency::with('studentCompetency')->get()
+App\Models\Competency::with('studentCompetency')->get()
 
-Grade::all()
-use App\Models\StudentGrade;
+StudentCompetency::all()
 
-Grade::with('teacherGrade')
-use App\Models\StudentGrade;
+App\Models\StudentCompetency::all()
+App\Models\Competency::get()->delete()
 
-Grade::with('teacherGrade')->get()
-use App\Models\StudentGrade;
+App\Models\Competency::all()->delete()
 
-Grade::with('teacherGrade')->find(4)
-use App\Models\StudentGrade;
-
-Grade::with('teacherGrade')->find(4)
-TeacherGrade::all()
-Grade::withCount('studentGrade')
-Grade::withCount('studentGrade')->get()
