@@ -27,15 +27,23 @@ class CompetencyResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('competency.competency');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Hidden::make('academic_year_id')
                     ->default(session()->get('academic_year_id')),
-                Fieldset::make('identity')->label('Identity')
+                Fieldset::make('identity')
+                    ->label(__('competency.identity'))
                     ->schema([
-                        Select::make('grade_id')->options(function(callable $get, callable $set){
+                        Select::make('grade_id')
+                            ->label(__('competency.grade_id'))
+                            ->options(function(callable $get, callable $set){
                                 $data = TeacherSubject::myGrade()->get()->pluck('grade.name', 'grade.id');
                                 return $data;
             
@@ -46,7 +54,9 @@ class CompetencyResource extends Resource
                             })
                             ->reactive()
                             ->required(),
-                        Select::make('subject_id')->options(function(callable $get, callable $set){
+                        Select::make('subject_id')
+                            ->label(__('competency.subject_id'))
+                            ->options(function(callable $get, callable $set){
                                 if($get('grade_id')){
                                     $data = TeacherSubject::mySubjectByGrade($get('grade_id'))->get()->pluck('subject.code', 'subject.id');
                                     
@@ -69,19 +79,25 @@ class CompetencyResource extends Resource
                             ->required(),
                         
                         TextInput::make('passing_grade')
+                            ->label(__('competency.passing_grade'))
                             ->numeric()
                             ->required(),
                         
                 ])
                 ->columns(3),
                 
-                Hidden::make('teacher_subject_id')->required(),
-                TextInput::make('code')->required(),
-                Textarea::make('description')->required(),
+                Hidden::make('teacher_subject_id')
+                    ->required(),
+                TextInput::make('code')
+                    ->label(__('competency.code'))
+                    ->required(),
+                Textarea::make('description')
+                    ->label(__('competency.description'))
+                    ->required(),
                 
                 // half semester
                 Radio::make('half_semester')
-                    ->label('Apakah kompetensi ini untuk tengah semester?')
+                    ->label(__('competency.half_semester'))
                     ->default(false)
                     ->boolean()
                     ->required(),
@@ -92,8 +108,10 @@ class CompetencyResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('code'),
-                TextColumn::make('description'),
+                TextColumn::make('code')
+                    ->label(__('competency.code')),
+                TextColumn::make('description')
+                    ->label(__('competency.description')),
             ])
             ->filters([
                 //
