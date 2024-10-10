@@ -27,4 +27,9 @@ class StudentCompetency extends Model
             ->logOnly(['*'])
             ->logExcept(['created_at', 'updated_at']);
     }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
 }

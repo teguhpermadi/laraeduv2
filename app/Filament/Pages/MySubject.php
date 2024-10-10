@@ -39,7 +39,9 @@ class MySubject extends Page implements HasTable
             // ...
         ])
         ->actions([
-            Action::make('assesment'),
+            Action::make('assesment')
+                ->url(fn (TeacherSubject $record): string => route('filament.admin.pages.assessment.{id}', $record)),
+            Action::make('leger'),
         ]);
     }
 }
