@@ -1,11 +1,23 @@
 $data = TeacherSubject::with('competency')->FindOrFail(1);
-$data['grade_id']
-$data = TeacherSubject::with('competency')->FindOrFail(1);
-$data = TeacherSubject::with('competency')->FindOrFail(1);
-$data->competency
-$data = TeacherSubject::with('competency')->FindOrFail(1);
-$data->competency->first
-$data = TeacherSubject::with('competency')->FindOrFail(1);
-$data->competency->first()
-$data = TeacherSubject::with('competency')->FindOrFail(1);
-$data->competency->first()->id
+$data = TeacherSubject::with('competency.studentCompetency')->FindOrFail(1);
+$data = TeacherSubject::with('competency.studentCompetency')->FindOrFail(2);
+$data = TeacherSubject::with('competency.studentCompetency')->FindOrFail(1);
+$data = TeacherSubject::with('competency.studentCompetency')->FindOrFail(100);
+$data = TeacherSubject::with('competency')->FindOrFail(100);
+$data = TeacherSubject::with('competency')->FindOrFail(100);
+$data = TeacherSubject::with('competency')->FindOrFail(100);
+$data = TeacherSubject::with('competency')->FindOrFail(10);
+$data = TeacherSubject::with('competency')->FindOrFail(11);
+$data = TeacherSubject::with('competency')->FindOrFail(12);
+$data = TeacherSubject::with('competency')->FindOrFail(14);
+$data = TeacherSubject::with('competency')->FindOrFail(20);
+$data = TeacherSubject::with('competency')->FindOrFail(200);
+$data = TeacherSubject::with('competency')->findOrFail(200);
+$data = TeacherSubject::with('competency')->findOrFail(200);
+$data = TeacherSubject::with('competency')->findOrFail(200);
+$data = TeacherSubject::findOrFail(200);
+$data = TeacherSubject::findOrFail(200);
+$data = TeacherSubject::findOrFail(200);
+$data = TeacherSubject::findOrFail(200);
+$data = TeacherSubject::findOrFail(2);
+$data = TeacherSubject::find(200);
