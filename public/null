@@ -1,23 +1,724 @@
-$data = TeacherSubject::with('competency')->FindOrFail(1);
-$data = TeacherSubject::with('competency.studentCompetency')->FindOrFail(1);
-$data = TeacherSubject::with('competency.studentCompetency')->FindOrFail(2);
-$data = TeacherSubject::with('competency.studentCompetency')->FindOrFail(1);
-$data = TeacherSubject::with('competency.studentCompetency')->FindOrFail(100);
-$data = TeacherSubject::with('competency')->FindOrFail(100);
-$data = TeacherSubject::with('competency')->FindOrFail(100);
-$data = TeacherSubject::with('competency')->FindOrFail(100);
-$data = TeacherSubject::with('competency')->FindOrFail(10);
-$data = TeacherSubject::with('competency')->FindOrFail(11);
-$data = TeacherSubject::with('competency')->FindOrFail(12);
-$data = TeacherSubject::with('competency')->FindOrFail(14);
-$data = TeacherSubject::with('competency')->FindOrFail(20);
-$data = TeacherSubject::with('competency')->FindOrFail(200);
-$data = TeacherSubject::with('competency')->findOrFail(200);
-$data = TeacherSubject::with('competency')->findOrFail(200);
-$data = TeacherSubject::with('competency')->findOrFail(200);
-$data = TeacherSubject::findOrFail(200);
-$data = TeacherSubject::findOrFail(200);
-$data = TeacherSubject::findOrFail(200);
-$data = TeacherSubject::findOrFail(200);
-$data = TeacherSubject::findOrFail(2);
-$data = TeacherSubject::find(200);
+$data = TeacherSubject::find(1)
+$data = TeacherSubject::find(1);
+$data->studentGrade
+$data = TeacherSubject::with([
+  'studentGrade'
+  ])->find(1);
+$data = TeacherSubject::with([
+  'studentGrade' => function($query){
+  	$query->with('studentCompetency');
+  }
+  ])->find(1);
+$data = TeacherSubject::with([
+  'studentGrade' => function($query){
+  	$query->with('studentCompetency');
+  }
+  ])->find(1);
+$data = TeacherSubject::with(['competency',
+  'studentGrade' => function($query){
+  	$query->with('studentCompetency');
+  }
+  ])->find(1);
+$data = TeacherSubject::with([
+  'competency',
+  'studentGrade' => function($query){
+  	$query->with('studentCompetency');
+  }
+  ])->find(1);
+$data = TeacherSubject::find(1);
+$data = TeacherSubject::find(1);
+$data = TeacherSubject::find(1);
+$competencies = $data->competency
+$data = TeacherSubject::find(1);
+$competencies = $data->competency->pluck('id')
+$data = TeacherSubject::find(1);
+$competencies = $data->competency->pluck('id')->toArray()
+$data = TeacherSubject::find(1);
+$competencies = $data->competency->pluck('id');
+
+DB::table('users')->get();
+$data = TeacherSubject::find(1);
+$competencies = $data->competency->pluck('id');
+
+DB::table('student')->get();
+$data = TeacherSubject::find(1);
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('id', $$students)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('id', $students)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('id', $students)
+  ->count();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('id', $students)
+  ->join('studentCompetencies', 'student.id', '=', 'studentCompetencies.student_id')
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('id', $students)
+  ->join('studentCompetency', 'student.id', '=', 'studentCompetency.student_id')
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('id', $students)
+  ->join('student_competencies', 'student.id', '=', 'student_competencies.student_id')
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('student.id', $students)
+  ->join('student_competencies', 'student.id', '=', 'student_competencies.student_id')
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->join('student_competencies', 'student.id', '=', 'student_competencies.student_id')
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->join('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->join('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', 7)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->where('student_competencies.competency_id', 7)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->where('student_competencies.competency_id', 7)
+  ->where('student_competencies.competency_id', 8)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->groupBy('students.id')
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->groupBy('students.id', 'student_competencies.id')
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->groupBy('students.id', 'student_competencies.student_id')
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->groupBy('students.id', 'student_competencies.id')
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->groupBy('students.id', 'student_competencies.id')
+  ->count();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->groupBy('students.id', 'student_competencies.id')
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->select('students.name')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->select('students.name')
+  ->select('student_competencies.competency_id')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->select('students.name, student_competencies.competency_id')
+  
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->select('students.name, student_competencies.competency_id')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->select('students.name, student_competencies.competency_id')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->select('students.name, student_competencies.competency_id')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->get();
+$data = TeacherSubject::find(1);
+$students = $data->studentGrade->pluck('student_id');
+$competencies = $data->competency->pluck('id');
+
+DB::table('students')
+  ->select('students.name', 'student_competencies.competency_id')
+  ->whereIn('students.id', $students)
+  ->leftJoin('student_competencies', 'students.id', '=', 'student_competencies.student_id')
+  ->whereIn('student_competencies.competency_id', $competencies)
+  ->get();
+$data = TeacherSubject::find(1);
+$data->studentGrade
+$data = TeacherSubject::find(1);
+$data->studentGrade->competency
+$data = TeacherSubject::find(1);
+$data->studentGrade->studentCompetency
+$data = TeacherSubject::find(1);
+$data->studentGrade->studentCompetency;
+$data = TeacherSubject::find(1);
+$data->studentGrade->studentCompetency;
+$data = TeacherSubject::find(1);
+$data->studentGrade->studentCompetency;
+$data = TeacherSubject::find(1);
+$data->studentGrade->studentCompetency;
+$data = TeacherSubject::find(1);
+$data->studentGrade->studentCompetency;
+$data = TeacherSubject::find(1);
+$data->studentGrade->studentCompetency;
+$data = TeacherSubject::find(1);
+$data->studentGrade->studentCompetency;
+$data = TeacherSubject::find(1);
+$data->studentGrade->studentCompetency;
+$data = TeacherSubject::find(1);
+$data->studentGrade->studentCompetency;
+$data = TeacherSubject::with('studentGrade.studentCompetency')->find(1);
+
+$data = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9])
+}])->find(1);
+
+$data = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+$data = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+$data = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1)->toArray();
+$data = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1)->toArray();
+
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+    $averageScore = $studentGrade->studentCompetency->avg('score');
+    echo "Student ID: {$studentGrade->student_id}, Average Score: {$averageScore}\n";
+}
+$data = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1)->toArray();
+
+foreach ($data->studentGrade as $studentGrade) {
+    $averageScore = $studentGrade->studentCompetency->avg('score');
+    echo "Student ID: {$studentGrade->student_id}, Average Score: {$averageScore}\n";
+}
+$data = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1)->toArray();
+$data->studentGrade
+$data = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+foreach ($data->studentGrade as $studentGrade) {
+    $averageScore = $studentGrade->studentCompetency->avg('score');
+    echo "Student ID: {$studentGrade->student_id}, Average Score: {$averageScore}\n";
+}
+$data = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+foreach ($data->studentGrade as $studentGrade) {
+    $averageScore = $studentGrade->studentCompetency->avg('score');
+    echo "Student ID: {$studentGrade->student->name}, Average Score: {$averageScore}\n";
+}
+$data = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+foreach ($data->studentGrade as $studentGrade) {
+    $averageScore = $studentGrade->studentCompetency->avg('score');
+    echo "Student: {$studentGrade->student->name}, Average Score: {$averageScore}\n";
+}
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = [];
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+    $averageScore = $studentGrade->studentCompetency->avg('score');
+    echo "Student: {$studentGrade->student->name}, Average Score: {$averageScore}\n";
+}
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = [];
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = [
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ];
+}
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = [];
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = [
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ];
+}
+
+$data;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = [];
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = [
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ];
+}
+
+$teacherSubject;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = [];
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = [
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency,
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ];
+}
+
+$data;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = [];
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = [
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency->score,
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ];
+}
+
+$data;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = [];
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = [
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency,
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ];
+}
+
+$data;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = [];
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = [
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency,
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ];
+}
+
+$data;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = [];
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = [
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency->pluck('score'),
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ];
+}
+
+$data;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = [];
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = [
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency->pluck('score'),
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ];
+}
+
+$data->toArray();
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = collection();
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = [
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency->pluck('score'),
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ];
+}
+
+$data;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = [];
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = [
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency->pluck('score'),
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ];
+}
+
+$data;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = collect();
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data = collect([
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency->pluck('score'),
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ]);
+}
+
+$data;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = collect();
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = collect([
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency->pluck('score'),
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ]);
+}
+
+$data;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = collect();
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = collect([
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency->pluck('score'),
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ]);
+}
+
+$data;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = collect();
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = collect([
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency->pluck('score'),
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ]);
+}
+
+$data;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	$query->whereIn('competency_id', [7,8,9]);
+}])->find(1);
+
+$data = collect();
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = collect([
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency->pluck('score'),
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ]);
+}
+
+$data;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	
+}])->find(1);
+
+$data = collect();
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = collect([
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency->pluck('score'),
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ]);
+}
+
+$data;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	
+}])->find(1);
+
+$data = collect();
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = collect([
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency->pluck('score','id'),
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ]);
+}
+
+$data;
+$teacherSubject = TeacherSubject::with(['studentGrade.studentCompetency' => function($query){
+	
+}])->find(1);
+
+$data = collect();
+foreach ($teacherSubject->studentGrade as $studentGrade) {
+  $data[] = collect([
+  	'student_id' => $studentGrade->student_id,
+	'student.name' => $studentGrade->student->name,
+	'competency' => $studentGrade->studentCompetency->pluck('score','competency_id'),
+	'average' => $studentGrade->studentCompetency->avg('score'),
+  ]);
+}
+
+$data;
