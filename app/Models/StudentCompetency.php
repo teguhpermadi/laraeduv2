@@ -34,4 +34,9 @@ class StudentCompetency extends Model
     {
         return $this->belongsTo(Student::class);
     }
+
+    public function competency()
+    {
+        return $this->belongsTo(Competency::class);
+    }
 }
