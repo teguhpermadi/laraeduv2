@@ -7,4 +7,6 @@ return [
     'name' => 'nama kelas',
     'grade.name' => 'tingkatan kelas',
     'phase' => 'fase',
+    'teacherGrade.teacher.name' => 'walikelas',
+    'student_grade_count' => 'jumlah siswa'
 ];

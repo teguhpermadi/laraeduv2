@@ -58,8 +58,10 @@ class GradeResource extends Resource
                     ->label(__('grade.grade.name')),
                 TextColumn::make('phase')
                     ->label(__('grade.phase')),
-                TextColumn::make('teacherGrade.teacher.name'),
+                TextColumn::make('teacherGrade.teacher.name')
+                    ->label(__('grade.teacherGrade.teacher.name')),
                 TextColumn::make('student_grade_count')
+                    ->label(__('grade.student_grade_count'))
                     ->counts('studentGrade')
                     ->suffix(' siswa'),
             ])
