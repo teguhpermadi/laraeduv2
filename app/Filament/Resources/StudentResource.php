@@ -33,6 +33,12 @@ class StudentResource extends Resource
     {
         return $form
             ->schema([
+                TextInput::make('nisn')
+                    ->label(__('student.nisn'))
+                    ->required(),
+                TextInput::make('nis')
+                    ->label(__('student.nis'))
+                    ->required(),
                 TextInput::make('name')
                     ->label(__('student.name'))
                     ->required(),
@@ -67,14 +73,19 @@ class StudentResource extends Resource
                     ->label(__('student.nis')),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -93,5 +104,13 @@ class StudentResource extends Resource
             'create' => Pages\CreateStudent::route('/create'),
             'edit' => Pages\EditStudent::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
     }
 }

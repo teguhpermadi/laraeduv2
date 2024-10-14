@@ -50,4 +50,9 @@ class Student extends Model
     {
         return $this->hasMany(StudentGrade::class);
     }
+
+    public function dataStudent()
+    {
+        return $this->hasOne(DataStudent::class);
+    }
 }
