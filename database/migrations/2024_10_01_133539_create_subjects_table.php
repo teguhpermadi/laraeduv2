@@ -18,6 +18,8 @@ return new class extends Migration
             $table->integer('order')->default(1);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['name', 'code'], 'subjects_unique');
         });
     }
 
