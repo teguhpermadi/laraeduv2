@@ -2,10 +2,10 @@
     {{-- {{$this->form}} --}}
     <form wire:submit="submit">
         {{ $this->form }}
-        
+
         {{-- <x-filament::button >
             Submit
         </x-filament::button> --}}
     </form>
-    {{$this->table}}
+    {{ $this->table }}
 </x-filament-panels::page>

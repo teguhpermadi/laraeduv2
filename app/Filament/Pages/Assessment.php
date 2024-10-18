@@ -2,16 +2,20 @@
 
 namespace App\Filament\Pages;
 
+use App\Jobs\ResetStudentCompetency;
 use App\Models\Competency;
 use App\Models\Grade;
 use App\Models\StudentCompetency;
 use App\Models\Subject;
 use App\Models\TeacherSubject;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -19,6 +23,7 @@ use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Actions\Action as TableAction;
 use Filament\Tables\Columns\TextInputColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -47,6 +52,9 @@ class Assessment extends Page implements HasForms, HasTable
     public $competency_id;
     public $grade_id;
     public $subject_id;
+    public $academic_year_id;
+    public $teacher_subject_id;
+    public $empty_state = [];
 
     public function mount($id): void
     {
@@ -54,12 +62,37 @@ class Assessment extends Page implements HasForms, HasTable
 
         if (!is_null($data)) {
             $this->form->fill([
-                'competency_id' => $data->competency->first()->id,
+                'competency_id' => ($data->competency->first()) ? $data->competency->first()->id : '',
                 'grade_id' => $data['grade_id'],
                 'subject_id' => $data['subject_id']
             ]);
 
             $this->teacherSubject = $data['id'];
+            $this->academic_year_id = session()->get('academic_year_id');
+        }
+
+        $this->teacher_subject_id = $id;
+
+        // cek student grade
+        $students = TeacherSubject::with('studentGrade')->find($id)->studentGrade;
+
+        if (count($students) == 0) {
+            // jika student == 0
+            $this->empty_state['heading'] = 'Anda tidak memiliki murid.';
+            $this->empty_state['desc'] = 'Silahkan hubungi Admin!';
+        } else {
+            $this->empty_state['heading'] = '';
+            $this->empty_state['desc'] = '';
+        }
+
+        // cek student competency
+        $studentCompetency = StudentCompetency::query()
+            ->where('teacher_subject_id', $this->teacherSubject)
+            ->where('competency_id', $this->competency_id)
+            ->get();
+        if (count($students) != count($studentCompetency)) {
+            $this->empty_state['heading'] = 'Skor Tidak Lengkap';
+            $this->empty_state['desc'] = 'Lakukan reset skor pada kompetensi ini!';
         }
     }
 
@@ -89,13 +122,51 @@ class Assessment extends Page implements HasForms, HasTable
                                 function () {
                                     $comptencies = Competency::where('teacher_subject_id', $this->teacherSubject)
                                         ->get()
-                                        ->pluck('id', 'id');
+                                        ->pluck('description', 'id');
                                     return $comptencies;
                                 }
                             )
                             ->live()
                             ->afterStateUpdated(function () {
                                 $this->resetTable();
+                            }),
+                    ])
+                    ->headerActions([
+                        // add competency
+                        Action::make('competency')
+                            ->label(__('assessment.add_competency'))
+                            ->form([
+                                Section::make()
+                                    ->columns(3)
+                                    ->schema([
+                                        Hidden::make('academic_year_id')
+                                            ->default(session()->get('academic_year_id')),
+                                        Hidden::make('teacher_subject_id')
+                                            ->default($this->teacher_subject_id),
+                                        TextInput::make('code')
+                                            ->label(__('competency.code'))
+                                            ->required(),
+                                        TextInput::make('passing_grade')
+                                            ->label(__('competency.passing_grade'))
+                                            ->numeric()
+                                            ->required(),
+
+                                        // half semester
+                                        Radio::make('half_semester')
+                                            ->label(__('competency.half_semester'))
+                                            ->default(false)
+                                            ->boolean()
+                                            ->required(),
+                                    ]),
+                                Textarea::make('description')
+                                    ->label(__('competency.description'))
+                                    ->required(),
+                            ])
+                            ->action(function (array $data): void {
+                                // $record->author()->associate($data['authorId']);
+                                // $record->save();
+                                // dd($data);
+                                Competency::create($data);
                             }),
                     ]),
             ]);
@@ -109,6 +180,8 @@ class Assessment extends Page implements HasForms, HasTable
                     ->where('teacher_subject_id', $this->teacherSubject)
                     ->where('competency_id', $this->competency_id)
             )
+            ->emptyStateHeading($this->empty_state['heading'])
+            ->emptyStateDescription($this->empty_state['desc'])
             ->columns([
                 // TextColumn::make('competency_id'),
                 TextColumn::make('student.name')
@@ -143,6 +216,14 @@ class Assessment extends Page implements HasForms, HasTable
                         $this->scoreAdjustment($records, $data);
                     })
             ])
+            ->headerActions([
+                TableAction::make('reset')
+                    ->icon('heroicon-s-arrow-path-rounded-square')
+                    ->action(function(){
+                        $this->resetStudentCompetency($this->teacher_subject_id, $this->competency_id);
+                    })
+                    ->button(),
+            ])
             ->deferLoading()
             ->striped()
             ->paginated(false);
@@ -173,5 +254,31 @@ class Assessment extends Page implements HasForms, HasTable
                     'score' => $newScore,
                 ]);
         });
+    }
+
+    public function resetStudentCompetency($teacher_subject_id, $competency_id)
+    {
+        // get students
+        $students = TeacherSubject::with('studentGrade')
+                        ->find($teacher_subject_id)
+                        ->studentGrade->pluck('student_id');
+
+        // delete student competency
+        StudentCompetency::where('teacher_subject_id', $teacher_subject_id)
+            ->where('competency_id', $competency_id)
+            ->delete();
+        
+        // create new student competency
+        $data = [];
+        foreach ($students as $student) {
+            $data[] = [
+                'teacher_subject_id' => $teacher_subject_id,
+                'student_id' => $student,
+                'competency_id' => $competency_id,
+                'created_at' => now(),
+            ];
+        }
+
+        StudentCompetency::insert($data);
     }
 }

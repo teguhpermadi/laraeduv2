@@ -25,7 +25,8 @@ class CompetencyObserver
                 'created_at' => now(),
             ];
         }
-
+        
+        // dd($students);
         StudentCompetency::insert($data);
     }
 
@@ -34,22 +35,22 @@ class CompetencyObserver
      */
     public function updated(Competency $competency): void
     {
-        $teacher_subject_id = $competency->teacher_subject_id;
-        $students = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+        // $teacher_subject_id = $competency->teacher_subject_id;
+        // $students = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
 
-        $data = [];
-        foreach ($students->studentGrade as $student) {
-            $data[] = [
-                'teacher_subject_id' => $teacher_subject_id,
-                'student_id' => $student->student_id,
-                'competency_id' => $competency->id,
-                'score' => 0,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-        }
+        // $data = [];
+        // foreach ($students->studentGrade as $student) {
+        //     $data[] = [
+        //         'teacher_subject_id' => $teacher_subject_id,
+        //         'student_id' => $student->student_id,
+        //         'competency_id' => $competency->id,
+        //         'score' => 0,
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ];
+        // }
 
-        StudentCompetency::upsert($data, uniqueBy: ['student_id', 'competency_id'], update: ['score']);
+        // StudentCompetency::upsert($data, uniqueBy: ['student_id', 'competency_id'], update: ['score']);
     }
 
     /**

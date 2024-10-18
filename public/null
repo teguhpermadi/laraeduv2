@@ -1,2 +1,2 @@
-session()->get('academic_year_id')
-session()->get('import_errors')
+StudentCompetency::truncate()
+StudentCompetency::all();
