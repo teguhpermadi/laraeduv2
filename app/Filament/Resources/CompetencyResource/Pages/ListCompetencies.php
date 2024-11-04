@@ -4,12 +4,16 @@ namespace App\Filament\Resources\CompetencyResource\Pages;
 
 use App\Filament\Resources\CompetencyResource;
 use App\Imports\CompetencyImport;
+use App\Models\Competency;
 use App\Models\TeacherSubject;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
+use Filament\Resources\Components\Tab;
+// use Filament\Resources\Pages\ListRecords\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -52,6 +56,32 @@ class ListCompetencies extends ListRecords
                     Excel::import(new CompetencyImport, storage_path('/app/public/' . $data['file']));
                 }),
         ];
+    }
+
+    public function getTabs(): array
+    {
+        $subjects = TeacherSubject::with('competency', 'grade')->mySubject();
+        $tabs = [];
+        if($subjects->count() != 0){
+            foreach ($subjects->get() as $subject) {
+                $tabs[$subject->id] = Tab::make($subject->subject->code.'-'.$subject->grade->name)
+                    ->modifyQueryUsing(function(Builder $query) use ($subject){
+                        $competencyId = $subject->competency->pluck('id');
+                        $query->whereIn('id',$competencyId);
+                    })
+                    ->badge(function() use ($subject){
+                        $competencyId = $subject->competency->pluck('id');
+                        return Competency::whereIn('id',$competencyId)->count();
+                    })
+                    ->badgeColor('success');
+            }
+        } else {
+            $tabs = [
+                '-' => Tab::make()
+                    ->icon('heroicon-m-x-mark')
+            ];
+        }
+        return $tabs;
     }
 
     public function export($teacher_subject_id)
