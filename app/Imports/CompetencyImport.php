@@ -13,26 +13,25 @@ class CompetencyImport implements ToCollection, WithHeadingRow
 {
     use Importable;
 
-    private $teacherSubjectId;
-
-    public function __construct($teacherSubjectId)
-    {
-        $this->teacherSubjectId = $teacherSubjectId['teacher_subject_id'];
-    }
-
-    /**
-     * @param Collection $collection
-     */
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) {
-            $data = [
-                'teacher_subject_id' => $this->teacherSubjectId,
-                'code' => $row['kode'],
-                'description' => $row['deskripsi'],
-                'passing_grade' => $row['kkm'],
-            ];
-            Competency::create($data);
+            if (!is_null($row['kode']) && !is_null($row['deskripsi']) && !is_null($row['kkm'])) {
+
+                Competency::updateOrCreate([
+                    'id' => $row['id'],
+                ], [
+                    'teacher_subject_id' => $row['teacher_subject_id'],
+                    'code' => $row['kode'],
+                    'description' => $row['deskripsi'],
+                    'passing_grade' => $row['kkm'],
+                ]);
+            }
         }
+    }
+
+    public function headingRow(): int
+    {
+        return 10;
     }
 }
