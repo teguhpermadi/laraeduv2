@@ -16,6 +16,8 @@ class Leger extends Model
         'score',
         'description',
         'metadata',
+        'sum',
+        'rank', 
     ];
 
     protected $casts = [
@@ -35,5 +37,10 @@ class Leger extends Model
     public function teacherSubject()
     {
         return $this->belongsTo(TeacherSubject::class);
+    }
+
+    public function studentGrade()
+    {
+        return $this->hasMany(StudentGrade::class, 'student_id', 'student_id');
     }
 }

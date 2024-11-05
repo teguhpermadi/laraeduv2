@@ -1,27 +1,31 @@
 <div>
-    <h1 class="font-bold">Leger {{ $teacherSubject->subject->name }}</h1>
-    <table>
-        <tr>
-            <td>Tahun Pelajaran</td>
-            <td>:</td>
-            <td>{{ $teacherSubject->academic->year }}</td>
-        </tr>
-        <tr>
-            <td>Semester</td>
-            <td>:</td>
-            <td>{{ $teacherSubject->academic->semester }}</td>
-        </tr>
-        <tr>
-            <td>Kelas</td>
-            <td>:</td>
-            <td>{{ $teacherSubject->grade->name }}</td>
-        </tr>
-        <tr>
-            <td>Guru</td>
-            <td>:</td>
-            <td>{{ $teacherSubject->teacher->name }}</td>
-        </tr>
-    </table>
+    <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-6 rounded-lg shadow-lg mb-6">
+        <h1 class="text-3xl font-bold text-white text-center mb-2">Leger {{ $teacherSubject->subject->name }}</h1>
+        <div class="bg-white/10 p-4 rounded-md">
+            <table class="text-white w-full max-w-2xl mx-auto">
+                <tr>
+                    <td class="py-1 font-semibold">Tahun Pelajaran</td>
+                    <td class="px-3">:</td>
+                    <td>{{ $teacherSubject->academic->year }}</td>
+                </tr>
+                <tr>
+                    <td class="py-1 font-semibold">Semester</td>
+                    <td class="px-3">:</td>
+                    <td>{{ $teacherSubject->academic->semester }}</td>
+                </tr>
+                <tr>
+                    <td class="py-1 font-semibold">Kelas</td>
+                    <td class="px-3">:</td>
+                    <td>{{ $teacherSubject->grade->name }}</td>
+                </tr>
+                <tr>
+                    <td class="py-1 font-semibold">Guru</td>
+                    <td class="px-3">:</td>
+                    <td>{{ $teacherSubject->teacher->name }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
     @php
         $no = 1;
@@ -53,15 +57,18 @@
                     <td class="border border-slate-300 px-3 text-left">{{ $student['student']['nis'] }}</td>
                     <td class="border border-slate-300 px-3 text-left">{{ $student['student']['name'] }}</td>
 
+
                     @if (count($student['metadata']) > 0)
                         @foreach ($student['metadata'] as $metadata)
-                            <td class="border border-slate-300 text-center {{ $metadata['score'] <= $metadata->competency->passing_grade || $metadata['score'] >= 95 ? 'bg-gray-300' : '' }}">
+                            <td
+                                class="border border-slate-300 text-center {{ $metadata['score'] <= $metadata['competency']['passing_grade'] ? 'bg-yellow-200' : ($metadata['score'] >= 95 ? 'bg-red-200' : '') }}">
                                 {{ $metadata['score'] }}
                             </td>
                         @endforeach
-
+                        
                         <td class="border border-slate-300 text-center">{{ $student['sum'] }}</td>
-                        <td class="border border-slate-300 text-center {{ $student['avg'] <= 70 || $student['avg'] >= 95 ? 'bg-gray-300' : '' }}">
+                        <td
+                            class="border border-slate-300 text-center {{ $student['avg'] <= 70 ? 'bg-yellow-200' : ($student['avg'] >= 95 ? 'bg-red-200' : '') }}">
                             {{ $student['avg'] }}
                         </td>
                         <td class="border border-slate-300 text-center">{{ $student['rank'] }}</td>
@@ -75,4 +82,4 @@
             @endforeach
         </tbody>
     </table>
-</div> 
+</div>
