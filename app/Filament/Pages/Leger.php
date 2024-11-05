@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\Leger as ModelsLeger;
+use App\Models\LegerRecap;
 use App\Models\StudentCompetency;
 use App\Models\TeacherSubject;
 use Filament\Forms\Components\Checkbox;
@@ -40,13 +41,15 @@ class Leger extends Page implements HasForms
 
     public ?array $data = [];
 
-    public $teacherSubject, $students, $time_signature, $preview, $student, $agree, $leger, $competency_count;
+    public $teacherSubject, $students, $time_signature, $preview, $student, $agree, $leger, $competency_count, $academic_year_id;
+    public $checkLegerRecap = false;
 
     public function mount($id): void
     {
         $competency = TeacherSubject::with('subject')->withCount('competency')->find($id);
         $this->teacherSubject = $competency;
         $this->competency_count = $competency->competency_count;
+        $this->academic_year_id = $competency->academic_year_id;
 
         $competency_id = $competency->competency->pluck('id');
 
@@ -97,6 +100,9 @@ class Leger extends Page implements HasForms
             'leger' => $data,
             'time_signature' => now(),
         ]);
+
+        // cek apakah sudah ada data leger_recap
+        $this->checkLegerRecap = LegerRecap::where('academic_year_id', $this->academic_year_id)->where('teacher_subject_id', $id)->exists();
     }
 
     public function form(Form $form): Form
@@ -129,10 +135,10 @@ class Leger extends Page implements HasForms
     public function submit()
     {
         // dd($this->form->getState());
-        $data = $this->form->getState()['leger'];
+        $data = $this->form->getState();
 
         // insert data ke table leger
-        foreach ($data as $key) {
+        foreach ($data['leger'] as $key) {
             ModelsLeger::updateOrCreate([
                 'academic_year_id' => $key['academic_year_id'],
                 'student_id' => $key['student_id'],
@@ -145,6 +151,12 @@ class Leger extends Page implements HasForms
                 'metadata' => $key['metadata'],
             ]);
         }
+
+        // insert data ke table leger_recap
+        LegerRecap::updateOrCreate([
+            'academic_year_id' => $this->academic_year_id,
+            'teacher_subject_id' => $this->teacherSubject->id,
+        ]); 
     }
 
     public function getDescription($data)

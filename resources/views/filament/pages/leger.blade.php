@@ -6,8 +6,11 @@
             Tanda Tangan
         </x-filament::button>
 
-        <x-filament::button tag="a" href="{{ route('leger-print', $this->teacherSubject->id) }}" class="mt-3 ml-3">
-            Cetak Leger
-        </x-filament::button>
+        {{-- jika sudah ada data leger_recap maka tampilkan tombol cetak --}}
+        @if ($this->checkLegerRecap)
+            <x-filament::button tag="a" href="{{ route('leger-print', $this->teacherSubject->id) }}" class="mt-3 ml-3">
+                Cetak Leger
+            </x-filament::button>
+        @endif
     </form>
 </x-filament-panels::page>
