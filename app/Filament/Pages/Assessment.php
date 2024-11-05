@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Imports\StudentCompetencyImport;
 use App\Jobs\ResetStudentCompetency;
 use App\Models\Competency;
 use App\Models\Grade;
@@ -10,6 +11,7 @@ use App\Models\Subject;
 use App\Models\TeacherSubject;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Radio;
@@ -30,6 +32,8 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -231,6 +235,35 @@ class Assessment extends Page implements HasForms, HasTable
                         return $this->download();
                     })
                     ->button(),
+                TableAction::make('upload')
+                    ->form([
+                        FileUpload::make('file')
+                            ->directory('uploads')
+                            ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/x-excel'])
+                            ->getUploadedFileNameForStorageUsing(
+                                function (TemporaryUploadedFile $file) {
+                                    return 'siswa.' . $file->getClientOriginalExtension();
+                                }
+                            )
+                            ->required()
+                    ])
+                    ->action(function (array $data) {
+                        $studentCompetencies = Excel::toArray(new StudentCompetencyImport, storage_path('/app/public/' . $data['file']));
+
+                        $data = [];
+                        foreach ($studentCompetencies as $row) {
+                            foreach ($row as $value) {
+                                StudentCompetency::where([
+                                    'teacher_subject_id' => $value['teacher_subject_id'],
+                                    'student_id' => $value['student_id'],
+                                    'competency_id' => $value['competency_id'],
+                                ])
+                                    ->update([
+                                        'score' => $value['score'],
+                                    ]);
+                            }
+                        }
+                    }),
             ])
             ->deferLoading()
             ->striped()
@@ -372,7 +405,7 @@ class Assessment extends Page implements HasForms, HasTable
 
             // bisa di edit
             $sheet->getStyle('F14:F' . $rowStudent)->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
-            
+
             // proteksi semua cell
             $sheet->getProtection()->setPassword('PhpSpreadsheet');
             $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
@@ -407,12 +440,6 @@ class Assessment extends Page implements HasForms, HasTable
                 $validation->setFormula2(100);
             }
         }
-
-        // hapus sheet worksheet
-        // $sheetIndex = $spreadsheet->getIndex(
-        //     $spreadsheet->getSheetByName('Worksheet')
-        // );
-        // $spreadsheet->removeSheetByIndex($sheetIndex);
 
         // Membuat file Excel
         $writer = new Xlsx($spreadsheet);
