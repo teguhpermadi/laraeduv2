@@ -2,19 +2,26 @@
 
 namespace App\Filament\Pages;
 
+use App\Models\Leger as ModelsLeger;
+use App\Models\StudentCompetency;
 use App\Models\TeacherSubject;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ViewField;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
-use Filament\Infolists\Infolist;
-use Filament\Infolists\Components\Section as SectionInfoList;
 use Filament\Pages\Page;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Grouping\Group;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class Leger extends Page implements HasForms
 {
@@ -33,12 +40,13 @@ class Leger extends Page implements HasForms
 
     public ?array $data = [];
 
-    public $teacherSubject, $students, $time_signature, $preview, $student, $agree, $leger;
+    public $teacherSubject, $students, $time_signature, $preview, $student, $agree, $leger, $competency_count;
 
     public function mount($id): void
     {
         $competency = TeacherSubject::with('subject')->withCount('competency')->find($id);
         $this->teacherSubject = $competency;
+        $this->competency_count = $competency->competency_count;
 
         $competency_id = $competency->competency->pluck('id');
 
@@ -50,21 +58,25 @@ class Leger extends Page implements HasForms
 
         foreach ($teacherSubject->studentGrade as $studentGrade) {
 
+            // deskripsi
+            $desc = $this->getDescription($studentGrade->studentCompetency);
+
             $data[$studentGrade->student_id] = collect([
                 'academic_year_id' => $competency->academic_year_id,
-                'grade_id' => $competency->grade_id,
-                'teacher_id' => $competency->teacher_id,
-                'subject_id' => $competency->subject_id,
+                // 'grade_id' => $competency->grade_id,
+                // 'teacher_id' => $competency->teacher_id,
+                // 'subject_id' => $competency->subject_id,
+                'teacher_subject_id' => $id,
                 'student_id' => $studentGrade->student_id,
                 'student' => $studentGrade->student,
                 'competency_count' => count($studentGrade->studentCompetency),
                 'avg' => round($studentGrade->studentCompetency->avg('score'), 0),
                 'sum' => $studentGrade->studentCompetency->sum('score'),
                 'metadata' => $studentGrade->studentCompetency,
+                'description' => $desc,
             ]);
         };
 
-        
         // Sort data by 'sum' in descending order
         $data = $data->sortByDesc('sum')->values();
 
@@ -77,7 +89,7 @@ class Leger extends Page implements HasForms
         // kembalikan data sort by id
         $data = $data->sortByDesc('student_id')->values();
 
-        // dd($data);
+        // dd($data->toArray());
 
         $this->students = $data;
 
@@ -93,7 +105,7 @@ class Leger extends Page implements HasForms
             ->schema([
                 Section::make('Preview')
                     ->schema([
-                        ViewField::make('Preview')
+                        ViewField::make('preview')
                             ->viewData([$this->teacherSubject, $this->students])
                             ->view('filament.pages.leger-preview'),
                     ]),
@@ -116,6 +128,63 @@ class Leger extends Page implements HasForms
 
     public function submit()
     {
-        dd($this->form->getState());
+        // dd($this->form->getState()['leger']);
+        $data = $this->form->getState()['leger'];
+
+        // insert data ke table leger
+        foreach ($data as $key) {
+            ModelsLeger::updateOrCreate([
+                'academic_year_id' => $key['academic_year_id'],
+                'student_id' => $key['student_id'],
+                'teacher_subject_id' => $key['teacher_subject_id'],
+            ], [
+                'score' => $key['avg'],
+                'description' => $key['description'],
+            ]);
+        }
+    }
+
+    public function getDescription($data)
+    {
+        $string = '';
+
+        // hapus data tengah semester dan akhir semester
+        // unset($data[0], $data[1]);
+
+        // Asumsikan $data adalah array atau Collection yang berisi metadata
+        $filter = collect($data)->reject(function ($item) {
+            $code = strtolower($item['competency']['code']);
+            return $code === 'tengah semester' || $code === 'akhir semester';
+        })->values(); // Gunakan values() untuk reset indeks
+
+        // kelompokkan terlebih dahulu
+        // competency lulus & tidak lulus
+        $passed = 'Ananda telah menguasai materi: ';
+        $notPassed = 'Ananda perlu peningkatan lagi pada materi materi: ';
+        $countPassed = 0;
+        $countNotPassed = 0;
+
+        foreach ($filter as $competency) {
+            if ($competency->score >= $competency->competency->passing_grade) {
+                // jika lulus
+                $passed .= $competency->competency->description . '; ';
+                $countPassed++;
+            } else {
+                // jika tidak lulus
+                $notPassed .= $competency->competency->description . '; ';
+                $countNotPassed++;
+            }
+        }
+
+        // cek jika ada isinya
+        if ($countPassed > 0) {
+            $string .= $passed;
+        }
+
+        if ($countNotPassed > 0) {
+            $string .= $notPassed;
+        }
+
+        return $string;
     }
 }
