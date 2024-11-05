@@ -169,7 +169,7 @@ class ListCompetencies extends ListRecords
         $filename = "Kompetensi " . $teacher_subject->subject->code . ' ' . $teacher_subject->grade->name . ".xlsx"; // <<< HERE
         $file_path = storage_path('/app/public/downloads/' . $filename);
         $writer->save($file_path);
-        // return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
-        return response()->download($file_path); // <<< HERE
+        return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
+        // return response()->download($file_path); // <<< HERE
     }
 }

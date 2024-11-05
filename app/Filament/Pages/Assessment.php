@@ -30,6 +30,9 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Assessment extends Page implements HasForms, HasTable
 {
@@ -219,8 +222,13 @@ class Assessment extends Page implements HasForms, HasTable
             ->headerActions([
                 TableAction::make('reset')
                     ->icon('heroicon-s-arrow-path-rounded-square')
-                    ->action(function(){
+                    ->action(function () {
                         $this->resetStudentCompetency($this->teacher_subject_id, $this->competency_id);
+                    })
+                    ->button(),
+                TableAction::make('download')
+                    ->action(function () {
+                        return $this->download();
                     })
                     ->button(),
             ])
@@ -260,14 +268,14 @@ class Assessment extends Page implements HasForms, HasTable
     {
         // get students
         $students = TeacherSubject::with('studentGrade')
-                        ->find($teacher_subject_id)
-                        ->studentGrade->pluck('student_id');
+            ->find($teacher_subject_id)
+            ->studentGrade->pluck('student_id');
 
         // delete student competency
         StudentCompetency::where('teacher_subject_id', $teacher_subject_id)
             ->where('competency_id', $competency_id)
             ->delete();
-        
+
         // create new student competency
         $data = [];
         foreach ($students as $student) {
@@ -280,5 +288,139 @@ class Assessment extends Page implements HasForms, HasTable
         }
 
         StudentCompetency::insert($data);
+    }
+
+    public function download()
+    {
+        $teacher_subject_id = $this->teacher_subject_id;
+
+        $teacherSubject = TeacherSubject::with([
+            'academic',
+            'teacher',
+            'grade.teacherGrade',
+            'subject',
+            'competency.studentCompetency.student',
+            // 'exam',
+        ])->find($teacher_subject_id);
+
+        $academic = $teacherSubject->academic;
+        $teacher = $teacherSubject->teacher;
+        $grade = $teacherSubject->grade;
+        $subject = $teacherSubject->subject;
+        $competencies = $teacherSubject->competency;
+        $countStudent = $teacherSubject->grade->studentGrade->count();
+
+        // Inisialisasi spreadsheet
+        $spreadsheet = new Spreadsheet();
+        $countSheet = 0;
+
+        // buat sheet berdasarkan banyaknya kompetensi
+        foreach ($competencies as $competency) {
+            $spreadsheet->createSheet();
+            // Membuat lembar pertama
+            $sheet = $spreadsheet->getSheet($countSheet); // Indeks dimulai dari 0
+            $sheet->setTitle('Sheet' . ($countSheet + 1));
+
+            // identitas
+            $identitas = [
+                ['Identitas pelajaran'],
+                [null],
+                ['Nama Guru', null, null, null, null, ': ' . $teacher->name],
+                ['Mata Pelajaran', null, null, null, null, ': ' . $subject->name],
+                ['Kelas', null, null, null, null, ': ' . $grade->name],
+                ['Tahun Akademik', null, null, null, null, ': ' . $academic->year],
+                ['Semester', null, null, null, null, ': ' . $academic->semester],
+                ['Kompetensi', null, null, null, null, ': (' . $competency->code . ') ', $competency->description],
+            ];
+            $sheet->fromArray($identitas);
+
+            // kosongkan datanya
+            $data = [];
+            $data[] = [
+                'nis',
+                'nama siswa',
+                'teacher_subject_id',
+                'student_id',
+                'competency_id',
+                'score',
+            ];
+
+            foreach ($competency->studentCompetency as $studentCompetency) {
+                $data[] = [
+                    $studentCompetency->student->nis,
+                    $studentCompetency->student->name,
+                    $studentCompetency->teacher_subject_id,
+                    $studentCompetency->student_id,
+                    $studentCompetency->competency_id,
+                    $studentCompetency->score,
+                ];
+            }
+
+            $sheet->fromArray($data, null, 'A13', true);
+
+            $countSheet++;
+
+            $sheet->getColumnDimension('B')->setWidth(30);
+
+            // hide coloumn C D E
+            $sheet->getColumnDimension('C')->setVisible(false);
+            $sheet->getColumnDimension('D')->setVisible(false);
+            $sheet->getColumnDimension('E')->setVisible(false);
+
+            // count student
+            $rowStudent = 13 + $countStudent;
+
+            // bisa di edit
+            $sheet->getStyle('F14:F' . $rowStudent)->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
+            
+            // proteksi semua cell
+            $sheet->getProtection()->setPassword('PhpSpreadsheet');
+            $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
+
+            // validasi tiap-tiap cell
+            for ($i = 14; $i <= $rowStudent; $i++) {
+                $validation = $sheet->getCell('F' . $i)->getDataValidation();
+                $validation->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_WHOLE);
+                $validation->setErrorStyle(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP);
+                $validation->setAllowBlank(false);
+                $validation->setShowInputMessage(true);
+                $validation->setShowErrorMessage(true);
+                $validation->setErrorTitle('Input error');
+                $validation->setError('Number is not allowed!');
+                $validation->setPromptTitle('Allowed input');
+                $validation->setPrompt('Only numbers between 0 and 100 are allowed.');
+                $validation->setFormula1(0);
+                $validation->setFormula2(100);
+
+                $validation = $sheet->getCell('G' . $i)
+                    ->getDataValidation();
+                $validation->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_WHOLE);
+                $validation->setErrorStyle(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP);
+                $validation->setAllowBlank(false);
+                $validation->setShowInputMessage(true);
+                $validation->setShowErrorMessage(true);
+                $validation->setErrorTitle('Input error');
+                $validation->setError('Number is not allowed!');
+                $validation->setPromptTitle('Allowed input');
+                $validation->setPrompt('Only numbers between 0 and 100 are allowed.');
+                $validation->setFormula1(0);
+                $validation->setFormula2(100);
+            }
+        }
+
+        // hapus sheet worksheet
+        // $sheetIndex = $spreadsheet->getIndex(
+        //     $spreadsheet->getSheetByName('Worksheet')
+        // );
+        // $spreadsheet->removeSheetByIndex($sheetIndex);
+
+        // Membuat file Excel
+        $writer = new Xlsx($spreadsheet);
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx'); // <<< HERE
+        // $filename = "studentCompetency-".$subject->code.".xlsx"; // <<< HERE
+        $filename = "nilai " . $teacherSubject->subject->name . ' ' . $teacherSubject->grade->name . ".xlsx"; // <<< HERE
+        $file_path = storage_path('/app/public/downloads/' . $filename);
+        $writer->save($file_path);
+        return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
     }
 }

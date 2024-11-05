@@ -17,6 +17,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -112,6 +113,8 @@ class CompetencyResource extends Resource
                     ->label(__('competency.code')),
                 TextColumn::make('description')
                     ->label(__('competency.description')),
+                ToggleColumn::make('half_semester')
+                    ->label(__('competency.half_semester'))
             ])
             ->filters([
                 //
