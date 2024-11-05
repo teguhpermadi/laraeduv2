@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Observers\TeacherSubjectObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+#[ObservedBy(TeacherSubjectObserver::class)]
 class TeacherSubject extends Model
 {
     use HasFactory;

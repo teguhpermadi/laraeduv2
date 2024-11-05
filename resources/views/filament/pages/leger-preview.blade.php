@@ -35,6 +35,7 @@
             <th colspan="{{ $this->teacherSubject->competency_count }}" class="border border-slate-300 text-center">Nilai Kompetensi</th>
             <th rowspan="2" class="border border-slate-300 text-center">Jumlah</th>
             <th rowspan="2" class="border border-slate-300 text-center">Rata-rata</th>
+            <th rowspan="2" class="border border-slate-300 text-center">Peringkat</th>
         </tr>
         @if (count($this->teacherSubject->competency)>0)
         {{-- jika kompetensi ada --}}
@@ -60,9 +61,11 @@
                         </td>
                     @endforeach
                     <td class="border border-slate-300 text-center">{{$student['sum']}}</td>
-                    <td class="border border-slate-300 text-center">{{$student['avg']}}</td>
+                    <td class="border border-slate-300 text-center {{ $student['avg'] <= 70 || $student['avg'] >= 95 ? 'bg-gray-300' : '' }}">{{$student['avg']}}</td>
+                    <td class="border border-slate-300 text-center">{{$student['rank']}}</td>
                 @else
                     {{-- jika kompetensi tidak ada --}}
+                    <td class="border border-slate-300 text-center">-</td>
                     <td class="border border-slate-300 text-center">-</td>
                     <td class="border border-slate-300 text-center">-</td>
                     <td class="border border-slate-300 text-center">-</td>

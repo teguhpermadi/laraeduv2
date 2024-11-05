@@ -47,7 +47,7 @@ class Leger extends Page implements HasForms
         }])->find($id);
 
         $data = collect();
-        
+
         foreach ($teacherSubject->studentGrade as $studentGrade) {
 
             $data[$studentGrade->student_id] = collect([
@@ -58,11 +58,26 @@ class Leger extends Page implements HasForms
                 'student_id' => $studentGrade->student_id,
                 'student' => $studentGrade->student,
                 'competency_count' => count($studentGrade->studentCompetency),
-                'avg' => $studentGrade->studentCompetency->avg('score'),
+                'avg' => round($studentGrade->studentCompetency->avg('score'), 0),
                 'sum' => $studentGrade->studentCompetency->sum('score'),
                 'metadata' => $studentGrade->studentCompetency,
             ]);
         };
+
+        
+        // Sort data by 'sum' in descending order
+        $data = $data->sortByDesc('sum')->values();
+
+        // Add ranking
+        $data = $data->map(function ($item, $index) {
+            $item['rank'] = $index + 1; // Rank starts from 1
+            return $item;
+        });
+
+        // kembalikan data sort by id
+        $data = $data->sortByDesc('student_id')->values();
+
+        // dd($data);
 
         $this->students = $data;
 
@@ -76,9 +91,9 @@ class Leger extends Page implements HasForms
     {
         return $form
             ->schema([
-                Section::make('preview')
+                Section::make('Preview')
                     ->schema([
-                        ViewField::make('preview')
+                        ViewField::make('Preview')
                             ->viewData([$this->teacherSubject, $this->students])
                             ->view('filament.pages.leger-preview'),
                     ]),

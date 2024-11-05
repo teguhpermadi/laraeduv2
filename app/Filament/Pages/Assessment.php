@@ -186,6 +186,7 @@ class Assessment extends Page implements HasForms, HasTable
                 StudentCompetency::query()
                     ->where('teacher_subject_id', $this->teacherSubject)
                     ->where('competency_id', $this->competency_id)
+                    ->orderBy('student_id', 'desc')
             )
             ->emptyStateHeading($this->empty_state['heading'])
             ->emptyStateDescription($this->empty_state['desc'])
@@ -227,7 +228,7 @@ class Assessment extends Page implements HasForms, HasTable
                 TableAction::make('reset')
                     ->icon('heroicon-s-arrow-path-rounded-square')
                     ->action(function () {
-                        $this->resetStudentCompetency($this->teacher_subject_id, $this->competency_id);
+                        $this->resetStudentCompetency($this->teacher_subject_id, $this->teacher_subject_id);
                     })
                     ->button(),
                 TableAction::make('download')
@@ -264,6 +265,8 @@ class Assessment extends Page implements HasForms, HasTable
                             }
                         }
                     }),
+                TableAction::make('leger')
+                    ->url(route('filament.admin.pages.leger.{id}', $this->teacher_subject_id)),
             ])
             ->deferLoading()
             ->striped()
@@ -352,7 +355,8 @@ class Assessment extends Page implements HasForms, HasTable
             $spreadsheet->createSheet();
             // Membuat lembar pertama
             $sheet = $spreadsheet->getSheet($countSheet); // Indeks dimulai dari 0
-            $sheet->setTitle('Sheet' . ($countSheet + 1));
+            // $sheet->setTitle('Sheet' . ($countSheet + 1));
+            $sheet->setTitle('Sheet ' . ($competency->code));
 
             // identitas
             $identitas = [
