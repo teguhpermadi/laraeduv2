@@ -59,7 +59,8 @@ class Leger extends Page implements HasForms
         foreach ($teacherSubject->studentGrade as $studentGrade) {
 
             // deskripsi
-            $desc = $this->getDescription($studentGrade->studentCompetency);
+            $description = $this->getDescription($studentGrade->studentCompetency);
+            $metadata = $studentGrade->studentCompetency;
 
             $data[$studentGrade->student_id] = collect([
                 'academic_year_id' => $competency->academic_year_id,
@@ -73,7 +74,8 @@ class Leger extends Page implements HasForms
                 'avg' => round($studentGrade->studentCompetency->avg('score'), 0),
                 'sum' => $studentGrade->studentCompetency->sum('score'),
                 'metadata' => $studentGrade->studentCompetency,
-                'description' => $desc,
+                'description' => $description,
+                'metadata' => $metadata,
             ]);
         };
 
@@ -128,7 +130,7 @@ class Leger extends Page implements HasForms
 
     public function submit()
     {
-        // dd($this->form->getState()['leger']);
+        // dd($this->form->getState());
         $data = $this->form->getState()['leger'];
 
         // insert data ke table leger
@@ -140,6 +142,7 @@ class Leger extends Page implements HasForms
             ], [
                 'score' => $key['avg'],
                 'description' => $key['description'],
+                'metadata' => $key['metadata'],
             ]);
         }
     }

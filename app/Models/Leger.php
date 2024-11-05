@@ -15,6 +15,11 @@ class Leger extends Model
         'teacher_subject_id',
         'score',
         'description',
+        'metadata',
+    ];
+
+    protected $casts = [
+        'metadata' => 'array',
     ];
 
     public function academicYear()

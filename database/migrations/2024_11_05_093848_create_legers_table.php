@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('teacher_subject_id')->constrained()->cascadeOnDelete();
             $table->integer('score');
             $table->text('description');
+            $table->json('metadata')->nullable();
             $table->timestamps();
 
             $table->unique(['academic_year_id', 'student_id', 'teacher_subject_id'], 'leger_unique');
