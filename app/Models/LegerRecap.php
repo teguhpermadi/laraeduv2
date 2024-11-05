@@ -24,4 +24,9 @@ class LegerRecap extends Model
         return $this->belongsTo(TeacherSubject::class);
     }   
 
+    public function leger()
+    {
+        return $this->hasMany(Leger::class, 'teacher_subject_id', 'teacher_subject_id');
+    }
+
 }

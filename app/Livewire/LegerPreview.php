@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\TeacherSubject;
 use App\Models\Leger;
+use App\Models\LegerRecap;
 
 class LegerPreview extends Component
 {
@@ -12,10 +13,16 @@ class LegerPreview extends Component
     public $students;
     public $competency_count;
     public $leger;
+    public $legerRecap;
 
     public function mount($id)
     {
-        $teacherSubject = TeacherSubject::with('subject')->withCount('competency')->find($id);
+        $teacherSubject = TeacherSubject::with('subject', 'competency')->withCount('competency')->find($id);
+        
+        $this->legerRecap = LegerRecap::where('teacher_subject_id', $id)->first();
+        
+
+        // dd($this->competency->toArray());
 
         $this->teacherSubject = $teacherSubject;
         $this->competency_count = $teacherSubject->competency_count;
@@ -55,6 +62,7 @@ class LegerPreview extends Component
         $data = $data->sortBy('student_id')->values();
 
         $this->students = $data;
+
     }
 
     public function render()

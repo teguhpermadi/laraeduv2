@@ -3,3 +3,5 @@
 \App\Models\LegerRecap::get()
 \App\Models\LegerRecap::get()
 \App\Models\LegerRecap::get()
+TeacherSubject::find(1)
+TeacherSubject::find(1)->competency

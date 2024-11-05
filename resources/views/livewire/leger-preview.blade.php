@@ -23,6 +23,14 @@
                     <td class="px-3">:</td>
                     <td>{{ $teacherSubject->teacher->name }}</td>
                 </tr>
+                {{-- tampilkan tanggal cetak --}}
+                <tr>
+                    <td class="py-1 font-semibold">Tanggal Cetak</td>
+                    <td class="px-3">:</td>
+                    {{-- buat format tanggal menjadi 30 November 2024 --}}
+                    <td>{{ $legerRecap->created_at->format('d F Y') }} Pukul
+                        {{ $legerRecap->created_at->format('H:i') }}</td>
+                </tr>
             </table>
         </div>
     </div>
@@ -65,7 +73,7 @@
                                 {{ $metadata['score'] }}
                             </td>
                         @endforeach
-                        
+
                         <td class="border border-slate-300 text-center">{{ $student['sum'] }}</td>
                         <td
                             class="border border-slate-300 text-center {{ $student['avg'] <= 70 ? 'bg-yellow-200' : ($student['avg'] >= 95 ? 'bg-red-200' : '') }}">
@@ -82,4 +90,27 @@
             @endforeach
         </tbody>
     </table>
+
+    <div class="mt-10">
+        {{-- tampilkan data competency --}}
+        <table class="border-collapse border border-slate-400 mt-3" width="100%">
+            <thead>
+                <tr>
+                    <th class="border border-slate-300 text-center">Kode</th>
+                    <th class="border border-slate-300 text-center">Kompetensi</th>
+                    <th class="border border-slate-300 text-center">Nilai Minimal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($teacherSubject->competency as $competency)
+                    <tr>
+                        <td class="border border-slate-300 text-center">{{ $competency->code }}</td>
+                        <td class="border border-slate-300 text-center">{{ $competency->description }}</td>
+                        <td class="border border-slate-300 text-center">{{ $competency->passing_grade }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
 </div>
