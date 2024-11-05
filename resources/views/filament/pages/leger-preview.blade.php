@@ -22,27 +22,25 @@
     </tr>
 </table>
 
-<hr>
-
 @php
     $no = 1;
 @endphp
 
-<table>
+<table class="border-collapse border border-slate-400 mt-3" width="100%">
     <thead>
         <tr>
-            <th rowspan="2">Nomor</th>
-            <th rowspan="2">NIS</th>
-            <th rowspan="2">Nama Lengkap</th>
-            <th colspan="{{ $this->teacherSubject->competency_count }}">Nilai Kompetensi</th>
-            <th rowspan="2">Jumlah</th>
-            <th rowspan="2">Rata-rata</th>
+            <th rowspan="2" class="border border-slate-300 text-center">Nomor</th>
+            <th rowspan="2" class="border border-slate-300 text-center">NIS</th>
+            <th rowspan="2" class="border border-slate-300 text-center">Nama Lengkap</th>
+            <th colspan="{{ $this->teacherSubject->competency_count }}" class="border border-slate-300 text-center">Nilai Kompetensi</th>
+            <th rowspan="2" class="border border-slate-300 text-center">Jumlah</th>
+            <th rowspan="2" class="border border-slate-300 text-center">Rata-rata</th>
         </tr>
         @if (count($this->teacherSubject->competency)>0)
         {{-- jika kompetensi ada --}}
         <tr>
             @foreach ($this->teacherSubject->competency as $competency)
-            <th>{{ $competency->code }}</th>
+            <th class="border border-slate-300 text-center">{{ $competency->code }}</th>
             @endforeach
         </tr>
         @endif
@@ -50,22 +48,24 @@
     <tbody>
         @foreach ($this->students as $student)
             <tr>
-                <td>{{ $no++ }}</td>
-                <td>{{ $student['student']['nis'] }}</td>
-                <td>{{ $student['student']['name'] }}</td>
+                <td  class="border border-slate-300 text-center">{{ $no++ }}</td>
+                <td  class="border border-slate-300 px-3 text-left">{{ $student['student']['nis'] }}</td>
+                <td class="border border-slate-300 px-3 text-left">{{ $student['student']['name'] }}</td>
 
                 @if (count($student['metadata'])>0)
                     {{-- jika kompetensi ada --}}
                     @foreach ($student['metadata'] as $metadata)
-                        <td>{{$metadata['score']}}</td>
+                        <td class="border border-slate-300 text-center {{ $metadata['score'] <= $metadata->competency->passing_grade || $metadata['score'] >= 95 ? 'bg-gray-300' : '' }}">
+                            {{$metadata['score']}}
+                        </td>
                     @endforeach
-                    <td>{{$student['sum']}}</td>
-                    <td>{{$student['avg']}}</td>
+                    <td class="border border-slate-300 text-center">{{$student['sum']}}</td>
+                    <td class="border border-slate-300 text-center">{{$student['avg']}}</td>
                 @else
                     {{-- jika kompetensi tidak ada --}}
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
+                    <td class="border border-slate-300 text-center">-</td>
+                    <td class="border border-slate-300 text-center">-</td>
+                    <td class="border border-slate-300 text-center">-</td>
                 @endif
             </tr>
         @endforeach
