@@ -18,5 +18,6 @@ class RoleSeeder extends Seeder
         $teacher = Role::updateOrCreate(['name' => 'teacher']);
         $teacherGrade = Role::updateOrCreate(['name' => 'teacher grade']);
         $teacherUmmi = Role::updateOrCreate(['name' => 'teacher ummi']);
+        $projectCoordinator = Role::updateOrCreate(['name' => 'project coordinator']);
     }
 }

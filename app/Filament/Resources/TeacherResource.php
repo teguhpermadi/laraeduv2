@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Userable;
+use Illuminate\Database\Eloquent\Collection;
 
 class TeacherResource extends Resource
 {
@@ -94,6 +95,14 @@ class TeacherResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\BulkAction::make('Userable')
+                        ->icon('heroicon-o-user')
+                        ->action(function (Collection $records) {
+                            foreach ($records as $record) {
+                                self::userable($record);
+                            }
+                        }),
+                        
                 ]),
             ]);
     }
