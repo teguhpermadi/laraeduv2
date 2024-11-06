@@ -27,6 +27,12 @@ class DatabaseSeeder extends Seeder
             SubjectSeeder::class,
             TeacherSubjectSeeder::class,
             CompetencySeeder::class,
+            DimentionSeeder::class,
+            ElementSeeder::class,
+            SubElementSeeder::class,
+            TargetSeeder::class,
+            ValueSeeder::class,
+            SubValueSeeder::class,
         ]);
     }
 }
