@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Scopes\AcademicYearScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
@@ -47,5 +48,12 @@ class StudentGrade extends Model
     public function studentCompetency()
     {
         return $this->hasMany(StudentCompetency::class, 'student_id', 'student_id');
+    }
+
+    public function scopeMyGrade(Builder $query)
+    {
+        // ambil data berdasarkan teacher grade 
+        $teacherGrade = TeacherGrade::query()->myGrade()->first();
+        return $query->where('grade_id', $teacherGrade->grade_id);
     }
 }

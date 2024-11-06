@@ -6,6 +6,7 @@ use App\Models\Scopes\AcademicYearScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -42,5 +43,19 @@ class TeacherGrade extends Model
     public function grade()
     {
         return $this->belongsTo(Grade::class);
+    }
+
+    public function studentGrade()
+    {
+        return $this->hasMany(StudentGrade::class, 'grade_id', 'grade_id');
+    }
+
+    public function scopeMyGrade(Builder $query, $teacher_id = null): void
+    {
+        if(is_null($teacher_id)){
+            $teacher_id = auth()->user()->userable->userable_id;
+        }
+
+        $query->where('teacher_id', $teacher_id)->with('StudentGrade');
     }
 }
