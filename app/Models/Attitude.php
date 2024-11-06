@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 
-class Attendance extends Model
+class Attitude extends Model
 {
     use HasFactory;
 
@@ -15,19 +14,10 @@ class Attendance extends Model
         'academic_year_id',
         'grade_id',
         'student_id',
-        'sick',
-        'permission',
-        'absent',
-        'note',
-        'achievement',
-        'status',
+        'attitude_religius',
+        'attitude_social',
     ];
 
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-    ];
-    
     protected static function booted(): void
     {
         $academic_year_id = session()->get('academic_year_id');
@@ -37,9 +27,6 @@ class Attendance extends Model
             $builder->where('academic_year_id', $academic_year_id);
         });
 
-        static::addGlobalScope('totalAttendance', function (Builder $builder) use ($academic_year_id) {
-            $builder->select(['*', DB::raw('sick + permission + absent as total_attendance')]);
-        });
     }
 
     public function grade()
