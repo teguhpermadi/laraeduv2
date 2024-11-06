@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Filament\Resources\ProjectResource\Pages;
+
+use App\Filament\Resources\ProjectResource;
+use Filament\Forms\Components\TextInput;
+use Filament\Resources\Pages\Page;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\TextInputColumn;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+
+class ProjectNote extends Page implements HasForms, HasTable
+{
+    use InteractsWithTable;
+    use InteractsWithForms;
+
+    protected static string $resource = ProjectResource::class;
+
+    protected static string $view = 'filament.resources.project-resource.pages.project-note';
+
+    public $projectId = -1;
+
+    public function mount($record)
+    {
+        $this->projectId = $record;
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+                ->query(ProjectNote::query())
+                ->columns([
+                    TextColumn::make('student.name')
+                        ->label(__('project.student')),
+                    TextInputColumn::make('note')
+                        ->label(__('project.note')),
+                ])
+                ->bulkActions([
+                    BulkAction::make('scoring')
+                        ->label(__('project.scoring'))
+                        ->form([
+                            TextInput::make('note')
+                                ->label(__('project.note'))
+                        ])
+                        ->action(function (Collection $records, $data) {
+                            $records->each->update($data);
+                        })
+                ])
+                ->modifyQueryUsing(function (Builder $query){
+                    $query->where('project_id', $this->projectId);
+                })
+                ->paginated(false);
+    }
+}
