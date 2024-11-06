@@ -27,6 +27,10 @@ class AttitudeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'Kelas Ku';
+
+    protected static ?int $navigationSort = 3;
+
     public static function getModelLabel(): string
     {
         return __('attitude.attitude');

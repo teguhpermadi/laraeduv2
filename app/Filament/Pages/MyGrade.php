@@ -21,15 +21,19 @@ class MyGrade extends Page implements HasTable
 
     protected static string $view = 'filament.pages.my-grade';
 
+    protected static ?string $navigationGroup = 'Kelas Ku';
+
+    protected static ?int $navigationSort = 1;
+
     // navigation label
     public static function getNavigationLabel(): string
     {
-        return 'Kelas Ku';
+        return 'Cetak Raport';
     }
 
     public static function getModelLabel(): string
     {
-        return 'Kelas Ku';
+        return 'Cetak Raport';
     }
 
     public function table(Table $table): Table

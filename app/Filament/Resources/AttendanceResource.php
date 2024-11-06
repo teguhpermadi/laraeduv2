@@ -34,6 +34,10 @@ class AttendanceResource extends Resource
         return __('attendance.attendance');
     }
 
+    protected static ?string $navigationGroup = 'Kelas Ku';
+
+    protected static ?int $navigationSort = 2;  
+
     public static function form(Form $form): Form
     {
         return $form
