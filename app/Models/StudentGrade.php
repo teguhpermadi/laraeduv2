@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Scopes\AcademicYearScope;
+use App\Observers\StudentGradeObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,6 +13,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 #[ScopedBy(AcademicYearScope::class)]
+#[ObservedBy(StudentGradeObserver::class)]
 class StudentGrade extends Model
 {
     use HasFactory;
