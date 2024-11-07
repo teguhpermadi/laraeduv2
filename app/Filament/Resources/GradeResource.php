@@ -25,6 +25,8 @@ class GradeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'Pengaturan';
+
     public static function getModelLabel(): string
     {
         return __('grade.grade');

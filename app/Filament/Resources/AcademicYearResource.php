@@ -23,6 +23,8 @@ class AcademicYearResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     
+    protected static ?string $navigationGroup = 'Pengaturan';
+
     public static function getNavigationLabel(): string
     {
         return __('academic-year.list.academic_year');
