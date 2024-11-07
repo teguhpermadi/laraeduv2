@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('rank')->default(0);
             $table->text('description');
             $table->json('metadata')->nullable();
+            $table->boolean('is_half_semester')->default(false);
             $table->timestamps();
 
             $table->unique(['academic_year_id', 'student_id', 'teacher_subject_id'], 'leger_unique');

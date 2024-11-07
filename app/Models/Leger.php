@@ -18,6 +18,7 @@ class Leger extends Model
         'metadata',
         'sum',
         'rank', 
+        'is_half_semester',
     ];
 
     protected $casts = [

@@ -10,8 +10,9 @@ class LegerRecap extends Model
     use HasFactory;
 
     protected $fillable = [
-        'academic_year_id',
+        'academic_year_id', 
         'teacher_subject_id',
+        'is_half_semester',
     ];
 
     public function academicYear()
@@ -22,11 +23,10 @@ class LegerRecap extends Model
     public function teacherSubject()
     {
         return $this->belongsTo(TeacherSubject::class);
-    }   
+    }
 
     public function leger()
     {
         return $this->hasMany(Leger::class, 'teacher_subject_id', 'teacher_subject_id');
     }
-
 }
