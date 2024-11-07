@@ -51,10 +51,12 @@ class MyGrade extends Page implements HasTable
                 // action cover raport
                 Action::make('cover')
                     ->label('Cover')
+                    ->url(fn($record) => route('report-cover', $record->id))
                     ->button(),
                 // action identitas raport  
                 Action::make('identitas')
                     ->label('Identitas')
+                    ->url(fn($record) => route('report-cover-student', $record->id))
                     ->button(),
                 // action tengah semester
                 // buat warna biru untuk action tengah semester 
