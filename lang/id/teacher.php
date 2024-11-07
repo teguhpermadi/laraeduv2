@@ -31,6 +31,11 @@ return[
             'subject' => 'Mata Pelajaran',
             'grade' => 'Kelas',
             'time_allocation' => 'Alokasi Waktu',
+        ],
+        'teacher_grades' => [
+            'title' => 'Guru Kelas',
+            'grade' => 'Kelas',
+            'status' => 'Status',
         ]
     ]
 ];

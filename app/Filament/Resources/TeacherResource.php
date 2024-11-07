@@ -121,6 +121,7 @@ class TeacherResource extends Resource
     {
         return [
             RelationManagers\SubjectsRelationManager::class,
+            RelationManagers\TeacherGradesRelationManager::class,
         ];
     }
 

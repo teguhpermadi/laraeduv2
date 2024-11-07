@@ -5,3 +5,15 @@ Teacher::all()->subject
 Teacher::all()->subjects
 Teacher::get()
 Teacher::find(1)->subjects
+TeacherGrade::all()
+TeacherGrade::with('grade')->get()
+Grade::whereDoesntHave('teacherGrade', function ($query) {
+  $query->where('teacher_id', 5);
+})->pluck('name', 'id')
+Grade::whereDoesntHave('teacherGrade')->pluck('name', 'id')
+Grade::whereDoesntHave('teacherGrade', function ($query) {
+  $query->where('academic_year_id', session('academic_year_id'));
+})->pluck('name', 'id')
+Grade::whereDoesntHave('teacherGrade', function ($query) {
+  $query->where('academic_year_id', session('academic_year_id'));
+})->pluck('name', 'id')
