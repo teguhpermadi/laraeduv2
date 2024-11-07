@@ -14,6 +14,7 @@ class ProjectStudent extends Model
         'academic_year_id',
         'student_id',
         'project_target_id',
+        'score',
     ];
 
     protected static function booted(): void

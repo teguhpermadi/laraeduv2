@@ -24,4 +24,7 @@ return [
         2 => 'Sedang Berkembang',
         1 => 'Mulai Berkembang',
     ],
+
+    'reset' => 'Reset',
+    'edit' => 'Edit Project Target',
 ]; 

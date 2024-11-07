@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
             $table->foreignId('project_target_id')->constrained()->cascadeOnDelete();
+            $table->integer('score')->default(0);
             $table->timestamps();
         });
     }

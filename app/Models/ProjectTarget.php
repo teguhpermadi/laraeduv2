@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
+use App\Observers\ProjectTargetObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+// observer
+#[ObservedBy([ProjectTargetObserver::class])]
 class ProjectTarget extends Model
 {
     use HasFactory;
