@@ -29,7 +29,8 @@ class SchoolResource extends Resource
     protected static ?string $navigationGroup = 'Pengaturan';
 
     protected static ?string $modelLabel = 'Sekolah';
-    protected static ?string $pluralModelLabel = 'Daftar Sekolah';
+    
+    protected static ?string $pluralModelLabel = 'Sekolah';
 
     public static function form(Form $form): Form
     {
@@ -79,7 +80,8 @@ class SchoolResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('logo'),
-                TextColumn::make('name'),
+                TextColumn::make('name')
+                    ->label(__('school.fields.name')),
             ])
             ->filters([
                 //
@@ -88,18 +90,15 @@ class SchoolResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ])
+            ->bulkActions([])
             ->emptyStateActions([
                 Action::make('create')
                     ->label(__('school.actions.create'))
                     ->url(route('filament.admin.resources.schools.create'))
                     ->icon('heroicon-m-plus')
-                    ->button(),
-            ]);;
+                    ->button()
+                    ->visible(fn () => School::count() === 0),
+            ]);
     }
 
     public static function getRelations(): array
@@ -117,5 +116,10 @@ class SchoolResource extends Resource
             'view' => Pages\ViewSchool::route('/{record}'),
             'edit' => Pages\EditSchool::route('/{record}/edit'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return School::count() === 0;
     }
 }
