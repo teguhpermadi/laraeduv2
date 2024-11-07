@@ -6,6 +6,7 @@ use Filament\Support\Contracts\HasLabel;
 
 enum PhaseEnum: string implements HasLabel
 {
+    case phaseFONDATION = 'fase pondasi';
     case phaseA = 'fase A';
     case phaseB = 'fase B';
     case phaseC = 'fase C';
@@ -15,6 +16,15 @@ enum PhaseEnum: string implements HasLabel
     
     public function getLabel(): ?string
     {
-        return $this->name;        
+        // return $this->name;
+        return match ($this) {
+            self::phaseFONDATION => 'Fase Pondasi',
+            self::phaseA => 'Fase A',
+            self::phaseB => 'Fase B',
+            self::phaseC => 'Fase C',
+            self::phaseD => 'Fase D',
+            self::phaseE => 'Fase E',
+            self::phaseF => 'Fase F',
+        };
     }
 }

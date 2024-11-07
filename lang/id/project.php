@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'navigation' => 'Proyek',
     // Labels umum
     'name' => 'Nama',
     'description' => 'Deskripsi',

@@ -4,9 +4,11 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers;
+use App\Filament\Resources\ProjectResource\RelationManagers\ProjectTargetRelationManager;
 use App\Models\Grade;
 use App\Models\Project;
 use App\Models\ProjectCoordinator;
+use App\PhaseEnum;
 use Filament\Forms;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -27,6 +29,14 @@ class ProjectResource extends Resource
     protected static ?string $model = Project::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationGroup = 'Project';
+
+    // label navigation berdasarkan lang
+    public static function getNavigationLabel(): string
+    {
+        return __('project.navigation');
+    }
 
     public static function form(Form $form): Form
     {
@@ -53,17 +63,7 @@ class ProjectResource extends Resource
                     ->reactive(),
                 Select::make('phase')
                     ->label(__('project.phase'))
-                    ->options(function(Get $get){
-                        if( $get('grade_id')){
-                            $gradeId = $get('grade_id');
-                            $fase = Grade::find($gradeId)->fase;
-                            return [
-                                $fase => 'Fase '.$fase
-                            ];
-                        }
-
-                        return [];
-                    })
+                    ->options(PhaseEnum::class)
                     ->required(),
                 TextInput::make('name')
                     ->label(__('project.name'))
@@ -105,7 +105,7 @@ class ProjectResource extends Resource
                     ->button()
                     ->openUrlInNewTab()
                     ->url(function(Project $record){
-                        return route('leger.project', ['id'=>$record]);
+                        // return route('leger.project', ['id'=>$record]);
                     }),
             ])
             ->bulkActions([
@@ -118,7 +118,8 @@ class ProjectResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // project target
+            ProjectTargetRelationManager::class,    
         ];
     }
 
@@ -126,6 +127,8 @@ class ProjectResource extends Resource
     {
         return [
             'index' => Pages\ListProjects::route('/'),
+            'assesment' => Pages\ProjectAssesment::route('/{record}/assesment'),
+            'note' => Pages\ProjectNote::route('/{record}/note'),
             'create' => Pages\CreateProject::route('/create'),
             'edit' => Pages\EditProject::route('/{record}/edit'),
         ];

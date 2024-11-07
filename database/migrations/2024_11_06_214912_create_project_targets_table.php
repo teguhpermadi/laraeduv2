@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignId('sub_element_id')->constrained()->cascadeOnDelete();
             $table->foreignId('value_id')->constrained()->cascadeOnDelete();
             $table->foreignId('sub_value_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('target_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
