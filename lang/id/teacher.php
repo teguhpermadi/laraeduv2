@@ -4,24 +4,33 @@ declare(strict_types=1);
 
 return[
     'list' => [
-        'teacher' => 'guru',
-        'name' => 'nama',
-        'gender' => 'jenis kelamin',
+        'teacher' => 'Guru',
+        'name' => 'Nama',
+        'gender' => 'Jenis Kelamin',
     ],
     'create' => [
-        'teacher' => 'guru',
-        'name' => 'nama',
-        'gender' => 'jenis kelamin',
-        'nip' => 'nip',
-        'nuptk' => 'nuptk',
-        'signature' => 'tanda tangan'
+        'teacher' => 'Guru',
+        'name' => 'Nama',
+        'gender' => 'Jenis Kelamin',
+        'nip' => 'NIP',
+        'nuptk' => 'NUPTK',
+        'signature' => 'Tanda Tangan'
     ],
     'list' => [
-        'teacher' => 'guru',
-        'name' => 'nama',
-        'gender' => 'jenis kelamin',
-        'nip' => 'nip',
-        'nuptk' => 'nuptk',
-        'signature' => 'tanda tangan'
+        'teacher' => 'Guru',
+        'name' => 'Nama',
+        'gender' => 'Jenis Kelamin',
+        'nip' => 'NIP',
+        'nuptk' => 'NUPTK',
+        'signature' => 'Tanda Tangan'
+    ],
+    'relation' => [
+        'subjects' => [
+            'title' => 'Mata Pelajaran',
+            'academic_year' => 'Tahun Akademik',
+            'subject' => 'Mata Pelajaran',
+            'grade' => 'Kelas',
+            'time_allocation' => 'Alokasi Waktu',
+        ]
     ]
 ];

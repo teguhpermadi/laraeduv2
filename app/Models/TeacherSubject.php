@@ -68,6 +68,13 @@ class TeacherSubject extends Model
             $teacher_id = auth()->user()->userable->userable_id;
         }
 
+        // jika user tidak memiliki pelajaran yang ditugaskan
+        $hasSubject = self::where('teacher_id', $teacher_id)->whereNotNull('subject_id')->exists();
+
+        if (!$hasSubject) {
+            abort(403, 'Anda belum memiliki pelajaran yang ditugaskan');
+        }
+
         $query->where('teacher_id', $teacher_id)->with('subject');
     }
 

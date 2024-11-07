@@ -1,16 +1,7 @@
-\App\Models\Target::truncate()
-\App\Models\Target::all()
-\App\Models\ProjectTarget::all()
-\App\Models\ProjectTarget::find(1)
-\App\Models\ProjectTarget::find(1)->sub_element
-\App\Models\ProjectTarget::find(1)
-\App\Models\ProjectTarget::find(1)->subElement
-\App\Models\StudentProject::all()
-\App\Models\StudentProject::all()
-\App\Models\ProjectStudent::all()
-\App\Models\ProjectStudent::all()
-\App\Models\ProjectStudent::all()
-\App\Models\ProjectStudent::all()
-\App\Models\ProjectStudent::all()
-\App\Models\ProjectStudent::all()
-\App\Models\ProjectStudent::all()
+$grade = TeacherGrade::myGrade()->first();
+$teacherGrade = TeacherSubject::query()->myGrade()->first();
+Teacher::all()->subjects
+Teacher::all()->subject
+Teacher::all()->subjects
+Teacher::get()
+Teacher::find(1)->subjects
