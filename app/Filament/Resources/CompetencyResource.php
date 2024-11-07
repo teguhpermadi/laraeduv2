@@ -28,6 +28,8 @@ class CompetencyResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'Pelajaran Ku';
+
     public static function getNavigationLabel(): string
     {
         return __('competency.competency');

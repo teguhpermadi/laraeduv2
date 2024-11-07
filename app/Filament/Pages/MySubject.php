@@ -16,6 +16,8 @@ class MySubject extends Page implements HasTable
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
+    protected static ?string $navigationGroup = 'Pelajaran Ku';
+
     protected static string $view = 'filament.pages.my-subject';
 
     public static function getNavigationLabel(): string
@@ -40,8 +42,10 @@ class MySubject extends Page implements HasTable
         ])
         ->actions([
             Action::make('assesment')
+                ->button()
                 ->url(fn (TeacherSubject $record): string => route('filament.admin.pages.assessment.{id}', $record)),
             Action::make('leger')
+                ->button()
                 ->url(fn (TeacherSubject $record): string => route('filament.admin.pages.leger.{id}', $record)),
         ]);
     }
