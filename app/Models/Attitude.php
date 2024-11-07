@@ -47,6 +47,11 @@ class Attitude extends Model
     public function scopeMyGrade(Builder $query)
     {
         $grade = TeacherGrade::myGrade()->first();
+
+        if (!$grade) {
+            abort(403, 'Anda belum memiliki kelas yang ditugaskan');
+        }
+        
         $students = $grade->grade->studentGrade->pluck('student_id');
         $query->whereIn('student_id', $students);
     }

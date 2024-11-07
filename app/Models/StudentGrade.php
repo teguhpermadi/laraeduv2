@@ -57,6 +57,11 @@ class StudentGrade extends Model
     {
         // ambil data berdasarkan teacher grade 
         $teacherGrade = TeacherGrade::query()->myGrade()->first();
+
+        if (!$teacherGrade) {
+            abort(403, 'Anda belum memiliki kelas yang ditugaskan');
+        }   
+
         return $query->where('grade_id', $teacherGrade->grade_id);
     }
 }

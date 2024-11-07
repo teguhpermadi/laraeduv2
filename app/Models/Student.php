@@ -63,6 +63,10 @@ class Student extends Model
         }
 
         $grade = TeacherGrade::where('teacher_id', $teacher_id)->with('grade.StudentGrade')->first();
+
+        if (!$grade) {
+            abort(403, 'Anda belum memiliki kelas yang ditugaskan');
+        }   
   
         $myStudents = $grade->grade->studentGrade->pluck('student_id');
 
