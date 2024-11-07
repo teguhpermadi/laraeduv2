@@ -8,6 +8,7 @@
         "php": "^8.2",
         "bezhansalleh/filament-shield": "^3.2",
         "codewithdennis/filament-simple-alert": "^3.0.8",
+        "dompdf/dompdf": "*",
         "eightynine/filament-excel-import": "^3.1",
         "filament/filament": "^3.2",
         "joaopaulolndev/filament-edit-profile": "^1.0",
@@ -15,6 +16,7 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "maatwebsite/excel": "^3.1",
+        "phpoffice/phpword": "*",
         "rmsramos/activitylog": "^1.0",
         "spatie/laravel-activitylog": "^4.8",
         "stechstudio/filament-impersonate": "^3.14"
