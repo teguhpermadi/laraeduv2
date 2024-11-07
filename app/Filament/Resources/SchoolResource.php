@@ -28,22 +28,41 @@ class SchoolResource extends Resource
 
     protected static ?string $navigationGroup = 'Pengaturan';
 
+    protected static ?string $modelLabel = 'Sekolah';
+    protected static ?string $pluralModelLabel = 'Daftar Sekolah';
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')->required(),
-                TextInput::make('address')->required(),
-                Select::make('village_id')->options([]),
-                TextInput::make('nsm')->numeric(),
-                TextInput::make('npsn')->numeric(),
-                TextInput::make('email')->email(),
+                TextInput::make('name')
+                    ->label(__('school.fields.name'))
+                    ->required(),
+                TextInput::make('address')
+                    ->label(__('school.fields.address'))
+                    ->required(),
+                Select::make('village_id')
+                    ->label(__('school.fields.village_id'))
+                    ->options([]),
+                TextInput::make('nsm')
+                    ->label(__('school.fields.nsm'))
+                    ->numeric(),
+                TextInput::make('npsn')
+                    ->label(__('school.fields.npsn'))
+                    ->numeric(),
+                TextInput::make('email')
+                    ->label(__('school.fields.email'))
+                    ->email(),
                 TextInput::make('phone')
+                    ->label(__('school.fields.phone'))
                     ->tel()
                     ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/'),
-                TextInput::make('website'),
-                TextInput::make('foundation'),
+                TextInput::make('website')
+                    ->label(__('school.fields.website')),
+                TextInput::make('foundation')
+                    ->label(__('school.fields.foundation')),
                 FileUpload::make('logo')
+                    ->label(__('school.fields.logo'))
                     ->directory('uploads')
                     ->image()
                     ->openable()
@@ -76,7 +95,7 @@ class SchoolResource extends Resource
             ])
             ->emptyStateActions([
                 Action::make('create')
-                    ->label('Create school')
+                    ->label(__('school.actions.create'))
                     ->url(route('filament.admin.resources.schools.create'))
                     ->icon('heroicon-m-plus')
                     ->button(),
