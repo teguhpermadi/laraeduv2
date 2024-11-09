@@ -72,4 +72,9 @@ class Student extends Model
 
         $query->whereIn('id', $myStudents);
     }
+
+    public function studentExtracurricular()
+    {
+        return $this->hasMany(StudentExtracurricular::class);
+    }   
 }

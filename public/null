@@ -32,3 +32,293 @@ Extracurricular::whereNotIn('id', function ($query) {
 	->from('teacher_extracurriculars')
 	->where('academic_year_id', session('academic_year_id'));
 })->pluck('name', 'id');
+auth()->user()
+auth()->user()
+auth()->user()->userable
+TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->pluck('extracurricular.name', 'extracurricular_id');
+\TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->pluck('extracurricular.name', 'extracurricular_id');
+\TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->pluck('extracurricular.name', 'extracurricular_id');
+use App\Models\TeacherExtracurricular;
+TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->pluck('extracurricular.name', 'extracurricular_id');
+use App\Models\TeacherExtracurricular;
+TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', 1)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->pluck('extracurricular.name', 'extracurricular_id');
+use App\Models\TeacherExtracurricular;
+TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', 1)
+  ->where('academic_year_id', session('academic_year_id'))
+  
+use App\Models\TeacherExtracurricular;
+TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', 1)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get()
+  
+use App\Models\TeacherExtracurricular;
+TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', 1)
+  ->where('academic_year_id', session('academic_year_id'))
+  
+  ->pluck('extracurricular.name', 'extracurricular_id');
+use App\Models\TeacherExtracurricular;
+TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', 1)
+  ->where('academic_year_id', session('academic_year_id'))
+  
+  ->pluck('extracurricular.name', 'extracurricular.id');
+use App\Models\TeacherExtracurricular;
+TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', 1)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+use App\Models\TeacherExtracurricular;
+$t = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', 1)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+$t->pluck('extracurricular')
+use App\Models\TeacherExtracurricular;
+$t = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', 1)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+$t->pluck('extracurricular.name')
+use App\Models\TeacherExtracurricular;
+$t = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', 1)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+$t->pluck('extracurricular.name', 'id')
+use App\Models\TeacherExtracurricular;
+$t = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', 1)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+$t->pluck('extracurricular.name', 'extracurricular.id')
+use App\Models\TeacherExtracurricular;
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+return $teacherExtracurricular->pluck('extracurricular.name', 'extracurricular.id');
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+return $teacherExtracurricular->pluck('extracurricular.name', 'extracurricular.id');
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+return $teacherExtracurricular->pluck('extracurricular', 'extracurricular.id');
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', 1)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', 1)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+$teacher_id
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+
+$teacher_id
+use App\Models\TeacherExtracurricular;
+
+$teacher_id = auth()->user()->userable->userable_id;
+
+$teacherExtracurricular = TeacherExtracurricular::with('extracurricular')
+  ->where('teacher_id', $teacher_id)
+  ->where('academic_year_id', session('academic_year_id'))
+  ->get();
+
+return $teacherExtracurricular->pluck('extracurricular', 'extracurricular.id');

@@ -6,5 +6,7 @@ return [
     'academic_year' => 'Tahun Ajaran',
     'semester' => 'Semester',
     'is_required' => 'Wajib',
-    'teacher' => 'Guru Pembimbing', 
+    'teacher' => 'Guru Pembimbing',
+    'student' => 'Siswa',
+    'score' => 'Nilai',
 ]; 

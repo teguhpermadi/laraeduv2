@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ExtracurricularResource\Pages;
 use App\Filament\Resources\ExtracurricularResource\RelationManagers;
+use App\Filament\Resources\ExtracurricularResource\RelationManagers\StudentExtracurricularRelationManager;
 use App\Filament\Resources\ExtracurricularResource\RelationManagers\TeacherExtracurricularRelationManager;
 use App\Models\Extracurricular;
 use Filament\Forms;
@@ -67,6 +68,7 @@ class ExtracurricularResource extends Resource
     public static function getRelations(): array
     {
         return [
+            StudentExtracurricularRelationManager::class,
             TeacherExtracurricularRelationManager::class,
         ];
     }

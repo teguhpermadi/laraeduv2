@@ -17,6 +17,8 @@ class TeacherExtracurricularRelationManager extends RelationManager
 {
     protected static string $relationship = 'teacherExtracurricular';
 
+    protected static ?string $title = 'Guru';
+
     public function form(Form $form): Form
     {
         return $form
