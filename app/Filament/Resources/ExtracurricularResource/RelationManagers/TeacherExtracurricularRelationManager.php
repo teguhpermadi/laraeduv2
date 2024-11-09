@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\TeacherExtracurricularResource\RelationManagers;
+namespace App\Filament\Resources\ExtracurricularResource\RelationManagers;
 
 use App\Models\Teacher;
+use App\Models\TeacherExtracurricular;
 use Filament\Forms;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Form;
@@ -15,10 +16,6 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class TeacherExtracurricularRelationManager extends RelationManager
 {
     protected static string $relationship = 'teacherExtracurricular';
-
-    protected static ?string $title = 'Guru Pembimbing';
-
-    
 
     public function form(Form $form): Form
     {
@@ -39,11 +36,13 @@ class TeacherExtracurricularRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('academicYear.year')
-                    ->label(__('academic_year.academic_year')),
+                    ->label(__('extracurricular.academic_year')),
+                Tables\Columns\TextColumn::make('academicYear.semester')
+                    ->label(__('extracurricular.semester')),
                 Tables\Columns\TextColumn::make('extracurricular.name')
                     ->label(__('extracurricular.extracurricular')),
                 Tables\Columns\TextColumn::make('teacher.name')
-                    ->label(__('teacher.teacher')),
+                    ->label(__('extracurricular.teacher')),
             ])
             ->filters([
                 //
@@ -59,6 +58,10 @@ class TeacherExtracurricularRelationManager extends RelationManager
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->modifyQueryUsing(function (Builder $query) {
+                // tampilkan teacher_extracurricular yang hanya pada academic_year_id yang sama
+                return $query->where('academic_year_id', session('academic_year_id'));
+            });
     }
 }

@@ -60,4 +60,9 @@ class Teacher extends Model
     {
         return $this->hasMany(TeacherGrade::class);
     }
+
+    public function teacherExtracurricular()
+    {
+        return $this->hasMany(TeacherExtracurricular::class);
+    }
 }

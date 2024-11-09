@@ -1,3 +1,34 @@
 Competency::all()
 TeacherSubject::with('competency')->get()
 AcademicYear::all()
+Extracurricular::whereNotIn('id', function ($query) {
+                            $query->select('extracurricular_id')
+                                ->from('teacher_extracurricular')
+                                ->where('academic_year_id', session('academic_year_id'));
+                        })->pluck('name', 'id');
+use App\Models\Extracurricular;
+
+Extracurricular::whereNotIn('id', function ($query) {
+  $query->select('extracurricular_id')
+	->from('teacher_extracurricular')
+	->where('academic_year_id', session('academic_year_id'));
+})->pluck('name', 'id');
+use App\Models\Extracurricular;
+
+Extracurricular::whereNotIn('id', function ($query) {
+  $query->select('extracurricular_id')
+	->where('academic_year_id', session('academic_year_id'));
+})->pluck('name', 'id');
+use App\Models\Extracurricular;
+
+Extracurricular::whereNotIn('id', function ($query) {
+  $query
+	->where('academic_year_id', session('academic_year_id'));
+})->pluck('name', 'id');
+use App\Models\Extracurricular;
+
+Extracurricular::whereNotIn('id', function ($query) {
+  $query->select('extracurricular_id')
+	->from('teacher_extracurriculars')
+	->where('academic_year_id', session('academic_year_id'));
+})->pluck('name', 'id');

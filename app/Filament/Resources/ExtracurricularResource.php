@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ExtracurricularResource\Pages;
 use App\Filament\Resources\ExtracurricularResource\RelationManagers;
-use App\Filament\Resources\TeacherExtracurricularResource\RelationManagers\TeacherExtracurricularRelationManager;
+use App\Filament\Resources\ExtracurricularResource\RelationManagers\TeacherExtracurricularRelationManager;
 use App\Models\Extracurricular;
 use Filament\Forms;
 use Filament\Forms\Form;

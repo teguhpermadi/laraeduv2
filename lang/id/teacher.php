@@ -36,6 +36,13 @@ return[
             'title' => 'Guru Kelas',
             'grade' => 'Kelas',
             'status' => 'Status',
+        ],
+        'teacher_extracurricular' => [
+            'title' => 'Guru Extrakurikuler',
+            'academic_year' => 'Tahun Ajaran',
+            'semester' => 'Semester',
+            'extracurricular' => 'Extrakurikuler',
+            'teacher' => 'Guru',
         ]
     ]
 ];
