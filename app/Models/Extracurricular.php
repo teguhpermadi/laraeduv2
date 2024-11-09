@@ -11,6 +11,7 @@ class Extracurricular extends Model
 
     protected $fillable = [
         'name',
+        'teacher_id',
         'is_required',
     ];
 }

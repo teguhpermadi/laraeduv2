@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('extracurriculars', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('teacher_id')->constrained()->cascadeOnDelete();
             // wajib atau tidak
             $table->boolean('is_required')->default(false);
             $table->timestamps();

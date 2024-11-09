@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             ValueSeeder::class,
             SubValueSeeder::class,
             ProjectThemeSeeder::class,
+            ExtracurricularSeeder::class,
         ]);
     }
 }
