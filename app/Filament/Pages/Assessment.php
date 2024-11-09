@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Imports\StudentCompetencyImport;
-use App\Jobs\ResetStudentCompetency;
 use App\Models\Competency;
 use App\Models\Grade;
 use App\Models\StudentCompetency;
@@ -22,6 +21,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
@@ -228,7 +228,7 @@ class Assessment extends Page implements HasForms, HasTable
                 TableAction::make('reset')
                     ->icon('heroicon-s-arrow-path-rounded-square')
                     ->action(function () {
-                        $this->resetStudentCompetency($this->teacher_subject_id, $this->teacher_subject_id);
+                        $this->resetStudentCompetency($this->teacher_subject_id);
                     })
                     ->button(),
                 TableAction::make('download')
@@ -300,30 +300,46 @@ class Assessment extends Page implements HasForms, HasTable
         });
     }
 
-    public function resetStudentCompetency($teacher_subject_id, $competency_id)
+    public function resetStudentCompetency($teacher_subject_id)
     {
+        // delete student competency
+        StudentCompetency::where('teacher_subject_id', $teacher_subject_id)
+            ->delete();
+
         // get students
         $students = TeacherSubject::with('studentGrade')
             ->find($teacher_subject_id)
             ->studentGrade->pluck('student_id');
 
-        // delete student competency
-        StudentCompetency::where('teacher_subject_id', $teacher_subject_id)
-            ->where('competency_id', $competency_id)
-            ->delete();
+        // get competency id from teacher subject
+        $competencies = Competency::where('teacher_subject_id', $teacher_subject_id)->get()->pluck('id');
 
         // create new student competency
-        $data = [];
+        // $data = [];
         foreach ($students as $student) {
-            $data[] = [
-                'teacher_subject_id' => $teacher_subject_id,
-                'student_id' => $student,
-                'competency_id' => $competency_id,
-                'created_at' => now(),
-            ];
+            foreach ($competencies as $competency) {
+                $data = [
+                    'teacher_subject_id' => $teacher_subject_id,
+                    'student_id' => $student,
+                    'competency_id' => $competency,
+                    // 'created_at' => now(),
+                ];
+                
+                // update or create
+                StudentCompetency::updateOrCreate($data, ['score' => 0]);
+            }
         }
 
-        StudentCompetency::insert($data);
+        // notification
+        Notification::make()
+            ->title('Berhasil')
+            ->body('Berhasil mereset nilai')
+            ->success()
+            ->send();
+
+        // dd($data);
+
+        // StudentCompetency::insert($data);
     }
 
     public function download()
