@@ -16,25 +16,21 @@ class ExtracurricularSeeder extends Seeder
         //buat 5   data dummy
         Extracurricular::create([
             'name' => 'Basket',
-            'teacher_id' => 1,
             'is_required' => false,
         ]);
 
         Extracurricular::create([
             'name' => 'Voli',
-            'teacher_id' => 1,
             'is_required' => false,
         ]);
 
         Extracurricular::create([
             'name' => 'Paskibraka',
-            'teacher_id' => 1,
             'is_required' => false,
         ]);
 
         Extracurricular::create([
             'name' => 'Pramuka',
-            'teacher_id' => 1,
             'is_required' => true,
         ]);
     }

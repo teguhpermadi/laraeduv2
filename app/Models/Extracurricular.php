@@ -13,4 +13,9 @@ class Extracurricular extends Model
         'name',
         'is_required',
     ];
+
+    public function teacherExtracurricular()
+    {
+        return $this->hasMany(TeacherExtracurricular::class);
+    }
 }
