@@ -15,6 +15,12 @@ return [
             'label' => 'Level',
             'placeholder' => 'Masukkan level',
         ],
+        'students' => [
+            'label' => 'Siswa',
+        ],
+        'teacher' => [
+            'label' => 'Guru',
+        ],
     ],
 
     'messages' => [

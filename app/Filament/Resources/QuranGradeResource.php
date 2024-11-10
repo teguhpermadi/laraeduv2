@@ -6,11 +6,9 @@ use App\Filament\Resources\QuranGradeResource\Pages;
 use App\Filament\Resources\QuranGradeResource\RelationManagers;
 use App\Models\QuranGrade;
 use Filament\Forms;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -21,29 +19,22 @@ class QuranGradeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Pengaturan';
+    protected static ?string $navigationGroup = 'Mengaji';
 
-    protected static ?string $modelLabel = 'Kelas Quran';
+    protected static ?string $modelLabel = 'Kelas Mengaji';
     
-    protected static ?string $pluralModelLabel = 'Kelas-kelas Quran';
-
-    // label navigation berdasarkan lang
-    public static function getNavigationLabel(): string
-    {
-        return __('quran-grade.resource.label');
-    }
-
+    protected static ?string $pluralModelLabel = 'Kelas Mengaji';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                TextInput::make('name')
+                Forms\Components\TextInput::make('name')
                     ->label(__('quran-grade.fields.name.label'))
-                    ->placeholder(__('quran-grade.fields.name.placeholder')),
-                TextInput::make('level')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('level')
                     ->label(__('quran-grade.fields.level.label'))
-                    ->placeholder(__('quran-grade.fields.level.placeholder'))
                     ->numeric(),
             ]);
     }
@@ -52,17 +43,21 @@ class QuranGradeResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                Tables\Columns\TextColumn::make('name')
                     ->label(__('quran-grade.fields.name.label')),
-                TextColumn::make('level')
+                Tables\Columns\TextColumn::make('level')
                     ->label(__('quran-grade.fields.level.label')),
+                Tables\Columns\TextColumn::make('teacherQuranGrades.teacher.name')
+                    ->label(__('quran-grade.fields.teacher.label')),
+                Tables\Columns\TextColumn::make('studentQuranGrades.count') 
+                    ->counts('studentQuranGrades')
+                    ->label(__('quran-grade.fields.students.label')),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -71,10 +66,19 @@ class QuranGradeResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageQuranGrades::route('/'),
+            'index' => Pages\ListQuranGrades::route('/'),
+            'create' => Pages\CreateQuranGrade::route('/create'),
+            'edit' => Pages\EditQuranGrade::route('/{record}/edit'),
         ];
     }
 }
