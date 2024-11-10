@@ -14,3 +14,28 @@ LinkertScaleEnum::getLabel()
 use App\LinkertScaleEnum;
 
 LinkertScaleEnum::values()
+$students = TeacherGrade::where('teacher_id', auth()->user()->id)
+                        ->where('academic_year_id', session('academic_year_id'))
+                        ->first();
+$students = TeacherGrade::where('teacher_id', auth()->user()->id)
+                        ->where('academic_year_id', session('academic_year_id'))
+                        ->first()->studentGrade;
+$students = TeacherGrade::where('teacher_id', auth()->user()->id)
+                        ->where('academic_year_id', session('academic_year_id'))
+                        ->first()->studentGrade->pluck('student_id');
+$students = TeacherGrade::where('teacher_id', auth()->user()->id)
+                        ->where('academic_year_id', session('academic_year_id'))
+                        ->first()->studentGrade->count();
+$students = TeacherGrade::where('teacher_id', auth()->user()->id)
+                        ->where('academic_year_id', session('academic_year_id'))
+                        ->studentGrade->count();
+$students = TeacherGrade::where('teacher_id', auth()->user()->id)
+                        ->where('academic_year_id', session('academic_year_id'))
+                        ->first()->studentGrade->count();
+$students = TeacherGrade::where('teacher_id', auth()->user()->userable->userable_id)
+                        ->where('academic_year_id', session('academic_year_id'))
+                        ->first()->studentGrade->count();
+$teacherId = auth()->user()->userable->userble_id;
+$teacherId = auth()->user()->userable;
+$teacherId = auth()->user()->userable_id;
+$teacherId = auth()->user()->userable->userable_id;

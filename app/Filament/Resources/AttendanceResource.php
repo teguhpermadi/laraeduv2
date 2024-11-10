@@ -10,6 +10,7 @@ use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
@@ -66,9 +67,9 @@ class AttendanceResource extends Resource
                     ->label(__('attendance.absent'))
                     ->numeric()
                     ->default(0),
-                TextInput::make('note')
+                Textarea::make('note')
                     ->label(__('attendance.note')),
-                TextInput::make('achievement')
+                Textarea::make('achievement')
                     ->label(__('attendance.achievement')),
             ]);
     }

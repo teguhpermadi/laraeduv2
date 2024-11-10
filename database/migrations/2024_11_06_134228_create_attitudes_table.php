@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('academic_year_id')->references('id')->on('academic_years')->cascadeOnDelete();
             $table->foreignId('grade_id')->references('id')->on('grades')->cascadeOnDelete();
             $table->foreignId('student_id')->references('id')->on('students')->cascadeOnDelete();
-            $table->enum('attitude_religius', ['amat baik', 'baik', 'cukup baik', 'kurang baik'])->default('baik');
-            $table->enum('attitude_social', ['amat baik', 'baik', 'cukup baik', 'kurang baik'])->default('baik');
+            $table->integer('attitude_religius')->default(0);
+            $table->integer('attitude_social')->default(0);
             $table->timestamps();
         });
     }

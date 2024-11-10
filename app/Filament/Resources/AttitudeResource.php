@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AttitudeResource\Pages;
 use App\Filament\Resources\AttitudeResource\RelationManagers;
+use App\LinkertScaleEnum;
 use App\Models\AcademicYear;
 use App\Models\Attitude;
 use App\Models\Student;
@@ -52,21 +53,11 @@ class AttitudeResource extends Resource
                     }),
                 Select::make('attitude_religius')
                     ->label(__('attitude.attitude_religius'))
-                    ->options([
-                        'amat baik' => 'amat baik',
-                        'baik' => 'baik',
-                        'cukup baik' => 'cukup baik',
-                        'kurang baik' => 'kurang baik',
-                    ])
+                    ->options(LinkertScaleEnum::class)
                     ->required(),
                 Select::make('attitude_social')
                     ->label(__('attitude.attitude_social'))
-                    ->options([
-                        'amat baik' => 'amat baik',
-                        'baik' => 'baik',
-                        'cukup baik' => 'cukup baik',
-                        'kurang baik' => 'kurang baik',
-                    ])
+                    ->options(LinkertScaleEnum::class)
                     ->required(),
             ]);
     }
@@ -79,12 +70,7 @@ class AttitudeResource extends Resource
                     ->label(__('student.name')),
                 SelectColumn::make('attitude_religius')
                     ->label(__('attitude.attitude_religius'))
-                    ->options([
-                    'amat baik' => 'amat baik',
-                    'baik' => 'baik',
-                    'cukup baik' => 'cukup baik',
-                    'kurang baik' => 'kurang baik',
-                ]),
+                    ->options(LinkertScaleEnum::class),
                 SelectColumn::make('attitude_social')
                     ->label(__('attitude.attitude_social'))
                     ->options([
