@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StudentExtracurricularResource\Pages;
 use App\Filament\Resources\StudentExtracurricularResource\RelationManagers;
+use App\LinkertScaleEnum;
 use App\Models\Extracurricular;
 use App\Models\Student;
 use App\Models\StudentExtracurricular;
@@ -75,11 +76,7 @@ class StudentExtracurricularResource extends Resource
                     ->label(__('extracurricular.extracurricular')),
                 SelectColumn::make('score')
                     ->label(__('extracurricular.score'))
-                    ->options([
-                        '1' => 'Amat Baik',
-                        '2' => 'Baik',
-                        '3' => 'Cukup',
-                    ]),
+                    ->options(LinkertScaleEnum::class),
             ])
             ->filters([
                 

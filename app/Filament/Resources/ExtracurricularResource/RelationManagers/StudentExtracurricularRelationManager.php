@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ExtracurricularResource\RelationManagers;
 
+use App\LinkertScaleEnum;
 use App\Models\Grade;
 use App\Models\Student;
 use App\Models\StudentGrade;
@@ -66,11 +67,7 @@ class StudentExtracurricularRelationManager extends RelationManager
                 // input score berupa select
                 SelectColumn::make('score')
                     ->label(__('extracurricular.score'))
-                    ->options([
-                        '1' => 'Amat Baik',
-                        '2' => 'Baik',
-                        '3' => 'Cukup',
-                    ]),
+                    ->options(LinkertScaleEnum::class),
             ])
             ->filters([
                 //
