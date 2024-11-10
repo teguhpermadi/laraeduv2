@@ -57,6 +57,9 @@ class ExtracurricularResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('Leger')
+                    ->url(fn (Extracurricular $record) => route('leger-extracurricular', $record->id))
+                    ->icon('heroicon-o-document-text'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

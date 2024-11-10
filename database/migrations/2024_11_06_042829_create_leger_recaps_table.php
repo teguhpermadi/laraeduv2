@@ -18,7 +18,7 @@ return new class extends Migration
             $table->boolean('is_half_semester')->default(false);
             $table->timestamps();
 
-            $table->unique(['academic_year_id', 'teacher_subject_id'], 'unique_leger_recap');
+            $table->unique(['academic_year_id', 'teacher_subject_id', 'is_half_semester'], 'unique_leger_recap');
         });
     }
 

@@ -12,4 +12,6 @@ Route::get('{id}/leger-print', \App\Livewire\LegerPreview::class)->name('leger-p
 Route::get('{id}/report-cover', [\App\Http\Controllers\ReportController::class, 'getDataCover'])->name('report-cover');
 // report cover student
 Route::get('{id}/report-cover-student', [\App\Http\Controllers\ReportController::class, 'getDataCoverStudent'])->name('report-cover-student');
+// leger extracurricular
+Route::get('{extracurricular_id}/leger-extracurricular', \App\Livewire\LegerPreviewExtracurricular::class)->name('leger-extracurricular');
 

@@ -17,7 +17,6 @@ class StudentExtracurricular extends Model
         'score',
     ];
 
-    // academic year scope
     protected static function booted(): void
     {
         static::addGlobalScope(new AcademicYearScope);

@@ -4,3 +4,13 @@ auth()->user->hasRole('admin')
 auth()->user()->hasRole('admin')
 auth()->user()->hasRole('super admin')
 auth()->user()->hasRole('super_admin')
+use App\LinkertScaleEnum;
+use App\LinkertScaleEnum;
+
+LinkertScaleEnum::values()
+use App\LinkertScaleEnum;
+
+LinkertScaleEnum::getLabel()
+use App\LinkertScaleEnum;
+
+LinkertScaleEnum::values()
