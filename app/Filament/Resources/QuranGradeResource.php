@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\QuranGradeResource\Pages;
 use App\Filament\Resources\QuranGradeResource\RelationManagers;
+use App\Filament\Resources\QuranGradeResource\RelationManagers\StudentQuranGradeRelationManager;
+use App\Filament\Resources\QuranGradeResource\RelationManagers\TeacherQuranGradeRelationManager;
 use App\Models\QuranGrade;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -47,11 +49,12 @@ class QuranGradeResource extends Resource
                     ->label(__('quran-grade.fields.name.label')),
                 Tables\Columns\TextColumn::make('level')
                     ->label(__('quran-grade.fields.level.label')),
-                Tables\Columns\TextColumn::make('teacherQuranGrades.teacher.name')
+                Tables\Columns\TextColumn::make('teacherQuranGrade.teacher.name')
                     ->label(__('quran-grade.fields.teacher.label')),
-                Tables\Columns\TextColumn::make('studentQuranGrades.count') 
-                    ->counts('studentQuranGrades')
-                    ->label(__('quran-grade.fields.students.label')),
+                Tables\Columns\TextColumn::make('student_quran_grade_count') 
+                    ->label(__('quran-grade.fields.students.label'))
+                    ->counts('studentQuranGrade')
+                    ->suffix(' siswa'),
             ])
             ->filters([
                 //
@@ -69,7 +72,8 @@ class QuranGradeResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            TeacherQuranGradeRelationManager::class,
+            StudentQuranGradeRelationManager::class,
         ];
     }
 

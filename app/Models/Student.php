@@ -77,4 +77,9 @@ class Student extends Model
     {
         return $this->hasMany(StudentExtracurricular::class);
     }   
+
+    public function studentQuranGrade()
+    {
+        return $this->hasMany(StudentQuranGrade::class);
+    }
 }

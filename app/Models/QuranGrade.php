@@ -14,12 +14,12 @@ class QuranGrade extends Model
         'level',
     ];
 
-    public function teacherQuranGrades(): HasMany
+    public function teacherQuranGrade(): HasMany
     {
         return $this->hasMany(TeacherQuranGrade::class);
     }
 
-    public function studentQuranGrades(): HasMany
+    public function studentQuranGrade(): HasMany
     {
         return $this->hasMany(StudentQuranGrade::class);
     }   

@@ -16,10 +16,10 @@ return [
             'placeholder' => 'Masukkan level',
         ],
         'students' => [
-            'label' => 'Siswa',
+            'label' => 'Siswa Mengaji',
         ],
         'teacher' => [
-            'label' => 'Guru',
+            'label' => 'Guru Mengaji',
         ],
     ],
 
