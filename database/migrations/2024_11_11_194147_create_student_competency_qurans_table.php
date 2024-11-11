@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('competency_quran_id')->constrained()->cascadeOnDelete();
             $table->integer('score')->default(0);
             $table->timestamps();
+
+            $table->unique(['academic_year_id', 'quran_grade_id', 'student_id', 'competency_quran_id'], 'student_competency_quran_unique');
         });
     }
 

@@ -6,7 +6,7 @@ use App\Models\Scopes\AcademicYearScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 class TeacherQuranGrade extends Model
 {
     use HasFactory;
@@ -35,6 +35,11 @@ class TeacherQuranGrade extends Model
     public function academicYear(): BelongsTo
     {
         return $this->belongsTo(AcademicYear::class);
+    }
+
+    public function studentQuranGrade(): HasMany
+    {
+        return $this->hasMany(StudentQuranGrade::class, 'quran_grade_id', 'quran_grade_id');
     }
 
     // scope my quran grade

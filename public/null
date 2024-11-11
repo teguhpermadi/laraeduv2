@@ -81,3 +81,47 @@ $quranGrade = TeacherQuranGrade::find(1)
 use \App\Models\TeacherQuranGrade;
 
 $quranGrade = TeacherQuranGrade::find(1)
+use \App\Models\QuranGrade;
+
+$students = QuranGrade::with('studentQuranGrade')->find(1)->studentQuranGrade;
+use \App\Models\QuranGrade;
+
+$competencies = CompetencyQuran::where('quran_grade_id', 1)
+  ->get()
+  ->pluck('description', 'id');
+use \App\Models\CompetencyQuran;
+
+$competencies = CompetencyQuran::where('quran_grade_id', 1)
+  ->get()
+  ->pluck('description', 'id');
+use \App\Models\CompetencyQuran;
+
+$competencies = CompetencyQuran::get()
+use \App\Models\CompetencyQuran;
+
+$competencies = CompetencyQuran::get();
+$students = TeacherQuranGrade::with('studentQuranGrade')->find(2);
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+
+$competencies = CompetencyQuran::get();
+$students = TeacherQuranGrade::with('studentQuranGrade')->find(2);
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+
+$competencies = CompetencyQuran::get();
+$students = TeacherQuranGrade::with('studentQuranGrade')->find(2);
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentQuranGrade;
+
+
+
+StudentQuranGrade::all()
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+
+
+
+StudentCompetencyQuran::all()
