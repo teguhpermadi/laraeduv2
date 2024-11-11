@@ -1,41 +1,83 @@
-auth()->user->role('admin')
-auth()->user->role('admin')
-auth()->user->hasRole('admin')
-auth()->user()->hasRole('admin')
-auth()->user()->hasRole('super admin')
-auth()->user()->hasRole('super_admin')
-use App\LinkertScaleEnum;
-use App\LinkertScaleEnum;
+TeacherQuranGrade::myQuranGrade()->pluck('quran_grade.name', 'id')
+\App\Models\TeacherQuranGrade;
+TeacherQuranGrade::myQuranGrade()->pluck('quran_grade.name', 'id')
+use \App\Models\TeacherQuranGrade;
+TeacherQuranGrade::myQuranGrade()->pluck('quran_grade.name', 'id')
+use \App\Models\TeacherQuranGrade;
+TeacherQuranGrade::myQuranGrade()
+use \App\Models\TeacherQuranGrade;
+TeacherQuranGrade::myQuranGrade()->get()
+use \App\Models\TeacherQuranGrade;
+TeacherQuranGrade::get()
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userbable_id
 
-LinkertScaleEnum::values()
-use App\LinkertScaleEnum;
+use \App\Models\TeacherQuranGrade;
 
-LinkertScaleEnum::getLabel()
-use App\LinkertScaleEnum;
+TeacherQuranGrade::myQuranGrade()->pluck('quran_grade.name', 'id')
+use \App\Models\TeacherQuranGrade;
 
-LinkertScaleEnum::values()
-$students = TeacherGrade::where('teacher_id', auth()->user()->id)
-                        ->where('academic_year_id', session('academic_year_id'))
-                        ->first();
-$students = TeacherGrade::where('teacher_id', auth()->user()->id)
-                        ->where('academic_year_id', session('academic_year_id'))
-                        ->first()->studentGrade;
-$students = TeacherGrade::where('teacher_id', auth()->user()->id)
-                        ->where('academic_year_id', session('academic_year_id'))
-                        ->first()->studentGrade->pluck('student_id');
-$students = TeacherGrade::where('teacher_id', auth()->user()->id)
-                        ->where('academic_year_id', session('academic_year_id'))
-                        ->first()->studentGrade->count();
-$students = TeacherGrade::where('teacher_id', auth()->user()->id)
-                        ->where('academic_year_id', session('academic_year_id'))
-                        ->studentGrade->count();
-$students = TeacherGrade::where('teacher_id', auth()->user()->id)
-                        ->where('academic_year_id', session('academic_year_id'))
-                        ->first()->studentGrade->count();
-$students = TeacherGrade::where('teacher_id', auth()->user()->userable->userable_id)
-                        ->where('academic_year_id', session('academic_year_id'))
-                        ->first()->studentGrade->count();
-$teacherId = auth()->user()->userable->userble_id;
-$teacherId = auth()->user()->userable;
-$teacherId = auth()->user()->userable_id;
-$teacherId = auth()->user()->userable->userable_id;
+TeacherQuranGrade::myQuranGrade()->get()
+use \App\Models\TeacherQuranGrade;
+
+TeacherQuranGrade::myQuranGrade()->all()
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userable_id
+
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userable->userable_id
+
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userable->userable_id
+TeacherQuranGrade::myQuranGrade()->get()
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userable->userable_id;
+TeacherQuranGrade::myQuranGrade()->get()
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userable->userable_id;
+TeacherQuranGrade::myQuranGrade()->pluck('quran_grade.name', 'id')
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userable->userable_id;
+TeacherQuranGrade::myQuranGrade()->get()
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userable->userable_id;
+TeacherQuranGrade::myQuranGrade()->with('quran_grade')
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userable->userable_id;
+TeacherQuranGrade::myQuranGrade()->with('quran_grade')->get()
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userable->userable_id;
+TeacherQuranGrade::myQuranGrade()->with('quran_grade')->get()
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userable->userable_id;
+TeacherQuranGrade::myQuranGrade()->with('quran_grade')->get()
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userable->userable_id;
+TeacherQuranGrade::myQuranGrade()->with('quran_grade')->get()
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userable->userable_id;
+TeacherQuranGrade::myQuranGrade()->with('quran_grade')->get()
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userable->userable_id;
+TeacherQuranGrade::myQuranGrade()->with('quran_grade')->get()
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userable->userable_id;
+TeacherQuranGrade::myQuranGrade()->with('quranGrade')->get()
+use \App\Models\TeacherQuranGrade;
+auth()->user()->userable->userable_id;
+TeacherQuranGrade::myQuranGrade()->with('quranGrade')->get()->pluck('quranGrade.name', 'id')
+use \App\Models\TeacherQuranGrade;
+
+$quranGrade = TeacherQuranGrade::find(1)->get()
+use \App\Models\TeacherQuranGrade;
+
+$quranGrade = TeacherQuranGrade::find(1)->first()
+use \App\Models\TeacherQuranGrade;
+
+$quranGrade = TeacherQuranGrade::find(1)
+use \App\Models\TeacherQuranGrade;
+
+$quranGrade = TeacherQuranGrade::find(1)
+use \App\Models\TeacherQuranGrade;
+
+$quranGrade = TeacherQuranGrade::find(1)

@@ -36,4 +36,10 @@ class TeacherQuranGrade extends Model
     {
         return $this->belongsTo(AcademicYear::class);
     }
+
+    // scope my quran grade
+    public function scopeMyQuranGrade($query)
+    {
+        return $query->where('teacher_id', auth()->user()->userable->userable_id);
+    }
 }
