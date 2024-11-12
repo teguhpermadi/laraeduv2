@@ -40,7 +40,7 @@ class StudentQuranGrade extends Model
 
     public function studentCompetencyQuran(): HasMany
     {
-        return $this->hasMany(StudentCompetencyQuran::class, 'student_id', 'student_id');
+        return $this->hasMany(StudentCompetencyQuran::class, 'student_quran_grade_id', 'id');
     }
 
 }

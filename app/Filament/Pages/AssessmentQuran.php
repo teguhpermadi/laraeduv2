@@ -121,7 +121,7 @@ class AssessmentQuran extends Page implements HasForms, HasTable
             ->emptyStateHeading($this->empty_state['heading'])
             ->emptyStateDescription($this->empty_state['desc'])
             ->columns([
-                TextColumn::make('student.name'),
+                TextColumn::make('studentQuranGrade.student.name'),
                 TextInputColumn::make('score'),
             ])
             ->filters([])
@@ -194,7 +194,7 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                                 StudentCompetencyQuran::updateOrCreate([
                                     'academic_year_id' => $value['academic_year_id'],
                                     'quran_grade_id' => $value['quran_grade_id'],
-                                    'student_id' => $value['student_id'],
+                                    'student_quran_grade_id' => $value['student_quran_grade_id'],
                                     'competency_quran_id' => $value['competency_quran_id'],
                                 ], [
                                     'score' => $value['score'],
@@ -265,7 +265,7 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                     // 'teacher_quran_grade_id' => $quran_grade_id,
                     'academic_year_id' => session('academic_year_id'),
                     'quran_grade_id' => $quran_grade_id,
-                    'student_id' => $student->student_id,
+                    'student_quran_grade_id' => $student->id,
                     'competency_quran_id' => $competency->id,
                 ];
 
@@ -284,7 +284,7 @@ class AssessmentQuran extends Page implements HasForms, HasTable
     public function download($quran_grade_id)
     {
         // ambil teacher quran grade berdasarkan quran grade id
-        $teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran.student')->find($quran_grade_id);
+        $teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran.studentQuranGrade.student')->find($quran_grade_id);
 
         // ambil semua student dari quran grade id
         $students = StudentQuranGrade::where('quran_grade_id', $quran_grade_id)->get();
@@ -321,7 +321,7 @@ class AssessmentQuran extends Page implements HasForms, HasTable
             $data[] = [
                 'academic_year_id',
                 'quran_grade_id',
-                'student_id',
+                'student_quran_grade_id',
                 'competency_quran_id',
                 'nis',
                 'name',
@@ -332,10 +332,10 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                 $data[] = [
                     $academicYear->id,
                     $quran_grade_id,
-                    $studentCompetency->student_id,
+                    $studentCompetency->student_quran_grade_id,
                     $competency->id,
-                    $studentCompetency->student->nis,
-                    $studentCompetency->student->name,
+                    $studentCompetency->studentQuranGrade->student->nis,
+                    $studentCompetency->studentQuranGrade->student->name,
                     $studentCompetency->score,
                 ];
             }

@@ -49,6 +49,8 @@ class LegerQuran extends Page implements HasForms
 
         $data = collect();
 
+        // dd($students);
+
         // loop students
         foreach ($students as $student) {
             $data->push([
@@ -60,6 +62,9 @@ class LegerQuran extends Page implements HasForms
             ]);
         }
 
+        // sort by sum
+        $data = $data->sortByDesc('sum')->values();
+
         // add ranking
         $data = $data->map(function ($item, $index) {
             $item['rank'] = $index + 1;
@@ -67,7 +72,7 @@ class LegerQuran extends Page implements HasForms
         });
 
         // kembalikan data sort by id
-        $data = $data->sortByDesc('student_id')->values();
+        $data = $data->sortByDesc('student.id')->values();
 
         
         // Cek apakah ada siswa yang belum memiliki nilai
