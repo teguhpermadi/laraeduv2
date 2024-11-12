@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Imports\StudentCompetencyQuranImport;
 use App\Models\QuranGrade;
 use App\Models\StudentQuranGrade;
 use App\Models\TeacherQuranGrade;
@@ -31,6 +32,7 @@ use Illuminate\Support\Collection;
 
 use Filament\Tables\Actions\Action;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -183,6 +185,22 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                     ])
                     ->action(function (array $data) {
                         // TODO: upload file
+                        $studentCompetenciesQuran = Excel::toArray(new StudentCompetencyQuranImport, storage_path('/app/public/' . $data['file']));
+
+                        // dd($studentCompetenciesQuran);
+
+                        foreach ($studentCompetenciesQuran as $row) {
+                            foreach ($row as $value) {
+                                StudentCompetencyQuran::updateOrCreate([
+                                    'academic_year_id' => $value['academic_year_id'],
+                                    'quran_grade_id' => $value['quran_grade_id'],
+                                    'student_id' => $value['student_id'],
+                                    'competency_quran_id' => $value['competency_quran_id'],
+                                ], [
+                                    'score' => $value['score'],
+                                ]);
+                            }
+                        }
                     }),
                 Action::make('leger')
                 // ->url(route('filament.admin.pages.leger.{id}', $this->quran_grade_id)),
