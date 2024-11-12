@@ -26,4 +26,9 @@ class CompetencyQuran extends Model
     {
         return $this->belongsTo(TeacherQuranGrade::class);
     }
+
+    public function studentCompetencyQuran()
+    {
+        return $this->hasMany(StudentCompetencyQuran::class, 'competency_quran_id', 'id');
+    }
 }

@@ -186,7 +186,6 @@ class Assessment extends Page implements HasForms, HasTable
                 StudentCompetency::query()
                     ->where('teacher_subject_id', $this->teacherSubject)
                     ->where('competency_id', $this->competency_id)
-                    ->orderBy('student_id', 'desc')
             )
             ->emptyStateHeading($this->empty_state['heading'])
             ->emptyStateDescription($this->empty_state['desc'])

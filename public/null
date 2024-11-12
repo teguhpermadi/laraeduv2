@@ -2,34 +2,625 @@ use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 
-StudentCompetencyQuran::get()
+TeacherQuranGrade::find(1)
 use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 
-StudentCompetencyQuran::get()
+TeacherQuranGrade::find(1)->competencyQuran
 use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 
-StudentCompetencyQuran::count()
+TeacherQuranGrade::find(1)->competencyQuran
 use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 
-StudentCompetencyQuran::get()
+TeacherQuranGrade::find(1)->competencyQuran->student
 use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 
-StudentCompetencyQuran::get()->orderby('score', 'desc')
+TeacherQuranGrade::find(1)->competencyQuran->student
 use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 
-StudentCompetencyQuran::orderby('score', 'desc')->get()
+TeacherQuranGrade::find(1)->competencyQuran->student
 use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 
-StudentCompetencyQuran::orderby('score', 'asc')->get()
+TeacherQuranGrade::find(1)->competencyQuran->student
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+
+TeacherQuranGrade::find(1)->competencyQuran->student
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+
+TeacherQuranGrade::find(1)->competencyQuran->student
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+
+TeacherQuranGrade::find(1)->competencyQuran->student
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+
+TeacherQuranGrade::find(1)->competencyQuran->studentQuranGrade
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+
+TeacherQuranGrade::find(1)->competencyQuran->studentQuranGrade
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+
+TeacherQuranGrade::find(1)->competencyQuran->studentQuranGrade
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+$academicYear = $teacherQuranGrade->academicYear;
+$teacher = $teacherQuranGrade->teacher;
+$quranGrade = $teacherQuranGrade->quranGrade;
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+$academicYear = $teacherQuranGrade->academicYear;
+$teacher = $teacherQuranGrade->teacher;
+$quranGrade = $teacherQuranGrade->quranGrade;
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->studentCompetencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->studentCompetencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->studentCompetencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->studentCompetencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->studentCompetencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->studentCompetencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->studentCompetencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->studentCompetencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->studentCompetencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->studentCompetencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->teacherQuranGrade;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('teacherQuranGrade')->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('studentQuranGrade')->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('studentQuranGrade')->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+
+$teacherQuranGrade
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+
+$teacherQuranGrade
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+
+$teacherQuranGrade
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->studentQuranGrade;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->studentCompetencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('studentCompetencyQuran')->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+
+CompetencyQuran::get()
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+
+CompetencyQuran::with('studentCompetencyQuran')->get()
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran')->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran')->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran')->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->student;
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran.student')->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->student;
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran.student')->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran.student')->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran->studentCompetencyQuran;
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran.student')->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran.student')->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran.student')->find(1);
+
+
+$students = StudentQuranGrade::where('quran_grade_id', 1)->get();
+
+
+
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran.student')->find(1);
+
+
+
+
+
+
+
+
+

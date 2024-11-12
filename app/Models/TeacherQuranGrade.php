@@ -37,6 +37,11 @@ class TeacherQuranGrade extends Model
         return $this->belongsTo(AcademicYear::class);
     }
 
+    public function competencyQuran(): HasMany
+    {
+        return $this->hasMany(CompetencyQuran::class);
+    }
+
     public function studentQuranGrade(): HasMany
     {
         return $this->hasMany(StudentQuranGrade::class, 'quran_grade_id', 'quran_grade_id');

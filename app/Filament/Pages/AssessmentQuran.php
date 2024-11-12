@@ -31,6 +31,9 @@ use Illuminate\Support\Collection;
 
 use Filament\Tables\Actions\Action;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class AssessmentQuran extends Page implements HasForms, HasTable
 {
@@ -112,7 +115,6 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                 StudentCompetencyQuran::query()
                     // ->where('teacher_quran_grade_id', $this->quran_grade_id)
                     ->where('competency_quran_id', $this->competency_quran_id)
-                    ->orderBy('student_id', 'desc')
             )
             ->emptyStateHeading($this->empty_state['heading'])
             ->emptyStateDescription($this->empty_state['desc'])
@@ -160,8 +162,12 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                         $this->resetStudentCompetency($data['quran_grade_id']);
                     }),
                 Action::make('download')
-                    ->action(function () {
-                        return $this->download();
+                    ->form([
+                        Select::make('quran_grade_id')
+                            ->options($this->quranGrade),
+                    ])
+                    ->action(function ($data) {
+                        return $this->download($data['quran_grade_id']);
                     }),
                 Action::make('upload')
                     ->form([
@@ -179,7 +185,7 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                         // TODO: upload file
                     }),
                 Action::make('leger')
-                    // ->url(route('filament.admin.pages.leger.{id}', $this->quran_grade_id)),
+                // ->url(route('filament.admin.pages.leger.{id}', $this->quran_grade_id)),
             ])
             ->deferLoading()
             ->striped()
@@ -255,5 +261,127 @@ class AssessmentQuran extends Page implements HasForms, HasTable
             ->body('Berhasil mereset nilai')
             ->success()
             ->send();
+    }
+
+    public function download($quran_grade_id)
+    {
+        // ambil teacher quran grade berdasarkan quran grade id
+        $teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran.student')->find($quran_grade_id);
+
+        // ambil semua student dari quran grade id
+        $students = StudentQuranGrade::where('quran_grade_id', $quran_grade_id)->get();
+
+        $academicYear = $teacherQuranGrade->academicYear;
+        $teacher = $teacherQuranGrade->teacher;
+        $quranGrade = $teacherQuranGrade->quranGrade;
+        $competencyQuran = $teacherQuranGrade->competencyQuran;
+        
+        // inisialisasi spreadsheet
+        $spreadsheet = new Spreadsheet();
+        $countSheet = 0;
+
+        // buat sheet berdasarkan banyaknya kompetensi
+        foreach ($competencyQuran as $competency) {
+            $spreadsheet->createSheet();
+            $sheet = $spreadsheet->getSheet($countSheet);
+            $sheet->setTitle('Sheet ' . $competency->code);
+
+            // identitas
+            $identitas = [
+                ['Identitas Pelajaran'],
+                [null],
+                ['Nama Guru', ': ' . $teacher->name],
+                ['Mata Pelajaran', ': ' . $quranGrade->name],
+                ['Kelas', ': ' . $teacher->name],
+                ['Tahun Akademik', ': ' . $academicYear->year],
+                ['Semester', ': ' . $academicYear->semester],
+                ['Kompetensi', ': (' . $competency->code . ') ', $competency->description],
+            ];
+            $sheet->fromArray($identitas, null, 'E1', true);
+
+            $data = [];
+            $data[] = [
+                'academic_year_id',
+                'quran_grade_id',
+                'student_id',
+                'competency_quran_id',
+                'nis',
+                'name',
+                'score',
+            ];
+
+            foreach ($competency->studentCompetencyQuran as $studentCompetency) {
+                $data[] = [
+                    $academicYear->id,
+                    $quran_grade_id,
+                    $studentCompetency->student_id,
+                    $competency->id,
+                    $studentCompetency->student->nis,
+                    $studentCompetency->student->name,
+                    $studentCompetency->score,
+                ];
+            }
+
+            $sheet->fromArray($data, null, 'A13', true);
+
+            $countSheet++;
+
+            $sheet->getColumnDimension('F')->setWidth(30);
+
+            // hide column A B C D
+            $sheet->getColumnDimension('A')->setVisible(false);
+            $sheet->getColumnDimension('B')->setVisible(false);
+            $sheet->getColumnDimension('C')->setVisible(false);
+            $sheet->getColumnDimension('D')->setVisible(false);
+
+            // count student
+            $rowStudent = 13 + count($students);
+
+            // bisa di edit
+            $sheet->getStyle('G14:G' . $rowStudent)->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
+
+            // proteksi semua cell
+            $sheet->getProtection()->setPassword('PhpSpreadsheet');
+            $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
+
+            // validasi tiap-tiap cell
+            for ($i = 14; $i <= $rowStudent; $i++) {
+                $validation = $sheet->getCell('F' . $i)->getDataValidation();
+                $validation->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_WHOLE);
+                $validation->setErrorStyle(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP);
+                $validation->setAllowBlank(false);
+                $validation->setShowInputMessage(true);
+                $validation->setShowErrorMessage(true);
+                $validation->setErrorTitle('Input error');
+                $validation->setError('Number is not allowed!');
+                $validation->setPromptTitle('Allowed input');
+                $validation->setPrompt('Only numbers between 0 and 100 are allowed.');
+                $validation->setFormula1(0);
+                $validation->setFormula2(100);
+
+                $validation = $sheet->getCell('G' . $i)
+                    ->getDataValidation();
+                $validation->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_WHOLE);
+                $validation->setErrorStyle(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP);
+                $validation->setAllowBlank(false);
+                $validation->setShowInputMessage(true);
+                $validation->setShowErrorMessage(true);
+                $validation->setErrorTitle('Input error');
+                $validation->setError('Number is not allowed!');
+                $validation->setPromptTitle('Allowed input');
+                $validation->setPrompt('Only numbers between 0 and 100 are allowed.');
+                $validation->setFormula1(0);
+                $validation->setFormula2(100);
+            }
+        }
+        
+        // membuat file excel
+        $writer = new Xlsx($spreadsheet);
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'penilaian ngaji ' . $quranGrade->name . ' ' . $academicYear->year . ' ' . $academicYear->semester . '.xlsx';
+        $file_path = storage_path('/app/public/downloads/' . $filename);
+        $writer->save($file_path);
+
+        return response()->download($file_path)->deleteFileAfterSend(true);
     }
 }
