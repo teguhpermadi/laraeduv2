@@ -203,7 +203,14 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                         }
                     }),
                 Action::make('leger')
-                // ->url(route('filament.admin.pages.leger.{id}', $this->quran_grade_id)),
+                    ->form([
+                        Select::make('quran_grade_id')
+                            ->options($this->quranGrade),
+                    ])
+                    ->action(function ($data) {
+                        // open in new tab
+                        return redirect()->to(route('filament.admin.pages.leger-quran.{id}', $data['quran_grade_id']), true);
+                    }),
             ])
             ->deferLoading()
             ->striped()

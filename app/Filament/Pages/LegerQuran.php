@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Models\LegerQuran as ModelsLegerQuran;
 use App\Models\TeacherQuranGrade;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DateTimePicker;
@@ -32,7 +33,7 @@ class LegerQuran extends Page implements HasForms
 
     public ?array $data = [];
 
-    public $teacherQuran, $students, $time_signature, $preview, $student, $agree, $leger, $competency_count, $academic_year_id;
+    public $teacherQuran, $students, $time_signature, $preview, $student, $agree, $leger_quran, $competency_count, $academic_year_id;
     public $checkLegerRecap = false;
     public $hasNoScores = false;
 
@@ -53,12 +54,18 @@ class LegerQuran extends Page implements HasForms
 
         // loop students
         foreach ($students as $student) {
+
+            // deskripsi
+            $description = $this->getDescription($student->studentCompetencyQuran);
+
             $data->push([
+                'student_id' => $student->student->id,
                 'student' => $student,
                 'metadata' => $student->studentCompetencyQuran,
                 'avg' => round($student->studentCompetencyQuran->avg('score'), 0),
                 'sum' => $student->studentCompetencyQuran->sum('score'),
                 'competency_count' => $this->competency_count,
+                'description' => $description,
             ]);
         }
 
@@ -71,10 +78,11 @@ class LegerQuran extends Page implements HasForms
             return $item;
         });
 
-        // kembalikan data sort by id
-        $data = $data->sortByDesc('student.id')->values();
+        // kembalikan data sort by id asc
+        $data = $data->sortBy('student_id')->values();
 
-        
+        // dd($data->toArray());
+
         // Cek apakah ada siswa yang belum memiliki nilai
         $this->hasNoScores = $data->contains(function ($item) {
             return $item['competency_count'] === 0 || empty($item['metadata']);
@@ -120,6 +128,63 @@ class LegerQuran extends Page implements HasForms
 
     public function submit()
     {
-        dd($this->form->getState());
+        // dd($this->form->getState());
+
+        $data = $this->form->getState();
+
+        // dd($data);
+
+        foreach ($data['leger_quran'] as $leger_quran) {
+            // insert data ke table leger
+            ModelsLegerQuran::updateOrCreate([
+                'academic_year_id' => session('academic_year_id'),
+                'student_id' => $leger_quran['student_id'],
+                'quran_grade_id' => $leger_quran['student']->quran_grade_id,
+                'teacher_quran_grade_id' => $this->teacherQuran->id,
+            ],[
+                'score' => $leger_quran['avg'],
+                'description' => $leger_quran['description'],
+                'metadata' => $leger_quran['metadata'],
+                'sum' => $leger_quran['sum'],
+                'rank' => $leger_quran['rank'],
+            ]);
+        }
     }   
+
+    public function getDescription($studentCompetencyQuran)
+    {
+        $string = '';
+
+        // kelompokkan terlebih dahulu
+        // competency lulus & tidak lulus
+        $passed = 'Ananda telah menguasai materi: ';
+        $notPassed = 'Ananda perlu peningkatan lagi pada materi materi: ';
+        $countPassed = 0;
+        $countNotPassed = 0;
+
+        // dd($studentCompetencyQuran);
+
+        foreach ($studentCompetencyQuran as $item) {
+            if ($item->score >= $item->competencyQuran->passing_grade) {
+                // jika lulus
+                $passed .= $item->competencyQuran->description . '; ';
+                $countPassed++;
+            } else {
+                // jika tidak lulus
+                $notPassed .= $item->competencyQuran->description . '; ';
+                $countNotPassed++;
+            }
+        }
+
+        // cek jika ada isinya
+        if ($countPassed > 0) {
+            $string .= $passed;
+        }
+
+        if ($countNotPassed > 0) {
+            $string .= $notPassed;
+        }
+
+        return $string;
+    }
 }

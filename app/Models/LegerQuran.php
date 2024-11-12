@@ -6,28 +6,26 @@ use App\Models\Scopes\AcademicYearScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Leger extends Model
+class LegerQuran extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'academic_year_id',
         'student_id',
-        'teacher_subject_id',
+        'quran_grade_id',
+        'teacher_quran_id',
         'score',
         'description',
         'metadata',
         'sum',
-        'rank', 
-        'is_half_semester',
+        'rank',
     ];
 
     protected $casts = [
         'metadata' => 'array',
     ];
 
-
-    // booted academic year
     protected static function booted(): void
     {
         static::addGlobalScope(new AcademicYearScope);
@@ -43,13 +41,13 @@ class Leger extends Model
         return $this->belongsTo(Student::class);
     }
 
-    public function teacherSubject()
+    public function teacherQuran()
     {
-        return $this->belongsTo(TeacherSubject::class);
+        return $this->belongsTo(TeacherQuranGrade::class);
     }
 
-    public function studentGrade()
+    public function quranGrade()
     {
-        return $this->hasMany(StudentGrade::class, 'student_id', 'student_id');
+        return $this->belongsTo(QuranGrade::class);
     }
 }
