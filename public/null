@@ -1,127 +1,35 @@
-TeacherQuranGrade::myQuranGrade()->pluck('quran_grade.name', 'id')
-\App\Models\TeacherQuranGrade;
-TeacherQuranGrade::myQuranGrade()->pluck('quran_grade.name', 'id')
-use \App\Models\TeacherQuranGrade;
-TeacherQuranGrade::myQuranGrade()->pluck('quran_grade.name', 'id')
-use \App\Models\TeacherQuranGrade;
-TeacherQuranGrade::myQuranGrade()
-use \App\Models\TeacherQuranGrade;
-TeacherQuranGrade::myQuranGrade()->get()
-use \App\Models\TeacherQuranGrade;
-TeacherQuranGrade::get()
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userbable_id
-
-use \App\Models\TeacherQuranGrade;
-
-TeacherQuranGrade::myQuranGrade()->pluck('quran_grade.name', 'id')
-use \App\Models\TeacherQuranGrade;
-
-TeacherQuranGrade::myQuranGrade()->get()
-use \App\Models\TeacherQuranGrade;
-
-TeacherQuranGrade::myQuranGrade()->all()
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userable_id
-
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userable->userable_id
-
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userable->userable_id
-TeacherQuranGrade::myQuranGrade()->get()
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userable->userable_id;
-TeacherQuranGrade::myQuranGrade()->get()
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userable->userable_id;
-TeacherQuranGrade::myQuranGrade()->pluck('quran_grade.name', 'id')
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userable->userable_id;
-TeacherQuranGrade::myQuranGrade()->get()
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userable->userable_id;
-TeacherQuranGrade::myQuranGrade()->with('quran_grade')
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userable->userable_id;
-TeacherQuranGrade::myQuranGrade()->with('quran_grade')->get()
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userable->userable_id;
-TeacherQuranGrade::myQuranGrade()->with('quran_grade')->get()
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userable->userable_id;
-TeacherQuranGrade::myQuranGrade()->with('quran_grade')->get()
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userable->userable_id;
-TeacherQuranGrade::myQuranGrade()->with('quran_grade')->get()
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userable->userable_id;
-TeacherQuranGrade::myQuranGrade()->with('quran_grade')->get()
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userable->userable_id;
-TeacherQuranGrade::myQuranGrade()->with('quran_grade')->get()
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userable->userable_id;
-TeacherQuranGrade::myQuranGrade()->with('quranGrade')->get()
-use \App\Models\TeacherQuranGrade;
-auth()->user()->userable->userable_id;
-TeacherQuranGrade::myQuranGrade()->with('quranGrade')->get()->pluck('quranGrade.name', 'id')
-use \App\Models\TeacherQuranGrade;
-
-$quranGrade = TeacherQuranGrade::find(1)->get()
-use \App\Models\TeacherQuranGrade;
-
-$quranGrade = TeacherQuranGrade::find(1)->first()
-use \App\Models\TeacherQuranGrade;
-
-$quranGrade = TeacherQuranGrade::find(1)
-use \App\Models\TeacherQuranGrade;
-
-$quranGrade = TeacherQuranGrade::find(1)
-use \App\Models\TeacherQuranGrade;
-
-$quranGrade = TeacherQuranGrade::find(1)
-use \App\Models\QuranGrade;
-
-$students = QuranGrade::with('studentQuranGrade')->find(1)->studentQuranGrade;
-use \App\Models\QuranGrade;
-
-$competencies = CompetencyQuran::where('quran_grade_id', 1)
-  ->get()
-  ->pluck('description', 'id');
-use \App\Models\CompetencyQuran;
-
-$competencies = CompetencyQuran::where('quran_grade_id', 1)
-  ->get()
-  ->pluck('description', 'id');
-use \App\Models\CompetencyQuran;
-
-$competencies = CompetencyQuran::get()
-use \App\Models\CompetencyQuran;
-
-$competencies = CompetencyQuran::get();
-$students = TeacherQuranGrade::with('studentQuranGrade')->find(2);
-use \App\Models\CompetencyQuran;
-use \App\Models\TeacherQuranGrade;
-
-$competencies = CompetencyQuran::get();
-$students = TeacherQuranGrade::with('studentQuranGrade')->find(2);
-use \App\Models\CompetencyQuran;
-use \App\Models\TeacherQuranGrade;
-
-$competencies = CompetencyQuran::get();
-$students = TeacherQuranGrade::with('studentQuranGrade')->find(2);
-use \App\Models\CompetencyQuran;
-use \App\Models\TeacherQuranGrade;
-use \App\Models\StudentQuranGrade;
-
-
-
-StudentQuranGrade::all()
 use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 
+StudentCompetencyQuran::get()
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
 
+StudentCompetencyQuran::get()
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
 
-StudentCompetencyQuran::all()
+StudentCompetencyQuran::count()
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+
+StudentCompetencyQuran::get()
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+
+StudentCompetencyQuran::get()->orderby('score', 'desc')
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+
+StudentCompetencyQuran::orderby('score', 'desc')->get()
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+
+StudentCompetencyQuran::orderby('score', 'asc')->get()
