@@ -37,3 +37,10 @@ $teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::cl
 use App\Models\Scopes\AcademicYearScope;
 
 $teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->get()->random()->id;
+use App\Models\Scopes\AcademicYearScope;
+
+LegerQuran::all();
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+
+LegerQuran::all();

@@ -2,7 +2,7 @@
     <form wire:submit="submit">
         {{ $this->form }}
 
-        <x-filament::button type="submit" class="mt-3">
+        <x-filament::button type="submit" class="mt-3" form="submit">
             Tanda Tangan
         </x-filament::button>
 

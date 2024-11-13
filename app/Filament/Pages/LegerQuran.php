@@ -13,6 +13,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
+use Filament\Notifications\Notification;
 
 class LegerQuran extends Page implements HasForms
 {
@@ -36,6 +37,7 @@ class LegerQuran extends Page implements HasForms
     public $teacherQuran, $students, $time_signature, $preview, $student, $agree, $leger_quran, $competency_count, $academic_year_id;
     public $checkLegerRecap = false;
     public $hasNoScores = false;
+    public $loading = false;
 
     // mount
     public function mount($id): void
@@ -128,19 +130,19 @@ class LegerQuran extends Page implements HasForms
 
     public function submit()
     {
-        // dd($this->form->getState());
+        // tambahkan loading state
+        $this->loading = true;
 
         $data = $this->form->getState();
 
-        // dd($data);
+        $teacherQuranGrade = $this->teacherQuran;
 
         foreach ($data['leger_quran'] as $leger_quran) {
-            // insert data ke table leger
             ModelsLegerQuran::updateOrCreate([
                 'academic_year_id' => session('academic_year_id'),
                 'student_id' => $leger_quran['student_id'],
                 'quran_grade_id' => $leger_quran['student']->quran_grade_id,
-                'teacher_quran_grade_id' => $this->teacherQuran->id,
+                'teacher_quran_grade_id' => $teacherQuranGrade->id,
             ],[
                 'score' => $leger_quran['avg'],
                 'description' => $leger_quran['description'],
@@ -149,7 +151,13 @@ class LegerQuran extends Page implements HasForms
                 'rank' => $leger_quran['rank'],
             ]);
         }
-    }   
+        
+        // tambahkan notifikasi sukses
+        Notification::make()
+            ->success()
+            ->title('Berhasil menyimpan data')
+            ->send();
+    }
 
     public function getDescription($studentCompetencyQuran)
     {

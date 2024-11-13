@@ -14,7 +14,7 @@ class LegerQuran extends Model
         'academic_year_id',
         'student_id',
         'quran_grade_id',
-        'teacher_quran_id',
+        'teacher_quran_grade_id',
         'score',
         'description',
         'metadata',
