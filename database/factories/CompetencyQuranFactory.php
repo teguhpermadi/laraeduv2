@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Scopes\AcademicYearScope;
 use App\Models\TeacherQuranGrade;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,7 +19,7 @@ class CompetencyQuranFactory extends Factory
     public function definition(): array
     {
         return [
-            'teacher_quran_grade_id' => TeacherQuranGrade::all()->random()->id,
+            'teacher_quran_grade_id' => TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->first()->id,
             'code' => fake()->unique()->numerify('C####'),
             'description' => fake()->sentence(),
             'passing_grade' => 70,

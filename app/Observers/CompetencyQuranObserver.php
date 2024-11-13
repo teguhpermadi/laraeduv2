@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\CompetencyQuran;
+use App\Models\Scopes\AcademicYearScope;
 use App\Models\TeacherQuranGrade;
 use App\Models\StudentCompetencyQuran;
 class CompetencyQuranObserver
@@ -13,7 +14,7 @@ class CompetencyQuranObserver
     public function created(CompetencyQuran $competencyQuran): void
     {
         $teacher_quran_grade_id = $competencyQuran->teacher_quran_grade_id;
-        $students = TeacherQuranGrade::with('studentQuranGrade')->find($teacher_quran_grade_id);
+        $students = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->with('studentQuranGrade')->find($teacher_quran_grade_id);
 
         $data = [];
 
