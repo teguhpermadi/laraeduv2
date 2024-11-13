@@ -1,112 +1,39 @@
-TeacherQuranGrade::all();
 use App\Models\Scopes\AcademicYearScope;
 
-TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->all()->random()->id
+CompetencyQuran::all()
 use App\Models\Scopes\AcademicYearScope;
 
-TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->random()->id
+CompetencyQuran::with('teacherGradeQuran')->get()
 use App\Models\Scopes\AcademicYearScope;
 
-TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->random()->id
+CompetencyQuran::with('teacherQuranGrade')->get()
 use App\Models\Scopes\AcademicYearScope;
 
-TeacherQuranGrade::withoutGlobalScope()->random()->id
+CompetencyQuran::with('teacherQuranGrade.teacher')->get()
 use App\Models\Scopes\AcademicYearScope;
 
-TeacherQuranGrade::withoutGlobalScope()->get()
+        $teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->random()->id;
 use App\Models\Scopes\AcademicYearScope;
 
-TeacherQuranGrade::withoutGlobalScopes()->get()
+$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->all()->id;
 use App\Models\Scopes\AcademicYearScope;
 
-TeacherQuranGrade::withoutGlobalScopes(AcademicYearScope::class)->get()
+$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->all()->random()->id;
 use App\Models\Scopes\AcademicYearScope;
 
-TeacherQuranGrade::withoutGlobalScopes();
+$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class);
 use App\Models\Scopes\AcademicYearScope;
 
-TeacherQuranGrade::withoutGlobalScopes()->all();
+$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->get();
 use App\Models\Scopes\AcademicYearScope;
 
-TeacherQuranGrade::get()->withoutGlobalScopes();
+$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->get()->random();
 use App\Models\Scopes\AcademicYearScope;
 
-TeacherQuranGrade::withoutGlobalScopes();
+$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->get()->random();
 use App\Models\Scopes\AcademicYearScope;
 
-TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)
-                ->inRandomOrder()
-                ->first()
-                ->id
+$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->get()->random();
 use App\Models\Scopes\AcademicYearScope;
 
-TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)
-                ->inRandomOrder()
-                ->first()
-                ->id
-use App\Models\Scopes\AcademicYearScope;
-
-TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)
-                ->inRandomOrder()
-                ->first()
-                ->id
-use App\Models\Scopes\AcademicYearScope;
-
-TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)
-                ->inRandomOrder()
-                ->first()
-                ->id
-use App\Models\Scopes\AcademicYearScope;
-
-TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)
-                
-                ->first()
-                ->id
-use App\Models\Scopes\AcademicYearScope;
-
-TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)
-                
-                ->first()
-                ->id
-use App\Models\Scopes\AcademicYearScope;
-
-TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->first()
-                ->id
-use App\Models\Scopes\AcademicYearScope;
-
-TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->first()
-use App\Models\Scopes\AcademicYearScope;
-
-StudentQuranGrade::withoutGlobalScope(AcademicYearScope::class)->first()
-use App\Models\Scopes\AcademicYearScope;
-
-
-TeacherQuranGrade::with('studentQuranGrade')
-use App\Models\Scopes\AcademicYearScope;
-
-
-TeacherQuranGrade::with('studentQuranGrade')->get()
-use App\Models\Scopes\AcademicYearScope;
-
-
-TeacherQuranGrade::with('studentQuranGrade')->get()
-use App\Models\Scopes\AcademicYearScope;
-
-
-TeacherQuranGrade::with('studentQuranGrade')->get()
-use App\Models\Scopes\AcademicYearScope;
-
-
-TeacherQuranGrade::with('studentQuranGrade')->get()
-use App\Models\Scopes\AcademicYearScope;
-
-
-TeacherQuranGrade::with('studentQuranGrade')->get()
-use App\Models\Scopes\AcademicYearScope;
-
-
-TeacherQuranGrade::with('studentQuranGrade')->get()
-use App\Models\Scopes\AcademicYearScope;
-
-
-TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->with('studentQuranGrade')->get()
+$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->get()->random()->id;

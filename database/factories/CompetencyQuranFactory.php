@@ -18,8 +18,9 @@ class CompetencyQuranFactory extends Factory
      */
     public function definition(): array
     {
+        $teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->get()->random()->id;
         return [
-            'teacher_quran_grade_id' => TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->first()->id,
+            'teacher_quran_grade_id' => $teacherQuranGrade,
             'code' => fake()->unique()->numerify('C####'),
             'description' => fake()->sentence(),
             'passing_grade' => 70,
