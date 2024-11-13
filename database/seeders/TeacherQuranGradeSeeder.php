@@ -16,6 +16,8 @@ class TeacherQuranGradeSeeder extends Seeder
      */
     public function run(): void
     {
-        TeacherQuranGrade::factory(5)->create();
+        $data = TeacherQuranGrade::factory(5)->make()->toArray();
+
+        TeacherQuranGrade::upsert($data, ['academic_year_id', 'teacher_id', 'quran_grade_id'], ['created_at', 'updated_at']);
     }
 }

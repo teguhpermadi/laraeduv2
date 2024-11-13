@@ -282,3 +282,23 @@ use \App\Models\StudentQuranGrade;
 
 TeacherQuranGrade::all();
 CompetencyQuran::factory(5)->make();
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+TeacherQuranGrade::all();
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+TeacherQuranGrade::all();
+TeacherQuranGrade::all();
+TeacherQuranGrade::all();
+TeacherQuranGrade::all();
+TeacherQuranGrade::all();
+TeacherQuranGrade::all();
+TeacherQuranGrade::all();
+TeacherGrade::all();
+TeacherGrade::all();
