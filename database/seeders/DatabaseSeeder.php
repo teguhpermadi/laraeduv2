@@ -36,6 +36,10 @@ class DatabaseSeeder extends Seeder
             ProjectThemeSeeder::class,
             ExtracurricularSeeder::class,
             TeacherExtracurricularSeeder::class,
+            QuranGradeSeeder::class,
+            TeacherQuranGradeSeeder::class,
+            StudentQuranGradeSeeder::class,
+            CompetencyQuranSeeder::class,
         ]);
     }
 }

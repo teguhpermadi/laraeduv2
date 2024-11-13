@@ -3,52 +3,282 @@ use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 use \App\Models\StudentQuranGrade;
 
-StudentCompetencyQuran::get();
+
+CompetencyQuran::all();
+
+
 use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 use \App\Models\StudentQuranGrade;
 
-StudentCompetencyQuran::get();
+
+$competencyQuran = CompetencyQuran::first();
+$teacher_quran_grade_id = $competencyQuran->teacher_quran_grade_id;
+
 use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 use \App\Models\StudentQuranGrade;
 
-StudentCompetencyQuran::get();
+
+$competencyQuran = CompetencyQuran::first();
+$teacher_quran_grade_id = $competencyQuran->teacher_quran_grade_id;
+$students = TeacherQuranGrade::with('studentQuranGrade')->find($teacher_quran_grade_id);
 use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 use \App\Models\StudentQuranGrade;
 
-StudentCompetencyQuran::get();
+StudentQuranGrade::all();
+
+
+
 use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 use \App\Models\StudentQuranGrade;
 
-StudentCompetencyQuran::get();
+StudentQuranGrade::all();
+
+
+
 use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 use \App\Models\StudentQuranGrade;
 
-StudentCompetencyQuran::all();
+StudentQuranGrade::all();
+
+
+
 use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 use \App\Models\StudentQuranGrade;
 
-StudentCompetencyQuran::all();
+StudentQuranGrade::all();
+
+
+
 use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 use \App\Models\StudentQuranGrade;
 
-StudentCompetencyQuran::all();
+Student::all();
+
+
+
 use \App\Models\CompetencyQuran;
 use \App\Models\TeacherQuranGrade;
 use \App\Models\StudentCompetencyQuran;
 use \App\Models\StudentQuranGrade;
 
-StudentCompetencyQuran::where('score', 0)->get();
+StudentQuranGrade::all();
+
+
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+StudentQuranGrade::all();
+
+
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+StudentQuranGrade::all();
+
+
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+StudentQuranGrade::all();
+
+
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+StudentQuranGrade::all();
+
+
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+        $data = StudentQuranGrade::factory(10)->make()->toArray();
+
+
+
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$data = StudentQuranGrade::factory(10)->make()->toArray();
+
+StudentQuranGrade::upsert($data, ['academic_year_id', 'student_id', 'quran_grade_id']);
+
+
+
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+StudentQuranGrade::all()
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+StudentQuranGrade::all();
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+TeacherQuranGrade::all();
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+TeacherQuranGrade::all();
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+StudentGrade::all();
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+StudentQuranGrade::all();
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+TeacherQuranGrade::all();
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+TeacherQuranGrade::first();
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+TeacherQuranGrade::first();
+
+$students = TeacherQuranGrade::with('studentQuranGrade')->find(1);
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+            $teacher_quran_grade_id = TeacherQuranGrade::all()->random()->id;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacher_quran_grade_id = TeacherQuranGrade::all()->random->id;
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacher_quran_grade_id = TeacherQuranGrade::all()->random()
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+$teacher_quran_grade_id = TeacherQuranGrade::all()
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+CompetencyQuran::factory(5)->create();
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+CompetencyQuran::factory(5)->make();
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+CompetencyQuran::factory(5)->make();
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+CompetencyQuran::factory(5)->make();
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+CompetencyQuran::factory(5)->make();
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+CompetencyQuran::factory(5)->make();
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+
+TeacherQuranGrade::all()
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+TeacherQuranGrade::all();
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+TeacherQuranGrade::all();
+
+use \App\Models\CompetencyQuran;
+use \App\Models\TeacherQuranGrade;
+use \App\Models\StudentCompetencyQuran;
+use \App\Models\StudentQuranGrade;
+
+TeacherQuranGrade::all();
+CompetencyQuran::factory(5)->make();

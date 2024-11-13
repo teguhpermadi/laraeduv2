@@ -16,16 +16,20 @@ class CompetencyQuranObserver
         $students = TeacherQuranGrade::with('studentQuranGrade')->find($teacher_quran_grade_id);
 
         $data = [];
-        foreach ($students->studentQuranGrade as $student) {
-            $data[] = [
-                'academic_year_id' => session('academic_year_id'),
-                'quran_grade_id' => $students->quran_grade_id,
-                'student_id' => $student->student_id,
-                'competency_quran_id' => $competencyQuran->id,
-                'created_at' => now(),
-            ];
+
+        // if studentqurangrade exists, then create    
+        if ($students->studentQuranGrade->count() > 0) {
+            foreach ($students->studentQuranGrade as $student) {
+                $data[] = [
+                    'academic_year_id' => session('academic_year_id'),
+                    'quran_grade_id' => $students->quran_grade_id,
+                    'student_id' => $student->student_id,
+                    'competency_quran_id' => $competencyQuran->id,
+                    'created_at' => now(),
+                ];
+            }
+            StudentCompetencyQuran::insert($data);
         }
-        StudentCompetencyQuran::insert($data);
     }
 
     /**
