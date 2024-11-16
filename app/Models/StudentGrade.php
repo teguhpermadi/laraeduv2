@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Scopes\AcademicYearScope;
+use App\Models\Scopes\OrderStudentScope;
 use App\Observers\StudentGradeObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-#[ScopedBy(AcademicYearScope::class)]
+#[ScopedBy([AcademicYearScope::class, OrderStudentScope::class])]
 #[ObservedBy(StudentGradeObserver::class)]
 class StudentGrade extends Model
 {

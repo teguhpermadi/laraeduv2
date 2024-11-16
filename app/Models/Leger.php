@@ -5,8 +5,10 @@ namespace App\Models;
 use App\Models\Scopes\AcademicYearScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use App\Models\Scopes\OrderStudentScope;
 
+#[ScopedBy([AcademicYearScope::class, OrderStudentScope::class])]
 class Leger extends Model
 {
     use HasFactory;
@@ -26,17 +28,6 @@ class Leger extends Model
     protected $casts = [
         'metadata' => 'array',
     ];
-
-
-    // booted academic year
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new AcademicYearScope);
-
-        static::addGlobalScope('order', function (Builder $builder) {
-            $builder->orderBy('student_id', 'asc');
-        });
-    }
 
     public function academicYear()
     {

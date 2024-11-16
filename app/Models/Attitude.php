@@ -5,7 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Scopes\OrderStudentScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use App\Models\Scopes\AcademicYearScope;
 
+#[ScopedBy([AcademicYearScope::class, OrderStudentScope::class])]
 class Attitude extends Model
 {
     use HasFactory;
@@ -17,17 +21,6 @@ class Attitude extends Model
         'attitude_religius',
         'attitude_social',
     ];
-
-    protected static function booted(): void
-    {
-        $academic_year_id = session()->get('academic_year_id');
-
-        // buatkan global scope berdasarkan academic year id
-        static::addGlobalScope('academicYear', function (Builder $builder) use ($academic_year_id) {
-            $builder->where('academic_year_id', $academic_year_id);
-        });
-
-    }
 
     public function grade()
     {

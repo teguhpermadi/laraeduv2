@@ -5,7 +5,10 @@ namespace App\Models;
 use App\Models\Scopes\AcademicYearScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use App\Models\Scopes\OrderStudentScope;
 
+#[ScopedBy([AcademicYearScope::class, OrderStudentScope::class])]
 class ProjectStudent extends Model
 {
     use HasFactory;
@@ -16,11 +19,6 @@ class ProjectStudent extends Model
         'project_target_id',
         'score',
     ];
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new AcademicYearScope);
-    }
 
     public function projectTarget()
     {

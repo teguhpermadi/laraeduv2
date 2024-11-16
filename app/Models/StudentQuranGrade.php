@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use App\Models\Scopes\OrderStudentScope;
 
+#[ScopedBy([AcademicYearScope::class, OrderStudentScope::class])]
 class StudentQuranGrade extends Model
 {
     use HasFactory;
@@ -17,11 +20,6 @@ class StudentQuranGrade extends Model
         'student_id',
         'quran_grade_id',
     ];
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new AcademicYearScope);
-    }
 
     public function student(): BelongsTo
     {

@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\AcademicYearScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Models\Scopes\OrderStudentScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 
+#[ScopedBy([AcademicYearScope::class, OrderStudentScope::class])]
 class Attendance extends Model
 {
     use HasFactory;
@@ -30,13 +34,6 @@ class Attendance extends Model
     
     protected static function booted(): void
     {
-        $academic_year_id = session()->get('academic_year_id');
-
-        // buatkan global scope berdasarkan academic year id
-        static::addGlobalScope('academicYear', function (Builder $builder) use ($academic_year_id) {
-            $builder->where('academic_year_id', $academic_year_id);
-        });
-
         static::addGlobalScope('totalAttendance', function (Builder $builder) use ($academic_year_id) {
             $builder->select(['*', DB::raw('sick + permission + absent as total_attendance')]);
         });
