@@ -19,6 +19,7 @@
         "phpoffice/phpword": "*",
         "rmsramos/activitylog": "^1.0",
         "spatie/laravel-activitylog": "^4.8",
+        "staudenmeir/eloquent-json-relations": "^1.13",
         "stechstudio/filament-impersonate": "^3.14"
     },
     "require-dev": {

@@ -6,10 +6,10 @@
             Tanda Tangan
         </x-filament::button>
 
-        {{-- @if ($this->checkLegerRecap)
-            <x-filament::button tag="a" href="{{ route('leger-print', $this->teacherSubject->id) }}" class="mt-3 ml-3">
+        @if ($this->checkLegerQuran)
+            <x-filament::button tag="a" href="{{ route('leger-quran-print', $this->teacherQuran->id) }}" class="mt-3 ml-3">
                 Cetak Leger
             </x-filament::button>
-        @endif --}}
+        @endif
     </form>
 </x-filament-panels::page>

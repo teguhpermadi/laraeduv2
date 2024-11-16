@@ -63,9 +63,9 @@ class CompetencyQuranResource extends Resource
                     })
                     ->live()
                     ->reactive()
-                    ->afterStateUpdated(function(Get $get, Set $set){
-                        $teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->where('quran_grade_id', $get('quran_grade_id'))->first();
-                        $set('teacher_quran_grade_id', $teacherQuranGrade->id);
+                    ->afterStateUpdated(function(Get $get, Set $set, $state){
+                        // $teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->where('quran_grade_id', $get('quran_grade_id'))->first();
+                        $set('teacher_quran_grade_id', $state);
                     }),
                 TextInput::make('code')
                     ->required(),

@@ -13,18 +13,21 @@ class CompetencyQuranObserver
      */
     public function created(CompetencyQuran $competencyQuran): void
     {
-        $teacher_quran_grade_id = $competencyQuran->teacher_quran_grade_id;
-        $students = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->with('studentQuranGrade')->find($teacher_quran_grade_id);
+        $teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)
+            ->with('studentQuranGrade')
+            ->find($competencyQuran->teacher_quran_grade_id);
 
         $data = [];
 
+        $countStudent = $teacherQuranGrade->studentQuranGrade->count();
+
         // if studentqurangrade exists, then create    
-        if ($students->studentQuranGrade->count() > 0) {
-            foreach ($students->studentQuranGrade as $student) {
+        if ($countStudent > 0) {
+            foreach ($teacherQuranGrade->studentQuranGrade as $student) {
                 $data[] = [
                     'academic_year_id' => session('academic_year_id'),
-                    'quran_grade_id' => $students->quran_grade_id,
-                    'student_id' => $student->student_id,
+                    'quran_grade_id' => $teacherQuranGrade->quranGrade->id,
+                    'student_quran_grade_id' => $student->id,
                     'competency_quran_id' => $competencyQuran->id,
                     'created_at' => now(),
                 ];

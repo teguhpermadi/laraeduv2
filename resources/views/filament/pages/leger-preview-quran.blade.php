@@ -81,6 +81,7 @@
                         <td class="border border-slate-300 dark:border-slate-600 text-center">-</td>
                         <td class="border border-slate-300 dark:border-slate-600 text-center">-</td>
                         <td class="border border-slate-300 dark:border-slate-600 text-center">-</td>
+                        <td class="border border-slate-300 dark:border-slate-600 text-center">-</td>
                     @endif
                     
                 </tr>

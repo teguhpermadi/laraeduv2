@@ -7,6 +7,7 @@ Route::get('/', function () {
 });
 
 Route::get('{id}/leger-print', \App\Livewire\LegerPreview::class)->name('leger-print');
+Route::get('{id}/leger-quran-print', \App\Livewire\LegerPreviewQuran::class)->name('leger-quran-print');
 
 // report cover
 Route::get('{id}/report-cover', [\App\Http\Controllers\ReportController::class, 'getDataCover'])->name('report-cover');

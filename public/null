@@ -1,46 +1,163 @@
 use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
 
-CompetencyQuran::all()
-use App\Models\Scopes\AcademicYearScope;
-
-CompetencyQuran::with('teacherGradeQuran')->get()
-use App\Models\Scopes\AcademicYearScope;
-
-CompetencyQuran::with('teacherQuranGrade')->get()
-use App\Models\Scopes\AcademicYearScope;
-
-CompetencyQuran::with('teacherQuranGrade.teacher')->get()
-use App\Models\Scopes\AcademicYearScope;
-
-        $teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->random()->id;
-use App\Models\Scopes\AcademicYearScope;
-
-$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->all()->id;
-use App\Models\Scopes\AcademicYearScope;
-
-$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->all()->random()->id;
-use App\Models\Scopes\AcademicYearScope;
-
-$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class);
-use App\Models\Scopes\AcademicYearScope;
-
-$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->get();
-use App\Models\Scopes\AcademicYearScope;
-
-$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->get()->random();
-use App\Models\Scopes\AcademicYearScope;
-
-$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->get()->random();
-use App\Models\Scopes\AcademicYearScope;
-
-$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->get()->random();
-use App\Models\Scopes\AcademicYearScope;
-
-$teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->get()->random()->id;
-use App\Models\Scopes\AcademicYearScope;
-
-LegerQuran::all();
+$legerQuran = LegerQuran::find(1);
+$legerQuran->metadata
 use App\Models\Scopes\AcademicYearScope;
 use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
 
-LegerQuran::all();
+$legerQuran = LegerQuran::find(1);
+$legerQuran->metadata->competencyQuran
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::find(1);
+$legerQuran->metadata->competencyQuran
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::find(1);
+$legerQuran->metadata
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata[0]
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata[0]['competency_quran']
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata[0]['competency_quran_id']
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata[0]['competency_quran']
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata[0]['competencyQuran']
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata[0]->competencyQuran
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata[0]
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata[0]['score']
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata[0]
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata[0]
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata[0]
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata[0]->competency
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata[0]->competencyQuran
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with('competencyQuran')->find(1);
+$legerQuran->metadata[0]
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::with(['competencyQuran'=> function($q){
+	$q->metadata;
+} ])->find(1);
+$legerQuran->metadata[0]
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::find(1);
+$legerQuran->metadata[0]
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::find(1);
+$legerQuran
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::find(1);
+$legerQuran;
+  
+Leger::get()
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\Leger;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::find(1);
+$legerQuran;
+  
+Leger::get()

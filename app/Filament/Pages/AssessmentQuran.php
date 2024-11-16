@@ -55,12 +55,17 @@ class AssessmentQuran extends Page implements HasForms, HasTable
     public ?array $data = [];
     public $quranGrade = [];
     public $competencyQuran = [];
+    public $teacherQuranGrade;
     public $quran_grade_id = -1, $competency_quran_id = -1;
     public $empty_state = [];
 
     public function mount(): void
     {
         $teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->get();
+        // dd($teacherQuranGrade);
+
+        $this->teacherQuranGrade = $teacherQuranGrade;
+
         // ambil quran grade id dan simpan dalam $quranGrade
         $this->quranGrade = $teacherQuranGrade->pluck('quranGrade.name', 'id');
 
@@ -89,9 +94,13 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                             ->required()
                             ->live()
                             ->afterStateUpdated(function (callable $set, $state) {
-                                // ambil competency quran berdasarkan quran grade id
-                                $competencyQuran = CompetencyQuran::where('teacher_quran_grade_id', $state)->get();
-                                $this->competencyQuran = $competencyQuran->pluck('description', 'id');
+
+                                // competency quran
+                                $this->competencyQuran = $this->teacherQuranGrade
+                                    ->where('id', $state)
+                                    ->first()
+                                    ->competencyQuran
+                                    ->pluck('description', 'id');
 
                                 $this->competency_quran_id = -1;
                                 $this->resetTable();
@@ -248,35 +257,28 @@ class AssessmentQuran extends Page implements HasForms, HasTable
     public function resetStudentCompetency($quran_grade_id)
     {
         // ambil semua student dari quran grade id
-        $students = StudentQuranGrade::where('quran_grade_id', $quran_grade_id)->get()->pluck('student_id');
+        $data = TeacherQuranGrade::myQuranGrade()->with('studentQuranGrade', 'competencyQuran')->find($quran_grade_id);
 
-        if (count($students) == 0) {
+        if (count($data->studentQuranGrade) == 0) {
             // hapus semua student competency berdasarkan quran grade id
             StudentCompetencyQuran::where('quran_grade_id', $quran_grade_id)->delete();
         }
 
-        // get students
-        $students = TeacherQuranGrade::myQuranGrade()->where('quran_grade_id', $quran_grade_id)->with('studentQuranGrade')->first();
-
-        // dd($students->studentQuranGrade->toArray());
-
         // get competencies
-        $competencies = CompetencyQuran::where('teacher_quran_grade_id', $quran_grade_id)->get();
-
-        // dd($competencies->toArray());
+        $competencies = $data->competencyQuran;
+        $students = $data->studentQuranGrade;
 
         // create new student competency
-        foreach ($students->studentQuranGrade as $student) {
+        foreach ($students as $student) {
             foreach ($competencies as $competency) {
-                $data = [
-                    // 'teacher_quran_grade_id' => $quran_grade_id,
+                $studentCompetency = [
                     'academic_year_id' => session('academic_year_id'),
-                    'quran_grade_id' => $quran_grade_id,
+                    'quran_grade_id' => $data->quranGrade->id,
                     'student_quran_grade_id' => $student->id,
                     'competency_quran_id' => $competency->id,
                 ];
 
-                StudentCompetencyQuran::updateOrCreate($data, ['score' => 0]);
+                StudentCompetencyQuran::updateOrCreate($studentCompetency, ['score' => 0]);
             }
         }
 

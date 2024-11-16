@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\LegerQuran as ModelsLegerQuran;
+use App\Models\LegerQuranRecap;
 use App\Models\TeacherQuranGrade;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DateTimePicker;
@@ -35,7 +36,7 @@ class LegerQuran extends Page implements HasForms
     public ?array $data = [];
 
     public $teacherQuran, $students, $time_signature, $preview, $student, $agree, $leger_quran, $competency_count, $academic_year_id;
-    public $checkLegerRecap = false;
+    public $checkLegerQuran = false;
     public $hasNoScores = false;
     public $loading = false;
 
@@ -99,6 +100,11 @@ class LegerQuran extends Page implements HasForms
                 'time_signature' => now(),
             ]);
         }
+
+        // cek apakah sudah ada data leger_quran
+        $this->checkLegerQuran = ModelsLegerQuran::where('academic_year_id', $this->academic_year_id)
+            ->where('teacher_quran_grade_id', $id)
+            ->exists();
     }
 
     public function form(Form $form): Form
@@ -151,7 +157,13 @@ class LegerQuran extends Page implements HasForms
                 'rank' => $leger_quran['rank'],
             ]);
         }
-        
+
+        // leger quran recap
+        LegerQuranRecap::updateOrCreate([
+            'academic_year_id' => session('academic_year_id'),
+            'teacher_quran_grade_id' => $teacherQuranGrade->id,
+        ]);
+
         // tambahkan notifikasi sukses
         Notification::make()
             ->success()
