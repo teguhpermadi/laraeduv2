@@ -115,7 +115,8 @@ class AttendanceResource extends Resource
             ])
             ->modifyQueryUsing(
                 fn(Builder $query) => $query->myGrade()
-            );
+            )
+            ->paginated(false);
     }
 
     public static function getRelations(): array

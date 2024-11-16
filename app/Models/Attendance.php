@@ -34,7 +34,7 @@ class Attendance extends Model
     
     protected static function booted(): void
     {
-        static::addGlobalScope('totalAttendance', function (Builder $builder) use ($academic_year_id) {
+        static::addGlobalScope('totalAttendance', function (Builder $builder) {
             $builder->select(['*', DB::raw('sick + permission + absent as total_attendance')]);
         });
     }

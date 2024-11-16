@@ -73,12 +73,7 @@ class AttitudeResource extends Resource
                     ->options(LinkertScaleEnum::class),
                 SelectColumn::make('attitude_social')
                     ->label(__('attitude.attitude_social'))
-                    ->options([
-                        'amat baik' => 'amat baik',
-                        'baik' => 'baik',
-                        'cukup baik' => 'cukup baik',
-                        'kurang baik' => 'kurang baik',
-                ]),
+                    ->options(LinkertScaleEnum::class),
             ])
             ->filters([
                 //
@@ -93,21 +88,11 @@ class AttitudeResource extends Resource
                     ->form([
                         Select::make('attitude_religius')
                             ->label(__('attitude.attitude_religius'))
-                            ->options([
-                                'amat baik' => 'amat baik',
-                                'baik' => 'baik',
-                                'cukup baik' => 'cukup baik',
-                                'kurang baik' => 'kurang baik',
-                            ])
+                            ->options(LinkertScaleEnum::class)
                             ->required(),
                         Select::make('attitude_social')
                             ->label(__('attitude.attitude_social'))
-                            ->options([
-                                'amat baik' => 'amat baik',
-                                'baik' => 'baik',
-                                'cukup baik' => 'cukup baik',
-                                'kurang baik' => 'kurang baik',
-                            ])
+                            ->options(LinkertScaleEnum::class)
                             ->required(),
                     ])
                     ->action(function (Collection $records, $data) {
@@ -122,7 +107,8 @@ class AttitudeResource extends Resource
             ])
             ->modifyQueryUsing(function(Builder $query){
                 $query->myGrade();
-            });
+            })
+            ->paginated(false);
     }
 
     public static function getRelations(): array
