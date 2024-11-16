@@ -97,4 +97,14 @@ class TeacherSubject extends Model
 
         $query->where('teacher_id', $teacher_id)->with('grade');
     }
+
+    public function leger()
+    {
+        return $this->hasMany(Leger::class, 'teacher_subject_id');
+    }
+
+    public function legerRecap()
+    {
+        return $this->hasMany(LegerRecap::class, 'teacher_subject_id');
+    }
 }

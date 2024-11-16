@@ -12,7 +12,7 @@ class LegerRecap extends Model
     protected $fillable = [
         'academic_year_id', 
         'teacher_subject_id',
-        'is_half_semester',
+        'category',
     ];
 
     public function academicYear()

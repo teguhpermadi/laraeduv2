@@ -21,10 +21,10 @@ return new class extends Migration
             $table->integer('rank')->default(0);
             $table->text('description');
             $table->json('metadata')->nullable();
-            $table->boolean('is_half_semester')->default(false);
+            $table->string('category');
             $table->timestamps();
 
-            $table->unique(['academic_year_id', 'student_id', 'teacher_subject_id', 'is_half_semester'], 'leger_unique');
+            $table->unique(['academic_year_id', 'student_id', 'teacher_subject_id', 'category'], 'leger_unique');
         });
     }
 

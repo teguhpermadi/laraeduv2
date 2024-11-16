@@ -1,221 +1,216 @@
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::find(1);
-$legerQuran->metadata
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::find(1);
-$legerQuran->metadata->competencyQuran
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::find(1);
-$legerQuran->metadata->competencyQuran
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::find(1);
-$legerQuran->metadata
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata[0]
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata[0]['competency_quran']
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata[0]['competency_quran_id']
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata[0]['competency_quran']
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata[0]['competencyQuran']
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata[0]->competencyQuran
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata[0]
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata[0]['score']
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata[0]
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata[0]
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata[0]
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata[0]->competency
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata[0]->competencyQuran
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with('competencyQuran')->find(1);
-$legerQuran->metadata[0]
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::with(['competencyQuran'=> function($q){
-	$q->metadata;
-} ])->find(1);
-$legerQuran->metadata[0]
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::find(1);
-$legerQuran->metadata[0]
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::find(1);
-$legerQuran
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
-use App\Models\LegerQuranRecap;
-
-$legerQuran = LegerQuran::find(1);
-$legerQuran;
-  
-Leger::get()
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
+use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
-use App\Models\LegerQuranRecap;
 
-$legerQuran = LegerQuran::find(1);
-$legerQuran;
-  
-Leger::get()
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
+$teacherSubject = TeacherSubject::find(300);
+        
+$leger_full_semester = $teacherSubject->leger->where('category', CategoryLegerEnum::FULL_SEMESTER->value);
+use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
-use App\Models\LegerQuranRecap;
 
-$legerQuran = LegerQuran::find(1);
-$legerQuran;
-  
-Teacher::random()->id
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
+$teacherSubject = TeacherSubject::find(300);
+        
+$leger_full_semester = $teacherSubject->leger->where('category', CategoryLegerEnum::FULL_SEMESTER->value);
+use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
-use App\Models\LegerQuranRecap;
 
-Teacher::get()->random->id
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
+$teacherSubject = TeacherSubject::find(300);
+        
+$leger_full_semester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::FULL_SEMESTER->value);
+use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
-use App\Models\LegerQuranRecap;
 
-Teacher::get()->random()->id
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
+$teacherSubject = TeacherSubject::find(300);
+        
+$leger_full_semester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::FULL_SEMESTER->value)->first();
+use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
-use App\Models\LegerQuranRecap;
 
-Leger::get();
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
+$teacherSubject = TeacherSubject::find(300);
+        
+$leger_full_semester = $teacherSubject->competencyQuran;
+use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
-use App\Models\LegerQuranRecap;
 
-Leger::with('student')->get();
-use App\Models\Scopes\AcademicYearScope;
-use App\Models\LegerQuran;
+$teacherSubject = TeacherSubject::find(300);
+        
+$leger_full_semester = $teacherSubject->competency;
+use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
-use App\Models\LegerQuranRecap;
 
-Leger::with('student')->where('student_id', 4)->get();
-use App\CategoryLegerEnum;
-use App\CategoryLegerEnum;
-use App\CategoryLegerEnum;
+$teacherSubject = TeacherSubject::find(300);
+        
+$leger_full_semester = $teacherSubject->competency->where('half_semester', 1);
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
 
-CategoryLegerEnum::toArray()
-use App\CategoryLegerEnum;
+$teacherSubject = TeacherSubject::find(300);
+        
+$leger_full_semester = $teacherSubject->competency->where('half_semester', 1);
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
 
-CategoryLegerEnum::value('FULL_SEMESTER')
-use App\CategoryLegerEnum;
+$teacherSubject = TeacherSubject::find(300);
+        
+$leger_full_semester = $teacherSubject->competency->where('half_semester', 1)->count();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
 
+$teacherSubject = TeacherSubject::find(300);
+        
+$leger_full_semester = $teacherSubject->competency->where('half_semester', 1);
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
 
-$value = 'full_semester';
-$category = CategoryLegerEnum::fromValue($value);
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
 
-if ($category) {
-    echo $category->name; 
-    echo $category->value; 
-    echo $category->getLabel(); 
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+
+$legerFullSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::FULL_SEMESTER->value);
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+
+$legerFullSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::FULL_SEMESTER->value);
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+
+$legerFullSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::FULL_SEMESTER->value)->first();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+
+$legerFullSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::FULL_SEMESTER->value);
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+
+$legerFullSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::HALF_SEMESTER->value);
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+
+$legerFullSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->with('student');
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+
+$legerFullSemester = $teacherSubject->with('student')->leger->where('category', CategoryLegerEnum::HALF_SEMESTER->value);
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+
+$legerFullSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::HALF_SEMESTER->value);
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+
+$legerFullSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::HALF_SEMESTER->value);
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+
+$legerFullSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::HALF_SEMESTER->value);
+
+$legerFullSemester->first()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+
+$legerFullSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::HALF_SEMESTER->value);
+
+$students = $legerFullSemester->first();
+
+foreach($students->metadata as $metadata){
+	$metadata;
 }
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+
+$legerFullSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::HALF_SEMESTER->value);
+
+$students = $legerFullSemester->first();
+
+$students->metadata
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+
+$legerHalfSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::HALF_SEMESTER->value);
+
+$students = $legerHalfSemester->first();
+
+$students->metadata
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+
+$legerHalfSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::HALF_SEMESTER->value);
+
+$students = $legerHalfSemester->first();
+
+$students->metadata
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+
+$teacherSubject = TeacherSubject::find(300);
+        
+$legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+
+$legerHalfSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::HALF_SEMESTER->value);
+
+$students = $legerHalfSemester->first();
+
+

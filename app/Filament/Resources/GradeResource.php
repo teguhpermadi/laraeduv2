@@ -7,7 +7,7 @@ use App\Filament\Resources\GradeResource\RelationManagers;
 use App\Filament\Resources\GradeResource\RelationManagers\StudentGradeRelationManager;
 use App\Filament\Resources\GradeResource\RelationManagers\TeacherGradeRelationManager;
 use App\Models\Grade;
-use App\PhaseEnum;
+use App\Enums\PhaseEnum;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;

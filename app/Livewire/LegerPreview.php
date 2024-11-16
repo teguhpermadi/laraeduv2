@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\CategoryLegerEnum;
 use Livewire\Component;
 use App\Models\TeacherSubject;
 use App\Models\Leger;
@@ -10,59 +11,32 @@ use App\Models\LegerRecap;
 class LegerPreview extends Component
 {
     public $teacherSubject;
-    public $students;
-    public $competency_count;
-    public $leger;
-    public $legerRecap;
+    public $competencyFullSemester;
+    public $competencyHalfSemester;
+    public $competencyCountFullSemester;
+    public $competencyCountHalfSemester;
+    public $legerFullSemester;
+    public $legerHalfSemester;
+    public $legerRecapFullSemester;
+    public $legerRecapHalfSemester;
 
     public function mount($id)
     {
-        $teacherSubject = TeacherSubject::with('subject', 'competency')->withCount('competency')->find($id);
-        
-        $this->legerRecap = LegerRecap::where('teacher_subject_id', $id)->first();
-        
-
-        // dd($this->competency->toArray());
+        $teacherSubject = TeacherSubject::find($id);
 
         $this->teacherSubject = $teacherSubject;
-        $this->competency_count = $teacherSubject->competency_count;
-        $this->leger = Leger::where('teacher_subject_id', $id)->get();
 
-        $data = collect();
+        $this->legerRecapFullSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::FULL_SEMESTER->value)->first();
+        $this->legerRecapHalfSemester = $teacherSubject->legerRecap->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->first();
+        
+        $this->legerFullSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::FULL_SEMESTER->value);
+        $this->legerHalfSemester = $teacherSubject->leger->where('category', CategoryLegerEnum::HALF_SEMESTER->value);
 
-        foreach ($this->leger as $leger) {
-            $metadata = $leger->metadata;
-            
-            $data[] = collect([
-                'academic_year_id' => $leger->academic_year_id,
-                'teacher_subject_id' => $leger->teacher_subject_id,
-                'student_id' => $leger->student_id,
-                'student' => $leger->student,
-                'competency_count' => count($metadata),
-                'avg' => $leger->score,
-                'sum' => $leger->sum,
-                'rank' => $leger->rank,
-                'metadata' => $metadata,
-                'description' => $leger->description    
-            ]);
-        }
+        $this->competencyCountHalfSemester = $teacherSubject->competency->where('half_semester', 1)->count();
+        $this->competencyCountFullSemester = $teacherSubject->competency->count();
 
-        // dd($data->toArray());
-
-        // Urutkan data berdasarkan sum secara descending
-        $data = $data->sortByDesc('sum')->values();
-
-        // Tambahkan peringkat
-        $data = $data->map(function ($item, $index) {
-            $item['rank'] = $index + 1;
-            return $item;
-        });
-
-        // Urutkan kembali berdasarkan student_id
-        $data = $data->sortBy('student_id')->values();
-
-        $this->students = $data;
-
+        $this->competencyHalfSemester = $teacherSubject->competency->where('half_semester', 1);
+        $this->competencyFullSemester = $teacherSubject->competency; 
     }
 
     public function render()

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\PhaseEnum;
+use App\Enums\PhaseEnum;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

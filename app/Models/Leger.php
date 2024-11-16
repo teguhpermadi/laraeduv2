@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Scopes\AcademicYearScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Leger extends Model
 {
@@ -19,7 +20,7 @@ class Leger extends Model
         'metadata',
         'sum',
         'rank', 
-        'is_half_semester',
+        'category',
     ];
 
     protected $casts = [
@@ -31,6 +32,10 @@ class Leger extends Model
     protected static function booted(): void
     {
         static::addGlobalScope(new AcademicYearScope);
+
+        static::addGlobalScope('order', function (Builder $builder) {
+            $builder->orderBy('student_id', 'asc');
+        });
     }
 
     public function academicYear()

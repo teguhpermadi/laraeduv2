@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Enums\CategoryLegerEnum;
 use App\Models\Leger as ModelsLeger;
 use App\Models\LegerRecap;
 use App\Models\StudentCompetency;
@@ -204,13 +205,13 @@ class Leger extends Page implements HasForms
                 'academic_year_id' => $key['academic_year_id'],
                 'student_id' => $key['student_id'],
                 'teacher_subject_id' => $key['teacher_subject_id'],
+                'category' => CategoryLegerEnum::FULL_SEMESTER->value,
             ], [
                 'score' => $key['avg'],
                 'sum' => $key['sum'],
                 'rank' => $key['rank'],
                 'description' => $key['description'],
                 'metadata' => $key['metadata'],
-                'is_half_semester' => false,
             ]);
         }
 
@@ -218,7 +219,7 @@ class Leger extends Page implements HasForms
         LegerRecap::updateOrCreate([
             'academic_year_id' => $this->academic_year_id,
             'teacher_subject_id' => $this->teacherSubject->id,
-            'is_half_semester' => false,
+            'category' => CategoryLegerEnum::FULL_SEMESTER->value,
         ]); 
 
         /* HALF SEMESTER */
@@ -228,13 +229,13 @@ class Leger extends Page implements HasForms
                 'academic_year_id' => $key['academic_year_id'],
                 'student_id' => $key['student_id'],
                 'teacher_subject_id' => $key['teacher_subject_id'],
+                'category' => CategoryLegerEnum::HALF_SEMESTER->value,
             ], [
                 'score' => $key['avg'],
                 'sum' => $key['sum'],
                 'rank' => $key['rank'],
                 'description' => $key['description'],
                 'metadata' => $key['metadata'],
-                'is_half_semester' => true,
             ]);
         }   
 
@@ -242,7 +243,7 @@ class Leger extends Page implements HasForms
         LegerRecap::updateOrCreate([
             'academic_year_id' => $this->academic_year_id,
             'teacher_subject_id' => $this->teacherSubject->id,
-            'is_half_semester' => true,
+            'category' => CategoryLegerEnum::HALF_SEMESTER->value,
         ]);
 
         // notifikasi

@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id()->from(700);
             $table->foreignId('academic_year_id')->constrained('academic_years')->cascadeOnDelete();   
             $table->foreignId('teacher_subject_id')->constrained('teacher_subjects')->cascadeOnDelete();
-            $table->boolean('is_half_semester')->default(false);
+            $table->string('category');
             $table->timestamps();
 
-            $table->unique(['academic_year_id', 'teacher_subject_id', 'is_half_semester'], 'unique_leger_recap');
+            $table->unique(['academic_year_id', 'teacher_subject_id', 'category'], 'unique_leger_recap');
         });
     }
 
