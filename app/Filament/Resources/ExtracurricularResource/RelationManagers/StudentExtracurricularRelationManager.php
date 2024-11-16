@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\ExtracurricularResource\RelationManagers;
 
-use App\LinkertScaleEnum;
+use App\Enums\LinkertScaleEnum;
 use App\Models\Grade;
 use App\Models\Student;
 use App\Models\StudentGrade;

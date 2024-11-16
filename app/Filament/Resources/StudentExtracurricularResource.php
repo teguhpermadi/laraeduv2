@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StudentExtracurricularResource\Pages;
 use App\Filament\Resources\StudentExtracurricularResource\RelationManagers;
-use App\LinkertScaleEnum;
+use App\Enums\LinkertScaleEnum;
 use App\Models\Extracurricular;
 use App\Models\Student;
 use App\Models\StudentExtracurricular;

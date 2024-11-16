@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\LinkertScaleEnum;
+use App\Enums\LinkertScaleEnum;
 use App\Models\Extracurricular;
 use App\Models\StudentExtracurricular;
 use App\Models\TeacherExtracurricular;

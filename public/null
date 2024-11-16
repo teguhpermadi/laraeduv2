@@ -200,3 +200,22 @@ use App\Models\Leger;
 use App\Models\LegerQuranRecap;
 
 Leger::with('student')->where('student_id', 4)->get();
+use App\CategoryLegerEnum;
+use App\CategoryLegerEnum;
+use App\CategoryLegerEnum;
+
+CategoryLegerEnum::toArray()
+use App\CategoryLegerEnum;
+
+CategoryLegerEnum::value('FULL_SEMESTER')
+use App\CategoryLegerEnum;
+
+
+$value = 'full_semester';
+$category = CategoryLegerEnum::fromValue($value);
+
+if ($category) {
+    echo $category->name; 
+    echo $category->value; 
+    echo $category->getLabel(); 
+}

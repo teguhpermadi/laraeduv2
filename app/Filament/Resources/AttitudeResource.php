@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AttitudeResource\Pages;
 use App\Filament\Resources\AttitudeResource\RelationManagers;
-use App\LinkertScaleEnum;
+use App\Enums\LinkertScaleEnum;
 use App\Models\AcademicYear;
 use App\Models\Attitude;
 use App\Models\Student;
