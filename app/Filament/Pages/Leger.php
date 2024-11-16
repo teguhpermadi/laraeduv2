@@ -16,6 +16,7 @@ use Filament\Forms\Components\ViewField;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -243,6 +244,13 @@ class Leger extends Page implements HasForms
             'teacher_subject_id' => $this->teacherSubject->id,
             'is_half_semester' => true,
         ]);
+
+        // notifikasi
+        Notification::make()
+            ->title('Berhasil')
+            ->body('Leger berhasil disimpan')
+            ->success()
+            ->send();
     }
 
     public function getDescription($data)

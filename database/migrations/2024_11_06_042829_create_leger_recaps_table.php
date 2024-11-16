@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('leger_recaps', function (Blueprint $table) {
-            $table->id();
+            $table->id()->from(700);
             $table->foreignId('academic_year_id')->constrained('academic_years')->cascadeOnDelete();   
             $table->foreignId('teacher_subject_id')->constrained('teacher_subjects')->cascadeOnDelete();
             $table->boolean('is_half_semester')->default(false);

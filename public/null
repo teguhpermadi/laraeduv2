@@ -161,3 +161,42 @@ $legerQuran = LegerQuran::find(1);
 $legerQuran;
   
 Leger::get()
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\Leger;
+use App\Models\LegerQuranRecap;
+
+$legerQuran = LegerQuran::find(1);
+$legerQuran;
+  
+Teacher::random()->id
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\Leger;
+use App\Models\LegerQuranRecap;
+
+Teacher::get()->random->id
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\Leger;
+use App\Models\LegerQuranRecap;
+
+Teacher::get()->random()->id
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\Leger;
+use App\Models\LegerQuranRecap;
+
+Leger::get();
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\Leger;
+use App\Models\LegerQuranRecap;
+
+Leger::with('student')->get();
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\LegerQuran;
+use App\Models\Leger;
+use App\Models\LegerQuranRecap;
+
+Leger::with('student')->where('student_id', 4)->get();
