@@ -270,7 +270,7 @@ class Leger extends Page implements HasForms
         // kelompokkan terlebih dahulu
         // competency lulus & tidak lulus
         $passed = 'Ananda telah menguasai materi: ';
-        $notPassed = 'Ananda perlu peningkatan lagi pada materi materi: ';
+        $notPassed = 'Ananda perlu peningkatan lagi pada materi: ';
         $countPassed = 0;
         $countNotPassed = 0;
 

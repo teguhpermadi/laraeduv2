@@ -82,4 +82,9 @@ class Student extends Model
     {
         return $this->hasMany(StudentQuranGrade::class);
     }
+
+    public function leger()
+    {
+        return $this->hasMany(Leger::class);
+    }
 }
