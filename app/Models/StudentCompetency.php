@@ -20,6 +20,7 @@ class StudentCompetency extends Model
         'competency_id',
         'student_id',
         'score',
+        'score_skill',
     ];  
 
     protected $hidden = ['created_at', 'updated_at'];
