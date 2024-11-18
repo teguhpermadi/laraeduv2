@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\GradeResource\RelationManagers;
 
+use App\Enums\CurriculumEnum;
 use App\Models\Teacher;
 use App\Models\TeacherGrade;
 use Filament\Forms;
@@ -33,6 +34,10 @@ class TeacherGradeRelationManager extends RelationManager
                     ->label(__('teacherGrade.teacher_id'))
                     ->options(Teacher::pluck('name', 'id'))
                     ->required(),
+                Select::make('curriculum')
+                    ->label(__('teacherGrade.curriculum'))
+                    ->options(CurriculumEnum::class)
+                    ->required(),
             ]);
     }
 
@@ -43,6 +48,8 @@ class TeacherGradeRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('teacher.name')
                     ->label(__('teacherGrade.teacher_id')),
+                Tables\Columns\TextColumn::make('curriculum')
+                    ->label(__('teacherGrade.curriculum')),
             ])
             ->filters([
                 //

@@ -1,8 +1,4 @@
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 
-Student::get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-
-Student::with('dataStudent')->find(1)
+TeacherGrade::get()
