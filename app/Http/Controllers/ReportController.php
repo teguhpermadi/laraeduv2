@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\CategoryLegerEnum;
+use App\Models\AcademicYear;
 use App\Models\LegerRecap;
 use Illuminate\Http\Request;
 use App\Models\Student;
@@ -111,6 +112,9 @@ class ReportController extends Controller
     {
         $academic = session('academic_year_id');
 
+        // get academic year
+        $academicYear = AcademicYear::find($academic);
+
         // get category
         $category = CategoryLegerEnum::HALF_SEMESTER->value;
 
@@ -118,16 +122,23 @@ class ReportController extends Controller
                                 $query->where('academic_year_id', $academic);
                                 $query->where('category', $category);
                             }, 
-                            'leger.teacherSubject.subject'
+                            'leger.teacherSubject.subject',
+                            'legerQuran',
+                            'attitude',
+                            'attendance',
+                            'extracurricular'
                             ])
                             ->find($id);
 
-        return $student;
+        return [$student, $academicYear];
     }
 
     public function fullSemester($id)
     {
         $academic = session('academic_year_id');
+
+        // get academic year
+        $academicYear = AcademicYear::find($academic);
 
         // get category
         $category = CategoryLegerEnum::FULL_SEMESTER->value;
@@ -136,10 +147,14 @@ class ReportController extends Controller
                                 $query->where('academic_year_id', $academic);
                                 $query->where('category', $category);
                             }, 
-                            'leger.teacherSubject.subject'
+                            'leger.teacherSubject.subject',
+                            'legerQuran',
+                            'attitude',
+                            'attendance',
+                            'extracurricular'
                             ])
                             ->find($id);
 
-        return $student;
+        return [$student, $academicYear];
     }
 }

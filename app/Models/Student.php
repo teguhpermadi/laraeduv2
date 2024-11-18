@@ -83,8 +83,33 @@ class Student extends Model
         return $this->hasMany(StudentQuranGrade::class);
     }
 
+    // leger
     public function leger()
     {
         return $this->hasMany(Leger::class);
+    }
+
+    // legerquran
+    public function legerQuran()
+    {
+        return $this->hasMany(LegerQuran::class);
+    }
+
+    // attitude
+    public function attitude()
+    {
+        return $this->hasMany(Attitude::class);
+    }
+
+    // attendance
+    public function attendance()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    // extracurricular
+    public function extracurricular()
+    {
+        return $this->hasMany(StudentExtracurricular::class);
     }
 }
