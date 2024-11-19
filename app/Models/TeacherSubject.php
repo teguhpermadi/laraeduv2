@@ -23,6 +23,7 @@ class TeacherSubject extends Model
         'grade_id',
         'time_allocation',
         'curriculum',
+        'passing_grade',
     ];
 
     public function getActivitylogOptions(): LogOptions

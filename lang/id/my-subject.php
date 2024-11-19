@@ -6,4 +6,5 @@ return [
     'my-subject' => 'Mata Pelajaran',
     'subject' => 'Mata Pelajaran',
     'grade' => 'Kelas',
+    'passing_grade' => 'KKM'
 ];

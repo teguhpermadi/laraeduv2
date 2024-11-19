@@ -36,6 +36,9 @@ class MySubject extends Page implements HasTable
             TextColumn::make('grade.name')
                 ->label(__('my-subject.grade'))
                 ->searchable(),
+            TextColumn::make('passing_grade')
+                ->label(__('my-subject.passing_grade')),
+
         ])
         ->filters([
             // ...

@@ -83,6 +83,7 @@ class Leger extends Page implements HasForms
                 'competency_count' => count($studentGrade->studentCompetency),
                 'avg' => round($studentGrade->studentCompetency->avg('score'), 0),
                 'sum' => $studentGrade->studentCompetency->sum('score'),
+                'passing_grade' => $teacherSubjectFullSemester->passing_grade,
                 'metadata' => $studentGrade->studentCompetency,
                 'description' => $description,
             ]);
@@ -129,6 +130,7 @@ class Leger extends Page implements HasForms
                 'competency_count' => count($studentGrade->studentCompetency),
                 'avg' => round($studentGrade->studentCompetency->avg('score'), 0),
                 'sum' => $studentGrade->studentCompetency->sum('score'),
+                'passing_grade' => $teacherSubjectHalfSemester->passing_grade,
                 'metadata' => $studentGrade->studentCompetency,
                 'description' => $description,
             ]);

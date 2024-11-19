@@ -14,10 +14,10 @@ class CompetencyObserver
     public function created(Competency $competency): void
     {
         $teacher_subject_id = $competency->teacher_subject_id;
-        $students = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+        $teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
 
         $data = [];
-        foreach ($students->studentGrade as $student) {
+        foreach ($teacherSubject->studentGrade as $student) {
             $data[] = [
                 'teacher_subject_id' => $teacher_subject_id,
                 'student_id' => $student->student_id,
@@ -28,6 +28,15 @@ class CompetencyObserver
         
         // dd($students);
         StudentCompetency::insert($data);
+
+        // dapatkan semua competency berdasarkan teacher subject id
+        $passing_grades = Competency::where('teacher_subject_id', $teacher_subject_id)->pluck('passing_grade');
+        
+        // buatkan rata-rata dari passing grade
+        $average_passing_grade = $passing_grades->avg();
+        
+        // update teacher subject dengan average passing grade
+        $teacherSubject->update(['passing_grade' => $average_passing_grade]);
     }
 
     /**
@@ -35,22 +44,17 @@ class CompetencyObserver
      */
     public function updated(Competency $competency): void
     {
-        // $teacher_subject_id = $competency->teacher_subject_id;
-        // $students = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+        $teacher_subject_id = $competency->teacher_subject_id;
+        $teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
 
-        // $data = [];
-        // foreach ($students->studentGrade as $student) {
-        //     $data[] = [
-        //         'teacher_subject_id' => $teacher_subject_id,
-        //         'student_id' => $student->student_id,
-        //         'competency_id' => $competency->id,
-        //         'score' => 0,
-        //         'created_at' => now(),
-        //         'updated_at' => now(),
-        //     ];
-        // }
-
-        // StudentCompetency::upsert($data, uniqueBy: ['student_id', 'competency_id'], update: ['score']);
+        // dapatkan semua passing grade pada competency
+        $passing_grades = Competency::where('teacher_subject_id', $teacher_subject_id)->pluck('passing_grade');
+        
+        // buatkan rata-rata dari passing grade
+        $average_passing_grade = $passing_grades->avg();
+        
+        // update teacher subject dengan average passing grade
+        $teacherSubject->update(['passing_grade' => $average_passing_grade]);
     }
 
     /**
@@ -58,7 +62,17 @@ class CompetencyObserver
      */
     public function deleted(Competency $competency): void
     {
-        //
+        $teacher_subject_id = $competency->teacher_subject_id;
+        $teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+
+        // dapatkan semua passing grade pada competency
+        $passing_grades = Competency::where('teacher_subject_id', $teacher_subject_id)->pluck('passing_grade');
+        
+        // buatkan rata-rata dari passing grade
+        $average_passing_grade = $passing_grades->avg();
+        
+        // update teacher subject dengan average passing grade
+        $teacherSubject->update(['passing_grade' => $average_passing_grade]);
     }
 
     /**
@@ -66,7 +80,17 @@ class CompetencyObserver
      */
     public function restored(Competency $competency): void
     {
-        //
+        $teacher_subject_id = $competency->teacher_subject_id;
+        $teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+
+        // dapatkan semua passing grade pada competency
+        $passing_grades = Competency::where('teacher_subject_id', $teacher_subject_id)->pluck('passing_grade');
+        
+        // buatkan rata-rata dari passing grade
+        $average_passing_grade = $passing_grades->avg();
+        
+        // update teacher subject dengan average passing grade
+        $teacherSubject->update(['passing_grade' => $average_passing_grade]);
     }
 
     /**
@@ -74,6 +98,16 @@ class CompetencyObserver
      */
     public function forceDeleted(Competency $competency): void
     {
-        //
+        $teacher_subject_id = $competency->teacher_subject_id;
+        $teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+
+        // dapatkan semua passing grade pada competency
+        $passing_grades = Competency::where('teacher_subject_id', $teacher_subject_id)->pluck('passing_grade');
+        
+        // buatkan rata-rata dari passing grade
+        $average_passing_grade = $passing_grades->avg();
+        
+        // update teacher subject dengan average passing grade
+        $teacherSubject->update(['passing_grade' => $average_passing_grade]);
     }
 }

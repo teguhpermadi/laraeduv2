@@ -18,9 +18,11 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\TextInputColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CompetencyResource extends Resource
@@ -150,7 +152,9 @@ class CompetencyResource extends Resource
                 TextColumn::make('description')
                     ->label(__('competency.description')),
                 ToggleColumn::make('half_semester')
-                    ->label(__('competency.half_semester'))
+                    ->label(__('competency.half_semester')),
+                TextInputColumn::make('passing_grade')
+                    ->label(__('competency.passing_grade')),
             ])
             ->filters([
                 //
@@ -161,6 +165,20 @@ class CompetencyResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    // make bulk action to update passing grade
+                    Tables\Actions\BulkAction::make('updatePassingGrade')
+                        ->label('Update Passing Grade')
+                        ->form([
+                            TextInput::make('passing_grade')
+                                ->label(__('competency.passing_grade'))
+                                ->numeric()
+                                ->required(),
+                        ])
+                        ->action(function (Collection $records, array $data) {
+                            foreach ($records as $record) {
+                                $record->update(['passing_grade' => $data['passing_grade']]);
+                            }
+                        }),
                 ]),
             ]);
     }

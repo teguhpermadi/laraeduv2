@@ -60,7 +60,7 @@
                     @endforeach
 
                     <td class="border border-slate-300 dark:border-slate-600 text-center">{{ $student['sum'] }}</td>
-                    <td class="border border-slate-300 dark:border-slate-600 text-center {{ $student['avg'] <= 70 || $student['avg'] >= 95 ? 'bg-gray-300 dark:bg-gray-700' : '' }}">
+                    <td class="border border-slate-300 dark:border-slate-600 text-center {{ $student['avg'] <= $this->teacherSubject->passing_grade || $student['avg'] >= 95 ? 'bg-gray-300 dark:bg-gray-700' : '' }}">
                         {{ $student['avg'] }}
                     </td>
                     <td class="border border-slate-300 dark:border-slate-600 text-center">{{ $student['rank'] }}</td>
