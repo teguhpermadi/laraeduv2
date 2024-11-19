@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Enums\CurriculumEnum;
 use App\Models\TeacherSubject;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action;
@@ -36,6 +37,7 @@ class MySubject extends Page implements HasTable
             TextColumn::make('grade.name')
                 ->label(__('my-subject.grade'))
                 ->searchable(),
+            TextColumn::make('teacherGrade.curriculum'),
             TextColumn::make('passing_grade')
                 ->label(__('my-subject.passing_grade')),
 

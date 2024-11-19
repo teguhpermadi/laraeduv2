@@ -25,7 +25,8 @@ class Leger extends Model
         'category',
         'score_skill',
         'sum_skill',
-        'description_skill'
+        'description_skill',
+        'subject_order',
     ];
 
     protected $casts = [

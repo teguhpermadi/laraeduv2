@@ -15,6 +15,7 @@ return new class extends Migration
             $table->integer('score_skill')->default(0);
             $table->integer('sum_skill')->default(0);
             $table->string('description_skill')->nullable();
+            $table->integer('subject_order')->default(0);
         });
     }
 
@@ -24,7 +25,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('legers', function (Blueprint $table) {
-            $table->dropColumn(['score_skill', 'sum_skill', 'description_skill']);
+            $table->dropColumn(['score_skill', 'sum_skill', 'description_skill', 'subject_order']);
         });
     }
 };

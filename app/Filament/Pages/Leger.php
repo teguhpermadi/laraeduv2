@@ -92,6 +92,7 @@ class Leger extends Page implements HasForms
                 'metadata' => $studentGrade->studentCompetency,
                 'description' => $description['description'],
                 'description_skill' => $description['description_skill'],
+                'subject_order' => $competency->subject->order,
             ]);
         };
 
@@ -142,6 +143,7 @@ class Leger extends Page implements HasForms
                 'metadata' => $studentGrade->studentCompetency,
                 'description' => $description['description'],
                 'description_skill' => $description['description_skill'],
+                'subject_order' => $competency->subject->order,
             ]);
         }       
 
@@ -218,7 +220,6 @@ class Leger extends Page implements HasForms
 
     public function submit()
     {
-        // dd($this->form->getState());
         $data = $this->form->getState();
 
         // dd($data);
@@ -240,6 +241,7 @@ class Leger extends Page implements HasForms
                 'description' => $key['description'],
                 'description_skill' => $key['description_skill'],
                 'metadata' => $key['metadata'],
+                'subject_order' => $key['subject_order'],
             ]);
         }
 
@@ -267,6 +269,7 @@ class Leger extends Page implements HasForms
                 'description' => $key['description'],
                 'description_skill' => $key['description_skill'],
                 'metadata' => $key['metadata'],
+                'subject_order' => $key['subject_order'],
             ]);
         }   
 
@@ -283,6 +286,8 @@ class Leger extends Page implements HasForms
             ->body('Leger berhasil disimpan')
             ->success()
             ->send();
+
+        
     }
 
     public function getDescription($data)

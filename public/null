@@ -2,7 +2,7 @@ use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
 
-$c = Competency::find(401);
+TeacherSubject::get()
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
@@ -12,197 +12,34 @@ use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
 
-TeacherSubject::with('teacherGrade.grade')->get()
+TeacherSubject::get()
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
 
-$data = [];
-            $data[] = [
-                'nis',
-                'nama siswa',
-                'teacher_subject_id',
-                'student_id',
-                'competency_id',
-                'score',
-            ];
-
-            
-            $data[] = [
-                'score_skill',
-            ];
+TeacherSubject::get()
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
 
-$data = [];
-            $data[] = [
-                'nis',
-                'nama siswa',
-                'teacher_subject_id',
-                'student_id',
-                'competency_id',
-                'score',
-            ];
-
-            
-            $data[] = [
-                'score_skill',
-            ];
-$data;
+TeacherSubject::get()
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
 
-$data = [];
-            $data[] = [
-                'nis',
-                'nama siswa',
-                'teacher_subject_id',
-                'student_id',
-                'competency_id',
-                'score',
-            ];
-
-            
-            $data[] = 'score_skill';
-$data;
+Leger::get()
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
 
-$data = [];
-$data[] = [
-  'nis',
-  'nama siswa',
-  'teacher_subject_id',
-  'student_id',
-  'competency_id',
-  'score',
-];
-
-array_push($data, [
-                'score_skill',
-            ]);
-$data;
+Student::find(1)->leger
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
 
-$data = [];
-$data[] = [
-  'nis',
-  'nama siswa',
-  'teacher_subject_id',
-  'student_id',
-  'competency_id',
-  'score',
-];
-
-array_merge($data, [
-                'score_skill',
-            ]);
-$data;
+Student::find(1)->leger
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
 
-$data = [];
-$data[] = [
-  'nis',
-  'nama siswa',
-  'teacher_subject_id',
-  'student_id',
-  'competency_id',
-  'score',
-];
-
-$data[0][] = 'score_skill';
-$data;
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-Competency::get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-Competency::find(1)
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-Competency::find(400)
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-Competency::find(400)->teacherSubject
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-Competency::find(400)->teacherSubject->competency
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-Competency::find(400)->teacherSubject->competency;
-$competencies = Competency::where('teacher_subject_id', 300)->get();
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-Competency::find(400)->teacherSubject->competency;
-$competencies = Competency::where('teacher_subject_id', 300)->pluck('passing_grade');
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-$passing_grades = Competency::where('teacher_subject_id', 300)->pluck('passing_grade');
-
-
-$average_passing_grade = $passing_grades->avg();
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-TeacherSubject::get();
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-TeacherSubject::get();
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-TeacherSubject::get();
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-TeacherSubject::get();
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-TeacherSubject::get();
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-$competency = TeacherSubject::with('subject')->withCount('competency')->find(300);
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-$competency = TeacherSubject::with('subject')->withCount('competency')->find(300);
-
-$competency->teacherGrade->curriculum
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-Leger::get();
+Student::find(1)->leger
