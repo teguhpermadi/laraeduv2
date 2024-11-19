@@ -19,6 +19,7 @@ class StudentCompetencyImport implements ToCollection, WithHeadingRow, WithCalcu
                 'student_id' => $row['student_id'],
                 'competency_id' => $row['competency_id'],
                 'score' => $row['score'],
+                'score_skill' => $row['score_skill'],
             ];
         }
 
