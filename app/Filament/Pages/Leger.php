@@ -49,6 +49,7 @@ class Leger extends Page implements HasForms
 
     public $teacherSubject, $students, $time_signature, $preview, $student, $agree, $leger, $competency_count, $academic_year_id;
     public $checkLegerRecap = false;
+    public $descriptionLegerRecap = '';
     public $hasNoScores = false;
 
     public $visible = false;
@@ -145,7 +146,7 @@ class Leger extends Page implements HasForms
                 'description_skill' => $description['description_skill'],
                 'subject_order' => $competency->subject->order,
             ]);
-        }       
+        }
 
         // Sort data by 'sum' in descending order
         $dataHalfSemester = $dataHalfSemester->sortByDesc('sum')->values();
@@ -173,21 +174,32 @@ class Leger extends Page implements HasForms
         }
 
         // cek apakah sudah ada data leger_recap
-        $this->checkLegerRecap = LegerRecap::where('academic_year_id', $this->academic_year_id)
+        $legerRecap = LegerRecap::where('academic_year_id', $this->academic_year_id)
             ->where('teacher_subject_id', $id)
-            ->exists();
+            ->first();
+
+        $this->checkLegerRecap = $legerRecap;
+
+        // dd($legerRecap);
+
+        // jika leger recap sudah ada 
+        if($legerRecap){
+            $descriptionLegerRecap = 'Kamu sudah mengumpulkan leger ini ke wali kelas pada tanggal ' . $legerRecap->created_at->translatedFormat('l, d F Y H:i') . '. Apakah kamu ingin mengrubahnya?';
+        } else {
+            $descriptionLegerRecap = 'Apakah anda yakin akan mengumpulkan nilai tersebut ke wali kelas?';
+        }
+
+        $this->descriptionLegerRecap = $descriptionLegerRecap;
 
         // cek kurikulum
         $curriculum = $competency->teacherGrade->curriculum;
         // dd($curriculum);
 
-        if($curriculum == CurriculumEnum::K13->value){
+        if ($curriculum == CurriculumEnum::K13->value) {
             $this->visible = true;
         } else {
             $this->visible = false;
         }
-
-        // dd($this->visible);
     }
 
     public function form(Form $form): Form
@@ -201,7 +213,7 @@ class Leger extends Page implements HasForms
                             ->view('filament.pages.leger-preview'),
                     ]),
                 Section::make('Persetujuan')
-                    ->description('Apakah anda setuju dengan seluruh nilai tersebut?')
+                    ->description(fn() => $this->descriptionLegerRecap)
                     ->schema([
                         Hidden::make('leger_full_semester'),
                         Hidden::make('leger_half_semester'),
@@ -250,7 +262,7 @@ class Leger extends Page implements HasForms
             'academic_year_id' => $this->academic_year_id,
             'teacher_subject_id' => $this->teacherSubject->id,
             'category' => CategoryLegerEnum::FULL_SEMESTER->value,
-        ]); 
+        ]);
 
         /* HALF SEMESTER */
         foreach ($data['leger_half_semester'] as $key) {
@@ -271,7 +283,7 @@ class Leger extends Page implements HasForms
                 'metadata' => $key['metadata'],
                 'subject_order' => $key['subject_order'],
             ]);
-        }   
+        }
 
         // insert data ke table leger_recap
         LegerRecap::updateOrCreate([
@@ -286,8 +298,6 @@ class Leger extends Page implements HasForms
             ->body('Leger berhasil disimpan')
             ->success()
             ->send();
-
-        
     }
 
     public function getDescription($data)

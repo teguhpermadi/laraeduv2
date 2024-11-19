@@ -43,3 +43,18 @@ use App\Models\Leger;
 use App\Enums\CurriculumEnum;
 
 Student::find(1)->leger
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+Student::find(1)->leger->created_at
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+Student::find(1)->leger->created_at;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+Student::find(1)->leger->first->created_at;
