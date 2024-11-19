@@ -420,6 +420,14 @@ class Assessment extends Page implements HasForms, HasTable
                 ['Semester', null, null, null, null, ': ' . $academic->semester],
                 ['Kompetensi', null, null, null, null, ': (' . $competency->code . ') ', $competency->description],
             ];
+
+            // jika k13
+            if ($teacherSubject->teacherGrade->curriculum === CurriculumEnum::K13->value) {
+                $identitas[9] = ['Kompetensi Keterampilan', null, null, null, null, ': (' . $competency->code_skill . ') ', $competency->description_skill];
+            }
+
+            // dd($identitas);
+
             $sheet->fromArray($identitas);
 
             // kosongkan datanya
@@ -432,7 +440,12 @@ class Assessment extends Page implements HasForms, HasTable
                 'competency_id',
                 'score',
             ];
+            
+            if ($teacherSubject->teacherGrade->curriculum === CurriculumEnum::K13->value) {
+                $data[0][] = 'score_skill';
+            }
 
+            $i = 1;
             foreach ($competency->studentCompetency as $studentCompetency) {
                 $data[] = [
                     $studentCompetency->student->nis,
@@ -442,7 +455,14 @@ class Assessment extends Page implements HasForms, HasTable
                     $studentCompetency->competency_id,
                     $studentCompetency->score,
                 ];
+
+                if ($teacherSubject->teacherGrade->curriculum === CurriculumEnum::K13->value) {
+                    $data[$i][] = $studentCompetency->score_skill;
+                }
+                $i++;
             }
+
+            // dd($data);
 
             $sheet->fromArray($data, null, 'A13', true);
 
@@ -450,6 +470,7 @@ class Assessment extends Page implements HasForms, HasTable
 
             $sheet->getColumnDimension('B')->setWidth(30);
 
+            /*
             // hide coloumn C D E
             $sheet->getColumnDimension('C')->setVisible(false);
             $sheet->getColumnDimension('D')->setVisible(false);
@@ -494,6 +515,7 @@ class Assessment extends Page implements HasForms, HasTable
                 $validation->setFormula1(0);
                 $validation->setFormula2(100);
             }
+            */
         }
 
         // Membuat file Excel

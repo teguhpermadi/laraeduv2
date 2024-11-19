@@ -13,3 +13,109 @@ use App\Models\Leger;
 use App\Enums\CurriculumEnum;
 
 TeacherSubject::with('teacherGrade.grade')->get()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+$data = [];
+            $data[] = [
+                'nis',
+                'nama siswa',
+                'teacher_subject_id',
+                'student_id',
+                'competency_id',
+                'score',
+            ];
+
+            
+            $data[] = [
+                'score_skill',
+            ];
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+$data = [];
+            $data[] = [
+                'nis',
+                'nama siswa',
+                'teacher_subject_id',
+                'student_id',
+                'competency_id',
+                'score',
+            ];
+
+            
+            $data[] = [
+                'score_skill',
+            ];
+$data;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+$data = [];
+            $data[] = [
+                'nis',
+                'nama siswa',
+                'teacher_subject_id',
+                'student_id',
+                'competency_id',
+                'score',
+            ];
+
+            
+            $data[] = 'score_skill';
+$data;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+$data = [];
+$data[] = [
+  'nis',
+  'nama siswa',
+  'teacher_subject_id',
+  'student_id',
+  'competency_id',
+  'score',
+];
+
+array_push($data, [
+                'score_skill',
+            ]);
+$data;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+$data = [];
+$data[] = [
+  'nis',
+  'nama siswa',
+  'teacher_subject_id',
+  'student_id',
+  'competency_id',
+  'score',
+];
+
+array_merge($data, [
+                'score_skill',
+            ]);
+$data;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+$data = [];
+$data[] = [
+  'nis',
+  'nama siswa',
+  'teacher_subject_id',
+  'student_id',
+  'competency_id',
+  'score',
+];
+
+$data[0][] = 'score_skill';
+$data;
