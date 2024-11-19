@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\CurriculumEnum;
 use App\Filament\Resources\CompetencyResource\Pages;
 use App\Filament\Resources\CompetencyResource\RelationManagers;
 use App\Models\Competency;
@@ -46,58 +47,91 @@ class CompetencyResource extends Resource
                     ->schema([
                         Select::make('grade_id')
                             ->label(__('competency.grade_id'))
-                            ->options(function(callable $get, callable $set){
+                            ->options(function (callable $get, callable $set) {
                                 $data = TeacherSubject::myGrade()->get()->pluck('grade.name', 'grade.id');
                                 return $data;
-            
-                            })->afterStateUpdated(function ($state, callable $get, callable $set){
+                            })->afterStateUpdated(function ($state, callable $get, callable $set) {
                                 $set('subject_id', null);
                                 $set('teacher_subject_id', null);
-
                             })
                             ->reactive()
                             ->required(),
                         Select::make('subject_id')
                             ->label(__('competency.subject_id'))
-                            ->options(function(callable $get, callable $set){
-                                if($get('grade_id')){
+                            ->options(function (callable $get, callable $set) {
+                                if ($get('grade_id')) {
                                     $data = TeacherSubject::mySubjectByGrade($get('grade_id'))->get()->pluck('subject.code', 'subject.id');
-                                    
+
                                     return $data;
                                 }
                                 return [];
-            
-                            })->afterStateUpdated(function ($state, callable $get, callable $set){
+                            })->afterStateUpdated(function ($state, callable $get, callable $set) {
                                 $data = TeacherSubject::where('grade_id', $get('grade_id'))
                                     ->where('teacher_id', auth()->user()->userable->userable_id)
                                     ->where('subject_id', $get('subject_id'))->first();
-                                if($data){
+                                if ($data) {
                                     $set('teacher_subject_id', $data->id);
                                 } else {
                                     $set('teacher_subject_id', null);
-
                                 }
                             })
                             ->reactive()
                             ->required(),
-                        
+
                         TextInput::make('passing_grade')
                             ->label(__('competency.passing_grade'))
                             ->numeric()
                             ->required(),
-                        
-                ])
-                ->columns(3),
-                
+
+                    ])
+                    ->columns(3),
+
                 Hidden::make('teacher_subject_id')
                     ->required(),
-                TextInput::make('code')
-                    ->label(__('competency.code'))
-                    ->required(),
-                Textarea::make('description')
-                    ->label(__('competency.description'))
-                    ->required(),
-                
+                Fieldset::make('competency')
+                    ->label(__('competency.competency'))
+                    ->schema([
+                        TextInput::make('code')
+                            ->label(__('competency.code'))
+                            ->required(),
+                        Textarea::make('description')
+                            ->label(__('competency.description'))
+                            ->required(),
+
+                        // skill
+                        TextInput::make('code_skill')
+                            ->visible(function (callable $get) {
+                                if ($get('teacher_subject_id')) {
+                                    $teacherSubject = TeacherSubject::with('teacherGrade')->find($get('teacher_subject_id'));
+                                    if ($teacherSubject->teacherGrade->curriculum == CurriculumEnum::K13->value) {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            })
+                            ->required()
+                            ->label(__('competency.code_skill')),
+                        Textarea::make('description_skill')
+                            ->visible(function (callable $get) {
+                                if ($get('teacher_subject_id')) {
+                                    $teacherSubject = TeacherSubject::with('teacherGrade')->find($get('teacher_subject_id'));
+                                    if ($teacherSubject->teacherGrade->curriculum == CurriculumEnum::K13->value) {
+                                        return true;
+                                    } else {
+                                        return false;
+                                    }
+                                } else {
+                                    return false;
+                                }
+                            })
+                            ->label(__('competency.description_skill'))
+                            ->required(),
+                    ])
+                    ->columns(2),
+
                 // half semester
                 Radio::make('half_semester')
                     ->label(__('competency.half_semester'))

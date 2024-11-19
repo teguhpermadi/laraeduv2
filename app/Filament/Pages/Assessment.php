@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Enums\CurriculumEnum;
 use App\Imports\StudentCompetencyImport;
 use App\Models\Competency;
 use App\Models\Grade;
@@ -62,6 +63,7 @@ class Assessment extends Page implements HasForms, HasTable
     public $academic_year_id;
     public $teacher_subject_id;
     public $empty_state = [];
+    public $visible = FALSE;
 
     public function mount($id): void
     {
@@ -101,6 +103,20 @@ class Assessment extends Page implements HasForms, HasTable
             $this->empty_state['heading'] = 'Skor Tidak Lengkap';
             $this->empty_state['desc'] = 'Lakukan reset skor pada kompetensi ini!';
         }
+
+        // check curriculum
+        $curriculum = $data->teacherGrade->curriculum;
+        // ubah menjadi switch
+        switch($curriculum){
+            case CurriculumEnum::K13->value:
+                $this->visible = false;
+                break;
+
+            default:
+                $this->visible = false;
+                break;
+        }
+
     }
 
     public function form(Form $form): Form
@@ -134,8 +150,17 @@ class Assessment extends Page implements HasForms, HasTable
                                 }
                             )
                             ->live()
-                            ->afterStateUpdated(function () {
+                            ->afterStateUpdated(function ($state) {
+                                $competency = Competency::find($state); 
+
+                                if($competency->code == 'TENGAH SEMESTER' || $competency->code == 'AKHIR SEMESTER' || $competency->teacherSubject->teacherGrade->curriculum == CurriculumEnum::KURMER->value){
+                                    $this->visible = false;
+                                } else {
+                                    $this->visible = true;
+                                }
+
                                 $this->resetTable();
+
                             }),
                     ])
                     ->headerActions([
@@ -195,6 +220,12 @@ class Assessment extends Page implements HasForms, HasTable
                     ->label(__('assessment.student_id'))
                     ->searchable(),
                 TextInputColumn::make('score')
+                    ->label(__('assessment.score'))
+                    ->rules(['numeric', 'min:0', 'max:100']),
+                // score skill
+                TextInputColumn::make('score_skill')
+                    ->label(__('assessment.score_skill'))
+                    ->visible($this->visible)
                     ->rules(['numeric', 'min:0', 'max:100']),
             ])
             ->bulkActions([
@@ -282,6 +313,7 @@ class Assessment extends Page implements HasForms, HasTable
             $original->push([
                 'id' => $key->id,
                 'score' => $key->score,
+                'score_skill' => $key->score_skill,
             ]);
         }
 
@@ -292,9 +324,13 @@ class Assessment extends Page implements HasForms, HasTable
         $original->map(function ($item) use ($scoreMin, $scoreMax, $originalScoreMin, $originalScoreMax, $data) {
             // apa yang dinilai
             $newScore = $scoreMin + (($item['score'] - $originalScoreMin) / ($originalScoreMax - $originalScoreMin) * ($scoreMax - $scoreMin));
+            // score skill
+            $newScoreSkill = $scoreMin + (($item['score_skill'] - $originalScoreMin) / ($originalScoreMax - $originalScoreMin) * ($scoreMax - $scoreMin));
+            // update
             StudentCompetency::find($item['id'])
                 ->update([
                     'score' => $newScore,
+                    'score_skill' => $newScoreSkill,
                 ]);
         });
     }

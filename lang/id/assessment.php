@@ -13,5 +13,6 @@ return [
     'score_adjusment' => 'Pengaturan Skor',
     'score_min' => 'skor minimum',
     'score_max' => 'skor maksimum',
-    'add_competency' => 'Tambah Kompetensi'
+    'add_competency' => 'Tambah Kompetensi',
+    'score_skill' => 'Skor Skill'
 ];

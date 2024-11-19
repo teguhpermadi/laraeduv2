@@ -1,4 +1,15 @@
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
+use App\Enums\CurriculumEnum;
 
-TeacherGrade::get()
+$c = Competency::find(401);
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+TeacherSubject::get()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+TeacherSubject::with('teacherGrade.grade')->get()

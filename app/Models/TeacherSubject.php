@@ -108,4 +108,9 @@ class TeacherSubject extends Model
     {
         return $this->hasMany(LegerRecap::class, 'teacher_subject_id');
     }
+
+    public function teacherGrade()
+    {
+        return $this->hasOne(TeacherGrade::class, 'grade_id', 'grade_id');
+    }
 }

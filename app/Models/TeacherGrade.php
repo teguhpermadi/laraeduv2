@@ -20,6 +20,7 @@ class TeacherGrade extends Model
         'academic_year_id',
         'teacher_id',
         'grade_id',
+        'curriculum',
     ]; 
 
     public function getActivitylogOptions(): LogOptions
