@@ -189,3 +189,20 @@ use App\Models\Leger;
 use App\Enums\CurriculumEnum;
 
 TeacherSubject::get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+$competency = TeacherSubject::with('subject')->withCount('competency')->find(300);
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+$competency = TeacherSubject::with('subject')->withCount('competency')->find(300);
+
+$competency->teacherGrade->curriculum
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+Leger::get();

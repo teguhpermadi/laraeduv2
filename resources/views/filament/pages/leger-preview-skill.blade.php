@@ -1,30 +1,8 @@
-<h1 class="font-bold dark:text-white">Leger {{ $this->teacherSubject->subject->name }}</h1>
-<table class="dark:text-white">
-    <tr>
-        <td>Tahun Pelajaran</td>
-        <td>:</td>
-        <td>{{ $this->teacherSubject->academic->year }}</td>
-    </tr>
-    <tr>
-        <td>Semester</td>
-        <td>:</td>
-        <td>{{ $this->teacherSubject->academic->semester }}</td>
-    </tr>
-    <tr>
-        <td>Kelas</td>
-        <td>:</td>
-        <td>{{ $this->teacherSubject->grade->name }}</td>
-    </tr>
-    <tr>
-        <td>Guru</td>
-        <td>:</td>
-        <td>{{ $this->teacherSubject->teacher->name }}</td>
-    </tr>
-</table>
-
 @php
     $no = 1;
 @endphp
+
+<h2 class="text-center text-lg font-bold mt-3">Nilai Keterampilan</h2>
 
 <table class="border-collapse border border-slate-400 dark:border-slate-600 mt-3 dark:text-white" width="100%">
     <thead>
@@ -54,8 +32,8 @@
 
                 @if (count($student['metadata']) > 0)
                     @foreach ($student['metadata'] as $metadata)
-                        <td class="border border-slate-300 dark:border-slate-600 text-center {{ $metadata['score'] <= $metadata->competency->passing_grade || $metadata['score'] >= 95 ? 'bg-gray-300 dark:bg-gray-700' : '' }}">
-                            {{ $metadata['score'] }}
+                        <td class="border border-slate-300 dark:border-slate-600 text-center {{ $metadata['score_skill'] <= $metadata->competency->passing_grade || $metadata['score_skill'] >= 95 ? 'bg-gray-300 dark:bg-gray-700' : '' }}">
+                            {{ $metadata['score_skill'] }}
                         </td>
                     @endforeach
 

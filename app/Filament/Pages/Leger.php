@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Enums\CategoryLegerEnum;
+use App\Enums\CurriculumEnum;
 use App\Models\Leger as ModelsLeger;
 use App\Models\LegerRecap;
 use App\Models\StudentCompetency;
@@ -50,6 +51,8 @@ class Leger extends Page implements HasForms
     public $checkLegerRecap = false;
     public $hasNoScores = false;
 
+    public $visible = false;
+
     public function mount($id): void
     {
         /* FULL SEMESTER */
@@ -82,10 +85,13 @@ class Leger extends Page implements HasForms
                 'student' => $studentGrade->student,
                 'competency_count' => count($studentGrade->studentCompetency),
                 'avg' => round($studentGrade->studentCompetency->avg('score'), 0),
+                'avg_skill' => round($studentGrade->studentCompetency->avg('score_skill'), 0),
                 'sum' => $studentGrade->studentCompetency->sum('score'),
+                'sum_skill' => $studentGrade->studentCompetency->sum('score_skill'),
                 'passing_grade' => $teacherSubjectFullSemester->passing_grade,
                 'metadata' => $studentGrade->studentCompetency,
-                'description' => $description,
+                'description' => $description['description'],
+                'description_skill' => $description['description_skill'],
             ]);
         };
 
@@ -129,10 +135,13 @@ class Leger extends Page implements HasForms
                 'student' => $studentGrade->student,
                 'competency_count' => count($studentGrade->studentCompetency),
                 'avg' => round($studentGrade->studentCompetency->avg('score'), 0),
+                'avg_skill' => round($studentGrade->studentCompetency->avg('score_skill'), 0),
                 'sum' => $studentGrade->studentCompetency->sum('score'),
+                'sum_skill' => $studentGrade->studentCompetency->sum('score_skill'),
                 'passing_grade' => $teacherSubjectHalfSemester->passing_grade,
                 'metadata' => $studentGrade->studentCompetency,
-                'description' => $description,
+                'description' => $description['description'],
+                'description_skill' => $description['description_skill'],
             ]);
         }       
 
@@ -165,6 +174,18 @@ class Leger extends Page implements HasForms
         $this->checkLegerRecap = LegerRecap::where('academic_year_id', $this->academic_year_id)
             ->where('teacher_subject_id', $id)
             ->exists();
+
+        // cek kurikulum
+        $curriculum = $competency->teacherGrade->curriculum;
+        // dd($curriculum);
+
+        if($curriculum == CurriculumEnum::K13->value){
+            $this->visible = true;
+        } else {
+            $this->visible = false;
+        }
+
+        // dd($this->visible);
     }
 
     public function form(Form $form): Form
@@ -200,6 +221,8 @@ class Leger extends Page implements HasForms
         // dd($this->form->getState());
         $data = $this->form->getState();
 
+        // dd($data);
+
         /* FULL SEMESTER */
         // insert data ke table leger
         foreach ($data['leger_full_semester'] as $key) {
@@ -210,9 +233,12 @@ class Leger extends Page implements HasForms
                 'category' => CategoryLegerEnum::FULL_SEMESTER->value,
             ], [
                 'score' => $key['avg'],
+                'score_skill' => $key['avg_skill'],
                 'sum' => $key['sum'],
+                'sum_skill' => $key['sum_skill'],
                 'rank' => $key['rank'],
                 'description' => $key['description'],
+                'description_skill' => $key['description_skill'],
                 'metadata' => $key['metadata'],
             ]);
         }
@@ -234,9 +260,12 @@ class Leger extends Page implements HasForms
                 'category' => CategoryLegerEnum::HALF_SEMESTER->value,
             ], [
                 'score' => $key['avg'],
+                'score_skill' => $key['avg_skill'],
                 'sum' => $key['sum'],
+                'sum_skill' => $key['sum_skill'],
                 'rank' => $key['rank'],
                 'description' => $key['description'],
+                'description_skill' => $key['description_skill'],
                 'metadata' => $key['metadata'],
             ]);
         }   
@@ -259,6 +288,7 @@ class Leger extends Page implements HasForms
     public function getDescription($data)
     {
         $string = '';
+        $string_skill = '';
 
         // hapus data tengah semester dan akhir semester
         // unset($data[0], $data[1]);
@@ -276,6 +306,11 @@ class Leger extends Page implements HasForms
         $countPassed = 0;
         $countNotPassed = 0;
 
+        $passedSkill = 'Ananda telah menguasai keterampilan: ';
+        $notPassedSkill = 'Ananda perlu peningkatan lagi pada keterampilan: ';
+        $countPassedSkill = 0;
+        $countNotPassedSkill = 0;
+
         foreach ($filter as $competency) {
             if ($competency->score >= $competency->competency->passing_grade) {
                 // jika lulus
@@ -285,6 +320,17 @@ class Leger extends Page implements HasForms
                 // jika tidak lulus
                 $notPassed .= $competency->competency->description . '; ';
                 $countNotPassed++;
+            }
+
+            // score skill
+            if ($competency->score_skill >= $competency->competency->passing_grade) {
+                // jika lulus
+                $passedSkill .= $competency->competency->description_skill . '; ';
+                $countPassedSkill++;
+            } else {
+                // jika tidak lulus
+                $notPassedSkill .= $competency->competency->description_skill . '; ';
+                $countNotPassedSkill++;
             }
         }
 
@@ -297,6 +343,18 @@ class Leger extends Page implements HasForms
             $string .= $notPassed;
         }
 
-        return $string;
+        // cek jika skill ada isinya
+        if ($countPassed > 0) {
+            $string_skill .= $passedSkill;
+        }
+
+        if ($countNotPassed > 0) {
+            $string_skill .= $notPassedSkill;
+        }
+
+        return [
+            'description' => $string,
+            'description_skill' => $string_skill,
+        ];
     }
 }
