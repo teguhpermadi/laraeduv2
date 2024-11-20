@@ -22,3 +22,15 @@ Route::get('{id}/report-full-semester', [\App\Http\Controllers\ReportController:
 // leger extracurricular
 Route::get('{extracurricular_id}/leger-extracurricular', \App\Livewire\LegerPreviewExtracurricular::class)->name('leger-extracurricular');
 
+// tes report
+Route::get('/report-cover', function(){
+    return view('components.reports.report-cover');
+});
+
+Route::get('/school-cover', function(){
+    return view('components.reports.school-cover');
+});
+
+Route::get('/student-identity', function(){
+    return view('components.reports.student-identity');
+});
