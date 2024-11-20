@@ -1,60 +1,10 @@
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
-
-TeacherSubject::get()
+$schoolSettings = app(App\Settings\SchoolSettings::class);
+$schoolSettings->school_name = 'Sekolah ABC';
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
-
-TeacherSubject::get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-TeacherSubject::get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-TeacherSubject::get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-TeacherSubject::get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-Leger::get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-Student::find(1)->leger
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-Student::find(1)->leger
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-Student::find(1)->leger
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-Student::find(1)->leger->created_at
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-Student::find(1)->leger->created_at;
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-
-Student::find(1)->leger->first->created_at;
+$schoolSettings = app(App\Settings\SchoolSettings::class);
+$schoolSettings->school_name;
