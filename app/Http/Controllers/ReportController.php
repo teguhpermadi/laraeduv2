@@ -8,6 +8,7 @@ use App\Models\LegerRecap;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\StudentGrade;
+use App\Settings\SchoolSettings;
 use Dompdf\Dompdf;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Carbon\Carbon;
@@ -51,7 +52,7 @@ class ReportController extends Controller
     public function coverStudent($data)
     {
         // dd($data);
-        if(is_null($data['dataStudent'])){
+        if (is_null($data['dataStudent'])) {
             abort(404, 'Data siswa tidak ditemukan');
         }
 
@@ -102,52 +103,56 @@ class ReportController extends Controller
         $academic = session('academic_year_id');
 
         // get academic year
-        $academicYear = AcademicYear::find($academic);
+        $academicYear = AcademicYear::with('teacher')->find($academic);
 
         // get category
         $category = CategoryLegerEnum::HALF_SEMESTER->value;
 
-        $student = Student::with(['leger' => function ($query) use ($academic, $category) {
-                                $query->where('academic_year_id', $academic);
-                                $query->where('category', $category);
-                            }, 
-                            'leger.teacherSubject.subject',
-                            'legerQuran',
-                            'attitude',
-                            'attendance',
-                            'extracurricular'
-                            ])
-                            ->find($id);
+        $student = Student::with([
+            'leger' => function ($query) use ($academic, $category) {
+                $query->where('academic_year_id', $academic);
+                $query->where('category', $category);
+            },
+            'studentGrade.grade',
+            'teacherGrade',
+            'leger.teacherSubject.subject',
+            'legerQuran',
+            'attitude',
+            'attendance',
+            'extracurricular'
+        ])
+            ->find($id);
 
-        $data = [
-            'student' => $student,
-            'academic' => $academicYear,
-        ];
+        $report = $this->getHalfReport($student, $academicYear);
 
-        // $report = $this->getHalfReport($data);
-        
-        return $data;
+        return $report;
     }
 
-    public function getHalfReport($data)
+    public function getHalfReport($academic, $student)
     {
-        $templateProcessor = new TemplateProcessor( storage_path('/app/public/templates/reportHalf.docx'));
-        $templateProcessor->setValue('school_name',$data['school']['name']);
-        $templateProcessor->setValue('school_address',$data['school']['address']);
-        $templateProcessor->setValue('headmaster',$data['headmaster']);
-        $templateProcessor->setValue('date_report_half',$data['academic']['date_report_half']);
-        $templateProcessor->setValue('year',$data['academic']['year']);
-        $templateProcessor->setValue('semester',$data['academic']['semester']);
-        $templateProcessor->setValue('student_name',$data['student']['name']);
-        $templateProcessor->setValue('nisn',$data['student']['nisn']);
-        $templateProcessor->setValue('nis',$data['student']['nis']);
-        $templateProcessor->setValue('grade_name',$data['grade']['name']);
-        $templateProcessor->setValue('grade_level',$data['grade']['grade']);
-        $templateProcessor->setValue('sick',$data['attendance']['sick']);
-        $templateProcessor->setValue('permission',$data['attendance']['permission']);
-        $templateProcessor->setValue('absent',$data['attendance']['absent']);
-        $templateProcessor->setValue('total_attendance',$data['attendance']['total_attendance']);
-        $templateProcessor->setValue('teacher_name',$data['teacher']['name']);
+        $schoolSettings = app(SchoolSettings::class);
+
+        $templateProcessor = new TemplateProcessor(storage_path('/app/public/templates/reportHalf.docx'));
+
+        $templateProcessor->setValue('school_name', $schoolSettings->school_name);
+        $templateProcessor->setValue('school_address', $schoolSettings->school_address);
+        $templateProcessor->setValue('headmaster', $academic->teacher->name);
+        $templateProcessor->setValue('date_report_half', $academic->date_report_half);
+        $templateProcessor->setValue('year', $academic->year);
+        $templateProcessor->setValue('semester', $academic->semester);
+
+        $templateProcessor->setValue('student_name', $student->name);
+        $templateProcessor->setValue('nisn', $student->nisn);
+        $templateProcessor->setValue('nis', $student->nis);
+
+        $templateProcessor->setValue('grade_name', $student->studentGrade->grade->name);
+        $templateProcessor->setValue('grade_level', $student->studentGrade->grade->grade);
+
+        $templateProcessor->setValue('sick', $student->attendance->sick);
+        $templateProcessor->setValue('permission', $student->attendance->permission);
+        $templateProcessor->setValue('absent', $student->attendance->absent);
+        // $templateProcessor->setValue('total_attendance', $data['attendance']['total_attendance']);
+        $templateProcessor->setValue('teacher_name', $student->teacherGrade->teacher->name);
     }
 
     public function fullSemester($id)
@@ -160,17 +165,18 @@ class ReportController extends Controller
         // get category
         $category = CategoryLegerEnum::FULL_SEMESTER->value;
 
-        $student = Student::with(['leger' => function ($query) use ($academic, $category) {
-                                $query->where('academic_year_id', $academic);
-                                $query->where('category', $category);
-                            }, 
-                            'leger.teacherSubject.subject',
-                            'legerQuran',
-                            'attitude',
-                            'attendance',
-                            'extracurricular'
-                            ])
-                            ->find($id);
+        $student = Student::with([
+            'leger' => function ($query) use ($academic, $category) {
+                $query->where('academic_year_id', $academic);
+                $query->where('category', $category);
+            },
+            'leger.teacherSubject.subject',
+            'legerQuran',
+            'attitude',
+            'attendance',
+            'extracurricular'
+        ])
+            ->find($id);
 
         return [$student, $academicYear];
     }

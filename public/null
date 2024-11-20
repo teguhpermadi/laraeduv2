@@ -8,3 +8,18 @@ use App\Models\Leger;
 use App\Enums\CurriculumEnum;
 $schoolSettings = app(App\Settings\SchoolSettings::class);
 $schoolSettings->school_name;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+$schoolSettings = app(App\Settings\SchoolSettings::class);
+$schoolSettings->logo;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+$schoolSettings = app(App\Settings\SchoolSettings::class);
+$schoolSettings->school_logo;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+Attendance::get();

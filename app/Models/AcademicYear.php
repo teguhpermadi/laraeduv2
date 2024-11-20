@@ -19,6 +19,8 @@ class AcademicYear extends Model
         'year',
         'semester',
         'teacher_id',
+        'date_report_half',
+        'date_report'
     ];
 
     public function getActivitylogOptions(): LogOptions

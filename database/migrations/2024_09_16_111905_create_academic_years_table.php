@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('year');
             $table->enum('semester', ['ganjil', 'genap']);
             $table->foreignId('teacher_id')->nullable();
+            $table->date('date_report_half')->nullable();
+            $table->date('date_report')->nullable();
             $table->timestamps();
         });
     }
