@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\AcademicYearScope;
 use App\Observers\TeacherSubjectObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -56,7 +57,7 @@ class TeacherSubject extends Model
 
     public function studentGrade()
     {
-        return $this->hasMany(StudentGrade::class, 'grade_id', 'grade_id');
+        return $this->hasMany(StudentGrade::class, 'grade_id', 'grade_id')->withoutGlobalScope(AcademicYearScope::class);
     }
 
     public function competency()

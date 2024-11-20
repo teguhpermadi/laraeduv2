@@ -23,3 +23,791 @@ use App\Models\Leger;
 use App\Enums\CurriculumEnum;
 
 Attendance::get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+Competency::get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+$competencies = Competency::get();
+
+        
+        foreach ($competencies as $competency) {
+            $students = $competency->studentCompetency;
+        }
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+
+$competencies = Competency::get();
+
+        
+        foreach ($competencies as $competency) {
+            $students = $competency->studentCompetency;
+		  
+		  $students;
+        }
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+
+$competencies = Competency::get();
+
+        
+        foreach ($competencies as $competency) {
+            $students = $competency->studentCompetency;
+		  
+		  $students;
+        }
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+
+$competencies = Competency::first();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+
+$competencies = Competency::first();
+$competencies->studentCompetency;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+
+$competencies = Competency::first();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+
+$competencies = Competency::first();
+$competencies->teacherSubject;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+
+$competencies = Competency::first();
+$competencies->teacherSubject->teacherGrade;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+
+$competencies = Competency::first();
+$competencies->teacherSubject->grade;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+
+$competencies = Competency::first();
+$competencies->teacherSubject;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+
+TeacherSubject::get()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+
+TeacherSubject::with('studentGrade')->get()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+TeacherSubject::withoutScope(AcademicYearScope::class)->with('studentGrade')->get()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->with('studentGrade')->get()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+
+StudentGrade::get()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+
+StudentGrade::withoutGlobalScope(AcademicYearScope::class)->get()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->with('studentGrade')->get()
+
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+TeacherSubject::with('studentGrade')->withoutGlobalScope(AcademicYearScope::class)->get()
+
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+TeacherSubject::with('studentGrade')->withoutGlobalScope(AcademicYearScope::class)->get()
+
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+TeacherSubject::with('studentGrade')->withoutGlobalScope(AcademicYearScope::class)->get()
+
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get()
+
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
+
+$teacherGrade->with('studentGrade')->withoutGlobalScope(AcademicYearScope::class);
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
+
+$teacherGrade->with('studentGrade');
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
+
+$teacherGrade->with('studentGrade');
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
+
+$teacherGrade->with('studentGrade');
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
+
+$teacherGrade->with('studentGrade');
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
+
+$teacherGrade->with('studentGrade');
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
+
+$teacherGrade->with('studentGrade');
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
+
+
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
+
+$teacherGrade->studentGrade->withoutGlobalScope(AcademicYearScope::class);
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
+
+$teacherGrade->studentGrade;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
+
+$teacherGrade;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::withoutGlobalScope(AcademicYearScope::class);
+
+$teacherGrade->with('studentGrade');
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::withoutGlobalScope(AcademicYearScope::class);
+
+$teacherGrade->with('studentGrade')->withoutGlobalScope(AcademicYearScope::class)->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::get();
+StudentGrade::get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::get();
+StudentGrade::withoutGlobalScope(AcademicYearScope::class)->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+
+StudentGrade::withoutGlobalScope(AcademicYearScope::class)->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+
+StudentGrade::withoutGlobalScope(AcademicYearScope::class)->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+
+StudentGrade::withoutGlobalScope(AcademicYearScope::class)>with('studentGrade')->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+
+StudentGrade::withoutGlobalScope(AcademicYearScope::class)>with('studentGrade')->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+
+StudentGrade::withoutGlobalScope(AcademicYearScope::class)>with('studentGrade')->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+
+StudentGrade::withoutGlobalScope(AcademicYearScope::class)>with('studentGrade')->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+
+StudentGrade::withoutGlobalScope(AcademicYearScope::class)->with('studentGrade')->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+
+StudentGrade::withoutGlobalScope(AcademicYearScope::class)->with('studentGrade')->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+
+StudentGrade::withoutGlobalScope(AcademicYearScope::class)->with('studentGrade')->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+
+StudentGrade::withoutGlobalScope(AcademicYearScope::class)->with('studentGrade')->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$teacherGrade = TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->with('studentGrade')->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+
+foreach ($studentGrades as $studentGrade) {
+  $students = $studentGrade->studentGrade->pluck('student_id');
+}
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+
+foreach ($studentGrades as $studentGrade) {
+  $students = $studentGrade->studentGrade->pluck('student_id');
+  $students;
+}
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+
+foreach ($studentGrades as $studentGrade) {
+  $students = $studentGrade->studentGrade->pluck('student_id');
+  $students;
+}
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+
+foreach ($studentGrades as $studentGrade) {
+  $students = $studentGrade->studentGrade->pluck('student_id');
+  $students;
+}
+
+$studentGrades;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+
+foreach ($studentGrades->studentGrade as $studentGrade) {
+  $students = $studentGrade->studentGrade->pluck('student_id');
+  $students;
+}
+
+
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+
+foreach ($studentGrades->studentGrade as $studentGrade) {
+  $students = $studentGrade->studentGrade->pluck('student_id');
+  $students;
+}
+
+$studentGrades;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+
+foreach ($studentGrades->studentGrade as $studentGrade) {
+  $students = $studentGrade->studentGrade->pluck('student_id');
+  $students;
+}
+
+$studentGrades;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+
+foreach ($studentGrades->studentGrade as $studentGrade) {
+  $students = $studentGrade->studentGrade->pluck('student_id');
+  $students;
+}
+
+$studentGrades;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+
+foreach ($studentGrades->studentGrade as $studentGrade) {
+  $students = $studentGrade->studentGrade->pluck('student_id');
+  $students;
+}
+
+$studentGrades;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+
+foreach ($studentGrades->studentGrade as $studentGrade) {
+  $students = $studentGrade->studentGrade->pluck('student_id');
+  $students;
+}
+
+$studentGrades;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+
+foreach ($studentGrades->studentGrade as $studentGrade) {
+  $students = $studentGrade->studentGrade->pluck('student_id');
+  $students;
+}
+
+$studentGrades;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+
+foreach ($studentGrades->studentGrade as $studentGrade) {
+  $students = $studentGrade->studentGrade->pluck('student_id');
+  $students;
+}
+
+$studentGrades;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+
+foreach ($studentGrades as $studentGrade) {
+  $students = $studentGrade->studentGrade->pluck('student_id');
+  $students;
+}
+
+$studentGrades;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$studentGrades = TeacherSubject::with('studentGrade')->get();
+$data = [];
+foreach ($studentGrades as $studentGrade) {
+  $students = $studentGrade->studentGrade->pluck('student_id');
+  $data[] = $students;
+}
+
+$data;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$data = [];
+        
+        $studentGrades = TeacherSubject::with('studentGrade')->get();
+
+        foreach ($studentGrades as $studentGrade) {
+
+            $students = $studentGrade->studentGrade->pluck('student_id');
+
+            
+            $competencies = Competency::where('teacher_subject_id', $studentGrade->id)->get()->pluck('id');
+
+            
+            
+            foreach ($students as $student) {
+                foreach ($competencies as $competency) {
+                    $data[] = [
+                        'teacher_subject_id' => $studentGrade->id,
+                        'student_id' => $student,
+                        'competency_id' => $competency,
+                        
+                    ];
+
+                    
+                    
+                }
+            }
+        }
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$data = [];
+        
+        $studentGrades = TeacherSubject::with('studentGrade')->get();
+
+        foreach ($studentGrades as $studentGrade) {
+
+            $students = $studentGrade->studentGrade->pluck('student_id');
+
+            
+            $competencies = Competency::where('teacher_subject_id', $studentGrade->id)->get()->pluck('id');
+
+            
+            
+            foreach ($students as $student) {
+                foreach ($competencies as $competency) {
+                    $data[] = [
+                        'teacher_subject_id' => $studentGrade->id,
+                        'student_id' => $student,
+                        'competency_id' => $competency,
+                        
+                    ];
+
+                    
+                    
+                }
+            }
+        }
+
+$data;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$data = [];
+        
+        $studentGrades = TeacherSubject::with('studentGrade')->get();
+
+        foreach ($studentGrades as $studentGrade) {
+
+            $students = $studentGrade->studentGrade->pluck('student_id');
+
+            
+            $competencies = Competency::where('teacher_subject_id', $studentGrade->id)->get()->pluck('id');
+
+            
+            
+            foreach ($students as $student) {
+                foreach ($competencies as $competency) {
+                    $data[] = [
+                        'teacher_subject_id' => $studentGrade->id,
+                        'student_id' => $student,
+                        'competency_id' => $competency,
+					  'score' => faket()->numberBetween(50,100)
+                        
+                    ];
+
+                    
+                    
+                }
+            }
+        }
+
+$data;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$data = [];
+        
+        $studentGrades = TeacherSubject::with('studentGrade')->get();
+
+        foreach ($studentGrades as $studentGrade) {
+
+            $students = $studentGrade->studentGrade->pluck('student_id');
+
+            
+            $competencies = Competency::where('teacher_subject_id', $studentGrade->id)->get()->pluck('id');
+
+            
+            
+            foreach ($students as $student) {
+                foreach ($competencies as $competency) {
+                    $data[] = [
+                        'teacher_subject_id' => $studentGrade->id,
+                        'student_id' => $student,
+                        'competency_id' => $competency,
+					  'score' => fake()->numberBetween(50,100)
+                        
+                    ];
+
+                    
+                    
+                }
+            }
+        }
+
+$data;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+StudentCompetency::get()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+StudentCompetency::get()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+StudentCompetency::get()
