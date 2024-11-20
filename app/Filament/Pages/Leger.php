@@ -234,6 +234,9 @@ class Leger extends Page implements HasForms
     {
         $data = $this->form->getState();
 
+        $teacher_id = $this->teacherSubject->teacher_id;
+        $subject_id = $this->teacherSubject->subject_id;
+
         // dd($data);
 
         /* FULL SEMESTER */
@@ -254,6 +257,8 @@ class Leger extends Page implements HasForms
                 'description_skill' => $key['description_skill'],
                 'metadata' => $key['metadata'],
                 'subject_order' => $key['subject_order'],
+                'teacher_id' => $teacher_id,
+                'subject_id' => $subject_id,
             ]);
         }
 
@@ -282,6 +287,8 @@ class Leger extends Page implements HasForms
                 'description_skill' => $key['description_skill'],
                 'metadata' => $key['metadata'],
                 'subject_order' => $key['subject_order'],
+                'teacher_id' => $teacher_id,
+                'subject_id' => $subject_id,
             ]);
         }
 
@@ -291,6 +298,9 @@ class Leger extends Page implements HasForms
             'teacher_subject_id' => $this->teacherSubject->id,
             'category' => CategoryLegerEnum::HALF_SEMESTER->value,
         ]);
+
+        // refresh page
+        $this->redirect(route('filament.admin.pages.leger.{id}', ['id' => $this->teacherSubject->id]));
 
         // notifikasi
         Notification::make()

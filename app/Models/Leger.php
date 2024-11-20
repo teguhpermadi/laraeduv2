@@ -17,6 +17,9 @@ class Leger extends Model
         'academic_year_id',
         'student_id',
         'teacher_subject_id',
+        'teacher_id',
+        'subject_id',
+        'subject_order',
         'score',
         'description',
         'metadata',
@@ -26,7 +29,6 @@ class Leger extends Model
         'score_skill',
         'sum_skill',
         'description_skill',
-        'subject_order',
     ];
 
     protected $casts = [

@@ -34,8 +34,7 @@
                     <td class="py-1 font-semibold">Tanggal Cetak</td>
                     <td class="px-3">:</td>
                     {{-- buat format tanggal menjadi 30 November 2024 --}}
-                    <td>{{ $legerRecapHalfSemester->created_at->format('d F Y') }} Pukul
-                        {{ $legerRecapHalfSemester->created_at->format('H:i') }}</td>
+                    <td>{{ $legerRecapHalfSemester->created_at->format('l, d F Y H:i') }}</td>
                 </tr>
             </table>
         </div>

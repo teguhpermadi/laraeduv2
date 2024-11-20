@@ -19,6 +19,7 @@ class SubjectFactory extends Factory
         return [
             'name' => fake()->word(),
             'code' => fake()->word(),
+            'order' => fake()->numberBetween(1, 10),
         ];
     }
 }

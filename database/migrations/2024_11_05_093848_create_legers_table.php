@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
             $table->foreignId('teacher_subject_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('teacher_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
             $table->integer('score')->default(0);
             $table->integer('sum')->default(0);
             $table->integer('rank')->default(0);

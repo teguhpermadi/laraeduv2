@@ -297,6 +297,7 @@ class Assessment extends Page implements HasForms, HasTable
                         }
                     }),
                 TableAction::make('leger')
+                    ->color('success')
                     ->url(route('filament.admin.pages.leger.{id}', $this->teacher_subject_id)),
             ])
             ->deferLoading()

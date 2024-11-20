@@ -12,8 +12,13 @@
                 Tanda Tangan
             </x-filament::button>
 
+            {{-- buatkan button untuk kembali ke halaman assement --}}
+            <x-filament::button tag="a" href="{{ route('filament.admin.pages.assessment.{id}', ['id' => $this->teacherSubject->id]) }}" class="mt-3 ml-3">
+                Edit Nilai
+            </x-filament::button>
+
             @if ($this->checkLegerRecap)
-                <x-filament::button tag="a" href="{{ route('leger-print', $this->teacherSubject->id) }}" class="mt-3 ml-3">
+                <x-filament::button tag="a" href="{{ route('leger-print', $this->teacherSubject->id) }}" class="mt-3 ml-3" color="success">
                     Cetak Leger
                 </x-filament::button>
             @endif
