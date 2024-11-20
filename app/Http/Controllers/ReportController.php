@@ -51,6 +51,10 @@ class ReportController extends Controller
     public function coverStudent($data)
     {
         // dd($data);
+        if(is_null($data['dataStudent'])){
+            abort(404, 'Data siswa tidak ditemukan');
+        }
+
         $templateProcessor = new TemplateProcessor(storage_path('/app/public/templates/cover-student.docx'));
         $templateProcessor->setValue('nama', $data['name']);
         $templateProcessor->setValue('nisn', $data['nisn']);
@@ -93,21 +97,6 @@ class ReportController extends Controller
         return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
     }
 
-    public function calculateHalfSemester($id)
-    {
-        // get data academic
-        $academic = session('academic_year_id');
-
-        // get data student
-        $studentGrade = StudentGrade::where('student_id', $id)->first();
-
-        // get data score from legerrecap
-        $score = LegerRecap::where('student_id', $id)->where('academic_year_id', $academic)->first();
-
-        // $data = $this->halfSemester($student, $academic);
-        // return $data;
-    }
-
     public function halfSemester($id)
     {
         $academic = session('academic_year_id');
@@ -130,7 +119,35 @@ class ReportController extends Controller
                             ])
                             ->find($id);
 
-        return [$student, $academicYear];
+        $data = [
+            'student' => $student,
+            'academic' => $academicYear,
+        ];
+
+        // $report = $this->getHalfReport($data);
+        
+        return $data;
+    }
+
+    public function getHalfReport($data)
+    {
+        $templateProcessor = new TemplateProcessor( storage_path('/app/public/templates/reportHalf.docx'));
+        $templateProcessor->setValue('school_name',$data['school']['name']);
+        $templateProcessor->setValue('school_address',$data['school']['address']);
+        $templateProcessor->setValue('headmaster',$data['headmaster']);
+        $templateProcessor->setValue('date_report_half',$data['academic']['date_report_half']);
+        $templateProcessor->setValue('year',$data['academic']['year']);
+        $templateProcessor->setValue('semester',$data['academic']['semester']);
+        $templateProcessor->setValue('student_name',$data['student']['name']);
+        $templateProcessor->setValue('nisn',$data['student']['nisn']);
+        $templateProcessor->setValue('nis',$data['student']['nis']);
+        $templateProcessor->setValue('grade_name',$data['grade']['name']);
+        $templateProcessor->setValue('grade_level',$data['grade']['grade']);
+        $templateProcessor->setValue('sick',$data['attendance']['sick']);
+        $templateProcessor->setValue('permission',$data['attendance']['permission']);
+        $templateProcessor->setValue('absent',$data['attendance']['absent']);
+        $templateProcessor->setValue('total_attendance',$data['attendance']['total_attendance']);
+        $templateProcessor->setValue('teacher_name',$data['teacher']['name']);
     }
 
     public function fullSemester($id)
