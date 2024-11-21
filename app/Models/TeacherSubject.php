@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CategoryLegerEnum;
 use App\Models\Scopes\AcademicYearScope;
 use App\Observers\TeacherSubjectObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -109,6 +110,18 @@ class TeacherSubject extends Model
     public function legerRecap()
     {
         return $this->hasMany(LegerRecap::class, 'teacher_subject_id');
+    }
+
+    public function legerRecapHalfSemester()
+    {
+        return $this->hasOne(LegerRecap::class, 'teacher_subject_id')
+            ->where('category', CategoryLegerEnum::HALF_SEMESTER->value);
+    }
+
+    public function legerRecapFullSemester()
+    {
+        return $this->hasOne(LegerRecap::class, 'teacher_subject_id')
+            ->where('category', CategoryLegerEnum::FULL_SEMESTER->value);
     }
 
     public function teacherGrade()

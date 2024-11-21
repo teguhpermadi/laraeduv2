@@ -13,6 +13,8 @@ class StudentExtracurricularSeeder extends Seeder
      */
     public function run(): void
     {
-       //
+        $data = StudentExtracurricular::factory(50)->make()->toArray();
+
+        StudentExtracurricular::upsert($data, ['student_id', 'extracurricular_id', 'academic_year_id']);
     }
 }

@@ -16,16 +16,8 @@ class TeacherExtracurricularSeeder extends Seeder
      */
     public function run(): void
     {
-        TeacherExtracurricular::create([
-            'academic_year_id' => AcademicYear::first()->id,
-            'teacher_id' => Teacher::get()->random()->id,
-            'extracurricular_id' => Extracurricular::get()->random()->id,
-        ]);
+        $data = TeacherExtracurricular::factory(10)->make()->toArray();
 
-        TeacherExtracurricular::create([
-            'academic_year_id' => AcademicYear::first()->id,
-            'teacher_id' => Teacher::get()->random()->id,
-            'extracurricular_id' => Extracurricular::get()->random()->id,
-        ]);
+        TeacherExtracurricular::upsert($data, ['academic_year_id', 'teacher_id', 'extracurricular_id']);
     }
 }

@@ -51,6 +51,21 @@ class Student extends Model
         return $this->hasMany(StudentGrade::class);
     }
 
+    public function studentGradeFirst()
+    {
+        return $this->hasOne(StudentGrade::class)->where('academic_year_id', session('academic_year_id'));
+    }
+
+    public function attendanceFirst()
+    {
+        return $this->hasOne(Attendance::class)->where('academic_year_id', session('academic_year_id'));
+    }
+
+    public function attitudeFirst()
+    {
+        return $this->hasOne(Attitude::class)->where('academic_year_id', session('academic_year_id'));
+    }
+
     public function dataStudent()
     {
         return $this->hasOne(DataStudent::class);
@@ -86,7 +101,7 @@ class Student extends Model
     // leger
     public function leger()
     {
-        return $this->hasMany(Leger::class);
+        return $this->hasMany(Leger::class)->orderBy('subject_order', 'asc');
     }
 
     // legerquran

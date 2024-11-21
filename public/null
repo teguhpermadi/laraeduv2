@@ -4,11 +4,25 @@ use App\Enums\CurriculumEnum;
 use App\Models\Competency;
 use App\Models\Scopes\AcademicYearScope;
 
-Student::find(300)
+$data = StudentGrade::factory(5)->make()->toArray();
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
 use App\Models\Competency;
 use App\Models\Scopes\AcademicYearScope;
 
-Leger::get()
+$data = StudentGrade::factory(5)->make()->toArray();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+Leger::get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+Leger::where('student_id', 1)->get();

@@ -13,6 +13,7 @@
         "filament/filament": "^3.2",
         "filament/spatie-laravel-settings-plugin": "^3.2",
         "joaopaulolndev/filament-edit-profile": "^1.0",
+        "josespinal/filament-record-navigation": "^2.0",
         "laravel-lang/common": "^6.4",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",

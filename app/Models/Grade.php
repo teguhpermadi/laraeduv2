@@ -34,6 +34,11 @@ class Grade extends Model
         return $this->hasMany(TeacherGrade::class);
     }
 
+    public function teacherGradeFirst()
+    {
+        return $this->hasOne(TeacherGrade::class)->where('academic_year_id', session('academic_year_id'));
+    }
+
     public function studentGrade()
     {
         return $this->hasMany(StudentGrade::class);
