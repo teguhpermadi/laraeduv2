@@ -40,7 +40,20 @@
         @if (count($this->teacherSubject->competency) > 0)
             <tr>
                 @foreach ($this->teacherSubject->competency as $competency)
-                    <th class="border border-slate-300 dark:border-slate-600 text-center bg-gray-100 dark:bg-gray-800">{{ $competency->code }}</th>
+                    <th class="border border-slate-300 dark:border-slate-600 text-center bg-gray-100 dark:bg-gray-800">
+                        @switch($competency->code)
+                            @case(App\Enums\CategoryLegerEnum::FULL_SEMESTER->value)
+                                {{ App\Enums\CategoryLegerEnum::FULL_SEMESTER->getLabel() }}
+                                @break
+
+                            @case(App\Enums\CategoryLegerEnum::HALF_SEMESTER->value)
+                                {{ App\Enums\CategoryLegerEnum::HALF_SEMESTER->getLabel() }}
+                                @break
+                                
+                            @default
+                                {{ $competency->code }}
+                        @endswitch
+                    </th>
                 @endforeach
             </tr>
         @endif

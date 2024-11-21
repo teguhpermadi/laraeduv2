@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\CategoryLegerEnum;
 use App\Models\Competency;
 use App\Models\TeacherSubject;
 
@@ -15,16 +16,16 @@ class TeacherSubjectObserver
         // TENGAH SEMESTER
         Competency::create([
             'teacher_subject_id' => $teacherSubject->id,
-            'code' => "TENGAH SEMESTER",
-            'description' => 'TENGAH SEMESTER',
+            'code' => CategoryLegerEnum::HALF_SEMESTER->value,
+            'description' => CategoryLegerEnum::HALF_SEMESTER->getLabel(),
             'passing_grade' => 70,
         ]);
 
         // AKHIR SEMESTER
         Competency::create([
             'teacher_subject_id' => $teacherSubject->id,
-            'code' => "AKHIR SEMESTER",
-            'description' => 'AKHIR SEMESTER',
+            'code' => CategoryLegerEnum::FULL_SEMESTER->value,
+            'description' => CategoryLegerEnum::FULL_SEMESTER->getLabel(),
             'passing_grade' => 70,
         ]);
     }

@@ -47,7 +47,7 @@ class Leger extends Page implements HasForms
     public $leger_full_semester;
     public $leger_half_semester;
 
-    public $teacherSubject, $students, $time_signature, $preview, $student, $agree, $leger, $competency_count, $academic_year_id;
+    public $teacherSubject, $students, $time_signature, $previewFullSemester,$student, $agree, $leger, $competency_count, $academic_year_id;
     public $checkLegerRecap = false;
     public $descriptionLegerRecap = '';
     public $hasNoScores = false;
@@ -206,12 +206,13 @@ class Leger extends Page implements HasForms
     {
         return $form
             ->schema([
-                Section::make('Preview')
+                Section::make('Preview Akhir Semester')
                     ->schema([
-                        ViewField::make('preview')
+                        ViewField::make('previewFullSemester')
                             ->viewData([$this->teacherSubject, $this->students])
                             ->view('filament.pages.leger-preview'),
-                    ]),
+                    ])
+                    ->collapsible(),
                 Section::make('Persetujuan')
                     ->description(fn() => $this->descriptionLegerRecap)
                     ->schema([
@@ -233,6 +234,8 @@ class Leger extends Page implements HasForms
     public function submit()
     {
         $data = $this->form->getState();
+
+        // dd($data);
 
         $teacher_id = $this->teacherSubject->teacher_id;
         $subject_id = $this->teacherSubject->subject_id;
@@ -321,7 +324,7 @@ class Leger extends Page implements HasForms
         // Asumsikan $data adalah array atau Collection yang berisi metadata
         $filter = collect($data)->reject(function ($item) {
             $code = strtolower($item['competency']['code']);
-            return $code === 'tengah semester' || $code === 'akhir semester';
+            return $code === CategoryLegerEnum::HALF_SEMESTER->value || $code === CategoryLegerEnum::FULL_SEMESTER->value;
         })->values(); // Gunakan values() untuk reset indeks
 
         // kelompokkan terlebih dahulu

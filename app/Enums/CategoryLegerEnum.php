@@ -10,7 +10,7 @@ enum CategoryLegerEnum: string
     public function getLabel(): string 
     {
         return match($this) {
-            self::FULL_SEMESTER => 'Semester Penuh',
+            self::FULL_SEMESTER => 'Akhir Semester',
             self::HALF_SEMESTER => 'Tengah Semester',
         };
     }

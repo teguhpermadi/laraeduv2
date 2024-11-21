@@ -50,7 +50,8 @@
                 <th rowspan="2" class="border border-slate-300 text-center">Nomor</th>
                 <th rowspan="2" class="border border-slate-300 text-center">NIS</th>
                 <th rowspan="2" class="border border-slate-300 text-center">Nama Lengkap</th>
-                <th colspan="{{ $competencyCountHalfSemester }}" class="border border-slate-300 text-center">Nilai Kompetensi</th>
+                <th colspan="{{ $competencyCountHalfSemester }}" class="border border-slate-300 text-center">Nilai
+                    Kompetensi</th>
                 <th rowspan="2" class="border border-slate-300 text-center">Jumlah</th>
                 <th rowspan="2" class="border border-slate-300 text-center">Rata-rata</th>
                 <th rowspan="2" class="border border-slate-300 text-center">Peringkat</th>
@@ -58,7 +59,20 @@
             @if ($competencyCountHalfSemester > 0)
                 <tr>
                     @foreach ($competencyHalfSemester as $competency)
-                        <th class="border border-slate-300 text-center">{{ $competency->code }}</th>
+                        <th class="border border-slate-300 text-center">
+                            @switch($competency->code)
+                                @case(App\Enums\CategoryLegerEnum::FULL_SEMESTER->value)
+                                    {{ App\Enums\CategoryLegerEnum::FULL_SEMESTER->getLabel() }}
+                                @break
+
+                                @case(App\Enums\CategoryLegerEnum::HALF_SEMESTER->value)
+                                    {{ App\Enums\CategoryLegerEnum::HALF_SEMESTER->getLabel() }}
+                                @break
+
+                                @default
+                                    {{ $competency->code }}
+                            @endswitch
+                        </th>
                     @endforeach
                 </tr>
             @endif
@@ -176,7 +190,8 @@
                 <th rowspan="2" class="border border-slate-300 text-center">Nomor</th>
                 <th rowspan="2" class="border border-slate-300 text-center">NIS</th>
                 <th rowspan="2" class="border border-slate-300 text-center">Nama Lengkap</th>
-                <th colspan="{{ $competencyCountFullSemester }}" class="border border-slate-300 text-center">Nilai Kompetensi</th>
+                <th colspan="{{ $competencyCountFullSemester }}" class="border border-slate-300 text-center">Nilai
+                    Kompetensi</th>
                 <th rowspan="2" class="border border-slate-300 text-center">Jumlah</th>
                 <th rowspan="2" class="border border-slate-300 text-center">Rata-rata</th>
                 <th rowspan="2" class="border border-slate-300 text-center">Peringkat</th>
@@ -184,7 +199,20 @@
             @if ($competencyCountFullSemester > 0)
                 <tr>
                     @foreach ($competencyFullSemester as $competency)
-                        <th class="border border-slate-300 text-center">{{ $competency->code }}</th>
+                        <th class="border border-slate-300 text-center">
+                            @switch($competency->code)
+                                @case(App\Enums\CategoryLegerEnum::FULL_SEMESTER->value)
+                                    {{ App\Enums\CategoryLegerEnum::FULL_SEMESTER->getLabel() }}
+                                @break
+
+                                @case(App\Enums\CategoryLegerEnum::HALF_SEMESTER->value)
+                                    {{ App\Enums\CategoryLegerEnum::HALF_SEMESTER->getLabel() }}
+                                @break
+
+                                @default
+                                    {{ $competency->code }}
+                            @endswitch
+                        </th>
                     @endforeach
                 </tr>
             @endif
@@ -206,7 +234,7 @@
                         @endforeach
 
                         <td class="border border-slate-300 text-center">
-                            
+
                             {{ $student['sum'] }}
                         </td>
                         <td
