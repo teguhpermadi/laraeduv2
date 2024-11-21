@@ -50,7 +50,13 @@ class CompetencyResource extends Resource
                         Select::make('grade_id')
                             ->label(__('competency.grade_id'))
                             ->options(function (callable $get, callable $set) {
-                                $data = TeacherSubject::myGrade()->get()->pluck('grade.name', 'grade.id');
+                                $data = TeacherSubject::myGrade()->get();
+
+                                // function map
+                                $data = $data->mapWithKeys(function ($item) {
+                                    return [$item->grade->id => $item->grade->name . ' ' . $item->grade->phase];
+                                });
+                                
                                 return $data;
                             })->afterStateUpdated(function ($state, callable $get, callable $set) {
                                 $set('subject_id', null);
