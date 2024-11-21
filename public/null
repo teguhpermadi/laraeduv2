@@ -6,3 +6,224 @@ use App\Models\Scopes\AcademicYearScope;
 use App\Enums\SemesterEnum;
 
 SemesterEnum::GANJIL->value
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+
+StudentCompetency:get()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+
+StudentCompetency::get()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+
+StudentCompetency::getScoreCriteria()->get()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+
+StudentCompetency::get()->getScoreCriteria()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+
+StudentCompetency::find(1)->getScoreCriteria()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+
+StudentCompetency::find(1)
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+
+StudentCompetency::get()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+
+StudentCompetency::find(512)->getScoreCriteria()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+
+StudentCompetency::find(512)
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+
+StudentCompetency::find(512)
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+
+StudentCompetency::find(512)
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+
+StudentCompetency::find(512)
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+
+StudentCompetency::find(512)->getScoreCriteria()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+
+StudentCompetency::find(512)->getScoreCriteria()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Models\StudentCompetency;
+
+StudentCompetency::find(512)->getScoreCriteria()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Models\StudentCompetency;
+
+$score = StudentCompetency::find(512);
+$score->getCriteriaScore()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Models\StudentCompetency;
+
+$score = StudentCompetency::find(512);
+$score->getScoreCriteria()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Models\StudentCompetency;
+
+$score = StudentCompetency::find(512);
+
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Models\StudentCompetency;
+
+$score = StudentCompetency::find(512);
+$score->getScoreCriteria()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Models\StudentCompetency;
+
+$score = StudentCompetency::find(512);
+
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Models\StudentCompetency;
+
+$score = StudentCompetency::get();
+
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Models\StudentCompetency;
+
+$score = StudentCompetency::find(518);
+$score->getScoreCriteria()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Models\StudentCompetency;
+
+$score = StudentCompetency::get();
+$score->getScoreCriteria()
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Models\StudentCompetency;
+
+$score = StudentCompetency::get();
+
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Models\StudentCompetency;
+
+$score = StudentCompetency::find(668);
+$score->getScoreCriteria()

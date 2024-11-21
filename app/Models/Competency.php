@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use App\Helpers\ScoreCriteriaHelper;
 
 
 #[ObservedBy([CompetencyObserver::class])]
@@ -43,5 +44,10 @@ class Competency extends Model
     public function studentCompetency()
     {
         return $this->hasMany(StudentCompetency::class);
+    }
+
+    public function getScoreCriteria($score)
+    {
+        return ScoreCriteriaHelper::getScoreCriteria($score, $this->passing_grade);
     }
 }

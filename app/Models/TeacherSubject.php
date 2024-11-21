@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\CategoryLegerEnum;
+use App\Helpers\ScoreCriteriaHelper;
 use App\Models\Scopes\AcademicYearScope;
 use App\Observers\TeacherSubjectObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -127,5 +128,10 @@ class TeacherSubject extends Model
     public function teacherGrade()
     {
         return $this->hasOne(TeacherGrade::class, 'grade_id', 'grade_id');
+    }
+
+    public function getScoreCriteria($score)
+    {
+        return ScoreCriteriaHelper::getScoreCriteria($score, $this->passing_grade);
     }
 }

@@ -43,4 +43,16 @@ class StudentCompetency extends Model
     {
         return $this->belongsTo(Competency::class);
     }
+
+    public function getScoreCriteria()
+    {
+        // Pastikan relasi competency sudah ter-load
+        $competency = $this->competency;
+
+        if ($competency) {
+            return $competency->getScoreCriteria($this->score);
+        }
+
+        return null; // Atau bisa mengembalikan nilai default jika competency tidak ditemukan
+    }
 }
