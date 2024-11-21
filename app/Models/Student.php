@@ -125,6 +125,6 @@ class Student extends Model
     // extracurricular
     public function extracurricular()
     {
-        return $this->hasMany(StudentExtracurricular::class);
+        return $this->hasMany(StudentExtracurricular::class)->with('extracurricular');
     }
 }

@@ -3,19 +3,6 @@ use App\Models\Leger;
 use App\Enums\CurriculumEnum;
 use App\Models\Competency;
 use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
 
-$dataDetail = [
-    [
-        'leger_subject' => 'Matematika',
-        'data_tabel' => [
-            ['competency' => ['description' => 'Kompetensi A'], 'score' => 85],
-            ['competency' => ['description' => 'Kompetensi B'], 'score' => 90],
-        ],
-    ],
-    [
-        'leger_subject' => 'Bahasa Inggris',
-        'data_tabel' => [
-            ['competency' => ['description' => 'Kompetensi C'], 'score' => 88],
-        ],
-    ],
-];
+SemesterEnum::GANJIL->value

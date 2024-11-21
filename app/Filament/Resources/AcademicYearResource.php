@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\SemesterEnum;
 use App\Filament\Resources\AcademicYearResource\Pages;
 use App\Filament\Resources\AcademicYearResource\RelationManagers;
 use App\Models\AcademicYear;
@@ -40,7 +41,7 @@ class AcademicYearResource extends Resource
                     ->required(),
                 Select::make('semester')
                     ->label(__('academic-year.create.semester'))
-                    ->options(['ganjil' => 'ganjil', 'genap' => 'genap'])
+                    ->options(SemesterEnum::class)
                     ->required(),
                 Select::make('teacher_id')
                     ->label(__('academic-year.create.teacher_id'))

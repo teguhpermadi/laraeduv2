@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\CategoryLegerEnum;
+use App\Enums\SemesterEnum;
 use App\Models\AcademicYear;
 use App\Models\LegerRecap;
 use Illuminate\Http\Request;
@@ -121,7 +122,7 @@ class ReportController extends Controller
             'legerQuran',
             'attitudeFirst',
             'attendanceFirst',
-            'extracurricular'
+            'extracurricular',
         ])
             ->find($id);
 
@@ -159,9 +160,9 @@ class ReportController extends Controller
         $templateProcessor->setValue('grade_name', $student->studentGradeFirst->grade->name);
         $templateProcessor->setValue('grade_level', $student->studentGradeFirst->grade->grade);
 
-        $templateProcessor->setValue('sick', $student->attendanceFirst->sick);
-        $templateProcessor->setValue('permission', $student->attendanceFirst->permission);
-        $templateProcessor->setValue('absent', $student->attendanceFirst->absent);
+        $templateProcessor->setValue('sick', $student->attendanceFirst->sick . "\u{200B}");
+        $templateProcessor->setValue('permission', $student->attendanceFirst->permission . "\u{200B}");
+        $templateProcessor->setValue('absent', $student->attendanceFirst->absent . "\u{200B}");
 
         $templateProcessor->setValue('teacher_name', $student->studentGradeFirst->grade->teacherGradeFirst->teacher->name);
 
@@ -241,10 +242,6 @@ class ReportController extends Controller
 
 
         // dd($dataDetail, $data);
-
-
-
-
         $filename = 'Rapor Tengah Semester ' . $student->name . ' - ' . str_replace('/', ' ', $academic->year) . ' ' . $academic->semester . '.docx';
         $file_path = storage_path('/app/public/downloads/' . $filename);
         $templateProcessor->saveAs($file_path);
@@ -266,14 +263,163 @@ class ReportController extends Controller
                 $query->where('academic_year_id', $academic);
                 $query->where('category', $category);
             },
+            'studentGradeFirst.grade.teacherGradeFirst',
             'leger.teacherSubject.subject',
             'legerQuran',
-            'attitude',
-            'attendance',
-            'extracurricular'
+            'attitudeFirst',
+            'attendanceFirst',
+            'extracurricular' => function ($query) use ($academic) {
+                $query->orderBy('extracurricular_id', 'asc');
+            },
         ])
             ->find($id);
 
-        return [$student, $academicYear];
+        $report = $this->getFullReport($academicYear, $student);
+
+        return $report;
+    }
+
+    public function getFullReport($academic, $student)
+    {
+        // add competencies
+        $leger = $student->leger;
+
+        if ($leger->isEmpty()) {
+            abort(404, 'Data leger tidak ditemukan');
+        }
+
+        $schoolSettings = app(SchoolSettings::class);
+
+        $templateProcessor = new TemplateProcessor(storage_path('/app/public/templates/reportFull.docx'));
+
+        $templateProcessor->setValue('school_name', $schoolSettings->school_name);
+        $templateProcessor->setValue('school_address', $schoolSettings->school_address);
+        $templateProcessor->setValue('headmaster', $academic->teacher->name);
+        $templateProcessor->setValue('date_report_half', Carbon::createFromFormat('Y-m-d', $academic->date_report_half)->locale('id')->translatedFormat('d F Y'));
+        $templateProcessor->setValue('year', $academic->year);
+        $templateProcessor->setValue('semester', $academic->semester);
+
+        $templateProcessor->setValue('student_name', $student->name);
+        $templateProcessor->setValue('nisn', $student->nisn);
+        $templateProcessor->setValue('nis', $student->nis);
+
+        $templateProcessor->setValue('grade_name', $student->studentGradeFirst->grade->name);
+        $templateProcessor->setValue('grade_level', $student->studentGradeFirst->grade->grade);
+
+        $templateProcessor->setValue('sick', $student->attendanceFirst->sick);
+        $templateProcessor->setValue('permission', $student->attendanceFirst->permission);
+        $templateProcessor->setValue('absent', $student->attendanceFirst->absent);
+        $templateProcessor->setValue('note', $student->attendanceFirst->note ?? '-');
+        $templateProcessor->setValue('achievement', $student->attendanceFirst->achievement ?? '-');
+
+        $templateProcessor->setValue('teacher_name', $student->studentGradeFirst->grade->teacherGradeFirst->teacher->name);
+
+        // jika semester ganjil
+        if ($academic->semester === SemesterEnum::GANJIL->value) {
+            $templateProcessor->cloneBlock('block_status', 0, true, false, null);
+        } else {
+            $templateProcessor->cloneBlock('block_status', 1, true, false, null);
+            $templateProcessor->setValue('status', $student->attendanceFirst->status ?? '-');
+        }
+
+        // setting mata pelajaran
+        $data = [];
+        $numRow = 1;
+        $subjects = $student->leger;
+
+        foreach ($subjects as $subject) {
+            $data[] = [
+                'order' => $numRow++,
+                'subject' => $subject->teacherSubject->subject->name,
+                'score' => $subject->score,
+                'passing_grade' => $subject->teacherSubject->passing_grade,
+                'description' => $subject->description,
+            ];
+        }
+
+        // dd($data);
+        // tabel nilai mata pelajaran
+        $templateProcessor->cloneRowAndSetValues('order', $data);
+
+
+        // setting nilai extrakurricular
+        $extracurriculars = $student->extracurricular;
+        // dd($extracurriculars->toArray());
+        $numRowExtra = 1;
+        $dataExtra = [];
+
+        foreach ($extracurriculars as $extracurricular) {
+            $dataExtra[] = [
+                'orderExtra' => $numRowExtra++,
+                'extra_name' => $extracurricular->extracurricular->name,
+                'extra_score' => $extracurricular->score,
+                'optional' => ($extracurricular->extracurricular->is_required == 1) ? 'Wajib' : 'Pilihan',
+            ];
+        }
+
+        // table extrakurricular
+        $templateProcessor->cloneRowAndSetValues('orderExtra', $dataExtra);
+
+        // tambahkan data detail
+        $dataDetail = [];
+        foreach ($subjects as $key => $subject) {
+            $i = 1;
+
+            // Tambahkan grup data (judul blok)
+            $dataDetail[] = [
+                'leger_subject' => $subject->teacherSubject->subject->name,
+                'passing_grade' => $subject->teacherSubject->passing_grade,
+                'score' => $subject->score,
+                'data_tabel' => $subject->metadata
+            ];
+        }
+
+        // dd($dataDetail);
+
+        # Block cloning
+        $replacements = [];
+        $i = 1;
+        foreach ($dataDetail as $index => $detail) {
+            $replacements[] = [
+                'leger_subject' => $i++ . '. ' . $detail['leger_subject'],
+                'order_subject' => '${order_subject_' . $index . '}',
+                'competency' => '${competency_' . $index . '}',
+                'score' => '${score_' . $index . '}',
+                'passing_grade' => '${passing_grade_' . $index . '}',
+                'avg_score' => $detail['score'],
+                'avg_passing_grade' => $detail['passing_grade'],
+            ];
+        }
+
+        $templateProcessor->cloneBlock('block_name', count($replacements), true, false, $replacements);
+
+        # Table row cloning
+        foreach ($dataDetail as $index => $detail) {
+            $values = [];
+            $order = 1;
+
+            $score = $detail['score'];
+            $passing_grade = $detail['passing_grade'];
+
+            foreach ($detail['data_tabel'] as $row) {
+
+                // dd($row);
+                $values[] = [
+                    "order_subject_{$index}" => $order++,
+                    "competency_{$index}" => $row['competency']['description'],
+                    "score_{$index}" => $row['score'],
+                    "passing_grade_{$index}" => $row['competency']['passing_grade'] ?? '-', // Default nilai jika tidak ada passing grade
+                ];
+            }
+
+            $templateProcessor->cloneRowAndSetValues("order_subject_{$index}", $values);
+        }
+
+
+        // dd($dataDetail, $data);
+        $filename = 'Rapor Akhir Semester ' . $student->name . ' - ' . str_replace('/', ' ', $academic->year) . ' ' . $academic->semester . '.docx';
+        $file_path = storage_path('/app/public/downloads/' . $filename);
+        $templateProcessor->saveAs($file_path);
+        return response()->download($file_path)->deleteFileAfterSend(true);; // <<< HERE
     }
 }
