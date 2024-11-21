@@ -176,12 +176,15 @@ class ReportController extends Controller
             return count($leger->metadata);
         });
 
+        // tambahkan kolom pertama sebagai sumatif
+        $table->addCell()->addText('Sumatif Tengah Semester');
+
         // tambahkan kolom berdasarkan max metadata pada header
-        for ($i = 0; $i < $maxMetadata; $i++) {
-            $table->addCell()->addText('Formatif ' . ($i + 1));
+        for ($i = 1; $i < $maxMetadata; $i++) {
+            $table->addCell()->addText('Formatif ' . $i);
         }
 
-        $table->addCell()->addText('Sumatif');
+        // $table->addCell()->addText('Sumatif');
         $table->addCell()->addText('Rerata Nilai');
 
         $numRow = 1;
@@ -194,11 +197,17 @@ class ReportController extends Controller
 
             for ($j=0; $j < $maxMetadata; $j++) { 
                 // cari metadata yang memiliki key competency dengan code bukan "tengah semester"
-                if(isset($subject->metadata[$j]['score']) && $subject->metadata[$j]['code'] !== CategoryLegerEnum::HALF_SEMESTER->value) {
-                    $table->addCell()->addText($subject->metadata[$j]['score']);
+                // if(isset($subject->metadata[$j]['score']) && $subject->metadata[$j]['competency']['code'] !== CategoryLegerEnum::HALF_SEMESTER->value) {
+                //     $table->addCell()->addText($subject->metadata[$j]['competency']['code'].' skor '.$subject->metadata[$j]['score']);
+                // } else {
+                //     $table->addCell()->addText('');
+                // }
+                if(isset($subject->metadata[$j]['score'])) {
+                    $table->addCell()->addText($subject->metadata[$j]['competency']['code'].' skor '.$subject->metadata[$j]['score']);
                 } else {
                     $table->addCell()->addText('');
                 }
+
             }
 
             $table->addCell()->addText($subject->score);
