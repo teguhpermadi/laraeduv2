@@ -121,7 +121,7 @@ class Leger extends Page implements HasForms
 
         // half semester
         $teacherSubjectHalfSemester = TeacherSubject::with(['studentGrade.studentCompetency' => function ($query) use ($competency_id_half) {
-            $query->whereIn('competency_id', $competency_id_half);
+            $query->whereIn('competency_id', $competency_id_half)->orderBy('competency_id', 'asc');
         }])->find($id);
 
         $dataHalfSemester = collect();
