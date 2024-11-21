@@ -12,6 +12,8 @@ use App\Settings\SchoolSettings;
 use Dompdf\Dompdf;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Carbon\Carbon;
+use PhpOffice\PhpWord\Element\Table;
+use PhpOffice\PhpWord\SimpleType\TblWidth;
 
 class ReportController extends Controller
 {
@@ -113,17 +115,18 @@ class ReportController extends Controller
                 $query->where('academic_year_id', $academic);
                 $query->where('category', $category);
             },
-            'studentGrade.grade',
-            'teacherGrade',
+            'studentGradeFirst.grade.teacherGradeFirst',
             'leger.teacherSubject.subject',
             'legerQuran',
-            'attitude',
-            'attendance',
+            'attitudeFirst',
+            'attendanceFirst',
             'extracurricular'
         ])
             ->find($id);
 
-        $report = $this->getHalfReport($student, $academicYear);
+        // dd($student->toArray());
+        
+        $report = $this->getHalfReport($academicYear, $student);
 
         return $report;
     }
@@ -145,14 +148,70 @@ class ReportController extends Controller
         $templateProcessor->setValue('nisn', $student->nisn);
         $templateProcessor->setValue('nis', $student->nis);
 
-        $templateProcessor->setValue('grade_name', $student->studentGrade->grade->name);
-        $templateProcessor->setValue('grade_level', $student->studentGrade->grade->grade);
+        $templateProcessor->setValue('grade_name', $student->studentGradeFirst->grade->name);
+        $templateProcessor->setValue('grade_level', $student->studentGradeFirst->grade->grade);
 
-        $templateProcessor->setValue('sick', $student->attendance->sick);
-        $templateProcessor->setValue('permission', $student->attendance->permission);
-        $templateProcessor->setValue('absent', $student->attendance->absent);
+        $templateProcessor->setValue('sick', $student->attendanceFirst->sick);
+        $templateProcessor->setValue('permission', $student->attendanceFirst->permission);
+        $templateProcessor->setValue('absent', $student->attendanceFirst->absent);
         // $templateProcessor->setValue('total_attendance', $data['attendance']['total_attendance']);
-        $templateProcessor->setValue('teacher_name', $student->teacherGrade->teacher->name);
+        
+        $templateProcessor->setValue('teacher_name', $student->studentGradeFirst->grade->teacherGradeFirst->teacher->name);
+
+        $table = new Table(array('borderSize' => 6, 'width' => 'auto', 'unit' => TblWidth::AUTO));
+        // table header
+        $table->addRow();
+        $table->addCell()->addText('No');
+        $table->addCell()->addText('Mata Pelajaran');
+        $table->addCell()->addText('KKTP');
+        // add competencies
+        $leger = $student->leger;
+
+        if($leger->isEmpty()) {
+            abort(404, 'Data leger tidak ditemukan');
+        }
+
+        // cari leger yang memiliki metadata terbanyak, padahal metadata adalah array
+        $maxMetadata = $leger->max(function ($leger) {
+            return count($leger->metadata);
+        });
+
+        // tambahkan kolom berdasarkan max metadata pada header
+        for ($i = 0; $i < $maxMetadata; $i++) {
+            $table->addCell()->addText('Formatif ' . ($i + 1));
+        }
+
+        $table->addCell()->addText('Sumatif');
+        $table->addCell()->addText('Rerata Nilai');
+
+        $numRow = 1;
+        // table add row by leger
+        foreach ($leger as $subject) {
+            $table->addRow();
+            $table->addCell()->addText($numRow);
+            $table->addCell()->addText($subject->teacherSubject->subject->name);
+            $table->addCell()->addText($subject->teacherSubject->passing_grade);
+
+            for ($j=0; $j < $maxMetadata; $j++) { 
+                // cari metadata yang memiliki key competency dengan code bukan "tengah semester"
+                if(isset($subject->metadata[$j]['score']) && $subject->metadata[$j]['code'] !== CategoryLegerEnum::HALF_SEMESTER->value) {
+                    $table->addCell()->addText($subject->metadata[$j]['score']);
+                } else {
+                    $table->addCell()->addText('');
+                }
+            }
+
+            $table->addCell()->addText($subject->score);
+
+            $numRow++;
+        }
+
+        $templateProcessor->setComplexBlock('table', $table);
+
+        $filename = 'Rapor Tengah Semester '.$student->name.' - '. str_replace('/', ' ', $academic->year) . ' '.$academic->semester .'.docx';
+        $file_path = storage_path('/app/public/downloads/'.$filename);
+        $templateProcessor->saveAs($file_path);
+        return response()->download($file_path)->deleteFileAfterSend(true);; // <<< HERE
     }
 
     public function fullSemester($id)

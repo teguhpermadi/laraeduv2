@@ -26,3 +26,99 @@ use App\Models\Competency;
 use App\Models\Scopes\AcademicYearScope;
 
 Leger::where('student_id', 1)->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$data = TeacherSubject::myGrade()->get()->pluck('grade.name', 'grade.id');
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$data = TeacherSubject::myGrade()->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$data = TeacherSubject::myGrade()->get();
+
+
+$data = $data->mapWithKeys(function ($item) {
+  return [$item->grade->id => $item->grade->name . ' ' . $item->grade->grade];
+});
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$data = TeacherSubject::myGrade()->get();
+
+
+$data = $data->mapWithKeys(function ($item) {
+  return [$item->grade->id => $item->grade->name . ' Fase' . $item->grade->phase];
+});
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$data = TeacherSubject::myGrade()->get();
+
+
+$data = $data->mapWithKeys(function ($item) {
+  return [$item->grade->id => $item->grade->name . ' ' . $item->grade->phase];
+});
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+Leger::get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+Leger::where('student_id', 4)->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+Leger::where('student_id', 4)->where('category', 'half_semester')->get();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+Leger::where('student_id', 4)->where('category', 'half_semester')->first();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$leger = Leger::where('student_id', 4)->where('category', 'half_semester')->first();
+
+$leger->metadata;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+
+$leger = Leger::where('student_id', 4)->where('category', 'half_semester')->first();
+
+$leger;
