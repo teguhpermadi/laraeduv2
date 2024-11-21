@@ -195,7 +195,8 @@ class ReportController extends Controller
                 'leger_subject' => $subject->teacherSubject->subject->name,
                 'passing_grade' => $subject->teacherSubject->passing_grade,
                 'score' => $subject->score,
-                'data_tabel' => $subject->metadata
+                'data_tabel' => $subject->metadata,
+                'criteria' => $subject->teacherSubject->getScoreCriteria($subject->score),
             ];
         }
 
@@ -213,6 +214,7 @@ class ReportController extends Controller
                 'passing_grade' => '${passing_grade_' . $index . '}',
                 'avg_score' => $detail['score'],
                 'avg_passing_grade' => $detail['passing_grade'],
+                'criteria' => $detail['criteria'],
             ];
         }
 
@@ -334,6 +336,7 @@ class ReportController extends Controller
                 'score' => $subject->score,
                 'passing_grade' => $subject->teacherSubject->passing_grade,
                 'description' => $subject->description,
+                'criteria' => $subject->teacherSubject->getScoreCriteria($subject->score),
             ];
         }
 
@@ -370,7 +373,8 @@ class ReportController extends Controller
                 'leger_subject' => $subject->teacherSubject->subject->name,
                 'passing_grade' => $subject->teacherSubject->passing_grade,
                 'score' => $subject->score,
-                'data_tabel' => $subject->metadata
+                'data_tabel' => $subject->metadata,
+                'criteria' => $subject->teacherSubject->getScoreCriteria($subject->score),
             ];
         }
 
