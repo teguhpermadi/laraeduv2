@@ -14,6 +14,7 @@ use PhpOffice\PhpWord\TemplateProcessor;
 use Carbon\Carbon;
 use PhpOffice\PhpWord\Element\Table;
 use PhpOffice\PhpWord\SimpleType\TblWidth;
+use PhpOffice\PhpWord\Element\TextRun;
 
 class ReportController extends Controller
 {
@@ -124,8 +125,8 @@ class ReportController extends Controller
         ])
             ->find($id);
 
-        // dd($student->toArray());
-        
+        // dd($student->leger->toArray());
+
         $report = $this->getHalfReport($academicYear, $student);
 
         return $report;
@@ -133,6 +134,13 @@ class ReportController extends Controller
 
     public function getHalfReport($academic, $student)
     {
+        // add competencies
+        $leger = $student->leger;
+
+        if ($leger->isEmpty()) {
+            abort(404, 'Data leger tidak ditemukan');
+        }
+
         $schoolSettings = app(SchoolSettings::class);
 
         $templateProcessor = new TemplateProcessor(storage_path('/app/public/templates/reportHalf.docx'));
@@ -140,7 +148,7 @@ class ReportController extends Controller
         $templateProcessor->setValue('school_name', $schoolSettings->school_name);
         $templateProcessor->setValue('school_address', $schoolSettings->school_address);
         $templateProcessor->setValue('headmaster', $academic->teacher->name);
-        $templateProcessor->setValue('date_report_half', $academic->date_report_half);
+        $templateProcessor->setValue('date_report_half', Carbon::createFromFormat('Y-m-d', $academic->date_report_half)->locale('id')->translatedFormat('d F Y'));
         $templateProcessor->setValue('year', $academic->year);
         $templateProcessor->setValue('semester', $academic->semester);
 
@@ -154,71 +162,91 @@ class ReportController extends Controller
         $templateProcessor->setValue('sick', $student->attendanceFirst->sick);
         $templateProcessor->setValue('permission', $student->attendanceFirst->permission);
         $templateProcessor->setValue('absent', $student->attendanceFirst->absent);
-        // $templateProcessor->setValue('total_attendance', $data['attendance']['total_attendance']);
-        
+
         $templateProcessor->setValue('teacher_name', $student->studentGradeFirst->grade->teacherGradeFirst->teacher->name);
 
-        $table = new Table(array('borderSize' => 6, 'width' => 'auto', 'unit' => TblWidth::AUTO));
-        // table header
-        $table->addRow();
-        $table->addCell()->addText('No');
-        $table->addCell()->addText('Mata Pelajaran');
-        $table->addCell()->addText('KKTP');
-        // add competencies
-        $leger = $student->leger;
-
-        if($leger->isEmpty()) {
-            abort(404, 'Data leger tidak ditemukan');
-        }
-
-        // cari leger yang memiliki metadata terbanyak, padahal metadata adalah array
-        $maxMetadata = $leger->max(function ($leger) {
-            return count($leger->metadata);
-        });
-
-        // tambahkan kolom pertama sebagai sumatif
-        $table->addCell()->addText('Sumatif Tengah Semester');
-
-        // tambahkan kolom berdasarkan max metadata pada header
-        for ($i = 1; $i < $maxMetadata; $i++) {
-            $table->addCell()->addText('Formatif ' . $i);
-        }
-
-        // $table->addCell()->addText('Sumatif');
-        $table->addCell()->addText('Rerata Nilai');
-
+        // setting mata pelajaran
+        $data = [];
         $numRow = 1;
-        // table add row by leger
-        foreach ($leger as $subject) {
-            $table->addRow();
-            $table->addCell()->addText($numRow);
-            $table->addCell()->addText($subject->teacherSubject->subject->name);
-            $table->addCell()->addText($subject->teacherSubject->passing_grade);
+        $subjects = $student->leger;
 
-            for ($j=0; $j < $maxMetadata; $j++) { 
-                // cari metadata yang memiliki key competency dengan code bukan "tengah semester"
-                // if(isset($subject->metadata[$j]['score']) && $subject->metadata[$j]['competency']['code'] !== CategoryLegerEnum::HALF_SEMESTER->value) {
-                //     $table->addCell()->addText($subject->metadata[$j]['competency']['code'].' skor '.$subject->metadata[$j]['score']);
-                // } else {
-                //     $table->addCell()->addText('');
-                // }
-                if(isset($subject->metadata[$j]['score'])) {
-                    $table->addCell()->addText($subject->metadata[$j]['competency']['code'].' skor '.$subject->metadata[$j]['score']);
-                } else {
-                    $table->addCell()->addText('');
-                }
+        foreach ($subjects as $subject) {
+            $data[] = [
+                'order' => $numRow++,
+                'subject' => $subject->teacherSubject->subject->name,
+                'score' => $subject->score,
+                'passing_grade' => $subject->teacherSubject->passing_grade,
+                'description' => $subject->description,
+            ];
+        }
 
+        // dd($data);
+        // tabel nilai mata pelajaran
+        $templateProcessor->cloneRowAndSetValues('order', $data);
+
+        // tambahkan data detail
+        $dataDetail = [];
+        foreach ($subjects as $key => $subject) {
+            $i = 1;
+
+            // Tambahkan grup data (judul blok)
+            $dataDetail[] = [
+                'leger_subject' => $subject->teacherSubject->subject->name,
+                'passing_grade' => $subject->teacherSubject->passing_grade,
+                'score' => $subject->score,
+                'data_tabel' => $subject->metadata
+            ];
+        }
+
+        // dd($dataDetail);
+
+        # Block cloning
+        $replacements = [];
+        $i = 1;
+        foreach ($dataDetail as $index => $detail) {
+            $replacements[] = [
+                'leger_subject' => $i++ . '. ' . $detail['leger_subject'],
+                'order_subject' => '${order_subject_' . $index . '}',
+                'competency' => '${competency_' . $index . '}',
+                'score' => '${score_' . $index . '}',
+                'passing_grade' => '${passing_grade_' . $index . '}',
+                'avg_score' => $detail['score'],
+                'avg_passing_grade' => $detail['passing_grade'],
+            ];
+        }
+
+        $templateProcessor->cloneBlock('block_name', count($replacements), true, false, $replacements);
+
+        # Table row cloning
+        foreach ($dataDetail as $index => $detail) {
+            $values = [];
+            $order = 1;
+
+            $score = $detail['score'];
+            $passing_grade = $detail['passing_grade'];
+
+            foreach ($detail['data_tabel'] as $row) {
+
+                // dd($row);
+                $values[] = [
+                    "order_subject_{$index}" => $order++,
+                    "competency_{$index}" => $row['competency']['description'],
+                    "score_{$index}" => $row['score'],
+                    "passing_grade_{$index}" => $row['competency']['passing_grade'] ?? '-', // Default nilai jika tidak ada passing grade
+                ];
             }
 
-            $table->addCell()->addText($subject->score);
-
-            $numRow++;
+            $templateProcessor->cloneRowAndSetValues("order_subject_{$index}", $values);
         }
 
-        $templateProcessor->setComplexBlock('table', $table);
 
-        $filename = 'Rapor Tengah Semester '.$student->name.' - '. str_replace('/', ' ', $academic->year) . ' '.$academic->semester .'.docx';
-        $file_path = storage_path('/app/public/downloads/'.$filename);
+        // dd($dataDetail, $data);
+
+
+
+
+        $filename = 'Rapor Tengah Semester ' . $student->name . ' - ' . str_replace('/', ' ', $academic->year) . ' ' . $academic->semester . '.docx';
+        $file_path = storage_path('/app/public/downloads/' . $filename);
         $templateProcessor->saveAs($file_path);
         return response()->download($file_path)->deleteFileAfterSend(true);; // <<< HERE
     }
