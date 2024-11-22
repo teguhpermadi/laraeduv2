@@ -127,4 +127,9 @@ class Student extends Model
     {
         return $this->hasMany(StudentExtracurricular::class)->with('extracurricular');
     }
+
+    public function project()
+    {
+        return $this->hasMany(ProjectStudent::class);
+    }
 }

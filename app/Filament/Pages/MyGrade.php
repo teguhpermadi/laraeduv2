@@ -73,6 +73,7 @@ class MyGrade extends Page implements HasTable
                 // action project
                 Action::make('project')
                     ->label('Project')
+                    ->url(fn($record) => route('report-project', $record->student_id))
                     ->button(),
             ])
             ->paginated(false)

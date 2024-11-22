@@ -178,6 +178,7 @@ class ReportController extends Controller
                 'score' => $subject->score,
                 'passing_grade' => $subject->teacherSubject->passing_grade,
                 'description' => $subject->description,
+                'criteria' => $subject->teacherSubject->getScoreCriteria($subject->score),
             ];
         }
 
@@ -297,7 +298,7 @@ class ReportController extends Controller
         $templateProcessor->setValue('school_name', $schoolSettings->school_name);
         $templateProcessor->setValue('school_address', $schoolSettings->school_address);
         $templateProcessor->setValue('headmaster', $academic->teacher->name);
-        $templateProcessor->setValue('date_report_half', Carbon::createFromFormat('Y-m-d', $academic->date_report_half)->locale('id')->translatedFormat('d F Y'));
+        $templateProcessor->setValue('date_report', Carbon::createFromFormat('Y-m-d', $academic->date_report)->locale('id')->translatedFormat('d F Y'));
         $templateProcessor->setValue('year', $academic->year);
         $templateProcessor->setValue('semester', $academic->semester);
 
@@ -308,9 +309,9 @@ class ReportController extends Controller
         $templateProcessor->setValue('grade_name', $student->studentGradeFirst->grade->name);
         $templateProcessor->setValue('grade_level', $student->studentGradeFirst->grade->grade);
 
-        $templateProcessor->setValue('sick', $student->attendanceFirst->sick);
-        $templateProcessor->setValue('permission', $student->attendanceFirst->permission);
-        $templateProcessor->setValue('absent', $student->attendanceFirst->absent);
+        $templateProcessor->setValue('sick', ($student->attendanceFirst->sick == 0) ? '-' : $student->attendanceFirst->sick);
+        $templateProcessor->setValue('permission', ($student->attendanceFirst->permission == 0) ? '-' : $student->attendanceFirst->permission);
+        $templateProcessor->setValue('absent', ($student->attendanceFirst->absent == 0) ? '-' : $student->attendanceFirst->absent);
         $templateProcessor->setValue('note', $student->attendanceFirst->note ?? '-');
         $templateProcessor->setValue('achievement', $student->attendanceFirst->achievement ?? '-');
 
@@ -425,5 +426,32 @@ class ReportController extends Controller
         $file_path = storage_path('/app/public/downloads/' . $filename);
         $templateProcessor->saveAs($file_path);
         return response()->download($file_path)->deleteFileAfterSend(true);; // <<< HERE
+    }
+
+    public function project($id)
+    {
+        $academic = session('academic_year_id');
+
+        $academicYear = AcademicYear::find($academic);
+
+        $student = Student::with([
+            'studentGradeFirst.grade.teacherGradeFirst',
+            'leger.teacherSubject.subject',
+            'project'
+        ])
+            ->find($id);
+
+        $report = $this->getProjectReport($academicYear, $student);
+
+        return $report;
+    }
+
+    public function getProjectReport($academic, $student)
+    {
+        if ($student->project->isEmpty()) {
+            abort(404, 'Data project tidak ditemukan');
+        }
+
+        dd($academic, $student);
     }
 }

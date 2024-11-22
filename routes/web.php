@@ -19,6 +19,9 @@ Route::get('{id}/report-half-semester', [\App\Http\Controllers\ReportController:
 // report full semester
 Route::get('{id}/report-full-semester', [\App\Http\Controllers\ReportController::class, 'fullSemester'])->name('report-full-semester');
 
+// report project
+Route::get('{id}/report-project', [\App\Http\Controllers\ReportController::class, 'project'])->name('report-project');
+
 // leger extracurricular
 Route::get('{extracurricular_id}/leger-extracurricular', \App\Livewire\LegerPreviewExtracurricular::class)->name('leger-extracurricular');
 
