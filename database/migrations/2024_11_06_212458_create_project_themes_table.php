@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('project_themes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('level', ['paud', 'sd', 'smp', 'sma', 'smk']);
+            $table->string('level');
             $table->timestamps();
         });
     }

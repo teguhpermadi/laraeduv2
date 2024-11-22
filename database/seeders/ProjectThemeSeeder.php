@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\SchoolLevelEnum;
 use App\Models\ProjectTheme;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,6 +14,96 @@ class ProjectThemeSeeder extends Seeder
      */
     public function run(): void
     {
+        $data = [
+            [
+                "name" => "Aku Sayang Bumi",
+                "level" => SchoolLevelEnum::PAUD->value
+            ],
+            [
+                "name" => "Aku Cinta Indonesia",
+                "level" => SchoolLevelEnum::PAUD->value
+            ],
+            [
+                "name" => "Kita Semua Bersaudara",
+                "level" => SchoolLevelEnum::PAUD->value
+            ],
+            [
+                "name" => "Imajinasi dan Kreativitasku",
+                "level" => SchoolLevelEnum::PAUD->value
+            ],
+            [
+                "name" => "Gaya Hidup Berkelanjutan",
+                "level" => SchoolLevelEnum::SD->value
+            ],
+            [
+                "name" => "Kearifan Lokal",
+                "level" => SchoolLevelEnum::SD->value
+            ],
+            [
+                "name" => "Bhinneka Tunggal Ika",
+                "level" => SchoolLevelEnum::SD->value
+            ],
+            [
+                "name" => "Bangunlah Jiwa dan Raganya",
+                "level" => SchoolLevelEnum::SD->value
+            ],
+            [
+                "name" => "Rekayasa dan Teknologi",
+                "level" => SchoolLevelEnum::SD->value
+            ],
+            [
+                "name" => "Kewirausahaan",
+                "level" => SchoolLevelEnum::SD->value
+            ],
+            [
+                "name" => "Gaya Hidup Berkelanjutan",
+                "level" => SchoolLevelEnum::SMP->value
+            ],
+            [
+                "name" => "Kearifan Lokal",
+                "level" => SchoolLevelEnum::SMP->value
+            ],
+            [
+                "name" => "Bhinneka Tunggal Ika",
+                "level" => SchoolLevelEnum::SMP->value
+            ],
+            [
+                "name" => "Bangunlah Jiwa dan Raganya",
+                "level" => SchoolLevelEnum::SMP->value
+            ],
+            [
+                "name" => "Rekayasa dan Teknologi",
+                "level" => SchoolLevelEnum::SMP->value
+            ],
+            [
+                "name" => "Kewirausahaan",
+                "level" => SchoolLevelEnum::SMP->value
+            ],
+            [
+                "name" => "Gaya Hidup Berkelanjutan",
+                "level" => SchoolLevelEnum::SMA->value
+            ],
+            [
+                "name" => "Kearifan Lokal",
+                "level" => SchoolLevelEnum::SMA->value
+            ],
+            [
+                "name" => "Bhinneka Tunggal Ika",
+                "level" => SchoolLevelEnum::SMA->value
+            ],
+            [
+                "name" => "Bangunlah Jiwa dan Raganya",
+                "level" => SchoolLevelEnum::SMA->value
+            ],
+            [
+                "name" => "Rekayasa dan Teknologi",
+                "level" => SchoolLevelEnum::SMA->value
+            ],
+            [
+                "name" => "Kewirausahaan",
+                "level" => SchoolLevelEnum::SMA->value
+            ],
+        ];
         $data = [
             [
                 "name" => "Aku Sayang Bumi",
@@ -72,7 +163,7 @@ class ProjectThemeSeeder extends Seeder
             ],
             [
                 "name" => "Suara Demokrasi",
-                "level" => "smp"
+                "level" => SchoolLevelEnum::SMP->value
             ],
             [
                 "name" => "Rekayasa dan Teknologi",

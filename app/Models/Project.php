@@ -15,15 +15,11 @@ class Project extends Model
         'academic_year_id',
         'grade_id',
         'teacher_id',
+        'project_theme_id',
         'name',
         'description',
         'phase',
     ];
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new AcademicYearScope);
-    }
 
     public function academic()
     {
@@ -37,7 +33,9 @@ class Project extends Model
     
     public function grade()
     {
-         return $this->belongsTo(Grade::class);
+         return $this->belongsTo(Grade::class)->with(['studentGrade' => function ($query) {
+            $query->withoutGlobalScope(AcademicYearScope::class);
+         }]);
     }
 
     public function projectTarget()
@@ -57,5 +55,10 @@ class Project extends Model
         }
 
         $query->where('teacher_id', $teacher_id);
+    }
+
+    public function projectTheme()
+    {
+        return $this->belongsTo(ProjectTheme::class);
     }
 }

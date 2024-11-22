@@ -2,9 +2,11 @@
 
 namespace App\Filament\Pages;
 
+use App\Enums\SchoolLevelEnum;
 use App\Settings\SchoolSettings;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -21,6 +23,10 @@ class SchoolSettingPage extends SettingsPage
     {
         return $form
             ->schema([
+                Select::make('school_level')
+                    ->label('Jenjang Sekolah')
+                    ->options(SchoolLevelEnum::class)
+                    ->required(),
                 TextInput::make('school_name')
                     ->label('Nama Sekolah')
                     ->required(),

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
             $table->foreignId('grade_id')->constrained()->cascadeOnDelete();
             $table->foreignId('teacher_id')->constrained()->cascadeOnDelete();  
+            $table->foreignId('project_theme_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->text('description');
             $table->string('phase');

@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Enums\PhaseEnum;
 use App\Models\AcademicYear;
 use App\Models\Grade;
+use App\Models\ProjectTheme;
 use App\Models\Teacher;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -27,6 +28,7 @@ class ProjectFactory extends Factory
             'name' => fake()->sentence(),
             'description' => fake()->paragraph(),
             'phase' => PhaseEnum::cases()[array_rand(PhaseEnum::cases())]->value,
+            'project_theme_id' => ProjectTheme::get()->random()->id,
         ];
     }
 }
