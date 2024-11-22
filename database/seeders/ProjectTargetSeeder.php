@@ -34,6 +34,6 @@ class ProjectTargetSeeder extends Seeder
             ];
         }
 
-        // ProjectTarget::insert($data);
+        ProjectTarget::insert($data);
     }
 }

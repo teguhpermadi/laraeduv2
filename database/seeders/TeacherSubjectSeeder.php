@@ -37,7 +37,7 @@ class TeacherSubjectSeeder extends Seeder
         TeacherSubject::all()->each(function ($teacherSubject) {
             // 2 kompetensi dengan half_semester true
             for ($i = 1; $i <= 2; $i++) {
-                Competency::create([
+                Competency::updateOrCreate([
                     'teacher_subject_id' => $teacherSubject->id,
                     'code' => 'KD' . $i . '-S1',
                     'description' => 'Kompetensi Dasar ' . $i . ' Semester 1',
@@ -48,7 +48,7 @@ class TeacherSubjectSeeder extends Seeder
 
             // 2 kompetensi dengan half_semester false
             for ($i = 1; $i <= 2; $i++) {
-                Competency::create([
+                Competency::updateOrCreate([
                     'teacher_subject_id' => $teacherSubject->id,
                     'code' => 'KD' . $i . '-S2',
                     'description' => 'Kompetensi Dasar ' . $i . ' Semester 2',

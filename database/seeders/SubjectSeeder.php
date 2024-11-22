@@ -76,6 +76,6 @@ class SubjectSeeder extends Seeder
             ],
         ];
 
-        Subject::insert($data);
+        Subject::upsert($data, ['id']);
     }
 }

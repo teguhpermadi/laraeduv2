@@ -970,3 +970,9 @@ Project::factory()->make();
 Project::factory()->make();
 TeacherGrade::get();
 Project::get()
+Student::with('project')->find(5)
+Project::get()
+Project::with('target')->get()
+Project::with('projectTarget')->get()
+Project::with('projectTarget')->get()
+Project::withCount('projectTarget')->get()

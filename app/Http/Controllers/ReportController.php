@@ -57,7 +57,7 @@ class ReportController extends Controller
     {
         // dd($data);
         if (is_null($data['dataStudent'])) {
-            abort(404, 'Data siswa tidak ditemukan');
+            abort(403, 'Data siswa tidak ditemukan');
         }
 
         $templateProcessor = new TemplateProcessor(storage_path('/app/public/templates/cover-student.docx'));
@@ -139,7 +139,7 @@ class ReportController extends Controller
         $leger = $student->leger;
 
         if ($leger->isEmpty()) {
-            abort(404, 'Data leger tidak ditemukan');
+            abort(403, 'Data leger tidak ditemukan');
         }
 
         $schoolSettings = app(SchoolSettings::class);
@@ -288,7 +288,7 @@ class ReportController extends Controller
         $leger = $student->leger;
 
         if ($leger->isEmpty()) {
-            abort(404, 'Data leger tidak ditemukan');
+            abort(403, 'Data leger tidak ditemukan');
         }
 
         $schoolSettings = app(SchoolSettings::class);
@@ -449,7 +449,7 @@ class ReportController extends Controller
     public function getProjectReport($academic, $student)
     {
         if ($student->project->isEmpty()) {
-            abort(404, 'Data project tidak ditemukan');
+            abort(403, 'Data project tidak ditemukan');
         }
 
         dd($academic, $student);

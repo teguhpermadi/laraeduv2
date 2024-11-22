@@ -18,13 +18,7 @@ return [
     'note' => 'Catatan',
 
     // Opsi nilai (yang terlihat di ProjectAssesment)
-    'score_options' => [
-        4 => 'Sangat Berkembang',
-        3 => 'Berkembang Sesuai Harapan',
-        2 => 'Sedang Berkembang',
-        1 => 'Mulai Berkembang',
-    ],
-
+    'target_count' => 'Jumlah Capaian',
     'reset' => 'Reset',
     'edit' => 'Edit Project Target',
     'resetNote' => 'Reset Catatan',

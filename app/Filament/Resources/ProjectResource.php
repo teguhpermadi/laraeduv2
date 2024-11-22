@@ -80,11 +80,15 @@ class ProjectResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label(__('project.name')) ,
+                    ->label(__('project.name'))
+                    ->wrap(),
                 TextColumn::make('grade.name')
                     ->label(__('project.grade')),
                 TextColumn::make('academic.semester')
                     ->label(__('project.semester')),
+                TextColumn::make('project_target_count')
+                    ->counts('projectTarget')
+                    ->label(__('project.target_count')),
             ])
             ->filters([
                 //
@@ -112,7 +116,10 @@ class ProjectResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->modifyQueryUsing(function(Builder $query){
+                $query->myProject();
+            });
     }
 
     public static function getRelations(): array

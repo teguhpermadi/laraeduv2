@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\AcademicYear;
 use App\Models\ProjectCoordinator;
+use App\Models\Scopes\AcademicYearScope;
 use App\Models\TeacherGrade;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,7 +16,8 @@ class ProjectCoordinatorSeeder extends Seeder
      */
     public function run(): void
     {
-        $coordinators = TeacherGrade::all();
+        $coordinators = TeacherGrade::withoutGlobalScope(AcademicYearScope::class)->get();
+        
         foreach ($coordinators as $coordinator) {
             ProjectCoordinator::create([
                 'academic_year_id' => AcademicYear::first()->id,
