@@ -68,6 +68,6 @@ class StudentGrade extends Model
 
     public function project()
     {
-        return $this->hasOne(Project::class, 'grade_id', 'grade_id');
+        return $this->hasMany(Project::class, 'grade_id', 'grade_id');
     }
 }

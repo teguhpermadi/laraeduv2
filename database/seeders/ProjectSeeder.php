@@ -18,8 +18,9 @@ class ProjectSeeder extends Seeder
         $teacherGrade = TeacherGrade::withoutGlobalScope(AcademicYearScope::class)->get();
 
         foreach ($teacherGrade as $teacher) {
-            Project::factory(1)->state([
+            Project::factory(2)->state([
                 'teacher_id' => $teacher->teacher_id,
+                'grade_id' => $teacher->grade_id,
             ])->create();
         }
     }

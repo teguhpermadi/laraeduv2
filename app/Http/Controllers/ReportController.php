@@ -476,7 +476,47 @@ class ReportController extends Controller
         $templateProcessor->setValue('teacher_name', $student->studentGradeFirst->grade->teacherGradeFirst->teacher->name);
 
         // get all project
-        $projects = $student->project;
+        $projects = $student->studentGradeFirst->project;
+        dd($projects->toArray());
+
+        // block cloning
+        $replacements = [];
+        $i = 1;
+        foreach ($projects as $index => $project) {
+            $replacements[] = [
+                'project_number' => '${project_number_' . $index . '}',
+                'title' => '${title_' . $index . '}',
+                'description' => '${description_' . $index . '}',
+                'num_target' => '${num_target_' . $index . '}',
+                'dimention_description' => '${dimention_description_' . $index . '}',
+                'element_description' => '${element_description_' . $index . '}',
+                'value_description' => '${value_description_' . $index . '}',
+                'sub_value_description' => '${sub_value_description_' . $index . '}',
+                'target_description' => '${target_description_' . $index . '}',
+                'bsb' => '${bsb_' . $index . '}',
+                'bsh' => '${bsh_' . $index . '}',
+                'mb' => '${mb_' . $index . '}',
+                'bb' => '${bb_' . $index . '}',
+                'project_note' => '${project_note_' . $index . '}',
+            ];
+        }
+
+        $templateProcessor->cloneBlock('project_block', count($projects), true, false, $replacements);
+
+        // table row cloning
+        foreach ($projects as $index => $project) {
+            $values = [];
+            $i = 1;
+
+            foreach ($project->projectTarget as $target) {
+                $values[] = [
+                    "project_number_{$index}" => $i++,
+                    "title_{$index}" => $target->project->title,
+                    "description_{$index}" => $target->project->description,
+                    "num_target_{$index}" => $target->project->num_target,
+                ];
+            }
+        }
 
         // generate filename
         $filename = 'Rapor Proyek ' . $student->name . ' - ' . str_replace('/', ' ', $academic->year) . ' ' . $academic->semester . '.docx';

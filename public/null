@@ -3,3 +3,6 @@ Student::find(20)->studentGradeFirst;
 StudentProject::get();
 use App\Models\StudentProject;
 StudentProject::get();
+Grade::with('studentGrade')
+Grade::with('studentGrade')->get()
+$teacherGrade = TeacherGrade::withoutGlobalScope(AcademicYearScope::class)->get();
