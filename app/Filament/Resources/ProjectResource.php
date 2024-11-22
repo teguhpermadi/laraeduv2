@@ -21,6 +21,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -95,6 +96,11 @@ class ProjectResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                RelationManagerAction::make('project-target-relation-manager')
+                    ->label('Target')
+                    ->button()
+                    ->slideOver()
+                    ->relationManager(ProjectTargetRelationManager::make()),
                 Action::make('Assesment')
                     ->button()
                     ->url(function(Project $record){
