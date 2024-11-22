@@ -436,10 +436,13 @@ class ReportController extends Controller
 
         $student = Student::with([
             'studentGradeFirst.grade.teacherGradeFirst',
-            'leger.teacherSubject.subject',
-            'project'
+            'studentGradeFirst.project.projectTarget.studentProject' => function ($query) use ($id) {
+                $query->where('student_id', $id)->first();
+            },
         ])
             ->find($id);
+
+        // dd($student->toArray());
 
         $report = $this->getProjectReport($academicYear, $student);
 
@@ -452,6 +455,33 @@ class ReportController extends Controller
             abort(403, 'Data project tidak ditemukan');
         }
 
-        dd($academic, $student);
+        // dd($academic, $student);
+        $schoolSettings = app(SchoolSettings::class);
+
+        $templateProcessor = new TemplateProcessor(storage_path('/app/public/templates/project.docx'));
+
+        $templateProcessor->setValue('school_name', $schoolSettings->school_name);
+        $templateProcessor->setValue('school_address', $schoolSettings->school_address);
+        $templateProcessor->setValue('headmaster', $academic->teacher->name);
+        $templateProcessor->setValue('date_report', Carbon::createFromFormat('Y-m-d', $academic->date_report)->locale('id')->translatedFormat('d F Y'));
+        $templateProcessor->setValue('year', $academic->year);
+        $templateProcessor->setValue('semester', $academic->semester);
+
+        $templateProcessor->setValue('student_name', $student->name);
+        $templateProcessor->setValue('nisn', $student->nisn);
+        $templateProcessor->setValue('nis', $student->nis);
+
+        $templateProcessor->setValue('grade_name', $student->studentGradeFirst->grade->name);
+        $templateProcessor->setValue('grade_level', $student->studentGradeFirst->grade->grade);
+        $templateProcessor->setValue('teacher_name', $student->studentGradeFirst->grade->teacherGradeFirst->teacher->name);
+
+        // get all project
+        $projects = $student->project;
+
+        // generate filename
+        $filename = 'Rapor Proyek ' . $student->name . ' - ' . str_replace('/', ' ', $academic->year) . ' ' . $academic->semester . '.docx';
+        $file_path = storage_path('/app/public/downloads/' . $filename);
+        $templateProcessor->saveAs($file_path);
+        return response()->download($file_path)->deleteFileAfterSend(true);; // <<< HERE
     }
 }

@@ -65,4 +65,9 @@ class StudentGrade extends Model
 
         return $query->where('grade_id', $teacherGrade->grade_id);
     }
+
+    public function project()
+    {
+        return $this->hasOne(Project::class, 'grade_id', 'grade_id');
+    }
 }
