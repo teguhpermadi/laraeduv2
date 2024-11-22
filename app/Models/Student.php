@@ -130,6 +130,6 @@ class Student extends Model
 
     public function project()
     {
-        return $this->hasMany(ProjectStudent::class);
+        return $this->hasMany(StudentProject::class);
     }
 }

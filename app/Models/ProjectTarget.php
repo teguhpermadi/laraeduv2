@@ -66,8 +66,8 @@ class ProjectTarget extends Model
         return $this->belongsTo(Target::class);
     }
 
-    public function projectStudent()
+    public function studentProject()
     {
-        return $this->hasMany(ProjectStudent::class);
+        return $this->hasMany(StudentProject::class);
     }
 }

@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources\ProjectResource\Pages;
 
+use App\Enums\LinkertScaleEnum;
 use App\Filament\Resources\ProjectResource;
 use App\Models\Project;
-use App\Models\ProjectStudent;
 use App\Models\ProjectTarget;
 use App\Models\StudentGrade;
+use App\Models\StudentProject;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Section;
@@ -91,18 +92,13 @@ class ProjectAssesment extends Page implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(ProjectStudent::query())
+            ->query(StudentProject::query())
             ->columns([
                 TextColumn::make('student.name')
                     ->label(__('project.student')),
                 SelectColumn::make('score')
                     ->label(__('project.score'))
-                    ->options([
-                        4 => 'Sangat Berkembang',
-                        3 => 'Berkembang Sesuai Harapan',
-                        2 => 'Sedang Berkembang',
-                        1 => 'Mulai Berkembang',
-                ])
+                    ->options(LinkertScaleEnum::class)
             ])
             ->bulkActions([
                 BulkAction::make('scoring')
@@ -110,12 +106,7 @@ class ProjectAssesment extends Page implements HasForms, HasTable
                     ->form([
                         Select::make('score')
                             ->label(__('project.score'))
-                            ->options([
-                                4 => 'Sangat Berkembang',
-                                3 => 'Berkembang Sesuai Harapan',
-                                2 => 'Sedang Berkembang',
-                                1 => 'Mulai Berkembang',
-                            ])
+                            ->options(LinkertScaleEnum::class)
                     ])
                     ->action(function (Collection $records, $data) {
                         $records->each->update($data);
@@ -139,9 +130,9 @@ class ProjectAssesment extends Page implements HasForms, HasTable
         $project = Project::find($this->record);
         // cek terlebih dahulu student_id berdasarkan grade_id dari project
         $students = StudentGrade::where('grade_id', $project->grade_id)->get();
-        // tambahkan student_id ke dalam ProjectStudent apabila tidak ada
+
         foreach ($students as $student) {
-            ProjectStudent::updateOrCreate([
+            StudentProject::updateOrCreate([
                 'academic_year_id' => session('academic_year_id'),
                 'student_id' => $student->student_id,
                 'project_target_id' => $this->projectTargetId,

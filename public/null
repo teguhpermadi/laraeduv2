@@ -7,12 +7,8 @@ use App\Enums\SemesterEnum;
 use App\Enums\PhaseEnum;
 use App\Models\StudentCompetency;
 
-$target = Target::with('dimention', 'element.value.subValue', 'subElement')
-  ->get()
-  ->random();
 
-
-
+$project = Project::inRandomOrder()->first();
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
@@ -22,13 +18,8 @@ use App\Enums\SemesterEnum;
 use App\Enums\PhaseEnum;
 use App\Models\StudentCompetency;
 
-$target = Target::with('dimention', 'element.value.subValue', 'subElement')
-  ->get()
-  ->random();
 
-
-
-Project::get();
+$project = Project::inRandomOrder()->first();
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
@@ -38,13 +29,8 @@ use App\Enums\SemesterEnum;
 use App\Enums\PhaseEnum;
 use App\Models\StudentCompetency;
 
-$target = Target::with('dimention', 'element.value.subValue', 'subElement')
-  ->get()
-  ->random();
 
-
-
-$projects = Project::factory()->count(10)->create();
+$project = Project::inRandomOrder()->first();
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
@@ -54,27 +40,449 @@ use App\Enums\SemesterEnum;
 use App\Enums\PhaseEnum;
 use App\Models\StudentCompetency;
 
-$projects = Project::factory()->count(10)->create();
+
+$project = Project::inRandomOrder()->first();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+$project = Project::get()->random();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+$project = Project::get()->random();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+$project = Project::get()->random();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+$project = Project::get()->random();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+$project = Project::get()->random();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+$project = Project::with('projectTarget')->get()->random();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+$project = Project::with('projectTarget', 'studentGrade')->get()->random();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+$project = Project::with('projectTarget', 'grade')->get()->random();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+$project = Project::with('projectTarget', 'grade')->get()->random();
+
+return [
+  'academic_year_id'  => $project->academic_year_id,
+  'student_id'        => $project->grade->students->random()->id,
+  'project_target_id' => $project->projectTarget->id,
+  'score'             => LinkertScaleEnum::getRandomValue(),
+];
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->students->random();
+
+        return [
+            'academic_year_id'  => $project->academic_year_id,
+            'student_id'        => $student->id,
+            'project_target_id' => $project->projectTarget->id,
+            'score'             => LinkertScaleEnum::getRandomValue(),
+        ];
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->students->random();
+
+        return [
+            'academic_year_id'  => $project->academic_year_id,
+            'student_id'        => $student->id,
+            'project_target_id' => $project->projectTarget->id,
+            'score'             => LinkertScaleEnum::getRandomValue(),
+        ];
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->students->random()->id;
+
+        return [
+            'academic_year_id'  => $project->academic_year_id,
+            'student_id'        => $student->id,
+            'project_target_id' => $project->projectTarget->id,
+            'score'             => LinkertScaleEnum::getRandomValue(),
+        ];
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->students->random()->id;
+
+        return [
+            'academic_year_id'  => $project->academic_year_id,
+            'student_id'        => $student->id,
+            'project_target_id' => $project->projectTarget->id,
+            'score'             => LinkertScaleEnum::getRandomValue(),
+        ];
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->students;
+
+        return [
+            'academic_year_id'  => $project->academic_year_id,
+            'student_id'        => $student->id,
+            'project_target_id' => $project->projectTarget->id,
+            'score'             => LinkertScaleEnum::getRandomValue(),
+        ];
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->students;
+
+        return [
+            'academic_year_id'  => $project->academic_year_id,
+            'student_id'        => $student,
+            'project_target_id' => $project->projectTarget->id,
+            'score'             => LinkertScaleEnum::getRandomValue(),
+        ];
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->students;
+
+        return [
+            'academic_year_id'  => $project->academic_year_id,
+            'student_id'        => $student,
+            'project_target_id' => $project->projectTarget,
+            'score'             => LinkertScaleEnum::getRandomValue(),
+        ];
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->students;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->student;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->student;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->student;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->student;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->student;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->student;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->student;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->student;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->studentGrade;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->studentGrade->random()->id;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->studentGrade;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->studentGrade->student;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+        $project = Project::with('projectTarget', 'grade')->get()->random();
+        $student = $project->grade->studentGrade;
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+
+$project = Project::with('projectTarget', 'grade')->get()->random();
+
+$project
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+$projects = Project::with('projectTarget', 'grade')->get();
+
+$data = [];
 foreach ($projects as $project) {
-  $target = Target::with('dimention', 'element.value.subValue', 'subElement')
-	->get()
-	->random();
-
-  $value = $target->element->value->first();
-  $subValue = $value->subValue->first();
-
-  $data = [
-	'project_id' => $project->id,
-	'phase' => $project->phase,
-	'dimention_id' => $target->dimention->id,
-	'element_id' => $target->element->id,
-	'sub_element_id' => $target->subElement->id,
-	'value_id' => $value->id,
-	'sub_value_id' => $subValue->id,
-	'target_id' => $target->id,
-  ];
-
-  ProjectTarget::create($data);
+  $students = $project->grade->studentGrade;
+  foreach ($students as $student) {
+	$data[] = [
+	  'academic_year_id' => $project->academic_year_id,
+	  'student_id' => $student->student_id,
+	  'project_target_id' => $project->projectTarget->id,
+	  'score' => LinkertScaleEnum::getRandomValue(),
+	];
+  }
 }
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
@@ -85,28 +493,21 @@ use App\Enums\SemesterEnum;
 use App\Enums\PhaseEnum;
 use App\Models\StudentCompetency;
 
-$projects = Project::factory()->count(10)->create();
+$projects = Project::with('projectTarget', 'grade')->get();
+
+$data = [];
 foreach ($projects as $project) {
-  $target = Target::with('dimention', 'element.value.subValue', 'subElement')
-	->get()
-	->random();
-
-  $value = $target->element->value->first();
-  $subValue = $value->subValue->first();
-
-  $data = [
-	'project_id' => $project->id,
-	'phase' => $project->phase,
-	'dimention_id' => $target->dimention->first()->id,
-	'element_id' => $target->element->first()->id,
-	'sub_element_id' => $target->subElement->first()->id,
-	'value_id' => $value->id,
-	'sub_value_id' => $subValue->id,
-	'target_id' => $target->id,
-  ];
-
-  ProjectTarget::create($data);
+  $students = $project->grade->studentGrade;
+  foreach ($students as $student) {
+	$data[] = [
+	  'academic_year_id' => $project->academic_year_id,
+	  'student_id' => $student->student_id,
+	  'project_target_id' => $project->projectTarget->id,
+	  'score' => LinkertScaleEnum::getRandomValue(),
+	];
+  }
 }
+$data;
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
@@ -116,7 +517,21 @@ use App\Enums\SemesterEnum;
 use App\Enums\PhaseEnum;
 use App\Models\StudentCompetency;
 
-ProjectTarget::get()
+$projects = Project::with('projectTarget', 'grade')->get();
+
+$data = [];
+foreach ($projects as $project) {
+  $students = $project->grade->studentGrade;
+  foreach ($students as $student) {
+	$data[] = [
+	  'academic_year_id' => $project->academic_year_id,
+	  'student_id' => $student->student_id,
+	  'project_target_id' => $project->projectTarget,
+	  'score' => LinkertScaleEnum::getRandomValue(),
+	];
+  }
+}
+$data;
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
@@ -126,7 +541,7 @@ use App\Enums\SemesterEnum;
 use App\Enums\PhaseEnum;
 use App\Models\StudentCompetency;
 
-ProjectTarget::with('project')->get()
+        $target = Target::with('dimention', 'element.value.subValue', 'subElement')->get()->random();
 use App\Enums\CategoryLegerEnum;
 use App\Models\Leger;
 use App\Enums\CurriculumEnum;
@@ -136,329 +551,56 @@ use App\Enums\SemesterEnum;
 use App\Enums\PhaseEnum;
 use App\Models\StudentCompetency;
 
+$target = Target::with('dimention', 'element.value.subValue', 'subElement')->get()->random();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+$target = Target::with('dimention', 'element.value.subValue', 'subElement')->get()->random();
+$value = $target->element->value->first();
+$subValue = $value->subValue->first();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+$target = Target::with('dimention', 'element.value.subValue', 'subElement')->get()->random();
+$value = $target->element->value->first();
+$subValue = $value->subValue->first();
+
+ProjectTarget::factory(2)->make();
+use App\Enums\CategoryLegerEnum;
+use App\Models\Leger;
+use App\Enums\CurriculumEnum;
+use App\Models\Competency;
+use App\Models\Scopes\AcademicYearScope;
+use App\Enums\SemesterEnum;
+use App\Enums\PhaseEnum;
+use App\Models\StudentCompetency;
+
+Student::get()
+Student::with('studentProject')->get()
+Student::with('project')->get()
+Student::with('project')->get()
+Student::with('project')->get()
+Student::with('project')->get()
+Student::with('project')->first()
+Student::with('project.projectTarget')->first()
+Student::with('project.projectTarget.project')->first()
 
 Project::get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
 
+Project::with('projectTarget')->get()
 
-Project::get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
+Project::with('projectTarget.student')->get()
 
-
-Project::get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-Project::get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-Project::get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-Project::factory()->count(10)->create();
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-Project::with('grade')->get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-Project::with('grade')->get();
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-Project::get();
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-Project::get();
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-Project::with('grade')->get();
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-Project::with('studentGrade')->get();
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-Project::with('grade')->get();
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-
-StudentGrade::get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-Project::with('grade')->get();
-
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-Project::with('grade')->get();
-
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-Project::with('grade')->get();
-
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-Project::with('grade')->get();
-
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-Project::with('grade')->get();
-
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-
-
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-Project::with('grade')->get();
-
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-
-
-
-Project::whereHas('grade')->get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-
-
-
-Project::whereHas('grade.studentGrade')->get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-
-
-
-Project::whereHas('grade')->with('grade')->get()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-
-
-
-
-Project::whereHas('grade')->with('grade')->get()->toArray()
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-ProjectTarget::with('project')->get();
-use App\Enums\CategoryLegerEnum;
-use App\Models\Leger;
-use App\Enums\CurriculumEnum;
-use App\Models\Competency;
-use App\Models\Scopes\AcademicYearScope;
-use App\Enums\SemesterEnum;
-use App\Enums\PhaseEnum;
-use App\Models\StudentCompetency;
-
-
-ProjectStudent::get();
+Project::with('projectTarget.studentProject')->get()

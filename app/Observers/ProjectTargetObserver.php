@@ -2,9 +2,9 @@
 
 namespace App\Observers;
 
-use App\Models\ProjectStudent;
 use App\Models\ProjectTarget;
 use App\Models\StudentGrade;
+use App\Models\StudentProject;
 
 class ProjectTargetObserver
 {
@@ -13,23 +13,19 @@ class ProjectTargetObserver
      */
     public function created(ProjectTarget $projectTarget): void
     {
-        try {
-            $academic = session('academic_year_id');
-            $students = StudentGrade::where('grade_id', $projectTarget->project->grade_id)->get();
+        $academic = session('academic_year_id');
+        $students = StudentGrade::where('grade_id', $projectTarget->project->grade_id)->get();
 
-            $data = [];
-            foreach ($students as $student) {
-                $data[] = [
-                        'academic_year_id' => $academic,
-                        'student_id' => $student->student_id,
-                        'project_target_id' => $projectTarget->id,
-                    ];
-            }
-
-            ProjectStudent::insert($data);
-        } catch (\Throwable $th) {
-            //throw $th;
+        $data = [];
+        foreach ($students as $student) {
+            $data[] = [
+                'academic_year_id' => $academic,
+                'student_id' => $student->student_id,
+                'project_target_id' => $projectTarget->id,
+            ];
         }
+
+        StudentProject::insert($data);
     }
 
     /**

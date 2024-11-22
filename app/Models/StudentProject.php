@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use App\Models\Scopes\OrderStudentScope;
 
 #[ScopedBy([AcademicYearScope::class, OrderStudentScope::class])]
-class ProjectStudent extends Model
+class StudentProject extends Model
 {
     use HasFactory;
 
@@ -33,5 +33,5 @@ class ProjectStudent extends Model
     public function academicYear()
     {
         return $this->belongsTo(AcademicYear::class);
-    }   
+    }  
 }

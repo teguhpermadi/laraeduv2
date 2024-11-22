@@ -44,6 +44,7 @@ class DatabaseSeeder extends Seeder
             CompetencyQuranSeeder::class,
             ProjectSeeder::class,
             ProjectTargetSeeder::class,
+            StudentProjectSeeder::class,
         ]);
     }
 }

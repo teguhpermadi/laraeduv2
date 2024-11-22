@@ -79,7 +79,7 @@ class ProjectNote extends Page implements HasForms, HasTable
         $project = Project::find($this->record);
         // cek terlebih dahulu student_id berdasarkan grade_id dari project
         $students = StudentGrade::where('grade_id', $project->grade_id)->get();
-        // tambahkan student_id ke dalam ProjectStudent apabila tidak ada
+
         foreach ($students as $student) {
             ModelsProjectNote::updateOrCreate([
                 'academic_year_id' => session('academic_year_id'),

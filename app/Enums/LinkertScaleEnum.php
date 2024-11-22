@@ -24,4 +24,10 @@ enum LinkertScaleEnum: String implements HasLabel
             self::AMAT_KURANG => 'Amat Kurang',
         };
     }   
+
+    public static function getRandomValue(): string
+    {
+        $cases = self::cases();
+        return $cases[array_rand($cases)]->value;
+    }
 }
