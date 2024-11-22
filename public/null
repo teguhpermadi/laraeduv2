@@ -604,3 +604,369 @@ Project::with('projectTarget')->get()
 Project::with('projectTarget.student')->get()
 
 Project::with('projectTarget.studentProject')->get()
+Student::with('project.projectTarget.project')->find(2)
+Project::factory(5)->state([
+            'teacher_id' => Teacher::get()->random()->id,
+        ])->make();
+Project::factory(5)->state([
+            'teacher_id' => 1,
+        ])->make();
+Project::factory(5)->state([
+            'teacher_id' => 1,
+        ])->make();
+$teacherGrade = TeacherGrade::get();
+
+        foreach ($teacherGrade as $teacher) {
+            Project::factory(1)->state([
+                'teacher_id' => $teacher->teacher_id,
+            ])->make();
+        }
+$teacherGrade = TeacherGrade::get();
+
+        foreach ($teacherGrade as $teacher) {
+            $data = Project::factory(1)->state([
+                'teacher_id' => $teacher->teacher_id,
+            ])->make();
+        }
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+        foreach ($teacherGrade as $teacher) {
+            $data[] = Project::factory(1)->state([
+                'teacher_id' => $teacher->teacher_id,
+            ])->make();
+        }
+
+$data;
+$target = Target::with('dimention', 'element.value.subValue', 'subElement')->get()->random();
+$value = $target->element->value->first();
+$subValue = $value->subValue->first();
+
+for ($i=0; $i < 10; $i++) { 
+  $data[] = [
+	'project_id' => Project::get()->random()->id,
+	'phase' => $target->phase,
+	'dimention_id' => $target->dimention->first()->id,
+	'element_id' => $target->element->first()->id,
+	'sub_element_id' => $target->subElement->first()->id,
+	'value_id' => $value->first()->id,
+	'sub_value_id' => $subValue->first()->id,
+	'target_id' => $target->id,
+  ];
+}
+
+$data;
+$target = Target::with('dimention', 'element.value.subValue', 'subElement')->get()->random();
+$value = $target->element->value->first();
+$subValue = $value->subValue->first();
+
+for ($i=0; $i < 10; $i++) { 
+  $data[] = [
+	'project_id' => Project::get()->random()->id,
+	'phase' => $target->phase,
+	'dimention_id' => $target->dimention->first()->id,
+	'element_id' => $target->element->first()->id,
+	'sub_element_id' => $target->subElement->first()->id,
+	'value_id' => $value->first()->id,
+	'sub_value_id' => $subValue->first()->id,
+	'target_id' => $target->id,
+  ];
+}
+
+$data;
+$target = Target::with('dimention', 'element.value.subValue', 'subElement')->get()->random();
+$value = $target->element->value->first();
+$subValue = $value->subValue->first();
+
+for ($i=0; $i < 10; $i++) { 
+  $data[] = [
+	'project_id' => Project::get()->random()->id,
+	'phase' => $target->phase,
+	'dimention_id' => $target->dimention->first()->id,
+	'element_id' => $target->element->first()->id,
+	'sub_element_id' => $target->subElement->first()->id,
+	'value_id' => $value->first()->id,
+	'sub_value_id' => $subValue->first()->id,
+	'target_id' => $target->id,
+  ];
+}
+
+$data;
+$target = Target::with('dimention', 'element.value.subValue', 'subElement')->get()->random();
+$value = $target->element->value->first();
+$subValue = $value->subValue->first();
+
+for ($i=0; $i < 10; $i++) { 
+  $data[] = [
+	
+	'phase' => $target->phase,
+	'dimention_id' => $target->dimention->first()->id,
+	'element_id' => $target->element->first()->id,
+	'sub_element_id' => $target->subElement->first()->id,
+	'value_id' => $value->first()->id,
+	'sub_value_id' => $subValue->first()->id,
+	'target_id' => $target->id,
+  ];
+}
+
+$data;
+$target = Target::with('dimention', 'element.value.subValue', 'subElement')->get()->random();
+        $value = $target->element->value->first();
+        $subValue = $value->subValue->first();
+        $project_id = Project::get()->random();
+
+        for ($i=0; $i < 10; $i++) { 
+            $data[] = [
+                'project_id' => $project_id->id,
+                'phase' => $target->phase,
+                'dimention_id' => $target->dimention->first()->id,
+                'element_id' => $target->element->first()->id,
+                'sub_element_id' => $target->subElement->first()->id,
+                'value_id' => $value->first()->id,
+                'sub_value_id' => $subValue->first()->id,
+                'target_id' => $target->id,
+            ];
+        }
+$target = Target::with('dimention', 'element.value.subValue', 'subElement')->get()->random();
+        $value = $target->element->value->first();
+        $subValue = $value->subValue->first();
+        $project_id = Project::get()->random();
+
+        for ($i=0; $i < 10; $i++) { 
+            $data[] = [
+                'project_id' => $project_id->id,
+                'phase' => $target->phase,
+                'dimention_id' => $target->dimention->first()->id,
+                'element_id' => $target->element->first()->id,
+                'sub_element_id' => $target->subElement->first()->id,
+                'value_id' => $value->first()->id,
+                'sub_value_id' => $subValue->first()->id,
+                'target_id' => $target->id,
+            ];
+        }
+$project_id = Project::get()->random();
+$project_id = Project::get()->random();
+$project_id = Project::get()->random();
+$project_id = Project::get()->random();
+$project_id = Project::get()->random();
+$project_id = Project::get()->random();
+$project_id = Project::get()->random();
+$project_id = Project::get()->random()->id;
+$project_id = Project::get()->random();
+$project_id = Project::get();
+$project_id = Project::get();
+$project_id = Project::get();
+$project_id = Project::get();
+$project_id = Project::get();
+$project_id = Project::get();
+$project_id = Project::get();
+$project_id = Project::get();
+$project_id = Project::get();
+$project_id = Project::get();
+$project_id = Project::get();
+$project_id = Project::get();
+$teacherGrade = TeacherGrade::get();
+
+        foreach ($teacherGrade as $teacher) {
+            Project::factory(1)->state([
+                'teacher_id' => $teacher->teacher_id,
+            ])->create();
+        }
+Project::get()
+Project::get();
+$teacherGrade = TeacherGrade::get();
+
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory(1)->state([
+	'teacher_id' => $teacher->teacher_id,
+  ])->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory(1)->state([
+	'teacher_id' => $teacher->teacher_id,
+  ])->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->state([
+	'teacher_id' => $teacher->teacher_id,
+  ])->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->state([
+	'teacher_id' => $teacher->teacher_id,
+  ])->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->state([
+	'teacher_id' => $teacher->teacher_id,
+  ])->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->state([
+	'teacher_id' => $teacher->teacher_id,
+  ])->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->state([
+	'teacher_id' => $teacher->teacher_id,
+  ])->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->state([
+	'teacher_id' => $teacher->teacher_id,
+  ])->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->state([
+	'teacher_id' => $teacher->teacher_id,
+  ])->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->state([
+	'teacher_id' => $teacher->teacher_id,
+  ])->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->state([
+	'teacher_id' => $teacher->teacher_id,
+  ])->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->state([
+	'teacher_id' => $teacher->teacher_id,
+  ])->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->state([
+	'teacher_id' => $teacher->teacher_id,
+  ])->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->state([
+	'teacher_id' => $teacher->teacher_id,
+  ])->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->state([
+	'teacher_id' => $teacher->teacher_id,
+  ])->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->make();
+}
+
+$data;
+$teacherGrade = TeacherGrade::get();
+
+$data = [];
+foreach ($teacherGrade as $teacher) {
+  $data[] = Project::factory()->make();
+}
+Project::factory()->make();
+$data;
+Project::factory()->make();
+Project::factory()->make();
+Project::factory()->make();
+Project::factory()->make();
+TeacherGrade::get();
+Project::get()

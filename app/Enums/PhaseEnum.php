@@ -27,4 +27,9 @@ enum PhaseEnum: string implements HasLabel
             self::phaseF => 'Fase F',
         };
     }
+
+    public static function getRandomValue(): string
+    {
+        return self::cases()[array_rand(self::cases())]->value;
+    }
 }

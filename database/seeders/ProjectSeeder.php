@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Project;
-use App\Models\ProjectTarget;
-use App\Models\Target;
+use App\Models\Scopes\AcademicYearScope;
+use App\Models\TeacherGrade;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,6 +15,12 @@ class ProjectSeeder extends Seeder
      */
     public function run(): void
     {
-        Project::factory(5)->create();
+        $teacherGrade = TeacherGrade::withoutGlobalScope(AcademicYearScope::class)->get();
+
+        foreach ($teacherGrade as $teacher) {
+            Project::factory(1)->state([
+                'teacher_id' => $teacher->teacher_id,
+            ])->create();
+        }
     }
 }

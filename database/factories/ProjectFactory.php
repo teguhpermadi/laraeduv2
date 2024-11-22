@@ -27,7 +27,7 @@ class ProjectFactory extends Factory
             'teacher_id' => Teacher::get()->random()->id,
             'name' => fake()->sentence(),
             'description' => fake()->paragraph(),
-            'phase' => PhaseEnum::cases()[array_rand(PhaseEnum::cases())]->value,
+            'phase' => PhaseEnum::getRandomValue(),
             'project_theme_id' => ProjectTheme::get()->random()->id,
         ];
     }

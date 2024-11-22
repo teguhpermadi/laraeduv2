@@ -28,6 +28,13 @@ class DatabaseSeeder extends Seeder
             TeacherSubjectSeeder::class,
             CompetencySeeder::class,
             StudentCompetencySeeder::class,
+
+            // Extracurricular
+            ExtracurricularSeeder::class,
+            TeacherExtracurricularSeeder::class,
+            StudentExtracurricularSeeder::class,
+
+            // Project
             DimentionSeeder::class,
             ElementSeeder::class,
             SubElementSeeder::class,
@@ -35,16 +42,16 @@ class DatabaseSeeder extends Seeder
             ValueSeeder::class,
             SubValueSeeder::class,
             ProjectThemeSeeder::class,
-            ExtracurricularSeeder::class,
-            TeacherExtracurricularSeeder::class,
-            StudentExtracurricularSeeder::class,
+            ProjectCoordinatorSeeder::class,
+            ProjectSeeder::class,
+            ProjectTargetSeeder::class,
+            StudentProjectSeeder::class,
+
+            // Quran
             QuranGradeSeeder::class,
             TeacherQuranGradeSeeder::class,
             StudentQuranGradeSeeder::class,
             CompetencyQuranSeeder::class,
-            ProjectSeeder::class,
-            ProjectTargetSeeder::class,
-            StudentProjectSeeder::class,
         ]);
     }
 }
