@@ -109,7 +109,7 @@ class Leger extends Page implements HasForms
         });
 
         // kembalikan data sort by id
-        $dataFullSemester = $dataFullSemester->sortByDesc('student_id')->values();
+        $dataFullSemester = $dataFullSemester->sortBy('student_id', SORT_ASC);
 
         // Cek apakah ada siswa yang belum memiliki nilai
         $this->hasNoScores = $dataFullSemester->contains(function ($item) {
@@ -161,7 +161,8 @@ class Leger extends Page implements HasForms
         });
 
         // kembalikan data sort by id
-        $dataHalfSemester = $dataHalfSemester->sortByDesc('student_id')->values();
+        $dataHalfSemester = $dataHalfSemester->sortBy('student_id', SORT_ASC);
+
 
         // dd($dataFullSemester);
 

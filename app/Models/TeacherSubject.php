@@ -59,7 +59,9 @@ class TeacherSubject extends Model
 
     public function studentGrade()
     {
-        return $this->hasMany(StudentGrade::class, 'grade_id', 'grade_id')->withoutGlobalScope(AcademicYearScope::class);
+        return $this->hasMany(StudentGrade::class, 'grade_id', 'grade_id')
+            ->withoutGlobalScope(AcademicYearScope::class)
+            ->orderBy('student_id', 'asc');
     }
 
     public function competency()
