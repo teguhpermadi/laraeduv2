@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Enums\CategoryLegerEnum;
 use App\Enums\CurriculumEnum;
+use App\Helpers\DescriptionHelper;
 use App\Models\Leger as ModelsLeger;
 use App\Models\LegerRecap;
 use App\Models\StudentCompetency;
@@ -77,7 +78,8 @@ class Leger extends Page implements HasForms
         foreach ($teacherSubjectFullSemester->studentGrade as $studentGrade) {
 
             // deskripsi
-            $description = $this->getDescription($studentGrade->studentCompetency);
+            // $description = $this->getDescription($studentGrade->studentCompetency);
+            $description = DescriptionHelper::getDescription($studentGrade->student, $studentGrade->studentCompetency);
 
             $dataFullSemester[$studentGrade->student_id] = collect([
                 'academic_year_id' => $competency->academic_year_id,
@@ -128,7 +130,8 @@ class Leger extends Page implements HasForms
 
         // all competency from half semester
         foreach ($teacherSubjectHalfSemester->studentGrade as $studentGrade) {
-            $description = $this->getDescription($studentGrade->studentCompetency);
+            // $description = $this->getDescription($studentGrade->studentCompetency);
+            $description = DescriptionHelper::getDescription($studentGrade->student, $studentGrade->studentCompetency);
 
             $dataHalfSemester[$studentGrade->student_id] = collect([
                 'academic_year_id' => $competency->academic_year_id,
@@ -311,78 +314,5 @@ class Leger extends Page implements HasForms
             ->body('Leger berhasil disimpan')
             ->success()
             ->send();
-    }
-
-    public function getDescription($data)
-    {
-        $string = '';
-        $string_skill = '';
-
-        // hapus data tengah semester dan akhir semester
-        // unset($data[0], $data[1]);
-
-        // Asumsikan $data adalah array atau Collection yang berisi metadata
-        $filter = collect($data)->reject(function ($item) {
-            $code = strtolower($item['competency']['code']);
-            return $code === CategoryLegerEnum::HALF_SEMESTER->value || $code === CategoryLegerEnum::FULL_SEMESTER->value;
-        })->values(); // Gunakan values() untuk reset indeks
-
-        // kelompokkan terlebih dahulu
-        // competency lulus & tidak lulus
-        $passed = 'Ananda telah menguasai materi: ';
-        $notPassed = 'Ananda perlu peningkatan lagi pada materi: ';
-        $countPassed = 0;
-        $countNotPassed = 0;
-
-        $passedSkill = 'Ananda telah menguasai keterampilan: ';
-        $notPassedSkill = 'Ananda perlu peningkatan lagi pada keterampilan: ';
-        $countPassedSkill = 0;
-        $countNotPassedSkill = 0;
-
-        foreach ($filter as $competency) {
-            if ($competency->score >= $competency->competency->passing_grade) {
-                // jika lulus
-                $passed .= $competency->competency->description . '; ';
-                $countPassed++;
-            } else {
-                // jika tidak lulus
-                $notPassed .= $competency->competency->description . '; ';
-                $countNotPassed++;
-            }
-
-            // score skill
-            if ($competency->score_skill >= $competency->competency->passing_grade) {
-                // jika lulus
-                $passedSkill .= $competency->competency->description_skill . '; ';
-                $countPassedSkill++;
-            } else {
-                // jika tidak lulus
-                $notPassedSkill .= $competency->competency->description_skill . '; ';
-                $countNotPassedSkill++;
-            }
-        }
-
-        // cek jika ada isinya
-        if ($countPassed > 0) {
-            $string .= $passed;
-        }
-
-        if ($countNotPassed > 0) {
-            $string .= $notPassed;
-        }
-
-        // cek jika skill ada isinya
-        if ($countPassed > 0) {
-            $string_skill .= $passedSkill;
-        }
-
-        if ($countNotPassed > 0) {
-            $string_skill .= $notPassedSkill;
-        }
-
-        return [
-            'description' => $string,
-            'description_skill' => $string_skill,
-        ];
     }
 }
