@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use PhpOffice\PhpWord\Element\Table;
 use PhpOffice\PhpWord\SimpleType\TblWidth;
 use PhpOffice\PhpWord\Element\TextRun;
+use App\Enums\LinkertScaleEnum;
 
 class ReportController extends Controller
 {
@@ -348,15 +349,17 @@ class ReportController extends Controller
 
         // setting nilai extrakurricular
         $extracurriculars = $student->extracurricular;
-        // dd($extracurriculars->toArray());
         $numRowExtra = 1;
         $dataExtra = [];
 
         foreach ($extracurriculars as $extracurricular) {
+            $extraScoreEnum = LinkertScaleEnum::tryFrom($extracurricular->score);
+            $extraScoreLabel = $extraScoreEnum ? $extraScoreEnum->getLabel() : 'Tidak Diketahui';
+
             $dataExtra[] = [
                 'orderExtra' => $numRowExtra++,
                 'extra_name' => $extracurricular->extracurricular->name,
-                'extra_score' => $extracurricular->score,
+                'extra_score' => $extraScoreLabel, // Menggunakan label dari LinkertScaleEnum
                 'optional' => ($extracurricular->extracurricular->is_required == 1) ? 'Wajib' : 'Pilihan',
             ];
         }
