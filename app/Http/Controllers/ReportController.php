@@ -159,7 +159,7 @@ class ReportController extends Controller
         $templateProcessor->setValue('nis', $student->nis);
 
         $templateProcessor->setValue('grade_name', $student->studentGradeFirst->grade->name);
-        $templateProcessor->setValue('grade_level', $student->studentGradeFirst->grade->grade);
+        $templateProcessor->setValue('grade_level', $student->studentGradeFirst->grade->phase);
 
         $templateProcessor->setValue('sick', $student->attendanceFirst->sick . "\u{200B}");
         $templateProcessor->setValue('permission', $student->attendanceFirst->permission . "\u{200B}");
@@ -308,7 +308,7 @@ class ReportController extends Controller
         $templateProcessor->setValue('nis', $student->nis);
 
         $templateProcessor->setValue('grade_name', $student->studentGradeFirst->grade->name);
-        $templateProcessor->setValue('grade_level', $student->studentGradeFirst->grade->grade);
+        $templateProcessor->setValue('grade_level', $student->studentGradeFirst->grade->phase);
 
         $templateProcessor->setValue('sick', ($student->attendanceFirst->sick == 0) ? '-' : $student->attendanceFirst->sick);
         $templateProcessor->setValue('permission', ($student->attendanceFirst->permission == 0) ? '-' : $student->attendanceFirst->permission);
@@ -481,7 +481,7 @@ class ReportController extends Controller
         $templateProcessor->setValue('nis', $student->nis);
 
         $templateProcessor->setValue('grade_name', $student->studentGradeFirst->grade->name);
-        $templateProcessor->setValue('grade_level', $student->studentGradeFirst->grade->grade);
+        $templateProcessor->setValue('grade_level', $student->studentGradeFirst->grade->phase);
         $templateProcessor->setValue('teacher_name', $student->studentGradeFirst->grade->teacherGradeFirst->teacher->name);
 
         // get all project
