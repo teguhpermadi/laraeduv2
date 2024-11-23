@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -63,6 +64,17 @@ class QuranGradeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                RelationManagerAction::make('student-quran-grade-relation-manager')
+                    ->label('Lihat Siswa')
+                    ->button()
+                    ->slideOver()
+                    ->relationManager(StudentQuranGradeRelationManager::make()),
+                RelationManagerAction::make('teacher-quran-grade-relation-manager')
+                    ->label('Lihat Guru')
+                    ->color('success')
+                    ->button()
+                    ->slideOver()
+                    ->relationManager(TeacherQuranGradeRelationManager::make()),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

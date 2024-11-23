@@ -52,6 +52,8 @@ class AssessmentQuran extends Page implements HasForms, HasTable
     // navigation group
     protected static ?string $navigationGroup = 'Mengaji';
 
+    protected static ?int $navigationSort = 3;
+
     public ?array $data = [];
     public $quranGrade = [];
     public $competencyQuran = [];

@@ -11,12 +11,15 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Database\Eloquent\Model;
 
 class StudentQuranGradeRelationManager extends RelationManager
 {
+    use CanBeEmbeddedInModals;
+    
     protected static string $relationship = 'studentQuranGrade';
 
     // title
