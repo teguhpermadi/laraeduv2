@@ -34,4 +34,9 @@ class StudentProject extends Model
     {
         return $this->belongsTo(AcademicYear::class);
     }  
+
+    public function projectNote()
+    {
+        return $this->hasOne(ProjectNote::class, 'student_id', 'student_id');
+    }
 }

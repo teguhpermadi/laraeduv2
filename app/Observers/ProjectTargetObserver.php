@@ -13,13 +13,14 @@ class ProjectTargetObserver
      */
     public function created(ProjectTarget $projectTarget): void
     {
-        $academic = session('academic_year_id');
-        $students = StudentGrade::where('grade_id', $projectTarget->project->grade_id)->get();
+        // $project = ProjectTarget::with('project.grade.studentGrade')->get();
+        $project = $projectTarget->project;
+        $students = $project->grade->studentGrade;
 
         $data = [];
         foreach ($students as $student) {
             $data[] = [
-                'academic_year_id' => $academic,
+                'academic_year_id' => $project->academic_year_id,
                 'student_id' => $student->student_id,
                 'project_target_id' => $projectTarget->id,
             ];

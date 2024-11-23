@@ -437,7 +437,10 @@ class ReportController extends Controller
         $student = Student::with([
             'studentGradeFirst.grade.teacherGradeFirst',
             'studentGradeFirst.project.projectTarget.studentProject' => function ($query) use ($id) {
-                $query->where('student_id', $id)->first();
+                $query->where('student_id', $id);
+            },
+            'studentGradeFirst.project.note' => function ($query) use ($id) {
+                $query->where('student_id', $id);
             },
         ])
             ->find($id);
@@ -451,9 +454,12 @@ class ReportController extends Controller
 
     public function getProjectReport($academic, $student)
     {
-        if ($student->project->isEmpty()) {
+        // dd($student->toArray());
+        if ($student->studentGradeFirst->project->isEmpty()) {
             abort(403, 'Data project tidak ditemukan');
         }
+
+        // dd($student->toArray());
 
         // dd($academic, $student);
         $schoolSettings = app(SchoolSettings::class);
@@ -477,45 +483,73 @@ class ReportController extends Controller
 
         // get all project
         $projects = $student->studentGradeFirst->project;
-        dd($projects->toArray());
+        // dd(count($projects));
 
         // block cloning
         $replacements = [];
         $i = 1;
         foreach ($projects as $index => $project) {
             $replacements[] = [
-                'project_number' => '${project_number_' . $index . '}',
-                'title' => '${title_' . $index . '}',
-                'description' => '${description_' . $index . '}',
-                'num_target' => '${num_target_' . $index . '}',
-                'dimention_description' => '${dimention_description_' . $index . '}',
-                'element_description' => '${element_description_' . $index . '}',
-                'value_description' => '${value_description_' . $index . '}',
-                'sub_value_description' => '${sub_value_description_' . $index . '}',
-                'target_description' => '${target_description_' . $index . '}',
-                'bsb' => '${bsb_' . $index . '}',
-                'bsh' => '${bsh_' . $index . '}',
-                'mb' => '${mb_' . $index . '}',
-                'bb' => '${bb_' . $index . '}',
-                'project_note' => '${project_note_' . $index . '}',
+                'project_number' => '${project_number_' . $i . '}',
+                'title' => '${title_' . $i . '}',
+                'description' => '${description_' . $i . '}',
+                'number_target' => '${number_target_' . $i . '}',
+                'dimention_description' => '${dimention_description_' . $i . '}',
+                'element_description' => '${element_description_' . $i . '}',
+                'value_description' => '${value_description_' . $i . '}',
+                'sub_value_description' => '${sub_value_description_' . $i . '}',
+                'target_description' => '${target_description_' . $i . '}',
+                'bsb' => '${bsb_' . $i . '}',
+                'bsh' => '${bsh_' . $i . '}',
+                'mb' => '${mb_' . $i . '}',
+                'bb' => '${bb_' . $i . '}',
+                'project_note' => '${project_note_' . $i . '}',
             ];
+            $i++;
         }
 
         $templateProcessor->cloneBlock('project_block', count($projects), true, false, $replacements);
 
-        // table row cloning
-        foreach ($projects as $index => $project) {
-            $values = [];
-            $i = 1;
+        // dd($projects->toArray());
 
-            foreach ($project->projectTarget as $target) {
+        // setiap project
+        
+        foreach ($projects as $index => $project) {
+            $j = $index + 1;
+            // dd($project->toArray());
+            $values = [];
+            // set table project
+            $projectTargets = $project->projectTarget;
+            $k = 1;
+            $note = '';
+            foreach ($projectTargets as $target) {
+                $score = $target->studentProject->first()->score;
+                // dd($target->toArray());
+
                 $values[] = [
-                    "project_number_{$index}" => $i++,
-                    "title_{$index}" => $target->project->title,
-                    "description_{$index}" => $target->project->description,
-                    "num_target_{$index}" => $target->project->num_target,
-                ];
+                    "number_target_{$j}" => $k++,
+                    "dimention_description_{$j}" => $target->dimention->description,
+                    "element_description_{$j}" => $target->element->description,
+                    "value_description_{$j}" => $target->value->description,
+                    "sub_value_description_{$j}" => $target->subValue->description,
+                    "target_description_{$j}" => $target->target->description,
+                    "bsb_{$j}" => ($score == 1) ? 'V' : '-',
+                    "bsh_{$j}" => ($score == 2) ? 'V' : '-',
+                    "mb_{$j}" => ($score == 3) ? 'V' : '-',
+                    "bb_{$j}" => ($score == 4) ? 'V' : '-',
+                    // "project_note_{$j}" => $target->studentProject->first()->projectNote->note,
+                ];                    
             }
+            
+            $note = $project->note->first();
+            // dd($note->toArray());
+            
+            $templateProcessor->setValue("project_number_{$j}", $j);
+            $templateProcessor->setValue("title_{$j}", $project->name);
+            $templateProcessor->setValue("description_{$j}", $project->description);
+
+            $templateProcessor->cloneRowAndSetValues("number_target_{$j}", $values);
+            $templateProcessor->setValue("project_note_{$j}", $note->note);
         }
 
         // generate filename

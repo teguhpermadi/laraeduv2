@@ -1,8 +1,86 @@
-Student::find(20);
-Student::find(20)->studentGradeFirst;
-StudentProject::get();
-use App\Models\StudentProject;
-StudentProject::get();
-Grade::with('studentGrade')
-Grade::with('studentGrade')->get()
-$teacherGrade = TeacherGrade::withoutGlobalScope(AcademicYearScope::class)->get();
+$student = Student::get()
+ProjectTarget::get()
+ProjectTarget::with('project')->get()
+ProjectTarget::with('project.studentProject')->get()
+ProjectTarget::with('project.grade.studentGrade')->get()
+ProjectTarget::with('project.grade.studentGrade')->get()->toArray()
+ProjectTarget::with('project.grade.studentGrade')->first()->toArray()
+ProjectTarget::with('project.grade.studentGrade')->first()
+$project = ProjectTarget::with('project.grade.studentGrade')->first()
+$project = $projectTarget->project;
+$students = $project->grade->studentGrade;
+$project = ProjectTarget::with('project.grade.studentGrade')->first();
+$project = $projectTarget->project;
+$students = $project->grade->studentGrade;
+$project = ProjectTarget::with('project.grade.studentGrade')->first();
+$project = $projectTarget->project;
+
+$project = ProjectTarget::first();
+$project = $projectTarget->project;
+
+$project = ProjectTarget::first();
+$project = $projectTarget->project;
+
+$project = ProjectTarget::find(2);
+$project = $projectTarget->project;
+
+$project = ProjectTarget::find(2);
+
+
+$project = ProjectTarget::find(2);
+$project = $projectTarget->project;
+
+$project = ProjectTarget::find(2);
+
+
+
+
+
+Project::get()
+$project = ProjectTarget::find(2);
+$project = $projectTarget->project;
+
+
+$project = ProjectTarget::with('project')->find(2);
+$project = $projectTarget->project;
+
+
+$project = ProjectTarget::with('project')->find(2);
+$project;
+$project = $projectTarget->project;
+
+
+$project = ProjectTarget::with('project')->find(2);
+$project;
+
+
+
+$project = Project::get();
+$project = Project::get();
+$project->projectTarget;
+$project = Project::with('projectTarget')->get();
+$project;
+$project = Project::with('projectTarget')->find(1);
+$project;
+$project = Project::with('projectTarget.studentProject')->find(1);
+$project;
+$project = Project::with('projectTarget')->find(1);
+$project;
+$project = Project::with('projectTarget')->find(1);
+$project;
+
+
+
+$student = Student::with('studentGrade');
+
+
+
+$student = Student::with('studentGrade')->find(2);
+
+
+
+$student = Student::with('studentGrade.grade')->find(2);
+
+
+
+$student = Student::with('studentGrade.grade.studentProject')->find(2);
