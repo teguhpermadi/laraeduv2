@@ -13,8 +13,8 @@ class StudentCompetencyQuran extends Model
     protected $fillable = [
         'academic_year_id',
         'quran_grade_id',
-        'student_quran_grade_id',
         'competency_quran_id',
+        'student_id',
         'score',
     ];
 
@@ -48,5 +48,10 @@ class StudentCompetencyQuran extends Model
     public function quranGrade()
     {
         return $this->belongsTo(QuranGrade::class);
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
     }
 }

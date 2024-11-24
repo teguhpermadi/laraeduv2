@@ -132,7 +132,7 @@ class AssessmentQuran extends Page implements HasForms, HasTable
             ->emptyStateHeading($this->empty_state['heading'])
             ->emptyStateDescription($this->empty_state['desc'])
             ->columns([
-                TextColumn::make('studentQuranGrade.student.name'),
+                TextColumn::make('student.name'),
                 TextInputColumn::make('score'),
             ])
             ->filters([])
@@ -173,7 +173,8 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                     ->action(function ($data) {
                         // dd($data);
                         $this->resetStudentCompetency($data['quran_grade_id']);
-                    }),
+                    })
+                    ->modalWidth('sm'),
                 Action::make('download')
                     ->form([
                         Select::make('quran_grade_id')
@@ -181,7 +182,8 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                     ])
                     ->action(function ($data) {
                         return $this->download($data['quran_grade_id']);
-                    }),
+                    })
+                    ->modalWidth('sm'),
                 Action::make('upload')
                     ->form([
                         FileUpload::make('file')
@@ -205,14 +207,15 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                                 StudentCompetencyQuran::updateOrCreate([
                                     'academic_year_id' => $value['academic_year_id'],
                                     'quran_grade_id' => $value['quran_grade_id'],
-                                    'student_quran_grade_id' => $value['student_quran_grade_id'],
+                                    'student_id' => $value['student_id'],
                                     'competency_quran_id' => $value['competency_quran_id'],
                                 ], [
                                     'score' => $value['score'],
                                 ]);
                             }
                         }
-                    }),
+                    })
+                    ->modalWidth('sm'),
                 Action::make('leger')
                     ->form([
                         Select::make('quran_grade_id')
@@ -294,11 +297,10 @@ class AssessmentQuran extends Page implements HasForms, HasTable
 
     public function download($quran_grade_id)
     {
+        // dd($quran_grade_id);
         // ambil teacher quran grade berdasarkan quran grade id
-        $teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran.studentQuranGrade.student')->find($quran_grade_id);
-
-        // ambil semua student dari quran grade id
-        $students = StudentQuranGrade::where('quran_grade_id', $quran_grade_id)->get();
+        // $teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran.studentQuranGrade.student')->find($quran_grade_id);
+        $teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student')->find($quran_grade_id);
 
         $academicYear = $teacherQuranGrade->academicYear;
         $teacher = $teacherQuranGrade->teacher;
@@ -311,6 +313,8 @@ class AssessmentQuran extends Page implements HasForms, HasTable
 
         // buat sheet berdasarkan banyaknya kompetensi
         foreach ($competencyQuran as $competency) {
+            $students = $competency->studentCompetencyQuran;
+
             $spreadsheet->createSheet();
             $sheet = $spreadsheet->getSheet($countSheet);
             $sheet->setTitle('Sheet ' . $competency->code);
@@ -332,24 +336,26 @@ class AssessmentQuran extends Page implements HasForms, HasTable
             $data[] = [
                 'academic_year_id',
                 'quran_grade_id',
-                'student_quran_grade_id',
                 'competency_quran_id',
+                'student_id',
                 'nis',
                 'name',
                 'score',
             ];
 
-            foreach ($competency->studentCompetencyQuran as $studentCompetency) {
+            foreach ($students as $student) {
                 $data[] = [
                     $academicYear->id,
-                    $quran_grade_id,
-                    $studentCompetency->student_quran_grade_id,
+                    $quranGrade->id,
                     $competency->id,
-                    $studentCompetency->studentQuranGrade->student->nis,
-                    $studentCompetency->studentQuranGrade->student->name,
-                    $studentCompetency->score,
+                    $student->student_id,
+                    $student->student->nis,
+                    $student->student->name,
+                    $student->score,
                 ];
             }
+
+            // dd($data);
 
             $sheet->fromArray($data, null, 'A13', true);
 

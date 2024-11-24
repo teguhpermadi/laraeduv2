@@ -1,54 +1,65 @@
-$likertScale = new LinkertScaleEnum();
-use App\Enums\LinkertScaleEnum;
-$likertScale = new LinkertScaleEnum();
-use App\Enums\LinkertScaleEnum;
-$likertScale = new LinkertScaleEnum();
-$likertScale->getLabel(1)
-use App\Enums\LinkertScaleEnum;
-$likertScale = new LinkertScaleEnum();
-$likertScale->getLabel(1)
-use App\Enums\LinkertScaleEnum;
-$likertScale = new LinkertScaleEnum();
-$likertScale->getLabel(1)
-use App\Enums\LinkertScaleEnum;
-$likertScale = new LinkertScaleEnum();
-$likertScale->getLabel(1)
-use App\Enums\LinkertScaleEnum;
-$likertScale = new LinkertScaleEnum();
-$likertScale->getLabel(1)
-use App\Enums\LinkertScaleEnum;
-$likertScale = new LinkertScaleEnum();
-$likertScale->getLabel(1)
-use App\Enums\LinkertScaleEnum;
-$likertScale = new LinkertScaleEnum();
-$likertScale->getLabel(1)
-use App\Enums\LinkertScaleEnum;
-$likertScale = new LinkertScaleEnum();
-$likertScale->getLabel(1)
-use App\Enums\LinkertScaleEnum;
-$likertScale = new LinkertScaleEnum();
+GradeQuran::get();
+QuranGrade::get()
+Student::get();
+TeacherQuran::get()
+QuranTeacher::get()
+QuranGradeTeacher::get()
+StudentQuranGrade:::get()
+StudentQuranGrade::get()
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran.studentQuranGrade.student')->find(4);
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran.studentQuranGrade.student')->get();
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student')->get();
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student')->get();
+$teacherQuranGrade->fisrt();
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student');
+$teacherQuranGrade->fisrt();
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student');
+$teacherQuranGrade->first();
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student');
+$teacherQuranGrade->find(4);
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student');
+$teacherQuranGrade->find(1305);
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student');
+$teacherQuranGrade->find(1305);
 
-use App\Enums\LinkertScaleEnum;
-$likertScale = new LinkertScaleEnum();
+$students = $teacherQuranGrade->competencyQuran;
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student');
+$teacherQuranGrade->find(1305);
 
-use App\Enums\LinkertScaleEnum;
-$likertScale = new LinkertScaleEnum();
-$likertScale->getLabel(1)
-use App\Enums\LinkertScaleEnum;
-$likertScale = new LinkertScaleEnum::getLabel(1)
-use App\Enums\LinkertScaleEnum;
-$likertScale = new LinkertScaleEnum::getLabel(1);
-use App\Enums\LinkertScaleEnum;
-$likertScale = LinkertScaleEnum::getLabel(1);
-$extraScoreEnum = LinkertScaleEnum::tryFrom($extracurricular->score);
-    $extraScoreLabel = $extraScoreEnum ? $extraScoreEnum->getLabel() : 'Tidak Diketahui';
-$extraScoreEnum = LinkertScaleEnum::tryFrom(1);
-    $extraScoreLabel = $extraScoreEnum ? $extraScoreEnum->getLabel() : 'Tidak Diketahui';
-$extraScoreEnum = LinkertScaleEnum::tryFrom(1);
-$extraScoreLabel = $extraScoreEnum ? $extraScoreEnum->getLabel() : 'Tidak Diketahui';
-$extraScoreEnum = LinkertScaleEnum::tryFrom(0);
-$extraScoreLabel = $extraScoreEnum ? $extraScoreEnum->getLabel() : 'Tidak Diketahui';
-$extraScoreEnum = LinkertScaleEnum::tryFrom(4);
-$extraScoreLabel = $extraScoreEnum ? $extraScoreEnum->getLabel() : 'Tidak Diketahui';
-$extraScoreEnum = LinkertScaleEnum::tryFrom(5);
-$extraScoreLabel = $extraScoreEnum ? $extraScoreEnum->getLabel() : 'Tidak Diketahui';
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student');
+$teacherQuranGrade->find(1305);
+
+$students = $teacherQuranGrade->competencyQuran->first()
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student');
+$teacherQuranGrade->find(1305);
+
+$students = $teacherQuranGrade->competencyQuran
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student');
+$teacherQuranGrade->find(1305);
+
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student');
+$teacherQuranGrade->find(1305);
+
+$teacher = $teacherQuranGrade->teacher;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('teacher','quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student');
+$teacherQuranGrade->find(1305);
+
+$teacher = $teacherQuranGrade->teacher;
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('teacher','quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student');
+$teacherQuranGrade->find(1305);
+
+
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('teacher','quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student')->find(1305);
+
+
+
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('teacher','quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student')->find(1305);
+
+$teacher = $teacherQuranGrade->teacher;
+
+QuranGrade::get();

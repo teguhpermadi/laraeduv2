@@ -56,7 +56,7 @@ class CompetencyQuranResource extends Resource
                 Hidden::make('teacher_quran_grade_id'),
                 Select::make('quran_grade_id')
                     ->required()
-                    ->label('Grade')
+                    ->label(__('competency-quran.fields.quran_grade_id'))
                     ->options(function(){
                         $options = TeacherQuranGrade::myQuranGrade()->with('quranGrade')->get()->pluck('quranGrade.name', 'id');
                         return $options;
@@ -68,10 +68,13 @@ class CompetencyQuranResource extends Resource
                         $set('teacher_quran_grade_id', $state);
                     }),
                 TextInput::make('code')
+                    ->label(__('competency-quran.fields.code'))
                     ->required(),
                 Textarea::make('description')
+                    ->label(__('competency-quran.fields.description'))
                     ->required(),
                 TextInput::make('passing_grade')
+                    ->label(__('competency-quran.fields.passing_grade'))
                     ->required()
                     ->numeric(),
             ]);
@@ -81,9 +84,12 @@ class CompetencyQuranResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('code'),
-                TextColumn::make('description'),
-                TextColumn::make('passing_grade'),
+                TextColumn::make('code')
+                    ->label(__('competency-quran.fields.code')),
+                TextColumn::make('description')
+                    ->label(__('competency-quran.fields.description')),
+                TextColumn::make('passing_grade')
+                    ->label(__('competency-quran.fields.passing_grade')),
             ])
             ->filters([
                 //
@@ -93,7 +99,8 @@ class CompetencyQuranResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label(__('competency-quran.actions.delete')),
                 ]),
             ]);
     }

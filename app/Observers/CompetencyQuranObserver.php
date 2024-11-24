@@ -27,7 +27,7 @@ class CompetencyQuranObserver
                 $data[] = [
                     'academic_year_id' => session('academic_year_id'),
                     'quran_grade_id' => $teacherQuranGrade->quranGrade->id,
-                    'student_quran_grade_id' => $student->id,
+                    'student_id' => $student->student_id,
                     'competency_quran_id' => $competencyQuran->id,
                     'created_at' => now(),
                 ];
