@@ -224,7 +224,8 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                     ->action(function ($data) {
                         // open in new tab
                         return redirect()->to(route('filament.admin.pages.leger-quran.{id}', $data['quran_grade_id']), true);
-                    }),
+                    })
+                    ->modalWidth('sm'),
             ])
             ->deferLoading()
             ->striped()
@@ -279,7 +280,7 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                 $studentCompetency = [
                     'academic_year_id' => session('academic_year_id'),
                     'quran_grade_id' => $data->quranGrade->id,
-                    'student_quran_grade_id' => $student->id,
+                    'student_id' => $student->student_id,
                     'competency_quran_id' => $competency->id,
                 ];
 

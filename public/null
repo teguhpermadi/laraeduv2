@@ -63,3 +63,7 @@ $teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('teacher','quranGra
 $teacher = $teacherQuranGrade->teacher;
 
 QuranGrade::get();
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('teacher','quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student')->find(1305);
+
+
+

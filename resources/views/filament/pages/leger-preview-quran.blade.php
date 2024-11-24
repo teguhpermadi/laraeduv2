@@ -72,7 +72,7 @@
 
                     @if (count($student['metadata']) > 0)
                         @foreach ($student['metadata'] as $metadata)
-                            <td class="border border-slate-300 dark:border-slate-600 text-center">{{ $metadata['score'] }}</td>
+                            <td class="border border-slate-300 dark:border-slate-600 text-center">{{ ($metadata['score']) }}</td>
                         @endforeach
                         <td class="border border-slate-300 dark:border-slate-600 text-center">{{ $student['sum'] }}</td>
                         <td class="border border-slate-300 dark:border-slate-600 text-center">{{ $student['avg'] }}</td>

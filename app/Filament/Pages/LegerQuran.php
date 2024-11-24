@@ -38,6 +38,7 @@ class LegerQuran extends Page implements HasForms
     public $teacherQuran, $students, $time_signature, $preview, $student, $agree, $leger_quran, $competency_count, $academic_year_id;
     public $checkLegerQuran = false;
     public $hasNoScores = false;
+    public $descriptionLegerQuranRecap = '';
     public $loading = false;
 
     // mount
@@ -48,6 +49,7 @@ class LegerQuran extends Page implements HasForms
         $this->teacherQuran = TeacherQuranGrade::with('quranGrade', 'studentQuranGrade', 'competencyQuran')->find($id);
 
         $students = $this->teacherQuran->studentQuranGrade;
+        // dd($students->toArray());
 
         $this->competency_count = $this->teacherQuran->competencyQuran->count();
 
@@ -64,7 +66,7 @@ class LegerQuran extends Page implements HasForms
             $data->push([
                 'student_id' => $student->student->id,
                 'student' => $student,
-                'metadata' => $student->studentCompetencyQuran,
+                'metadata' => $student->studentCompetencyQuran->toArray(),
                 'avg' => round($student->studentCompetencyQuran->avg('score'), 0),
                 'sum' => $student->studentCompetencyQuran->sum('score'),
                 'competency_count' => $this->competency_count,
@@ -90,7 +92,7 @@ class LegerQuran extends Page implements HasForms
         $this->hasNoScores = $data->contains(function ($item) {
             return $item['competency_count'] === 0 || empty($item['metadata']);
         });
-        
+
         $this->students = $data;
 
         // Hanya isi form jika ada nilai
@@ -105,20 +107,29 @@ class LegerQuran extends Page implements HasForms
         $this->checkLegerQuran = ModelsLegerQuran::where('academic_year_id', $this->academic_year_id)
             ->where('teacher_quran_grade_id', $id)
             ->exists();
+
+        if ($this->checkLegerQuran) {
+            $descriptionLegerQuranRecap = 'Kamu sudah mengumpulkan leger ini ke wali kelas pada tanggal ' . $this->checkLegerQuran->created_at->translatedFormat('l, d F Y H:i') . '. Apakah kamu ingin mengrubahnya?';
+        } else {
+            $descriptionLegerQuranRecap = 'Apakah anda yakin akan mengumpulkan nilai tersebut ke wali kelas?';
+        }
+
+        $this->descriptionLegerQuranRecap = $descriptionLegerQuranRecap;
     }
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Section::make('Preview')
+                Section::make('Preview Leger')
                     ->schema([
                         ViewField::make('preview')
                             ->viewData([$this->teacherQuran, $this->students])
                             ->view('filament.pages.leger-preview-quran'),
-                    ]),
+                    ])
+                    ->collapsible(),
                 Section::make('Persetujuan')
-                    ->description('Apakah anda setuju dengan seluruh nilai tersebut?')
+                    ->description($this->descriptionLegerQuranRecap)
                     ->schema([
                         Hidden::make('leger_quran'),
                         DateTimePicker::make('time_signature')
@@ -149,7 +160,7 @@ class LegerQuran extends Page implements HasForms
                 'student_id' => $leger_quran['student_id'],
                 'quran_grade_id' => $leger_quran['student']->quran_grade_id,
                 'teacher_quran_grade_id' => $teacherQuranGrade->id,
-            ],[
+            ], [
                 'score' => $leger_quran['avg'],
                 'description' => $leger_quran['description'],
                 'metadata' => $leger_quran['metadata'],
