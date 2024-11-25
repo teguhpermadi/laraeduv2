@@ -281,7 +281,7 @@ class Leger extends Page implements HasForms
     {
         $data = $this->form->getState();
 
-        dd($data);
+        // dd($data);
 
         /* FULL SEMESTER */
         // insert data ke table leger

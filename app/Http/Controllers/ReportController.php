@@ -235,9 +235,9 @@ class ReportController extends Controller
                 // dd($row);
                 $values[] = [
                     "order_subject_{$index}" => $order++,
-                    "competency_{$index}" => $row['competency']['description'],
+                    "competency_{$index}" => $row['description'],
                     "score_{$index}" => $row['score'],
-                    "passing_grade_{$index}" => $row['competency']['passing_grade'] ?? '-', // Default nilai jika tidak ada passing grade
+                    "passing_grade_{$index}" => $row['passing_grade'] ?? '-', // Default nilai jika tidak ada passing grade
                 ];
             }
 
@@ -414,9 +414,9 @@ class ReportController extends Controller
                 // dd($row);
                 $values[] = [
                     "order_subject_{$index}" => $order++,
-                    "competency_{$index}" => $row['competency']['description'],
+                    "competency_{$index}" => $row['description'],
                     "score_{$index}" => $row['score'],
-                    "passing_grade_{$index}" => $row['competency']['passing_grade'] ?? '-', // Default nilai jika tidak ada passing grade
+                    "passing_grade_{$index}" => $row['passing_grade'] ?? '-', // Default nilai jika tidak ada passing grade
                 ];
             }
 
