@@ -463,7 +463,7 @@ class ReportController extends Controller
             abort(403, 'Data project tidak ditemukan');
         }
 
-        // dd($student->toArray());
+        // dd($student->studentGradeFirst->project->toArray());
 
         // dd($academic, $student);
         $schoolSettings = app(SchoolSettings::class);
@@ -553,7 +553,11 @@ class ReportController extends Controller
             $templateProcessor->setValue("description_{$j}", $project->description);
 
             $templateProcessor->cloneRowAndSetValues("number_target_{$j}", $values);
-            $templateProcessor->setValue("project_note_{$j}", $note->note);
+            if ($note) {
+                $templateProcessor->setValue("project_note_{$j}", $note->note);
+            } else {
+                $templateProcessor->setValue("project_note_{$j}", '-');
+            }
         }
 
         // generate filename
