@@ -35,100 +35,121 @@ class LegerQuran extends Page implements HasForms
 
     public ?array $data = [];
 
-    public $teacherQuranGrade, $students, $time_signature, $preview, $student, $agree, $leger_quran, $competency_count, $academic_year_id;
+    public $teacherQuranGrade, 
+            $students, 
+            $competencyQuranCount, 
+            $time_signature, 
+            $preview, 
+            $leger_quran, 
+            $agree, 
+            $quran_grade_id, 
+            $academic_year_id,
+            $teacher_quran_grade_id;
     public $checkLegerQuran = false;
     public $hasNoScores = false;
     public $descriptionLegerQuranRecap = '';
-    public $loading = false;
 
     // mount
     public function mount($id): void
     {
-        
-        $teacherQuranGrade = TeacherQuranGrade::with(['quranGrade',
-            'studentQuranGrade',
-            'competencyQuran.studentCompetencyQuran' => function ($query) {
-                $query->orderBy('competency_quran_id', 'asc');
-            },
-        ])->find($id);
+        $teacherQuranGrades = TeacherQuranGrade::with([
+                'academicYear',
+                'teacher',
+                'quranGrade',
+                'studentQuranGrade.student',
+                'competencyQuran'
+            ])->myQuranGrade()
+            ->where('id', $id)->get();
+        // dd($teacherQuranGrades->toArray());
+        $this->teacherQuranGrade = $teacherQuranGrades->first();
+        $this->competencyQuranCount = $teacherQuranGrades->sum(function ($teacherQuranGrade) {
+            return $teacherQuranGrade->competencyQuran->count();
+        });
 
-        // dd($teacherQuranGrade->toArray());
+        // dd($this->teacherQuranGrade->toArray());
 
-        $this->teacherQuranGrade = $teacherQuranGrade;
-        $this->academic_year_id = $teacherQuranGrade->academicYear;
-        $students = $this->teacherQuranGrade->studentQuranGrade;
-        $competencyQuran = $this->teacherQuranGrade->competencyQuran;
-        // dd($students->toArray());
+        $students = $teacherQuranGrades->flatMap(function ($teacherQuranGrade) {
+            return $teacherQuranGrade->studentQuranGrade->map(function ($studentQuranGrade) {
+                return [
+                    'student_id' => $studentQuranGrade->student->id,
+                    'nis' => $studentQuranGrade->student->nis,
+                    'name' => $studentQuranGrade->student->name,
+                    // tambahkan jumlah seluruh score dari competency_quran_id, tulis dalam array 'sum_score'
+                    'sum_score' => $studentQuranGrade->studentCompetencyQuran->sum('score'),
+                    // tambahkan avg score dari competency_quran_id, tulis dalam array 'avg_score'
+                    'avg_score' => round($studentQuranGrade->studentCompetencyQuran->avg('score'), 1),
+                    // tambahkan deskripsi dari competency_quran_id, tulis dalam array 'description' gunakan description helper function
+                    'description' => $this->getDescription($studentQuranGrade->studentCompetencyQuran),
+                    'competencies' => $studentQuranGrade->studentCompetencyQuran
+                        // urutkan berdasarkan competency_quran_id
+                        ->sortBy('competency_quran_id')
+                        // map dengan key competency_quran_id, berisi score & description
+                        ->mapWithKeys(function ($competency) {
+                            return [
+                                $competency->competencyQuran->code => [
+                                    // code competency_quran_id
+                                    'code' => $competency->competencyQuran->code,
+                                    'competency_quran_id' => $competency->competencyQuran->id,
+                                    'score' => $competency->score,
+                                    'description' => $competency->competencyQuran->description,
+                                ],
+                            ];
+                        })
+                        ->toArray(),
+                ];
+            });
+        });
 
-        $this->competency_count = $competencyQuran->count();
+        // tambahkan ranking berdasarkan sum_score
+        $students = $students->sortByDesc('sum_score')->values();
 
-        $data = collect();
-
-        // dd($competencyQuran->toArray());
-        
-        // loop students
-        foreach ($students as $student) {
-            // urutkan berdasarkan competency_quran_id
-            $studentCompetencyQuran = $student->studentCompetencyQuran()->orderBy('competency_quran_id', 'asc')->get();
-
-            // deskripsi
-            $description = $this->getDescription($student->studentCompetencyQuran);
-
-
-            $data->push([
-                'student_id' => $student->student->id,
-                'student' => $student,
-                'metadata' => $studentCompetencyQuran,
-                'avg' => round($student->studentCompetencyQuran->avg('score'), 0),
-                'sum' => $student->studentCompetencyQuran->sum('score'),
-                'competency_count' => $this->competency_count,
-                'description' => $description,
-            ]);
-
-            // dd($student->toArray());
-        }
-
-        // sort by sum
-        $data = $data->sortByDesc('sum')->values();
-
-        // add ranking
-        $data = $data->map(function ($item, $index) {
-            $item['rank'] = $index + 1;
+        // tambahkan ranking berdasarkan sum_score terbanyak
+        $students = $students->map(function ($item, $index) {
+            $item['ranking'] = $index + 1;
             return $item;
         });
 
-        // kembalikan data sort by id asc
-        $data = $data->sortBy('student_id', SORT_ASC)->values();
-
-        // dd($data->toArray());
-
-        // Cek apakah ada siswa yang belum memiliki nilai
-        $this->hasNoScores = $data->contains(function ($item) {
-            return $item['competency_count'] === 0 || empty($item['metadata']);
-        });
-
-        $this->students = $data;
-
-        // Hanya isi form jika ada nilai
-        if (!$this->hasNoScores) {
-            $this->form->fill([
-                'leger_quran' => $data,
-                'time_signature' => now(),
-            ]);
-        }
+        // kembalikan data sort by student_id asc
+        $students = $students->sortBy('student_id', SORT_ASC);
+        
+        $this->students = $students;
+        // dd($students->toArray());
 
         // cek apakah sudah ada data leger_quran
-        $this->checkLegerQuran = ModelsLegerQuran::where('academic_year_id', $this->academic_year_id)
-            ->where('teacher_quran_grade_id', $id)
+        $this->checkLegerQuran = ModelsLegerQuran::where('academic_year_id', $this->teacherQuranGrade->academicYear->id)
+            ->where('quran_grade_id', $this->teacherQuranGrade->quran_grade_id)
             ->exists();
 
+        // ambil data recap leger quran
+        $legerQuranRecap = LegerQuranRecap::where('academic_year_id', $this->teacherQuranGrade->academicYear->id)
+            ->where('teacher_quran_grade_id', $this->teacherQuranGrade->id)
+            ->first();
+
+        // dd($legerQuranRecap);
+
         if ($this->checkLegerQuran) {
-            $descriptionLegerQuranRecap = 'Kamu sudah mengumpulkan leger ini ke wali kelas pada tanggal ' . $this->checkLegerQuran->created_at->translatedFormat('l, d F Y H:i') . '. Apakah kamu ingin mengrubahnya?';
+            $descriptionLegerQuranRecap = 'Kamu sudah mengumpulkan leger ini ke wali kelas pada tanggal ' . $legerQuranRecap->created_at->translatedFormat('l, d F Y H:i') . '. Apakah kamu ingin mengrubahnya?';
         } else {
             $descriptionLegerQuranRecap = 'Apakah anda yakin akan mengumpulkan nilai tersebut ke wali kelas?';
         }
 
         $this->descriptionLegerQuranRecap = $descriptionLegerQuranRecap;
+
+        // Cek apakah ada siswa yang belum memiliki nilai
+        $this->hasNoScores = $students->contains(function ($item) {
+            return empty($item['competencies']);
+        });
+
+        if (!$this->hasNoScores) {
+            $this->form->fill([
+                'teacher_quran_grade_id' => $teacherQuranGrades->first()->id,
+                'academic_year_id' => $teacherQuranGrades->first()->academic_year_id,
+                'quran_grade_id' => $teacherQuranGrades->first()->quran_grade_id,
+                'leger_quran' => $students,
+                'time_signature' => now(),
+            ]);
+        }
+
     }
 
     public function form(Form $form): Form
@@ -146,10 +167,12 @@ class LegerQuran extends Page implements HasForms
                     ->description($this->descriptionLegerQuranRecap)
                     ->schema([
                         Hidden::make('leger_quran'),
+                        Hidden::make('quran_grade_id'),
+                        Hidden::make('academic_year_id'),
+                        Hidden::make('teacher_quran_grade_id'),
                         DateTimePicker::make('time_signature')
                             ->label('Waktu tanda tangan')
-                            ->inlineLabel()
-                            ->disabled(),
+                            ->inlineLabel(),
                         Checkbox::make('agree')
                             ->label('Saya setuju')
                             ->inlineLabel()
@@ -161,33 +184,33 @@ class LegerQuran extends Page implements HasForms
 
     public function submit()
     {
-        // tambahkan loading state
-        $this->loading = true;
-
         $data = $this->form->getState();
-
-        $teacherQuranGrade = $this->teacherQuran;
+        // dd($data);
 
         foreach ($data['leger_quran'] as $leger_quran) {
+            
             ModelsLegerQuran::updateOrCreate([
-                'academic_year_id' => session('academic_year_id'),
+                'academic_year_id' => $data['academic_year_id'],
                 'student_id' => $leger_quran['student_id'],
-                'quran_grade_id' => $leger_quran['student']->quran_grade_id,
-                'teacher_quran_grade_id' => $teacherQuranGrade->id,
+                'quran_grade_id' => $data['quran_grade_id'],
+                'teacher_quran_grade_id' => $data['teacher_quran_grade_id'],
             ], [
-                'score' => $leger_quran['avg'],
+                'score' => $leger_quran['avg_score'],
                 'description' => $leger_quran['description'],
-                'metadata' => $leger_quran['metadata'],
-                'sum' => $leger_quran['sum'],
-                'rank' => $leger_quran['rank'],
+                'metadata' => $leger_quran['competencies'],
+                'sum' => $leger_quran['sum_score'],
+                'rank' => $leger_quran['ranking'],
             ]);
         }
 
         // leger quran recap
         LegerQuranRecap::updateOrCreate([
-            'academic_year_id' => session('academic_year_id'),
-            'teacher_quran_grade_id' => $teacherQuranGrade->id,
+            'academic_year_id' => $data['academic_year_id'],
+            'teacher_quran_grade_id' => $data['teacher_quran_grade_id'],
         ]);
+
+        // refresh page to leger quran
+        // $this->redirect(route('filament.pages.leger-quran', $this->teacherQuranGrade->id));
 
         // tambahkan notifikasi sukses
         Notification::make()

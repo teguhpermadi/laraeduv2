@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('quran_grade_id')->constrained()->cascadeOnDelete();
             $table->foreignId('teacher_quran_grade_id')->constrained()->cascadeOnDelete();
             $table->integer('score');
             $table->text('description')->nullable();

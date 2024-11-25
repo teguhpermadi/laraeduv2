@@ -50,7 +50,7 @@
                 <th rowspan="2" class="border border-slate-300 text-center">Rata-rata</th>
                 <th rowspan="2" class="border border-slate-300 text-center">Peringkat</th>
             </tr>
-            @if (count($teacherQuranGrade->competencyQuran) > 0)
+            @if ($competency_count > 0)
                 <tr>
                     @foreach ($teacherQuranGrade->competencyQuran as $competency)
                         <th class="border border-slate-300 text-center">{{ $competency->code }}</th>

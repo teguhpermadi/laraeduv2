@@ -40,7 +40,7 @@
                 <th rowspan="2"
                     class="border border-slate-300 dark:border-slate-600 text-center bg-gray-100 dark:bg-gray-800">Nama
                     Lengkap</th>
-                <th colspan="{{ $this->competency_count }}"
+                <th colspan="{{ $this->competencyQuranCount }}"
                     class="border border-slate-300 dark:border-slate-600 text-center bg-gray-100 dark:bg-gray-800">Nilai
                     Kompetensi</th>
                 <th rowspan="2"
@@ -58,7 +58,8 @@
                     @foreach ($this->teacherQuranGrade->competencyQuran as $competency)
                         <th
                             class="border border-slate-300 dark:border-slate-600 text-center bg-gray-100 dark:bg-gray-800">
-                            {{ $competency->code }}</th>
+                            {{ $competency->code }}
+                        </th>
                     @endforeach
                 </tr>
             @endif
@@ -67,23 +68,15 @@
             @foreach ($this->students as $student)
                 <tr>
                     <td class="border border-slate-300 dark:border-slate-600 text-center">{{ $no++ }}</td>
-                    <td class="border border-slate-300 dark:border-slate-600 px-3 text-left">{{ $student['student']['student']['nis'] }}</td>
-                    <td class="border border-slate-300 dark:border-slate-600 px-3 text-left">{{ $student['student']['student']['name'] }}</td>
-
-                    @if (count($student['metadata']) > 0)
-                        @foreach ($student['metadata'] as $metadata)
-                            <td class="border border-slate-300 dark:border-slate-600 text-center">{{ ($metadata['score']) }}</td>
-                        @endforeach
-                        <td class="border border-slate-300 dark:border-slate-600 text-center">{{ $student['sum'] }}</td>
-                        <td class="border border-slate-300 dark:border-slate-600 text-center">{{ $student['avg'] }}</td>
-                        <td class="border border-slate-300 dark:border-slate-600 text-center">{{ $student['rank'] }}</td>
-                    @else
-                        <td class="border border-slate-300 dark:border-slate-600 text-center">-</td>
-                        <td class="border border-slate-300 dark:border-slate-600 text-center">-</td>
-                        <td class="border border-slate-300 dark:border-slate-600 text-center">-</td>
-                        <td class="border border-slate-300 dark:border-slate-600 text-center">-</td>
-                    @endif
-                    
+                    <td class="border border-slate-300 dark:border-slate-600 px-3 text-left">{{ $student['nis'] }}</td>
+                    <td class="border border-slate-300 dark:border-slate-600 px-3 text-left">{{ $student['name'] }}</td>
+                    {{-- foreach competency --}}
+                    @foreach ($student['competencies'] as $competency)
+                        <td class="border border-slate-300 dark:border-slate-600 text-center">{{ $competency['score'] }}</td>
+                    @endforeach
+                    <td class="border border-slate-300 dark:border-slate-600 text-center">{{ $student['sum_score'] }}</td>
+                    <td class="border border-slate-300 dark:border-slate-600 text-center">{{ $student['avg_score'] }}</td>
+                    <td class="border border-slate-300 dark:border-slate-600 text-center">{{ $student['ranking'] }}</td>
                 </tr>
             @endforeach
         </tbody>

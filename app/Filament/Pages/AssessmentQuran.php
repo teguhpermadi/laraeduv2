@@ -160,13 +160,8 @@ class AssessmentQuran extends Page implements HasForms, HasTable
             ->headerActions([
                 Action::make('reset')
                     ->icon('heroicon-o-arrow-path-rounded-square')
-                    ->form([
-                        Select::make('quran_grade_id')
-                            ->options($this->quranGrade),
-                    ])
-                    ->action(function ($data) {
-                        // dd($data);
-                        $this->resetStudentCompetency($data['quran_grade_id']);
+                    ->action(function () {
+                        $this->resetStudentCompetency($this->quranGrade->id);
                     })
                     ->modalWidth('sm'),
                 Action::make('download')
@@ -244,7 +239,8 @@ class AssessmentQuran extends Page implements HasForms, HasTable
     public function resetStudentCompetency($quran_grade_id)
     {
         // ambil semua student dari quran grade id
-        $data = TeacherQuranGrade::myQuranGrade()->with('studentQuranGrade', 'competencyQuran')->find($quran_grade_id);
+        $data = TeacherQuranGrade::myQuranGrade()->with('studentQuranGrade', 'competencyQuran')->where('quran_grade_id', $quran_grade_id)->first();
+        // dd($data);
 
         if (count($data->studentQuranGrade) == 0) {
             // hapus semua student competency berdasarkan quran grade id
