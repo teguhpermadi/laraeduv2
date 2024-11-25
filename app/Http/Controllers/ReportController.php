@@ -565,21 +565,70 @@ class ReportController extends Controller
 
     public function quran($id)
     {
+        $academic = session('academic_year_id');
+
+        $academicYear = AcademicYear::find($academic);
+
         $student = LegerQuran::where('student_id', $id)
-            ->where('academic_year_id', session('academic_year_id'))
+            ->where('academic_year_id', $academic)
+            ->with('quranGrade.teacherQuranGrade')
             ->first();
 
-        $report = $this->getQuranReport($student);
+        $report = $this->getQuranReport($academicYear, $student);
 
         return $report;
     }
 
-    public function getQuranReport($student)
+    public function getQuranReport($academicYear, $student)
     {
         if (!$student) {
             abort(403, 'Data quran tidak ditemukan');
         }
 
-        dd($student);
+        // dd($student->toArray());
+
+        $schoolSettings = app(SchoolSettings::class);
+
+        // template processor
+        $templateProcessor = new TemplateProcessor(storage_path('/app/public/templates/reportQuran.docx'));
+
+        $templateProcessor->setValue('school_name', $schoolSettings->school_name);
+        $templateProcessor->setValue('school_address', $schoolSettings->school_address);
+        $templateProcessor->setValue('headmaster', $academicYear->teacher->name);
+        $templateProcessor->setValue('date_report', Carbon::createFromFormat('Y-m-d', $academicYear->date_report)->locale('id')->translatedFormat('d F Y'));
+        $templateProcessor->setValue('year', $academicYear->year);
+        $templateProcessor->setValue('semester', $academicYear->semester);
+
+        $templateProcessor->setValue('student_name', $student->student->name);
+        $templateProcessor->setValue('nisn', $student->student->nisn);
+        $templateProcessor->setValue('nis', $student->student->nis);
+
+        $templateProcessor->setValue('quran_grade', $student->quranGrade->name);
+        $templateProcessor->setValue('teacher_quran_grade', $student->quranGrade->teacherQuranGrade->first()->teacher->name);
+
+        $templateProcessor->setValue('note', $student->description);
+
+        // setting competency quran
+        $competencyQuran = $student->metadata;
+
+        // dd($competencyQuran);
+        $i = 1;
+        $data = [];
+        foreach ($competencyQuran as $key => $value) {
+            $data[] = [
+                'quran_order' => $i++,
+                'quran_competency' => $value['description'],
+                'score' => $value['score'],
+                'criteria' => $student->quranGrade->teacherQuranGrade->first()->getScoreCriteria($value['score']),
+            ];
+        }
+
+        $templateProcessor->cloneRowAndSetValues('quran_order', $data);
+
+        // save
+        $filename = 'Rapor Quran ' . $student->student->name . ' - ' . str_replace('/', ' ', $academicYear->year) . ' ' . $academicYear->semester . '.docx';
+        $file_path = storage_path('/app/public/downloads/' . $filename);
+        $templateProcessor->saveAs($file_path);
+        return response()->download($file_path)->deleteFileAfterSend(true);; // <<< HERE
     }
 }

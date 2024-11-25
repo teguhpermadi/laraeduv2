@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\ScoreCriteriaHelper;
 use App\Models\Scopes\AcademicYearScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -51,5 +52,10 @@ class TeacherQuranGrade extends Model
     public function scopeMyQuranGrade($query)
     {
         return $query->where('teacher_id', auth()->user()->userable->userable_id);
+    }
+
+    public function getScoreCriteria($score)
+    {
+        return ScoreCriteriaHelper::getScoreCriteria($score, $this->quranGrade->passing_grade);
     }
 }

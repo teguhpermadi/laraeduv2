@@ -66,10 +66,12 @@ class LegerQuran extends Page implements HasForms
             return $teacherQuranGrade->competencyQuran->count();
         });
 
+        $competencyQuran = $teacherQuranGrades->first()->competencyQuran;
+
         // dd($this->teacherQuranGrade->toArray());
 
-        $students = $teacherQuranGrades->flatMap(function ($teacherQuranGrade) {
-            return $teacherQuranGrade->studentQuranGrade->map(function ($studentQuranGrade) {
+        $students = $teacherQuranGrades->flatMap(function ($teacherQuranGrade) use ($competencyQuran) {
+            return $teacherQuranGrade->studentQuranGrade->map(function ($studentQuranGrade) use ($competencyQuran) {
                 return [
                     'student_id' => $studentQuranGrade->student->id,
                     'nis' => $studentQuranGrade->student->nis,
@@ -210,7 +212,7 @@ class LegerQuran extends Page implements HasForms
         ]);
 
         // refresh page to leger quran
-        // $this->redirect(route('filament.pages.leger-quran', $this->teacherQuranGrade->id));
+        $this->redirect(route('filament.admin.pages.leger-quran.{id}', $this->teacherQuranGrade->id));
 
         // tambahkan notifikasi sukses
         Notification::make()
