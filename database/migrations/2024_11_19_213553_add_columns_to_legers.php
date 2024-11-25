@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('sum_skill')->default(0);
             $table->string('description_skill')->nullable();
             $table->integer('subject_order')->default(0);
+            $table->integer('passing_grade')->default(70);
         });
     }
 

@@ -19,6 +19,7 @@ class TeacherSubjectObserver
             'code' => CategoryLegerEnum::HALF_SEMESTER->value,
             'description' => CategoryLegerEnum::HALF_SEMESTER->getLabel(),
             'passing_grade' => 70,
+            'half_semester' => true,
         ]);
 
         // AKHIR SEMESTER
@@ -27,6 +28,7 @@ class TeacherSubjectObserver
             'code' => CategoryLegerEnum::FULL_SEMESTER->value,
             'description' => CategoryLegerEnum::FULL_SEMESTER->getLabel(),
             'passing_grade' => 70,
+            'half_semester' => false,
         ]);
     }
 

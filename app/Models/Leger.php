@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use App\Models\Scopes\OrderStudentScope;
 
-#[ScopedBy([AcademicYearScope::class, OrderStudentScope::class])]
+#[ScopedBy([OrderStudentScope::class])]
 class Leger extends Model
 {
     use HasFactory;
@@ -29,6 +29,7 @@ class Leger extends Model
         'score_skill',
         'sum_skill',
         'description_skill',
+        'passing_grade',
     ];
 
     protected $casts = [

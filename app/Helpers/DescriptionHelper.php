@@ -6,7 +6,7 @@ use App\Enums\CategoryLegerEnum;
 
 class DescriptionHelper
 {
-    public static function getDescription($student,$data)
+    public static function getDescription($data)
     {
         $string = '';
         $string_skill = '';
@@ -16,14 +16,14 @@ class DescriptionHelper
             return $code === CategoryLegerEnum::HALF_SEMESTER->value || $code === CategoryLegerEnum::FULL_SEMESTER->value;
         })->values();
 
-        $intro = 'Alhamdulillah, ananda ' . $student->name;
-        $passed = 'telah menguasai materi: ';
-        $notPassed = 'perlu peningkatan lagi pada materi: ';
+        $intro = 'Alhamdulillah, ananda ' . $data->first()->student->name;
+        $passed = ' telah menguasai materi: ';
+        $notPassed = ' tetapi masih perlu peningkatan lagi pada materi: ';
         $countPassed = 0;
         $countNotPassed = 0;
 
-        $passedSkill = 'telah menguasai keterampilan: ';
-        $notPassedSkill = 'perlu peningkatan lagi pada keterampilan: ';
+        $passedSkill = ' telah menguasai keterampilan: ';
+        $notPassedSkill = ' tetapi masih perlu peningkatan lagi pada keterampilan: ';
         $countPassedSkill = 0;
         $countNotPassedSkill = 0;
 

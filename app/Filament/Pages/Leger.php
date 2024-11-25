@@ -3,30 +3,20 @@
 namespace App\Filament\Pages;
 
 use App\Enums\CategoryLegerEnum;
-use App\Enums\CurriculumEnum;
 use App\Helpers\DescriptionHelper;
 use App\Models\Leger as ModelsLeger;
 use App\Models\LegerRecap;
-use App\Models\StudentCompetency;
 use App\Models\TeacherSubject;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ViewField;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Tables\Contracts\HasTable;
-use Filament\Tables\Grouping\Group;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class Leger extends Page implements HasForms
 {
@@ -45,172 +35,199 @@ class Leger extends Page implements HasForms
 
     public ?array $data = [];
 
-    public $leger_full_semester;
-    public $leger_half_semester;
-
-    public $teacherSubject, $students, $time_signature, $previewFullSemester,$student, $agree, $leger, $competency_count, $academic_year_id;
+    public $teacherGrade,
+        $teacherSubject,
+        $students,
+        $competencyCount,
+        $time_signature,
+        $preview_full_semester,
+        $preview_half_semester,
+        $leger,
+        $agree,
+        $grade_id,
+        $academic_year_id,
+        $teacher_subject_id,
+        $leger_full_semester,
+        $leger_half_semester,
+        $competenciesFullSemester,
+        $competenciesHalfSemester,
+        $studentsFullSemester,
+        $studentsHalfSemester;
     public $checkLegerRecap = false;
-    public $descriptionLegerRecap = '';
     public $hasNoScores = false;
+    public $descriptionLegerRecap = '';
 
     public $visible = false;
 
     public function mount($id): void
     {
-        /* FULL SEMESTER */
-        $competency = TeacherSubject::with('subject')->withCount('competency')->find($id);
+        // ambil data teacher_subject
+        $teacherSubject = TeacherSubject::with([
+            'teacher',
+            'subject',
+            'academic',
+            'competency',
+            'studentGrade'
+        ])->find($id);
 
-        $this->teacherSubject = $competency;
-        $this->competency_count = $competency->competency_count;
-        $this->academic_year_id = $competency->academic_year_id;
+        $this->teacherSubject = $teacherSubject;
+        $teacher_id = $teacherSubject->teacher_id;
+        $subject_id = $teacherSubject->subject_id;
 
-        // ambil competency id full semester
-        $competency_id_full = $competency->competency->pluck('id');
+        // ambil data competency berdasarkan teacher_subject_id
+        $competenciesFullSemester = $teacherSubject->competency;
+        $competenciesHalfSemester = $teacherSubject->competency->where('half_semester', true);
 
-        // full semester
-        $teacherSubjectFullSemester = TeacherSubject::with(['studentGrade.studentCompetency' => function ($query) use ($competency_id_full) {
-            $query->whereIn('competency_id', $competency_id_full);
-        }])->find($id);
+        // subject order
+        $subjectOrder = $teacherSubject->subject->order;
 
-        $dataFullSemester = collect();
+        $this->competenciesFullSemester = $competenciesFullSemester;
+        $this->competenciesHalfSemester = $competenciesHalfSemester;
 
-        // all competency from full semester
-        foreach ($teacherSubjectFullSemester->studentGrade as $studentGrade) {
-            // urutkan berdasarkan competency_id
-            $studentCompetency = $studentGrade->studentCompetency()->orderBy('competency_id', 'asc')->get();
+        // dd($competenciesHalfSemester->toArray());
 
-            // dd($studentCompetency->toArray());
+        // flat map full semester
+        $studentsFullSemester = $teacherSubject->studentGrade->map(function ($student) use ($competenciesFullSemester, $subjectOrder, $teacher_id, $subject_id) {
+            // buat description dengan description helper
+            $description = DescriptionHelper::getDescription($student->studentCompetency->whereIn('competency_id', $competenciesFullSemester->pluck('id')));
+            $avg_score = $student->studentCompetency->whereIn('competency_id', $competenciesFullSemester->pluck('id'))->avg('score');
+            $avg_skill = $student->studentCompetency->whereIn('competency_id', $competenciesFullSemester->pluck('id'))->avg('score_skill');
+            $sum_score = $student->studentCompetency->whereIn('competency_id', $competenciesFullSemester->pluck('id'))->sum('score');
+            $sum_skill = $student->studentCompetency->whereIn('competency_id', $competenciesFullSemester->pluck('id'))->sum('score_skill');
+            // passing grade adalah rata-rata dari passing grade competency
+            $passing_grade = $competenciesFullSemester->avg('passing_grade');
 
-            // deskripsi
-            // $description = $this->getDescription($studentGrade->studentCompetency);
-            $description = DescriptionHelper::getDescription($studentGrade->student, $studentCompetency);
-
-            $dataFullSemester[$studentGrade->student_id] = collect([
-                'academic_year_id' => $competency->academic_year_id,
-                'teacher_subject_id' => $id,
-                'student_id' => $studentGrade->student_id,
-                'student' => $studentGrade->student,
-                'competency_count' => count($studentGrade->studentCompetency),
-                'avg' => round($studentGrade->studentCompetency->avg('score'), 0),
-                'avg_skill' => round($studentGrade->studentCompetency->avg('score_skill'), 0),
-                'sum' => $studentGrade->studentCompetency->sum('score'),
-                'sum_skill' => $studentGrade->studentCompetency->sum('score_skill'),
-                'passing_grade' => $teacherSubjectFullSemester->passing_grade,
-                'metadata' => $studentCompetency,
+            return [
+                'student_id' => $student->student->id,
+                'teacher_id' => $teacher_id,    
+                'subject_id' => $subject_id,
+                'subject_order' => $subjectOrder,
+                'nis' => $student->student->nis,
+                'name' => $student->student->name,
+                'avg_score' => round($avg_score, 0),
+                'avg_skill' => round($avg_skill, 0),
+                'sum_score' => $sum_score,
+                'sum_skill' => $sum_skill,
                 'description' => $description['description'],
                 'description_skill' => $description['description_skill'],
-                'subject_order' => $competency->subject->order,
-            ]);
-        };
+                'competency_count' => $competenciesFullSemester->count(),
+                'passing_grade' => round($passing_grade, 0),
+                'competencies' => $student->studentCompetency
+                    // ambil data competency berdasarkan competencies yang ada di $competencies
+                    ->whereIn('competency_id', $competenciesFullSemester->pluck('id'))
+                    ->sortBy('competency_id')
+                    ->map(function ($competency) {
+                        return [
+                            'competency_id' => $competency->competency_id,
+                            'code' => $competency->competency->code,
+                            'score' => $competency->score,
+                            'passing_grade' => $competency->competency->passing_grade,
+                            'description' => $competency->competency->description,
+                            'score_skill' => $competency->score_skill,
+                            'description_skill' => $competency->competency->description_skill,
+                        ];
+                    }),
+               
+            ];
+        });
 
-        // Sort data by 'sum' in descending order
-        $dataFullSemester = $dataFullSemester->sortByDesc('sum')->values();
+        // tambahkan ranking berdasarkan sum_score
+        $studentsFullSemester = $studentsFullSemester->sortByDesc('sum_score')->values();
 
-        // Add ranking
-        $dataFullSemester = $dataFullSemester->map(function ($item, $index) {
-            $item['rank'] = $index + 1; // Rank starts from 1
+        // tambahkan ranking berdasarkan sum_score
+        $studentsFullSemester = $studentsFullSemester->map(function ($item, $index) {
+            $item['ranking'] = $index + 1;
             return $item;
         });
 
-        // kembalikan data sort by id
-        $dataFullSemester = $dataFullSemester->sortBy('student_id', SORT_ASC);
+        // kembalikan data sort by student_id asc
+        $studentsFullSemester = $studentsFullSemester->sortBy('student_id', SORT_ASC);
+        $this->studentsFullSemester = $studentsFullSemester;
 
-        // Cek apakah ada siswa yang belum memiliki nilai
-        $this->hasNoScores = $dataFullSemester->contains(function ($item) {
-            return $item['competency_count'] === 0 || empty($item['metadata']);
-        });
-
-        /* HALF SEMESTER */
-
-        // ambil competency id half semester
-        $competency_id_half = $competency->competency->where('half_semester', 1)->pluck('id');
-
-        // half semester
-        $teacherSubjectHalfSemester = TeacherSubject::with(['studentGrade.studentCompetency' => function ($query) use ($competency_id_half) {
-            $query->whereIn('competency_id', $competency_id_half)->orderBy('competency_id', 'asc');
-        }])->find($id);
-
-        $dataHalfSemester = collect();
-
-        // all competency from half semester
-        foreach ($teacherSubjectHalfSemester->studentGrade as $studentGrade) {
-            // urutkan berdasarkan competency_id
-            $studentCompetency = $studentGrade->studentCompetency()->orderBy('competency_id', 'asc')->get();
-
-            // $description = $this->getDescription($studentGrade->studentCompetency);
-            $description = DescriptionHelper::getDescription($studentGrade->student, $studentCompetency);
-
-            $dataHalfSemester[$studentGrade->student_id] = collect([
-                'academic_year_id' => $competency->academic_year_id,
-                'teacher_subject_id' => $id,
-                'student_id' => $studentGrade->student_id,
-                'student' => $studentGrade->student,
-                'competency_count' => count($studentGrade->studentCompetency),
-                'avg' => round($studentGrade->studentCompetency->avg('score'), 0),
-                'avg_skill' => round($studentGrade->studentCompetency->avg('score_skill'), 0),
-                'sum' => $studentGrade->studentCompetency->sum('score'),
-                'sum_skill' => $studentGrade->studentCompetency->sum('score_skill'),
-                'passing_grade' => $teacherSubjectHalfSemester->passing_grade,
-                'metadata' => $studentCompetency,
+        // flat map half semester
+        $studentsHalfSemester = $teacherSubject->studentGrade->map(function ($student) use ($competenciesHalfSemester, $subjectOrder, $teacher_id, $subject_id) {
+            $description = DescriptionHelper::getDescription($student->studentCompetency->whereIn('competency_id', $competenciesHalfSemester->pluck('id')));
+            $avg_score = $student->studentCompetency->whereIn('competency_id', $competenciesHalfSemester->pluck('id'))->avg('score');
+            $sum_score = $student->studentCompetency->whereIn('competency_id', $competenciesHalfSemester->pluck('id'))->sum('score');
+            $avg_skill = $student->studentCompetency->whereIn('competency_id', $competenciesHalfSemester->pluck('id'))->avg('score_skill');
+            $sum_skill = $student->studentCompetency->whereIn('competency_id', $competenciesHalfSemester->pluck('id'))->sum('score_skill');
+            $passing_grade = $competenciesHalfSemester->avg('passing_grade');
+            return [
+                'student_id' => $student->student->id,
+                'teacher_id' => $teacher_id,
+                'subject_id' => $subject_id,
+                'subject_order' => $subjectOrder,
+                'nis' => $student->student->nis,
+                'name' => $student->student->name,
+                'avg_score' => round($avg_score, 0),
+                'avg_skill' => round($avg_skill, 0),
+                'sum_score' => $sum_score,
+                'sum_skill' => $sum_skill,
                 'description' => $description['description'],
                 'description_skill' => $description['description_skill'],
-                'subject_order' => $competency->subject->order,
-            ]);
+                'competency_count' => $competenciesHalfSemester->count(),
+                'passing_grade' => round($passing_grade, 0),
+                'competencies' => $student->studentCompetency
+                    ->whereIn('competency_id', $competenciesHalfSemester->pluck('id'))
+                    ->sortBy('competency_id')
+                    ->map(function ($competency) {
+                        return [
+                            'competency_id' => $competency->competency_id,
+                            'code' => $competency->competency->code,
+                            'score' => $competency->score,
+                            'passing_grade' => $competency->competency->passing_grade,
+                            'description' => $competency->competency->description,
+                            'score_skill' => $competency->score_skill,
+                            'description_skill' => $competency->competency->description_skill,
+                        ];
+                    }),
+            ];
+        });
+
+        // tambahkan ranking berdasarkan sum_score
+        $studentsHalfSemester = $studentsHalfSemester->sortByDesc('sum_score')->values();
+
+        // tambahkan ranking berdasarkan sum_score
+        $studentsHalfSemester = $studentsHalfSemester->map(function ($item, $index) {
+            $item['ranking'] = $index + 1;
+            return $item;
+        });
+
+        // kembalikan data sort by student_id asc
+        $studentsHalfSemester = $studentsHalfSemester->sortBy('student_id', SORT_ASC);
+
+        $this->studentsHalfSemester = $studentsHalfSemester;
+
+        // ambil data leger recap
+        $legerRecap = LegerRecap::where('academic_year_id', $teacherSubject->academic->id)
+            ->where('teacher_subject_id', $teacherSubject->id)
+            ->first();
+
+        $this->checkLegerRecap = $legerRecap ? true : false;
+        // dd($legerRecap);
+        if ($legerRecap) {
+            $this->descriptionLegerRecap = 'Kamu sudah mengumpulkan leger ini ke wali kelas pada tanggal ' . $legerRecap->created_at->translatedFormat('l, d F Y H:i') . '. Apakah kamu ingin mengrubahnya?';
+        } else {
+            $this->descriptionLegerRecap = 'Apakah anda yakin akan mengumpulkan nilai tersebut ke wali kelas?';
         }
 
-        // Sort data by 'sum' in descending order
-        $dataHalfSemester = $dataHalfSemester->sortByDesc('sum')->values();
-
-        // Add ranking
-        $dataHalfSemester = $dataHalfSemester->map(function ($item, $index) {
-            $item['rank'] = $index + 1; // Rank starts from 1
-            return $item;
+        // cek apakah ada siswa yang belum memiliki nilai
+        $this->hasNoScores = $studentsFullSemester->contains(function ($item) {
+            return empty($item['competencies']);
         });
 
-        // kembalikan data sort by id
-        $dataHalfSemester = $dataHalfSemester->sortBy('student_id', SORT_ASC);
-
-
-        // dd($dataFullSemester);
-
-        $this->students = $dataFullSemester;
-
-        // Hanya isi form jika ada nilai
         if (!$this->hasNoScores) {
             $this->form->fill([
-                'leger_full_semester' => $dataFullSemester,
-                'leger_half_semester' => $dataHalfSemester,
+                'teacher_subject_id' => $id,
+                'academic_year_id' => $teacherSubject->academic->id,
+                'leger_full_semester' => $studentsFullSemester,
+                'leger_half_semester' => $studentsHalfSemester,
                 'time_signature' => now(),
             ]);
         }
 
-        // cek apakah sudah ada data leger_recap
-        $legerRecap = LegerRecap::where('academic_year_id', $this->academic_year_id)
-            ->where('teacher_subject_id', $id)
-            ->first();
+        // dd($this->leger_full_semester);
 
-        $this->checkLegerRecap = $legerRecap;
-
-        // dd($legerRecap);
-
-        // jika leger recap sudah ada 
-        if($legerRecap){
-            $descriptionLegerRecap = 'Kamu sudah mengumpulkan leger ini ke wali kelas pada tanggal ' . $legerRecap->created_at->translatedFormat('l, d F Y H:i') . '. Apakah kamu ingin mengrubahnya?';
-        } else {
-            $descriptionLegerRecap = 'Apakah anda yakin akan mengumpulkan nilai tersebut ke wali kelas?';
-        }
-
-        $this->descriptionLegerRecap = $descriptionLegerRecap;
-
-        // cek kurikulum
-        $curriculum = $competency->teacherGrade->curriculum;
-        // dd($curriculum);
-
-        if ($curriculum == CurriculumEnum::K13->value) {
-            $this->visible = true;
-        } else {
-            $this->visible = false;
-        }
     }
 
     public function form(Form $form): Form
@@ -219,20 +236,38 @@ class Leger extends Page implements HasForms
             ->schema([
                 Section::make('Preview Akhir Semester')
                     ->schema([
-                        ViewField::make('previewFullSemester')
-                            ->viewData([$this->teacherSubject, $this->students])
-                            ->view('filament.pages.leger-preview'),
+                        ViewField::make('preview_full_semester')
+                            // masukkan data teacherSubject dan leger_full_semester
+                            ->view('filament.pages.leger-preview')
+                            ->viewData([
+                                'teacherSubject' => $this->teacherSubject,
+                                'competencies' => $this->competenciesFullSemester,
+                                'students' => $this->studentsFullSemester,
+                            ])
+                    ])
+                    ->collapsible(),
+                // section half semester
+                Section::make('Preview Tengah Semester')
+                    ->schema([
+                        ViewField::make('preview_half_semester')
+                            ->view('filament.pages.leger-preview')
+                            ->viewData([
+                                'teacherSubject' => $this->teacherSubject,
+                                'competencies' => $this->competenciesHalfSemester,
+                                'students' => $this->studentsHalfSemester,
+                            ])
                     ])
                     ->collapsible(),
                 Section::make('Persetujuan')
                     ->description(fn() => $this->descriptionLegerRecap)
                     ->schema([
+                        Hidden::make('teacher_subject_id'),
+                        Hidden::make('academic_year_id'),
                         Hidden::make('leger_full_semester'),
                         Hidden::make('leger_half_semester'),
                         DateTimePicker::make('time_signature')
                             ->label('Waktu tanda tangan')
-                            ->inlineLabel()
-                            ->disabled(),
+                            ->inlineLabel(),
                         Checkbox::make('agree')
                             ->label('Saya setuju')
                             ->inlineLabel()
@@ -246,70 +281,67 @@ class Leger extends Page implements HasForms
     {
         $data = $this->form->getState();
 
-        // dd($data);
-
-        $teacher_id = $this->teacherSubject->teacher_id;
-        $subject_id = $this->teacherSubject->subject_id;
-
-        // dd($data);
+        dd($data);
 
         /* FULL SEMESTER */
         // insert data ke table leger
-        foreach ($data['leger_full_semester'] as $key) {
+        foreach ($data['leger_full_semester'] as $student) {
             ModelsLeger::updateOrCreate([
-                'academic_year_id' => $key['academic_year_id'],
-                'student_id' => $key['student_id'],
-                'teacher_subject_id' => $key['teacher_subject_id'],
+                'academic_year_id' => $data['academic_year_id'],
+                'student_id' => $student['student_id'],
+                'teacher_subject_id' => $data['teacher_subject_id'],
+                'teacher_id' => $student['teacher_id'],
+                'subject_id' => $student['subject_id'],
                 'category' => CategoryLegerEnum::FULL_SEMESTER->value,
             ], [
-                'score' => $key['avg'],
-                'score_skill' => $key['avg_skill'],
-                'sum' => $key['sum'],
-                'sum_skill' => $key['sum_skill'],
-                'rank' => $key['rank'],
-                'description' => $key['description'],
-                'description_skill' => $key['description_skill'],
-                'metadata' => $key['metadata'],
-                'subject_order' => $key['subject_order'],
-                'teacher_id' => $teacher_id,
-                'subject_id' => $subject_id,
+                'passing_grade' => $student['passing_grade'],
+                'score' => $student['avg_score'],
+                'score_skill' => $student['avg_skill'],
+                'sum' => $student['sum_score'],
+                'sum_skill' => $student['sum_skill'],
+                'rank' => $student['ranking'],
+                'description' => $student['description'],
+                'description_skill' => $student['description_skill'],
+                'metadata' => $student['competencies'],
+                'subject_order' => $student['subject_order'],
             ]);
         }
 
         // insert data ke table leger_recap
         LegerRecap::updateOrCreate([
-            'academic_year_id' => $this->academic_year_id,
-            'teacher_subject_id' => $this->teacherSubject->id,
+            'academic_year_id' => $data['academic_year_id'],
+            'teacher_subject_id' => $data['teacher_subject_id'],
             'category' => CategoryLegerEnum::FULL_SEMESTER->value,
         ]);
 
         /* HALF SEMESTER */
-        foreach ($data['leger_half_semester'] as $key) {
+        foreach ($data['leger_half_semester'] as $student) {
             // insert data ke table leger
             ModelsLeger::updateOrCreate([
-                'academic_year_id' => $key['academic_year_id'],
-                'student_id' => $key['student_id'],
-                'teacher_subject_id' => $key['teacher_subject_id'],
+                'academic_year_id' => $data['academic_year_id'],
+                'student_id' => $student['student_id'],
+                'teacher_subject_id' => $data['teacher_subject_id'],
+                'teacher_id' => $student['teacher_id'],
+                'subject_id' => $student['subject_id'],
                 'category' => CategoryLegerEnum::HALF_SEMESTER->value,
             ], [
-                'score' => $key['avg'],
-                'score_skill' => $key['avg_skill'],
-                'sum' => $key['sum'],
-                'sum_skill' => $key['sum_skill'],
-                'rank' => $key['rank'],
-                'description' => $key['description'],
-                'description_skill' => $key['description_skill'],
-                'metadata' => $key['metadata'],
-                'subject_order' => $key['subject_order'],
-                'teacher_id' => $teacher_id,
-                'subject_id' => $subject_id,
+                'passing_grade' => $student['passing_grade'],
+                'score' => $student['avg_score'],
+                'score_skill' => $student['avg_skill'],
+                'sum' => $student['sum_score'],
+                'sum_skill' => $student['sum_skill'],
+                'rank' => $student['ranking'],
+                'description' => $student['description'],
+                'description_skill' => $student['description_skill'],
+                'metadata' => $student['competencies'],
+                'subject_order' => $student['subject_order'],
             ]);
         }
 
         // insert data ke table leger_recap
         LegerRecap::updateOrCreate([
-            'academic_year_id' => $this->academic_year_id,
-            'teacher_subject_id' => $this->teacherSubject->id,
+            'academic_year_id' => $data['academic_year_id'],
+            'teacher_subject_id' => $data['teacher_subject_id'],
             'category' => CategoryLegerEnum::HALF_SEMESTER->value,
         ]);
 

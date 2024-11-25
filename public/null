@@ -1,59 +1,20 @@
-$teacherQuranGrades = TeacherQuranGrade::with(['studentQuranGrade.student', 'competencyQuran'])
-  ->myQuranGrade()
-  ->get();
-$teacherQuranGrades = TeacherQuranGrade::with(['studentQuranGrade.student', 'competencyQuran'])
-  ->myQuranGrade()
-  ->get();
-$teacherQuranGrades = TeacherQuranGrade::with(['studentQuranGrade.student', 'competencyQuran'])
-  ->myQuranGrade()
-  ->find(1304);
-$teacherQuranGrades = TeacherQuranGrade::with(['studentQuranGrade.student', 'competencyQuran'])
-  ->find(1304);
-$teacherQuranGrades = TeacherQuranGrade::with(['studentQuranGrade.student', 'competencyQuran'])
-  ->find(300);
-$teacherQuranGrades = TeacherQuranGrade::with(['studentQuranGrade.student', 'competencyQuran'])
-  ->get();
-$teacherQuranGrades = TeacherQuranGrade::myQuranGrade
-  ->get();
-$teacherQuranGrades = TeacherQuranGrade::myQuranGrade()
-  ->get();
-$teacherQuranGrades = TeacherQuranGrade::
-with(['studentQuranGrade.student', 'competencyQuran'])->
-myQuranGrade()
-  ->get();
-$teacherQuranGrades = TeacherQuranGrade::
-with(['studentQuranGrade.student', 'competencyQuran'])->
-myQuranGrade()
-  ->find(1305);
-$teacherQuranGrades = TeacherQuranGrade::
-with(['studentQuranGrade.student', 'competencyQuran'])->
-  myQuranGrade()
-  ->find(1305);
-
-$students = $teacherQuranGrades->flatMap(function ($teacherQuranGrade) {
-  return $teacherQuranGrade->studentQuranGrade->map(function ($studentQuranGrade) {
-	return [
-	  'no' => $studentQuranGrade->student->id,
-	  'nama' => $studentQuranGrade->student->name,
-	  'competencies' => $studentQuranGrade->studentCompetencyQuran->mapWithKeys(function ($competency) {
-		return [$competency->competencyQuran->name => $competency->score];
-	  })->toArray(),
-	];
-  });
-});
-$teacherQuranGrades = TeacherQuranGrade::
-with(['studentQuranGrade.student', 'competencyQuran'])->
-  myQuranGrade()
-  ->where('id',1305)->get();
-
-$students = $teacherQuranGrades->flatMap(function ($teacherQuranGrade) {
-  return $teacherQuranGrade->studentQuranGrade->map(function ($studentQuranGrade) {
-	return [
-	  'no' => $studentQuranGrade->student->id,
-	  'nama' => $studentQuranGrade->student->name,
-	  'competencies' => $studentQuranGrade->studentCompetencyQuran->mapWithKeys(function ($competency) {
-		return [$competency->competencyQuran->name => $competency->score];
-	  })->toArray(),
-	];
-  });
-});
+Leger::get()
+use App\Models\Leger;
+Leger::get();
+use App\Models\Leger;
+Leger::withoutGlobalScope()->get();
+use App\Models\Leger;
+Leger::withoutGlobalScope(AcademicYearScope::class)->get();
+use App\Models\Leger;
+Leger::get();
+use App\Models\Leger;
+Leger::first();
+use App\Models\Leger;
+$l = Leger::first();
+$l->metadata
+use App\Models\Leger;
+$l = Leger::first();
+use App\Models\Leger;
+$l = Leger::first();
+use App\Models\Leger;
+$l = Leger::first();

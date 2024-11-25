@@ -88,7 +88,7 @@
                     @if (count($student['metadata']) > 0)
                         @foreach ($student['metadata'] as $metadata)
                             <td
-                                class="border border-slate-300 text-center {{ $metadata['score'] <= $metadata['competency']['passing_grade'] ? 'bg-yellow-200' : ($metadata['score'] >= 95 ? 'bg-red-200' : '') }}">
+                                class="border border-slate-300 text-center {{ $metadata['score'] <= $metadata['passing_grade'] ? 'bg-yellow-200' : ($metadata['score'] >= 95 ? 'bg-red-200' : '') }}">
                                 {{ $metadata['score'] }}
                             </td>
                         @endforeach
@@ -130,6 +130,13 @@
                         <td class="border border-slate-300 text-center">{{ $competency->passing_grade }}</td>
                     </tr>
                 @endforeach
+                {{-- rata rata passing grade --}}
+                <tr>
+                    <td class="border border-slate-300 text-center">-</td>
+                    <td class="border border-slate-300 text-center">Rata-rata Nilai Minimal</td>
+                    {{-- bulatkan rata-rata passing grade --}}
+                    <td class="border border-slate-300 text-center">{{ round($teacherSubject->competency->where('half_semester', 1)->avg('passing_grade'), 0) }}</td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -228,7 +235,7 @@
                     @if (count($student['metadata']) > 0)
                         @foreach ($student['metadata'] as $metadata)
                             <td
-                                class="border border-slate-300 text-center {{ $metadata['score'] <= $metadata['competency']['passing_grade'] ? 'bg-yellow-200' : ($metadata['score'] >= 95 ? 'bg-red-200' : '') }}">
+                                class="border border-slate-300 text-center {{ $metadata['score'] <= $metadata['passing_grade'] ? 'bg-yellow-200' : ($metadata['score'] >= 95 ? 'bg-red-200' : '') }}">
                                 {{ $metadata['score'] }}
                             </td>
                         @endforeach
@@ -271,6 +278,13 @@
                         <td class="border border-slate-300 text-center">{{ $competency->passing_grade }}</td>
                     </tr>
                 @endforeach
+                {{-- rata rata passing grade --}}
+                <tr>
+                    <td class="border border-slate-300 text-center">-</td>
+                    <td class="border border-slate-300 text-center">Rata-rata Nilai Minimal</td>
+                    {{-- bulatkan rata-rata passing grade --}}
+                    <td class="border border-slate-300 text-center">{{ round($teacherSubject->competency->avg('passing_grade'), 0) }}</td>
+                </tr>
             </tbody>
         </table>
     </div>
