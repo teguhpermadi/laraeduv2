@@ -17,6 +17,7 @@ use PhpOffice\PhpWord\Element\Table;
 use PhpOffice\PhpWord\SimpleType\TblWidth;
 use PhpOffice\PhpWord\Element\TextRun;
 use App\Enums\LinkertScaleEnum;
+use App\Models\LegerQuran;
 
 class ReportController extends Controller
 {
@@ -560,5 +561,25 @@ class ReportController extends Controller
         $file_path = storage_path('/app/public/downloads/' . $filename);
         $templateProcessor->saveAs($file_path);
         return response()->download($file_path)->deleteFileAfterSend(true);; // <<< HERE
+    }
+
+    public function quran($id)
+    {
+        $student = LegerQuran::where('student_id', $id)
+            ->where('academic_year_id', session('academic_year_id'))
+            ->first();
+
+        $report = $this->getQuranReport($student);
+
+        return $report;
+    }
+
+    public function getQuranReport($student)
+    {
+        if (!$student) {
+            abort(403, 'Data quran tidak ditemukan');
+        }
+
+        dd($student);
     }
 }

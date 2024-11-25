@@ -75,6 +75,11 @@ class MyGrade extends Page implements HasTable
                     ->label('Project')
                     ->url(fn($record) => route('report-project', $record->student_id))
                     ->button(),
+                // action quran
+                Action::make('quran')
+                    ->label('Quran')
+                    ->url(fn($record) => route('report-quran', $record->student_id))
+                    ->button(),
             ])
             ->paginated(false)
             ->modifyQueryUsing(fn(Builder $query) => $query->myGrade());
