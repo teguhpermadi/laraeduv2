@@ -35,7 +35,7 @@ class LegerQuran extends Page implements HasForms
 
     public ?array $data = [];
 
-    public $teacherQuran, $students, $time_signature, $preview, $student, $agree, $leger_quran, $competency_count, $academic_year_id;
+    public $teacherQuranGrade, $students, $time_signature, $preview, $student, $agree, $leger_quran, $competency_count, $academic_year_id;
     public $checkLegerQuran = false;
     public $hasNoScores = false;
     public $descriptionLegerQuranRecap = '';
@@ -44,34 +44,48 @@ class LegerQuran extends Page implements HasForms
     // mount
     public function mount($id): void
     {
-        $this->academic_year_id = session('academic_year_id');
+        
+        $teacherQuranGrade = TeacherQuranGrade::with(['quranGrade',
+            'studentQuranGrade',
+            'competencyQuran.studentCompetencyQuran' => function ($query) {
+                $query->orderBy('competency_quran_id', 'asc');
+            },
+        ])->find($id);
 
-        $this->teacherQuran = TeacherQuranGrade::with('quranGrade', 'studentQuranGrade', 'competencyQuran')->find($id);
+        // dd($teacherQuranGrade->toArray());
 
-        $students = $this->teacherQuran->studentQuranGrade;
+        $this->teacherQuranGrade = $teacherQuranGrade;
+        $this->academic_year_id = $teacherQuranGrade->academicYear;
+        $students = $this->teacherQuranGrade->studentQuranGrade;
+        $competencyQuran = $this->teacherQuranGrade->competencyQuran;
         // dd($students->toArray());
 
-        $this->competency_count = $this->teacherQuran->competencyQuran->count();
+        $this->competency_count = $competencyQuran->count();
 
         $data = collect();
 
-        // dd($students);
-
+        // dd($competencyQuran->toArray());
+        
         // loop students
         foreach ($students as $student) {
+            // urutkan berdasarkan competency_quran_id
+            $studentCompetencyQuran = $student->studentCompetencyQuran()->orderBy('competency_quran_id', 'asc')->get();
 
             // deskripsi
             $description = $this->getDescription($student->studentCompetencyQuran);
 
+
             $data->push([
                 'student_id' => $student->student->id,
                 'student' => $student,
-                'metadata' => $student->studentCompetencyQuran->toArray(),
+                'metadata' => $studentCompetencyQuran,
                 'avg' => round($student->studentCompetencyQuran->avg('score'), 0),
                 'sum' => $student->studentCompetencyQuran->sum('score'),
                 'competency_count' => $this->competency_count,
                 'description' => $description,
             ]);
+
+            // dd($student->toArray());
         }
 
         // sort by sum
@@ -84,7 +98,7 @@ class LegerQuran extends Page implements HasForms
         });
 
         // kembalikan data sort by id asc
-        $data = $data->sortBy('student_id')->values();
+        $data = $data->sortBy('student_id', SORT_ASC)->values();
 
         // dd($data->toArray());
 
@@ -124,7 +138,7 @@ class LegerQuran extends Page implements HasForms
                 Section::make('Preview Leger')
                     ->schema([
                         ViewField::make('preview')
-                            ->viewData([$this->teacherQuran, $this->students])
+                            ->viewData([$this->teacherQuranGrade, $this->students])
                             ->view('filament.pages.leger-preview-quran'),
                     ])
                     ->collapsible(),

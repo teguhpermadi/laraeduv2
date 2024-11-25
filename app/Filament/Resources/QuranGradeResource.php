@@ -11,6 +11,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
 use Illuminate\Database\Eloquent\Builder;
@@ -75,6 +76,10 @@ class QuranGradeResource extends Resource
                     ->button()
                     ->slideOver()
                     ->relationManager(TeacherQuranGradeRelationManager::make()),
+                Action::make('assessment-quran')
+                    ->label('Nilai')
+                    ->url(fn (QuranGrade $record): string => route('filament.admin.pages.assessment-quran.{id}', $record))
+                    ->button(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

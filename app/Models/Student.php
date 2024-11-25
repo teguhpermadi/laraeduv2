@@ -132,4 +132,14 @@ class Student extends Model
     {
         return $this->hasMany(StudentProject::class);
     }
+
+    public function studentCompetencyQuran()
+    {
+        return $this->hasMany(StudentCompetencyQuran::class);
+    }
+
+    public function studentCompetency()
+    {
+        return $this->hasMany(StudentCompetency::class);
+    }
 }

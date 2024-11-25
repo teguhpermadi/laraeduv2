@@ -76,10 +76,14 @@ class Leger extends Page implements HasForms
 
         // all competency from full semester
         foreach ($teacherSubjectFullSemester->studentGrade as $studentGrade) {
+            // urutkan berdasarkan competency_id
+            $studentCompetency = $studentGrade->studentCompetency()->orderBy('competency_id', 'asc')->get();
+
+            // dd($studentCompetency->toArray());
 
             // deskripsi
             // $description = $this->getDescription($studentGrade->studentCompetency);
-            $description = DescriptionHelper::getDescription($studentGrade->student, $studentGrade->studentCompetency);
+            $description = DescriptionHelper::getDescription($studentGrade->student, $studentCompetency);
 
             $dataFullSemester[$studentGrade->student_id] = collect([
                 'academic_year_id' => $competency->academic_year_id,
@@ -92,7 +96,7 @@ class Leger extends Page implements HasForms
                 'sum' => $studentGrade->studentCompetency->sum('score'),
                 'sum_skill' => $studentGrade->studentCompetency->sum('score_skill'),
                 'passing_grade' => $teacherSubjectFullSemester->passing_grade,
-                'metadata' => $studentGrade->studentCompetency,
+                'metadata' => $studentCompetency,
                 'description' => $description['description'],
                 'description_skill' => $description['description_skill'],
                 'subject_order' => $competency->subject->order,
@@ -130,8 +134,11 @@ class Leger extends Page implements HasForms
 
         // all competency from half semester
         foreach ($teacherSubjectHalfSemester->studentGrade as $studentGrade) {
+            // urutkan berdasarkan competency_id
+            $studentCompetency = $studentGrade->studentCompetency()->orderBy('competency_id', 'asc')->get();
+
             // $description = $this->getDescription($studentGrade->studentCompetency);
-            $description = DescriptionHelper::getDescription($studentGrade->student, $studentGrade->studentCompetency);
+            $description = DescriptionHelper::getDescription($studentGrade->student, $studentCompetency);
 
             $dataHalfSemester[$studentGrade->student_id] = collect([
                 'academic_year_id' => $competency->academic_year_id,
@@ -144,7 +151,7 @@ class Leger extends Page implements HasForms
                 'sum' => $studentGrade->studentCompetency->sum('score'),
                 'sum_skill' => $studentGrade->studentCompetency->sum('score_skill'),
                 'passing_grade' => $teacherSubjectHalfSemester->passing_grade,
-                'metadata' => $studentGrade->studentCompetency,
+                'metadata' => $studentCompetency,
                 'description' => $description['description'],
                 'description_skill' => $description['description_skill'],
                 'subject_order' => $competency->subject->order,

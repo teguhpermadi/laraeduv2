@@ -5,22 +5,22 @@
         <tr>
             <td>Tahun Pelajaran</td>
             <td>:</td>
-            <td>{{ $this->teacherQuran->academicYear->year }}</td>
+            <td>{{ $this->teacherQuranGrade->academicYear->year }}</td>
         </tr>
         <tr>
             <td>Semester</td>
             <td>:</td>
-            <td>{{ $this->teacherQuran->academicYear->semester }}</td>
+            <td>{{ $this->teacherQuranGrade->academicYear->semester }}</td>
         </tr>
         <tr>
             <td>Kelas Quran</td>
             <td>:</td>
-            <td>{{ $this->teacherQuran->quranGrade->name }}</td>
+            <td>{{ $this->teacherQuranGrade->quranGrade->name }}</td>
         </tr>
         <tr>
             <td>Guru</td>
             <td>:</td>
-            <td>{{ $this->teacherQuran->teacher->name }}</td>
+            <td>{{ $this->teacherQuranGrade->teacher->name }}</td>
         </tr>
     </table>
 
@@ -53,9 +53,9 @@
                     class="border border-slate-300 dark:border-slate-600 text-center bg-gray-100 dark:bg-gray-800">
                     Peringkat</th>
             </tr>
-            @if (count($this->teacherQuran->competencyQuran) > 0)
+            @if (count($this->teacherQuranGrade->competencyQuran) > 0)
                 <tr>
-                    @foreach ($this->teacherQuran->competencyQuran as $competency)
+                    @foreach ($this->teacherQuranGrade->competencyQuran as $competency)
                         <th
                             class="border border-slate-300 dark:border-slate-600 text-center bg-gray-100 dark:bg-gray-800">
                             {{ $competency->code }}</th>

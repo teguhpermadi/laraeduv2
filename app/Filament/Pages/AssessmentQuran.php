@@ -46,6 +46,10 @@ class AssessmentQuran extends Page implements HasForms, HasTable
 
     protected static string $view = 'filament.pages.assessment-quran';
 
+    protected static ?string $slug = 'assessment-quran/{id}';
+
+    protected static bool $shouldRegisterNavigation = false;
+
     // navigation label
     protected static ?string $navigationLabel = 'Penilaian Quran';
 
@@ -55,24 +59,29 @@ class AssessmentQuran extends Page implements HasForms, HasTable
     protected static ?int $navigationSort = 3;
 
     public ?array $data = [];
-    public $quranGrade = [];
     public $competencyQuran = [];
+    public $quranGrade = [];
     public $teacherQuranGrade;
     public $quran_grade_id = -1, $competency_quran_id = -1;
     public $empty_state = [];
 
-    public function mount(): void
+    public function mount($id): void
     {
-        $teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->get();
-        // dd($teacherQuranGrade);
+        $teacherQuranGrade = TeacherQuranGrade::with(['quranGrade', 'studentQuranGrade', 'competencyQuran' => function ($query) {
+            $query->orderBy('id', 'asc');
+        }])
+            ->myQuranGrade()
+            ->where('quran_grade_id', $id)
+            ->first();
 
         $this->teacherQuranGrade = $teacherQuranGrade;
+        $this->quranGrade = $teacherQuranGrade->quranGrade;
+        $this->competencyQuran = $teacherQuranGrade->competencyQuran->pluck('description', 'id');
 
-        // ambil quran grade id dan simpan dalam $quranGrade
-        $this->quranGrade = $teacherQuranGrade->pluck('quranGrade.name', 'id');
+        // dd($this->competencyQuran->toArray());
 
         // cek apakah ada student
-        $students = TeacherQuranGrade::myQuranGrade()->with('studentQuranGrade')->get();
+        $students = $teacherQuranGrade->studentQuranGrade;
 
         if (count($students) == 0) {
             $this->empty_state['heading'] = 'Anda tidak memiliki murid.';
@@ -89,29 +98,14 @@ class AssessmentQuran extends Page implements HasForms, HasTable
     {
         return $form
             ->schema([
-                Section::make('Identitas')
+                Section::make('Kompetensi ' . $this->quranGrade->name)
                     ->schema([
-                        Select::make('quran_grade_id')
-                            ->options($this->quranGrade)
-                            ->required()
-                            ->live()
-                            ->afterStateUpdated(function (callable $set, $state) {
-
-                                // competency quran
-                                $this->competencyQuran = $this->teacherQuranGrade
-                                    ->where('id', $state)
-                                    ->first()
-                                    ->competencyQuran
-                                    ->pluck('description', 'id');
-
-                                $this->competency_quran_id = -1;
-                                $this->resetTable();
-                                // dd($this->competencyQuran);
-                            }),
                         Radio::make('competency_quran_id')
+                            ->label('Kompetensi')
                             ->options(function () {
                                 return $this->competencyQuran;
                             })
+                            ->default($this->competencyQuran->keys()->first())
                             ->live()
                             ->required()
                             ->afterStateUpdated(function () {
@@ -126,8 +120,8 @@ class AssessmentQuran extends Page implements HasForms, HasTable
         return $table
             ->query(
                 StudentCompetencyQuran::query()
-                    // ->where('teacher_quran_grade_id', $this->quran_grade_id)
                     ->where('competency_quran_id', $this->competency_quran_id)
+                    ->orderBy('student_id', 'asc')
             )
             ->emptyStateHeading($this->empty_state['heading'])
             ->emptyStateDescription($this->empty_state['desc'])
@@ -176,14 +170,9 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                     })
                     ->modalWidth('sm'),
                 Action::make('download')
-                    ->form([
-                        Select::make('quran_grade_id')
-                            ->options($this->quranGrade),
-                    ])
-                    ->action(function ($data) {
-                        return $this->download($data['quran_grade_id']);
-                    })
-                    ->modalWidth('sm'),
+                    ->action(function () {
+                        return $this->download();
+                    }),
                 Action::make('upload')
                     ->form([
                         FileUpload::make('file')
@@ -217,15 +206,7 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                     })
                     ->modalWidth('sm'),
                 Action::make('leger')
-                    ->form([
-                        Select::make('quran_grade_id')
-                            ->options($this->quranGrade),
-                    ])
-                    ->action(function ($data) {
-                        // open in new tab
-                        return redirect()->to(route('filament.admin.pages.leger-quran.{id}', $data['quran_grade_id']), true);
-                    })
-                    ->modalWidth('sm'),
+                    ->url(fn () => route('filament.admin.pages.leger-quran.{id}', $this->teacherQuranGrade->id)),
             ])
             ->deferLoading()
             ->striped()
@@ -296,17 +277,12 @@ class AssessmentQuran extends Page implements HasForms, HasTable
             ->send();
     }
 
-    public function download($quran_grade_id)
+    public function download()
     {
-        // dd($quran_grade_id);
-        // ambil teacher quran grade berdasarkan quran grade id
-        // $teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('competencyQuran.studentCompetencyQuran.studentQuranGrade.student')->find($quran_grade_id);
-        $teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('quranGrade','competencyQuran.studentCompetencyQuran.studentQuranGrade.student')->find($quran_grade_id);
-
-        $academicYear = $teacherQuranGrade->academicYear;
-        $teacher = $teacherQuranGrade->teacher;
-        $quranGrade = $teacherQuranGrade->quranGrade;
-        $competencyQuran = $teacherQuranGrade->competencyQuran;
+        $academicYear = $this->teacherQuranGrade->academicYear;
+        $teacher = $this->teacherQuranGrade->teacher;
+        $quranGrade = $this->teacherQuranGrade->quranGrade;
+        $competencyQuran = $this->teacherQuranGrade->competencyQuran;
         
         // inisialisasi spreadsheet
         $spreadsheet = new Spreadsheet();

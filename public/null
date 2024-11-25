@@ -67,3 +67,198 @@ $teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->with('teacher','quranGra
 
 
 
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->get();
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->where('quran_grade_id', 4);
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->where('quran_grade_id', 4)->first;
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->where('quran_grade_id', 4)->first();
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->where('quran_grade_id', 4)->with('studentQuranGrade')->first();
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->where('quran_grade_id', 4)->with('studentQuranGrade', 'quranGrade')->first();
+$teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->where('quran_grade_id', 4)->with('studentQuranGrade', 'quranGrade')->first();
+TeacherQuranGrade::myQuranGrade()->where('quran_grade_id', 4)->first();
+TeacherQuranGrade::where('quran_grade_id', 4)->first();
+$teacherQuranGrade = TeacherQuranGrade::where('quran_grade_id', 4)->first();
+
+$competency = $teacherQuranGrade->competency;
+$teacherQuranGrade = TeacherQuranGrade::where('quran_grade_id', 4)->first();
+
+$competency = $teacherQuranGrade->competencyQuran;
+$teacherQuranGrade = TeacherQuranGrade::where('quran_grade_id', 4)->first();
+
+$competency = $teacherQuranGrade->competencyQuran;
+$students = $teacherQuranGrade->quranGrade;
+$teacherQuranGrade = TeacherQuranGrade::where('quran_grade_id', 4)->first();
+
+$competency = $teacherQuranGrade->competencyQuran;
+$students = $teacherQuranGrade->studentQuranGrade;
+$teacherQuranGrade = TeacherQuranGrade::where('quran_grade_id', 4)->first();
+
+$competency = $teacherQuranGrade->competencyQuran;
+$students = $teacherQuranGrade->studentQuranGrade->with('student');
+$teacherQuranGrade = TeacherQuranGrade::where('quran_grade_id', 4)->first();
+
+$competency = $teacherQuranGrade->competencyQuran;
+$students = $teacherQuranGrade->studentQuranGrade()->with('student')->get();
+$teacherQuranGrade = TeacherQuranGrade::where('quran_grade_id', 4)->first();
+
+$competency = $teacherQuranGrade->competencyQuran;
+$students = $teacherQuranGrade->studentQuranGrade()->with('student.studentCompetencyQuran')->get();
+$teacherQuranGrade = TeacherQuranGrade::where('quran_grade_id', 4)->first();
+
+$competency = $teacherQuranGrade->competencyQuran;
+$students = $teacherQuranGrade->studentQuranGrade()->with(['student.studentCompetencyQuran' => function($query){
+	$query->orderBy('competency_quran_id', 'asc');
+}])->get();
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->get();
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->get();
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->get();
+
+/
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->get();
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->get();
+
+$students
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->first();
+
+$students
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->get();
+
+$students
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->();
+
+$students
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->();
+
+$students
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->();
+
+
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->();
+
+
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->get();
+
+
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->get();
+
+$teacherQuranGrade
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->get();
+
+$students;
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->first();
+
+$students;
+$teacherQuranGrade = TeacherQuranGrade::find(1305);
+
+$competencyQuran = $teacherQuranGrade->competencyQuran;
+
+$students = $teacherQuranGrade->studentQuranGrade()
+  ->with(['student.studentCompetencyQuran' => function ($query) {
+	$query->orderBy('competency_quran_id', 'asc');
+  }])->first()->student;
+
+$students;
