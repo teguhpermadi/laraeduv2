@@ -14,6 +14,7 @@ class LegerPreviewQuran extends Component
     public $teacherQuranGrade;
     public $legerQuranRecap;
     public $competency_count;
+    public $competencies;
     public $students;
     public $studentsWithNotes;
 
@@ -23,16 +24,19 @@ class LegerPreviewQuran extends Component
         $this->teacherQuranGrade = $teacherQuranGrade;
 
         $this->legerQuran = $teacherQuranGrade->legerQuran;
+
         $this->competency_count = $teacherQuranGrade->competencyQuran->count();
+        $this->competencies = $teacherQuranGrade->competencyQuran;
+        // dd($this->competency->toArray());
 
         // leger quran recap
-        $this->legerQuranRecap = $teacherQuranGrade->legerQuranRecap->first();
+        $this->legerQuranRecap = $teacherQuranGrade->legerQuranRecap;
         // dd($this->legerQuranRecap->toArray());
 
         // leger quran students
-        $this->students = $teacherQuranGrade->students;
-        dd($this->students);
-        
+        $this->students = $teacherQuranGrade->legerQuran;
+        // dd($this->students->toArray());
+
         // leger quran note
         $this->studentsWithNotes = $teacherQuranGrade->legerQuran()
             ->with(['student', 'quranNote'])
