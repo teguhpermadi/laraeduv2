@@ -3,7 +3,7 @@
         {{ $this->form }}
 
         <x-filament::button type="submit" class="mt-3" form="submit">
-            Tanda Tangan
+            Kumpulkan
         </x-filament::button>
 
         {{-- buatkan button untuk kembali ke halaman assement --}}

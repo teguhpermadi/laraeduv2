@@ -34,13 +34,20 @@ class MySubject extends Page implements HasTable
             ->columns([
                 TextColumn::make('subject.name')
                     ->label(__('my-subject.subject'))
+                    ->sortable()
                     ->searchable(),
                 TextColumn::make('grade.name')
                     ->label(__('my-subject.grade'))
+                    ->sortable()
                     ->searchable(),
-                TextColumn::make('teacherGrade.curriculum'),
+                TextColumn::make('teacherGrade.curriculum')
+                    ->label(__('my-subject.curriculum'))
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('passing_grade')
-                    ->label(__('my-subject.passing_grade')),
+                    ->label(__('my-subject.passing_grade'))
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('legerRecapHalfSemester.updated_at')
                     ->label(__('my-subject.half_semester_last_update'))
                     ->dateTime('d M Y H:i'),

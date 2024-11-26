@@ -322,8 +322,7 @@ class Leger extends Page implements HasForms, HasTable
             LegerNote::updateOrCreate([
                 'leger_id' => $legerFullSemester->id,
             ], [
-                'note_full_semester' => '-',
-                'note_half_semester' => '-',
+                'note' => '-',
             ]);
         }
 
@@ -363,8 +362,7 @@ class Leger extends Page implements HasForms, HasTable
             LegerNote::updateOrCreate([
                 'leger_id' => $legerHalfSemester->id,
             ], [
-                'note_full_semester' => '-',
-                'note_half_semester' => '-',
+                'note' => '-',
             ]);
         }
 
