@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Enums\CategoryLegerEnum;
 use App\Helpers\DescriptionHelper;
 use App\Models\Leger as ModelsLeger;
+use App\Models\LegerNote;
 use App\Models\LegerRecap;
 use App\Models\TeacherSubject;
 use Filament\Forms\Components\Checkbox;
@@ -286,7 +287,7 @@ class Leger extends Page implements HasForms
         /* FULL SEMESTER */
         // insert data ke table leger
         foreach ($data['leger_full_semester'] as $student) {
-            ModelsLeger::updateOrCreate([
+            $legerFullSemester = ModelsLeger::updateOrCreate([
                 'academic_year_id' => $data['academic_year_id'],
                 'student_id' => $student['student_id'],
                 'teacher_subject_id' => $data['teacher_subject_id'],
@@ -305,6 +306,13 @@ class Leger extends Page implements HasForms
                 'metadata' => $student['competencies'],
                 'subject_order' => $student['subject_order'],
             ]);
+
+            // insert data ke table leger_note
+            LegerNote::updateOrCreate([
+                'leger_id' => $legerFullSemester->id,
+            ], [
+                'note' => '-',
+            ]);
         }
 
         // insert data ke table leger_recap
@@ -317,7 +325,7 @@ class Leger extends Page implements HasForms
         /* HALF SEMESTER */
         foreach ($data['leger_half_semester'] as $student) {
             // insert data ke table leger
-            ModelsLeger::updateOrCreate([
+            $legerHalfSemester = ModelsLeger::updateOrCreate([
                 'academic_year_id' => $data['academic_year_id'],
                 'student_id' => $student['student_id'],
                 'teacher_subject_id' => $data['teacher_subject_id'],
@@ -335,6 +343,13 @@ class Leger extends Page implements HasForms
                 'description_skill' => $student['description_skill'],
                 'metadata' => $student['competencies'],
                 'subject_order' => $student['subject_order'],
+            ]);
+
+            // insert data ke table leger_note
+            LegerNote::updateOrCreate([
+                'leger_id' => $legerHalfSemester->id,
+            ], [
+                'note' => '-',
             ]);
         }
 

@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('teacher_subject_notes', function (Blueprint $table) {
+        Schema::create('leger_notes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('teacher_subject_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('leger_id')->unique()->constrained()->cascadeOnDelete();
             $table->text('note')->nullable();
             $table->timestamps();
         });
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('teacher_subject_notes');
+        Schema::dropIfExists('leger_notes');
     }
 };

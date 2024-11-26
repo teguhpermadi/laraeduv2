@@ -1,20 +1,83 @@
-Leger::get()
+TeacherSubject::get()'?>
+TeacherSubject::get();
+TeacherSubject::first();
+TeacherSubject::first()->studentGrade;
+TeacherSubjectNote::get();
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+use App\Models\TeacherSubjectNote;
+
+Student::find(1);
+use App\Models\TeacherSubjectNote;
+
+Student::with('leger')->find(1);
+use App\Models\TeacherSubjectNote;
+
+Student::with('leger.teacherSubjectNote')->find(1);
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+
+use App\Models\TeacherSubjectNote;
+
+Student::with('leger.teacherSubjectNote')->find(1);
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+Student::with('leger.teacherSubjectNote')->find(1);
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+Student::with('leger.teacherSubjectNote')->find(1);
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+Student::with('leger.teacherSubjectNote')->find(1);
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+Student::with('leger.teacherSubjectNote')->find(1);
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+Student::with('leger.teacherSubjectNote')->find(1);
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+Student::with('leger.teacherSubjectNote')->find(1);
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+Student::with('leger.teacherSubjectNote')->find(1);
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+Student::with('leger.teacherSubjectNote')->find(1);
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+Student::with('leger.teacherSubjectNote')->find(1);
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+Student::with('leger.teacherSubjectNote')->find(2);
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+Student::with('leger.teacherSubjectNote')->find(1);
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+
+use App\Models\TeacherSubjectNote;
+TeacherSubjectNote::get();
+Student::with('leger.teacherSubjectNote')->find(3);
+use App\Models\LegerNote;
+LegerNote::get();
+use App\Models\LegerNote;
+LegerNote::get();
+use App\Models\LegerNote;
+Leger::get();
 use App\Models\Leger;
 Leger::get();
 use App\Models\Leger;
-Leger::withoutGlobalScope()->get();
+Leger::with('note')->get();
 use App\Models\Leger;
-Leger::withoutGlobalScope(AcademicYearScope::class)->get();
+Leger::with('note')->get();
 use App\Models\Leger;
-Leger::get();
+Leger::with('note')->where('teacher_subject_id', 320);
 use App\Models\Leger;
-Leger::first();
-use App\Models\Leger;
-$l = Leger::first();
-$l->metadata
-use App\Models\Leger;
-$l = Leger::first();
-use App\Models\Leger;
-$l = Leger::first();
-use App\Models\Leger;
-$l = Leger::first();
+Leger::with('note')->where('teacher_subject_id', 320)->get();

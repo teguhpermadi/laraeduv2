@@ -55,4 +55,9 @@ class Leger extends Model
     {
         return $this->hasMany(StudentGrade::class, 'student_id', 'student_id');
     }
+
+    public function note()
+    {
+        return $this->hasOne(LegerNote::class);
+    }
 }
