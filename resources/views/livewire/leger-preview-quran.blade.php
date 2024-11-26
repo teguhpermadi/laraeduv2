@@ -28,8 +28,7 @@
                     <td class="py-1 font-semibold">Tanggal Cetak</td>
                     <td class="px-3">:</td>
                     {{-- buat format tanggal menjadi 30 November 2024 --}}
-                    <td>{{ $legerQuran->created_at->format('d F Y') }} Pukul
-                        {{ $legerQuran->created_at->format('H:i') }}</td>
+                    <td>{{ $legerQuranRecap->created_at->locale('id')->format('d F Y H:i') }}</td>
                 </tr>
             </table>
         </div>
@@ -39,7 +38,7 @@
         $no = 1;
     @endphp
 
-    <table class="border-collapse border border-slate-400 mt-3" width="100%">
+    {{-- <table class="border-collapse border border-slate-400 mt-3" width="100%">
         <thead>
             <tr>
                 <th rowspan="2" class="border border-slate-300 text-center">Nomor</th>
@@ -70,7 +69,6 @@
                         @foreach ($student['metadata'] as $metadata)
                             <td
                                 class="border border-slate-300 text-center">
-                                {{-- {{$metadata['competency']['id']}} --}}
                                 {{ $metadata['score'] }}
                             </td>
                         @endforeach
@@ -88,6 +86,26 @@
                         <td class="border border-slate-300 text-center">-</td>
                         <td class="border border-slate-300 text-center">-</td>
                     @endif
+                </tr>
+            @endforeach
+        </tbody>
+    </table> --}}
+
+    {{-- tampilkan note --}}
+    <table>
+        <thead>
+            <tr>
+                <th>NIS</th>
+                <th>Nama</th>
+                <th>Catatan</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($studentsWithNotes as $student)
+                <tr>
+                    <td>{{ $student['nis'] }}</td>
+                    <td>{{ $student['name'] }}</td>
+                    <td>{{ $student['note'] }}</td>
                 </tr>
             @endforeach
         </tbody>

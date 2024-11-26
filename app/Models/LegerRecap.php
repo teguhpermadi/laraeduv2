@@ -13,6 +13,7 @@ class LegerRecap extends Model
         'academic_year_id', 
         'teacher_subject_id',
         'category',
+        'updated_at',
     ];
 
     public function academicYear()

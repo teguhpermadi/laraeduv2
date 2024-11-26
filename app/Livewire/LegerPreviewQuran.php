@@ -12,54 +12,40 @@ class LegerPreviewQuran extends Component
 {
     public $legerQuran;
     public $teacherQuranGrade;
+    public $legerQuranRecap;
     public $competency_count;
     public $students;
-
+    public $studentsWithNotes;
 
     public function mount($id)
     {
-        $this->teacherQuranGrade = TeacherQuranGrade::withoutGlobalScope(AcademicYearScope::class)->with('competencyQuran')->find($id);
+        $teacherQuranGrade = TeacherQuranGrade::find($id);
+        $this->teacherQuranGrade = $teacherQuranGrade;
 
-        $this->competency_count = $this->teacherQuranGrade->competencyQuran->count();
+        $this->legerQuran = $teacherQuranGrade->legerQuran;
+        $this->competency_count = $teacherQuranGrade->competencyQuran->count();
 
-        $this->legerQuran = LegerQuranRecap::where('teacher_quran_grade_id', $id)->first();
+        // leger quran recap
+        $this->legerQuranRecap = $teacherQuranGrade->legerQuranRecap->first();
+        // dd($this->legerQuranRecap->toArray());
+
+        // leger quran students
+        $this->students = $teacherQuranGrade->students;
+        dd($this->students);
         
-        $this->students = $this->teacherQuranGrade->studentQuranGrade;
+        // leger quran note
+        $this->studentsWithNotes = $teacherQuranGrade->legerQuran()
+            ->with(['student', 'quranNote'])
+            ->get()
+            ->map(function ($leger) {
+                return [
+                    'nis' => $leger->student->nis,
+                    'name' => $leger->student->name,
+                    'note' => $leger->quranNote->note,
+                ];
+            });
 
-        $data = collect();
-
-        foreach ($this->legerQuran->leger as $leger) {
-            $metadata = $leger->metadata;
-
-            $data[] = collect([
-                'academic_year_id' => $leger->academic_year_id,
-                'teacher_subject_id' => $leger->teacher_subject_id,
-                'student_id' => $leger->student_id,
-                'student' => $leger->student,
-                'competency_count' => count($metadata),
-                'avg' => $leger->score,
-                'sum' => $leger->sum,
-                'rank' => $leger->rank,
-                'metadata' => $metadata,
-                'description' => $leger->description    
-            ]);
-        }
-
-        // Urutkan data berdasarkan sum secara descending
-        $data = $data->sortByDesc('sum')->values();
-
-        // Tambahkan peringkat
-        $data = $data->map(function ($item, $index) {
-            $item['rank'] = $index + 1;
-            return $item;
-        });
-
-        // dd($data);
-
-        // Urutkan kembali berdasarkan student_id
-        $data = $data->sortBy('student_id')->values();
-
-        $this->students = $data;
+        // dd($this->studentsWithNotes->toArray());
     }
 
     public function render()

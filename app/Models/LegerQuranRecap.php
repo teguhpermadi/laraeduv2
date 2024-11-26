@@ -12,6 +12,7 @@ class LegerQuranRecap extends Model
     protected $fillable = [
         'academic_year_id',
         'teacher_quran_grade_id',
+        'updated_at',
     ];
 
     public function academicYear()

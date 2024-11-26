@@ -31,11 +31,6 @@ class TeacherSubjectObserver
             'passing_grade' => 70,
             'half_semester' => false,
         ]);
-
-        // NOTE
-        TeacherSubjectNote::create([
-            'teacher_subject_id' => $teacherSubject->id,
-        ]);
     }
 
     /**

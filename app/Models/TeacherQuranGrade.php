@@ -58,4 +58,14 @@ class TeacherQuranGrade extends Model
     {
         return ScoreCriteriaHelper::getScoreCriteria($score, $this->quranGrade->passing_grade);
     }
+
+    public function legerQuran(): HasMany
+    {
+        return $this->hasMany(LegerQuran::class);
+    }
+
+    public function legerQuranRecap(): HasMany
+    {
+        return $this->hasMany(LegerQuranRecap::class);
+    }
 }

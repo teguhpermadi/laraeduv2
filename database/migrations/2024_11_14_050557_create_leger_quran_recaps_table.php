@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
             $table->foreignId('teacher_quran_grade_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+
+            $table->unique(['academic_year_id', 'teacher_quran_grade_id'], 'leger_quran_recap_unique');
         });
     }
 

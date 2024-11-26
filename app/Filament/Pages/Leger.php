@@ -332,6 +332,8 @@ class Leger extends Page implements HasForms, HasTable
             'academic_year_id' => $data['academic_year_id'],
             'teacher_subject_id' => $data['teacher_subject_id'],
             'category' => CategoryLegerEnum::FULL_SEMESTER->value,
+        ], [
+            'updated_at' => $data['time_signature'],
         ]);
 
         /* HALF SEMESTER */

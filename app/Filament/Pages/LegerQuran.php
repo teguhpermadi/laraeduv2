@@ -132,14 +132,14 @@ class LegerQuran extends Page implements HasForms, HasTable
             ->exists();
 
         // ambil data recap leger quran
-        $legerQuranRecap = LegerQuranRecap::where('academic_year_id', $this->teacherQuranGrade->academicYear->id)
+        $legerQuranRecap = LegerQuranRecap::where('academic_year_id', session('academic_year_id'))
             ->where('teacher_quran_grade_id', $this->teacherQuranGrade->id)
             ->first();
 
         // dd($legerQuranRecap);
 
         if ($this->checkLegerQuran) {
-            $descriptionLegerQuranRecap = 'Kamu sudah mengumpulkan leger ini ke wali kelas pada tanggal ' . $legerQuranRecap->created_at->translatedFormat('l, d F Y H:i') . '. Apakah kamu ingin mengrubahnya?';
+            $descriptionLegerQuranRecap = 'Kamu sudah mengumpulkan leger ini ke wali kelas pada tanggal ' . $legerQuranRecap->updated_at->locale('id')->translatedFormat('l, d F Y H:i') . '. Apakah kamu ingin mengrubahnya?';
         } else {
             $descriptionLegerQuranRecap = 'Apakah anda yakin akan mengumpulkan nilai tersebut ke wali kelas?';
         }
@@ -217,15 +217,19 @@ class LegerQuran extends Page implements HasForms, HasTable
             LegerQuranNote::updateOrCreate([
                 'leger_quran_id' => $legerQuran->id,
             ], [
-                'note' => '-',
+                'note' => 'tes',
             ]);
         }
 
         // leger quran recap
-        LegerQuranRecap::updateOrCreate([
+        $data = LegerQuranRecap::updateOrCreate([
             'academic_year_id' => $data['academic_year_id'],
             'teacher_quran_grade_id' => $data['teacher_quran_grade_id'],
+        ], [
+            'updated_at' => $data['time_signature'],
         ]);
+
+        dd($data->toArray());
 
         // refresh page to leger quran
         $this->redirect(route('filament.admin.pages.leger-quran.{id}', $this->teacherQuranGrade->id));
