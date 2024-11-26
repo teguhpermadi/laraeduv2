@@ -50,4 +50,9 @@ class LegerQuran extends Model
     {
         return $this->belongsTo(QuranGrade::class);
     }
+
+    public function quranNote()
+    {
+        return $this->hasOne(LegerQuranNote::class);
+    }
 }
