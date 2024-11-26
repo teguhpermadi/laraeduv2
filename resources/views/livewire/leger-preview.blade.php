@@ -114,6 +114,10 @@
     </table>
 
     <div class="mt-10">
+        {{-- buatkan saya title dengan background warna gradasi kuning kemerahan --}}
+        <div class="bg-gradient-to-r from-yellow-400 to-red-400 p-6 rounded-lg shadow-lg mb-6">
+            <h1 class="text-3xl font-bold text-white text-center mb-2">Data Kompetensi</h1>
+        </div>
         {{-- tampilkan data competency --}}
         <table class="border-collapse border border-slate-400 mt-3" width="100%">
             <thead>
@@ -142,8 +146,40 @@
         </table>
     </div>
 
+    <div class="mt-10">
+        {{-- buatkan saya title dengan background warna gradasi ungu kebiruan --}}
+        <div class="bg-gradient-to-r from-purple-400 to-blue-400 p-6 rounded-lg shadow-lg mb-6">
+            <h1 class="text-3xl font-bold text-white text-center mb-2">Catatan Guru</h1>
+        </div>
+        {{-- tampilkan note half semester --}}
+        <div class="bg-white/10 p-4 rounded-md">
+            <table class="text-black w-full max-w-2xl mx-auto">
+                <thead>
+                    <tr>
+                        <th class="border border-slate-300 text-center">No</th>
+                        <th class="border border-slate-300 text-center">NIS</th>
+                        <th class="border border-slate-300 text-center">Nama Siswa</th>
+                        <th class="border border-slate-300 text-center">Catatan Guru</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $j = 1;
+                    @endphp
+                    @foreach ($studentsWithNotesHalfSemester as $studentHalfSemester)
+                        <tr>
+                            <td class="border border-slate-300 text-center">{{ $j++ }}</td>
+                            <td class="border border-slate-300 text-center">{{ $studentHalfSemester['nis'] }}</td>
+                            <td class="border border-slate-300 text-center">{{ $studentHalfSemester['name'] }}</td>
+                            <td class="border border-slate-300 text-center">{{ $studentHalfSemester['note'] }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     {{-- buatkan page break dengan sebuah garis horizontal --}}
-    <hr class="my-10">
     <div style="page-break-after: always;"></div>
     {{-- end page break --}}
 
@@ -262,6 +298,10 @@
     </table>
 
     <div class="mt-10">
+        {{-- buatkan saya title dengan background warna gradasi kuning kemerahan --}}
+        <div class="bg-gradient-to-r from-yellow-400 to-red-400 p-6 rounded-lg shadow-lg mb-6">
+            <h1 class="text-3xl font-bold text-white text-center mb-2">Data Kompetensi</h1>
+        </div>
         {{-- tampilkan data competency --}}
         <table class="border-collapse border border-slate-400 mt-3" width="100%">
             <thead>
@@ -288,5 +328,38 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="mt-10">
+        {{-- buatkan saya title dengan background warna gradasi ungu kebiruan --}}
+        <div class="bg-gradient-to-r from-purple-400 to-blue-400 p-6 rounded-lg shadow-lg mb-6">
+            <h1 class="text-3xl font-bold text-white text-center mb-2">Catatan Guru</h1>
+        </div>
+        {{-- tampilkan note full semester --}}
+        <div class="bg-white/10 p-4 rounded-md">
+            <table class="text-black w-full max-w-2xl mx-auto">
+                <thead>
+                    <tr>
+                        <th class="border border-slate-300 text-center">No</th>
+                        <th class="border border-slate-300 text-center">NIS</th>
+                        <th class="border border-slate-300 text-center">Nama Siswa</th>
+                        <th class="border border-slate-300 text-center">Catatan Guru</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $k = 1;
+                    @endphp
+                    @foreach ($studentsWithNotesFullSemester as $studentFullSemester)
+                        <tr>
+                            <td class="border border-slate-300 text-center">{{ $k++ }}</td>
+                            <td class="border border-slate-300 text-center">{{ $studentFullSemester['nis'] }}</td>
+                            <td class="border border-slate-300 text-center">{{ $studentFullSemester['name'] }}</td>
+                            <td class="border border-slate-300 text-center">{{ $studentFullSemester['note'] }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

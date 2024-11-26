@@ -19,6 +19,8 @@ class LegerPreview extends Component
     public $legerHalfSemester;
     public $legerRecapFullSemester;
     public $legerRecapHalfSemester;
+    public $studentsWithNotesFullSemester;
+    public $studentsWithNotesHalfSemester;
 
     public function mount($id)
     {
@@ -38,7 +40,34 @@ class LegerPreview extends Component
         $this->competencyHalfSemester = $teacherSubject->competency->where('half_semester', 1);
         $this->competencyFullSemester = $teacherSubject->competency; 
 
-        // dd($teacherSubject->leger()->where('category', CategoryLegerEnum::HALF_SEMESTER->value)->get()->toArray());
+        // leger note full semester
+        $studentsWithNotesFullSemester = $this->teacherSubject->leger()
+            ->with(['student', 'note'])
+            ->where('category', CategoryLegerEnum::FULL_SEMESTER->value)
+            ->get()
+            ->map(function ($leger) {
+                return [
+                    'nis' => $leger->student->nis,
+                    'name' => $leger->student->name,
+                    'note' => $leger->note ? $leger->note->note : '-',
+                ];
+            });
+
+        // leger note half semester 
+        $studentsWithNotesHalfSemester = $this->teacherSubject->leger()
+            ->with(['student', 'note'])
+            ->where('category', CategoryLegerEnum::HALF_SEMESTER->value)
+            ->get()
+            ->map(function ($leger) {
+                return [
+                    'nis' => $leger->student->nis,
+                    'name' => $leger->student->name,
+                    'note' => $leger->note ? $leger->note->note : '-',
+                ];
+            });
+
+        $this->studentsWithNotesHalfSemester = $studentsWithNotesHalfSemester;
+        $this->studentsWithNotesFullSemester = $studentsWithNotesFullSemester;
     }
 
     public function render()

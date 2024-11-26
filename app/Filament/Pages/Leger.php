@@ -244,18 +244,6 @@ class Leger extends Page implements HasForms, HasTable
     {
         return $form
             ->schema([
-                Section::make('Preview Akhir Semester')
-                    ->schema([
-                        ViewField::make('preview_full_semester')
-                            // masukkan data teacherSubject dan leger_full_semester
-                            ->view('filament.pages.leger-preview')
-                            ->viewData([
-                                'teacherSubject' => $this->teacherSubject,
-                                'competencies' => $this->competenciesFullSemester,
-                                'students' => $this->studentsFullSemester,
-                            ])
-                    ])
-                    ->collapsible(),
                 // section half semester
                 Section::make('Preview Tengah Semester')
                     ->schema([
@@ -268,6 +256,20 @@ class Leger extends Page implements HasForms, HasTable
                             ])
                     ])
                     ->collapsible(),
+                // section full semester
+                Section::make('Preview Akhir Semester')
+                    ->schema([
+                        ViewField::make('preview_full_semester')
+                            // masukkan data teacherSubject dan leger_full_semester
+                            ->view('filament.pages.leger-preview')
+                            ->viewData([
+                                'teacherSubject' => $this->teacherSubject,
+                                'competencies' => $this->competenciesFullSemester,
+                                'students' => $this->studentsFullSemester,
+                            ])
+                    ])
+                    ->collapsible(),
+                
                 Section::make('Persetujuan')
                     ->description(fn() => $this->descriptionLegerRecap)
                     ->schema([
