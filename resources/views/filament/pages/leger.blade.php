@@ -23,5 +23,9 @@
                 </x-filament::button>
             @endif
         </form>
+
+        @if($this->checkLegerRecap)
+            {{ $this->table }}
+        @endif
     @endif
 </x-filament-panels::page>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CategoryLegerEnum;
 use App\Models\Scopes\AcademicYearScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -34,6 +35,7 @@ class Leger extends Model
 
     protected $casts = [
         'metadata' => 'array',
+        'category' => CategoryLegerEnum::class,
     ];
 
     public function academicYear()

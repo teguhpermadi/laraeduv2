@@ -18,10 +18,19 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\TextInputColumn;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
-class Leger extends Page implements HasForms
+class Leger extends Page implements HasForms, HasTable
 {
     use InteractsWithForms;
+    use InteractsWithTable;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
@@ -311,7 +320,8 @@ class Leger extends Page implements HasForms
             LegerNote::updateOrCreate([
                 'leger_id' => $legerFullSemester->id,
             ], [
-                'note' => '-',
+                'note_full_semester' => '-',
+                'note_half_semester' => '-',
             ]);
         }
 
@@ -349,7 +359,8 @@ class Leger extends Page implements HasForms
             LegerNote::updateOrCreate([
                 'leger_id' => $legerHalfSemester->id,
             ], [
-                'note' => '-',
+                'note_full_semester' => '-',
+                'note_half_semester' => '-',
             ]);
         }
 
@@ -369,5 +380,40 @@ class Leger extends Page implements HasForms
             ->body('Leger berhasil disimpan')
             ->success()
             ->send();
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->query(ModelsLeger::query())
+            ->columns([
+                TextColumn::make('student.name'),
+                TextColumn::make('category')
+                ->badge(),
+                TextInputColumn::make('note.note'),
+            ])
+            ->filters([
+                SelectFilter::make('category')
+                    ->options(CategoryLegerEnum::class)
+                    ->default(CategoryLegerEnum::FULL_SEMESTER->value),
+            ])
+            ->headerActions([
+                // make reset action
+                Action::make('reset')
+                    ->label('Reset Catatan')
+                    ->color('danger')
+                    ->icon('heroicon-o-arrow-path-rounded-square')
+                    ->action(function () {
+                        // ambil semua leger yang teacher_subject_id sama dengan teacherSubject id
+                        $legers = ModelsLeger::where('teacher_subject_id', $this->teacherSubject->id)->get();
+                        // dd($leger->toArray());
+                        foreach ($legers as $item) {
+                            $item->note()->updateOrCreate(['leger_id' => $item->id], ['note' => '-']);
+                        }
+                    })
+            ])
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->where('teacher_subject_id', $this->teacherSubject->id);
+            });
     }
 }

@@ -80,6 +80,7 @@
         <tbody>
             @foreach ($legerHalfSemester as $student)
                 <tr>
+                    {{-- {{ dd($student) }} --}}
                     <td class="border border-slate-300 text-center">{{ $no++ }}</td>
                     <td class="border border-slate-300 px-3 text-left">{{ $student['student']['nis'] }}</td>
                     <td class="border border-slate-300 px-3 text-left">{{ $student['student']['name'] }}</td>
