@@ -136,4 +136,9 @@ class TeacherSubject extends Model
     {
         return ScoreCriteriaHelper::getScoreCriteria($score, $this->passing_grade);
     }
+
+    public function note()
+    {
+        return $this->hasOne(TeacherSubjectNote::class);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Enums\CategoryLegerEnum;
 use App\Models\Competency;
 use App\Models\TeacherSubject;
+use App\Models\TeacherSubjectNote;
 
 class TeacherSubjectObserver
 {
@@ -29,6 +30,11 @@ class TeacherSubjectObserver
             'description' => CategoryLegerEnum::FULL_SEMESTER->getLabel(),
             'passing_grade' => 70,
             'half_semester' => false,
+        ]);
+
+        // NOTE
+        TeacherSubjectNote::create([
+            'teacher_subject_id' => $teacherSubject->id,
         ]);
     }
 
