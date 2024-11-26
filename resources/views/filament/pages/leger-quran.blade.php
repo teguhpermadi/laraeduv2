@@ -12,9 +12,13 @@
         </x-filament::button>
 
         @if ($this->checkLegerQuran)
-            <x-filament::button tag="a" href="{{ route('leger-quran-print', $this->teacherQuranGrade->id) }}" class="mt-3 ml-3">
+            <x-filament::button color="success" tag="a" href="{{ route('leger-quran-print', $this->teacherQuranGrade->id) }}" class="mt-3 ml-3">
                 Cetak Leger
             </x-filament::button>
         @endif
     </form>
+
+    @if ($this->checkLegerQuran)
+        {{ $this->table }}
+    @endif
 </x-filament-panels::page>

@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Models\LegerQuran as ModelsLegerQuran;
+use App\Models\LegerQuranNote;
 use App\Models\LegerQuranRecap;
 use App\Models\TeacherQuranGrade;
 use Filament\Forms\Components\Checkbox;
@@ -15,10 +16,18 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Notifications\Notification;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Table;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\TextInputColumn;
+use Illuminate\Database\Eloquent\Builder;
 
-class LegerQuran extends Page implements HasForms
-{
+class LegerQuran extends Page implements HasForms, HasTable
+{  
     use InteractsWithForms;
+    use InteractsWithTable;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
@@ -190,8 +199,8 @@ class LegerQuran extends Page implements HasForms
         // dd($data);
 
         foreach ($data['leger_quran'] as $leger_quran) {
-            
-            ModelsLegerQuran::updateOrCreate([
+
+            $legerQuran = ModelsLegerQuran::updateOrCreate([
                 'academic_year_id' => $data['academic_year_id'],
                 'student_id' => $leger_quran['student_id'],
                 'quran_grade_id' => $data['quran_grade_id'],
@@ -202,6 +211,13 @@ class LegerQuran extends Page implements HasForms
                 'metadata' => $leger_quran['competencies'],
                 'sum' => $leger_quran['sum_score'],
                 'rank' => $leger_quran['ranking'],
+            ]);
+
+            // insert data ke table leger_quran_note
+            LegerQuranNote::updateOrCreate([
+                'leger_quran_id' => $legerQuran->id,
+            ], [
+                'note' => '-',
             ]);
         }
 
@@ -256,5 +272,31 @@ class LegerQuran extends Page implements HasForms
         }
 
         return $string;
+    }
+
+    public function table(Table $table): Table
+    {
+        return $table
+            ->query(ModelsLegerQuran::query())
+            ->columns([
+                TextColumn::make('student.name'),
+                TextInputColumn::make('quranNote.note'),
+            ])
+            ->headerActions([
+                Action::make('reset')
+                    ->label('Reset Catatan')
+                    ->color('danger')
+                    ->icon('heroicon-o-arrow-path-rounded-square')
+                    ->action(function () {
+                        // ambil semua leger yang teacher_subject_id sama dengan teacherSubject id
+                        $legerQuranNotes = ModelsLegerQuran::where('teacher_quran_grade_id', $this->teacherQuranGrade->id)->get();
+                        foreach ($legerQuranNotes as $item) {
+                            $item->quranNote()->updateOrCreate(['leger_quran_id' => $item->id], ['note' => '-']);
+                        }
+                    })
+            ])
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->where('teacher_quran_grade_id', $this->teacherQuranGrade->id);
+            });
     }
 }
