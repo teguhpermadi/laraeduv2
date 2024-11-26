@@ -553,11 +553,8 @@ class ReportController extends Controller
             $templateProcessor->setValue("description_{$j}", $project->description);
 
             $templateProcessor->cloneRowAndSetValues("number_target_{$j}", $values);
-            if ($note) {
-                $templateProcessor->setValue("project_note_{$j}", $note->note);
-            } else {
-                $templateProcessor->setValue("project_note_{$j}", '-');
-            }
+            $templateProcessor->setValue("project_note_{$j}", ($note) ? $note->note : '-');
+            
         }
 
         // generate filename
