@@ -16,12 +16,15 @@ use Filament\Forms\Get;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Validation\Rules\Unique;
 
 class TeacherSubjectRelationManager extends RelationManager
 {
+    use CanBeEmbeddedInModals;
+    
     protected static string $relationship = 'teacherSubject';
 
     public function form(Form $form): Form

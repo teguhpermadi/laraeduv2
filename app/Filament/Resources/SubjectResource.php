@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -59,6 +60,11 @@ class SubjectResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                RelationManagerAction::make('teacher-subject-relation-manager')
+                    ->label('Pengajar')
+                    ->button()
+                    ->slideOver()
+                    ->relationManager(TeacherSubjectRelationManager::make()),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
