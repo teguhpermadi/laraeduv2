@@ -173,6 +173,8 @@ class ReportController extends Controller
         $numRow = 1;
         $subjects = $student->leger;
 
+        // dd($subjects->toArray());
+
         foreach ($subjects as $subject) {
             $data[] = [
                 'order' => $numRow++,
@@ -192,7 +194,7 @@ class ReportController extends Controller
         $dataDetail = [];
         foreach ($subjects as $key => $subject) {
             $i = 1;
-
+            $note = $subject->note;
             // Tambahkan grup data (judul blok)
             $dataDetail[] = [
                 'leger_subject' => $subject->teacherSubject->subject->name,
@@ -200,6 +202,7 @@ class ReportController extends Controller
                 'score' => $subject->score,
                 'data_tabel' => $subject->metadata,
                 'criteria' => $subject->teacherSubject->getScoreCriteria($subject->score),
+                'subject_note' => ($note) ? $note->note : '-',
             ];
         }
 
@@ -218,6 +221,7 @@ class ReportController extends Controller
                 'avg_score' => $detail['score'],
                 'avg_passing_grade' => $detail['passing_grade'],
                 'criteria' => $detail['criteria'],
+                'subject_note' => $detail['subject_note'],
             ];
         }
 
@@ -372,7 +376,7 @@ class ReportController extends Controller
         $dataDetail = [];
         foreach ($subjects as $key => $subject) {
             $i = 1;
-
+            $note = $subject->note;
             // Tambahkan grup data (judul blok)
             $dataDetail[] = [
                 'leger_subject' => $subject->teacherSubject->subject->name,
@@ -380,6 +384,7 @@ class ReportController extends Controller
                 'score' => $subject->score,
                 'data_tabel' => $subject->metadata,
                 'criteria' => $subject->teacherSubject->getScoreCriteria($subject->score),
+                'subject_note' => ($note) ? $note->note : '-',
             ];
         }
 
@@ -397,6 +402,7 @@ class ReportController extends Controller
                 'passing_grade' => '${passing_grade_' . $index . '}',
                 'avg_score' => $detail['score'],
                 'avg_passing_grade' => $detail['passing_grade'],
+                'subject_note' => $detail['subject_note'],
             ];
         }
 
