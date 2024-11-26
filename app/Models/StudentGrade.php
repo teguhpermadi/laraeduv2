@@ -70,4 +70,9 @@ class StudentGrade extends Model
     {
         return $this->hasMany(Project::class, 'grade_id', 'grade_id');
     }
+
+    public function studentInclusive()
+    {
+        return $this->hasOne(StudentInclusive::class, 'student_id', 'student_id');
+    }
 }

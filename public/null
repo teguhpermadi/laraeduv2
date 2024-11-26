@@ -1,56 +1,109 @@
-LegerQuran::get();
-use App\Models\LegerQuran;
-LegerQuran::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::first();
-use App\Models\LegerQuran;
-LegerQuranRecap::first()->update(['teacher_quran_grade_id', 1302]);
-use App\Models\LegerQuran;
-LegerQuranRecap::first();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-now();
-use App\Models\LegerQuran;
-now();
-use App\Models\LegerQuran;
-now();
-use App\Models\LegerQuran;
-now();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
+use App\Models\StudentInclusive;
+
+StudentInclusive::get();
+use App\Models\StudentInclusive;
+
+
+Grade::with('studentGrade')->get();
+use App\Models\StudentInclusive;
+
+
+Grade::with([
+  'studentGrade' => function($q){
+  	$q->withoutGlobalScope(AcademicYearScope::class);
+  }
+])->get();
+use App\Models\StudentInclusive;
+
+
+Grade::with([
+  'studentGrade' => function($q){
+  	
+  }
+])->get();
+use App\Models\StudentInclusive;
+
+
+Grade::with([
+  'studentGrade' => function($q){
+  	$q->withoutGlobalScope(AcademicYearScope::class);
+  }
+])->get();
+use App\Models\StudentInclusive;
+
+
+Grade::with([
+  'studentGrade' => function($q){
+  	$q->withoutGlobalScope(AcademicYearScope::class);
+  }
+])->get();
+use App\Models\StudentInclusive;
+
+
+Grade::with([
+  'studentGrade' => function($q){
+  	$q->withoutGlobalScope(AcademicYearScope::class);
+  }
+])->get();
+use App\Models\StudentInclusive;
+
+
+StudentGrade::get();
+use App\Models\StudentInclusive;
+
+
+StudentGrade::withoutGlobalScope()->get();
+use App\Models\StudentInclusive;
+
+
+StudentGrade::withoutGlobalScope(AcademicYearScope::class)->get();
+use App\Models\StudentInclusive;
+
+
+Grade::with(['studentGrade' => function ($query) {
+            $query->withoutGlobalScope(AcademicYearScope::class);
+         }]);
+use App\Models\StudentInclusive;
+
+
+Grade::with(['studentGrade' => function ($query) {
+            $query->withoutGlobalScope(AcademicYearScope::class);
+         }])->get();
+use App\Models\StudentInclusive;
+
+
+Grade::with(['studentGrade' => function ($query) {
+            $query->withoutGlobalScope(AcademicYearScope::class);
+         }])->get();
+use App\Models\StudentInclusive;
+
+
+Grade::with(['studentGrade' => function ($query) {
+            $query->withoutGlobalScope(AcademicYearScope::class);
+         }])->get();
+use App\Models\StudentInclusive;
+
+
+Grade::with(['studentGrade' => function ($query) {
+            $query->withoutGlobalScope(AcademicYearScope::class);
+         }])->get();
+use App\Models\StudentInclusive;
+
+
+Grade::with(['studentGrade'])->get();
+use App\Models\StudentInclusive;
+
+
+Grade::with(['studentGrade.student'])->get();
+use App\Models\StudentInclusive;
+
+
+Grade::with(['studentGrade', 'studentInclusive'])->get();
+use App\Models\StudentInclusive;
+
+
+Grade::with(['studentGrade.studentInclusive'])->get();
+use App\Models\StudentInclusive;
+
+
+Grade::with(['studentGrade.studentInclusive'])->get();

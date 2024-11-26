@@ -142,4 +142,9 @@ class Student extends Model
     {
         return $this->hasMany(StudentCompetency::class);
     }
+
+    public function studentInclusive()
+    {
+        return $this->hasMany(StudentInclusive::class);
+    }
 }

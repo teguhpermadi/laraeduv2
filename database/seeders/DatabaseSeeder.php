@@ -52,6 +52,9 @@ class DatabaseSeeder extends Seeder
             TeacherQuranGradeSeeder::class,
             StudentQuranGradeSeeder::class,
             CompetencyQuranSeeder::class,
+
+            // Inclusive
+            StudentInclusiveSeeder::class,
         ]);
     }
 }
