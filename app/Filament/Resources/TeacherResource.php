@@ -4,6 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TeacherResource\Pages;
 use App\Filament\Resources\TeacherResource\RelationManagers;
+use App\Filament\Resources\TeacherResource\RelationManagers\SubjectsRelationManager;
+use App\Filament\Resources\TeacherResource\RelationManagers\TeacherExtracurricularRelationManager;
+use App\Filament\Resources\TeacherResource\RelationManagers\TeacherGradesRelationManager;
 use App\Filament\Resources\TeacherResource\Widgets\TeacherWidget;
 use App\Jobs\UserableJob;
 use App\Models\Teacher;
@@ -24,6 +27,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Userable;
+use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
 use Illuminate\Database\Eloquent\Collection;
 
 class TeacherResource extends Resource
@@ -82,6 +86,21 @@ class TeacherResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                RelationManagerAction::make('subject-relation-manager')
+                    ->label('mata pelajaran')
+                    ->button()
+                    ->slideOver()   
+                    ->relationManager(SubjectsRelationManager::class),
+                RelationManagerAction::make('teacher-grade-relation-manager')
+                    ->label('kelas')
+                    ->button()
+                    ->slideOver()
+                    ->relationManager(TeacherGradesRelationManager::class),
+                RelationManagerAction::make('teacher-extracurricular-relation-manager')
+                    ->label('ekstrakurikuler')
+                    ->button()
+                    ->slideOver()
+                    ->relationManager(TeacherExtracurricularRelationManager::class),
                 Action::make('Userable')
                     ->action(function (Teacher $teacher) {
                         self::userable($teacher);

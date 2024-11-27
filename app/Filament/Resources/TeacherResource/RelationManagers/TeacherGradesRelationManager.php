@@ -12,9 +12,12 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
 
 class TeacherGradesRelationManager extends RelationManager
 {
+    use CanBeEmbeddedInModals;
+    
     protected static string $relationship = 'teacherGrade';
     
     protected static ?string $title = 'Guru Kelas';
