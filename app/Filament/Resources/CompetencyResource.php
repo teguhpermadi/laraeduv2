@@ -6,6 +6,7 @@ use App\Enums\CurriculumEnum;
 use App\Filament\Resources\CompetencyResource\Pages;
 use App\Filament\Resources\CompetencyResource\RelationManagers;
 use App\Models\Competency;
+use App\Models\Grade;
 use App\Models\TeacherSubject;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
@@ -54,9 +55,9 @@ class CompetencyResource extends Resource
 
                                 // function map
                                 $data = $data->mapWithKeys(function ($item) {
-                                    return [$item->grade->id => $item->grade->name . ' ' . $item->grade->phase];
+                                    return [$item->grade->id => $item->grade->name . ' ' . $item->grade->phase . ' ' . ($item->grade->is_inclusive ? '(Inklusif)' : '')];
                                 });
-                                
+
                                 return $data;
                             })->afterStateUpdated(function ($state, callable $get, callable $set) {
                                 $set('subject_id', null);
@@ -146,6 +147,28 @@ class CompetencyResource extends Resource
                     ->default(false)
                     ->boolean()
                     ->required(),
+                Forms\Components\Actions::make([
+                    Forms\Components\Actions\Action::make('referensi')
+                        ->action(function (Forms\Get $get, Forms\Set $set) {
+                            // dapatkan grade dari grade_id
+                            $grade = Grade::find($get('grade_id'));
+                            $level = $grade->grade;
+
+                            // dapatkan semua grade dengan level yang sama
+                            $grades = Grade::where('grade', $level)->get();
+                            // dapatkan grade_id dari grade yang sama
+                            $grade_ids = $grades->pluck('id');
+
+                            // cari referensi competency berdasarkan subject_id dan grade_id
+                            $teacherSubject = TeacherSubject::where('subject_id', $get('subject_id'))
+                                ->whereIn('grade_id', $grade_ids)
+                                ->where('academic_year_id', session()->get('academic_year_id'))
+                                ->with('competency')
+                                ->get();
+
+                            dd($teacherSubject->toArray());
+                        })
+                ])
             ]);
     }
 

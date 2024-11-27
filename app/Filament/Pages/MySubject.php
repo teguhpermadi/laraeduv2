@@ -6,6 +6,7 @@ use App\Enums\CurriculumEnum;
 use App\Models\TeacherSubject;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -40,6 +41,9 @@ class MySubject extends Page implements HasTable
                     ->label(__('my-subject.grade'))
                     ->sortable()
                     ->searchable(),
+                IconColumn::make('grade.is_inclusive')
+                    ->label(__('grade.is_inclusive'))
+                    ->boolean(),
                 TextColumn::make('teacherGrade.curriculum')
                     ->label(__('my-subject.curriculum'))
                     ->sortable()
