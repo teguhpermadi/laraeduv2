@@ -31,6 +31,8 @@ class AcademicYearResource extends Resource
         return __('academic-year.list.academic_year');
     }
 
+    protected static ?int $navigationSort = 3;
+
     public static function form(Form $form): Form
     {
         return $form

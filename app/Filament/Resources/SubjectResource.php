@@ -30,6 +30,8 @@ class SubjectResource extends Resource
         return __('subject.subject');
     }
 
+    protected static ?int $navigationSort = 5;
+    
     public static function form(Form $form): Form
     {
         return $form

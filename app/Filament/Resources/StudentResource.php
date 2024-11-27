@@ -32,6 +32,8 @@ class StudentResource extends Resource
     {
         return __('student.student');
     }
+    protected static ?int $navigationSort = 2;
+
 
     public static function form(Form $form): Form
     {
