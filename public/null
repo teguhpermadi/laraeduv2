@@ -1,26 +1,2 @@
-Grade::all()->mapWithKeys(function ($grade) {
-                            return [$grade->id => $grade->name . ' (' . ($grade->is_inclusive ? 'inklusif' : 'ekslusif') . ')'];
-                        })
-Grade::all()->mapWithKeys(function ($grade) {
-  return [$grade->id => $grade->name . ($grade->is_inclusive ? '(inklusif)' : '')];
-})
-Grade::all()->mapWithKeys(function ($grade) {
-  return [$grade->id => $grade->name . ($grade->is_inclusive ? ' (inklusif)' : '')];
-})
-Role::get()
-\App\Models\Role::all();
-use Spatie\Permission\Models\Role;
-
-Role::get()
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-
-Role::with('permission')->get()
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-
-User::get()
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-
-User::find(2)->hasRole('admin')
+Grade::get()
+Grade::get()

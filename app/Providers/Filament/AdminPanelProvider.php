@@ -84,6 +84,8 @@ class AdminPanelProvider extends PanelProvider
                     ->shouldShowDeleteAccountForm(false)
                     ->shouldShowAvatarForm(),
             ])
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('5s')
             ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }

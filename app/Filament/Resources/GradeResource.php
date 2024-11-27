@@ -8,6 +8,7 @@ use App\Filament\Resources\GradeResource\RelationManagers\StudentGradeRelationMa
 use App\Filament\Resources\GradeResource\RelationManagers\TeacherGradeRelationManager;
 use App\Models\Grade;
 use App\Enums\PhaseEnum;
+use App\Filament\Exports\GradeExporter;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -15,6 +16,7 @@ use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -64,25 +66,34 @@ class GradeResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label(__('grade.name')),
+                    ->label(__('grade.name'))
+                    ->sortable(),
                 TextColumn::make('grade')
-                    ->label(__('grade.grade.name')),
+                    ->label(__('grade.grade.name'))
+                    ->sortable(),
                 TextColumn::make('phase')
-                    ->label(__('grade.phase')),
+                    ->label(__('grade.phase'))
+                    ->sortable(),
                 TextColumn::make('teacherGrade.teacher.name')
-                    ->label(__('grade.teacherGrade.teacher.name')),
+                    ->label(__('grade.teacherGrade.teacher.name'))
+                    ->sortable(),
                 TextColumn::make('student_grade_count')
                     ->label(__('grade.student_grade_count'))
                     ->counts('studentGrade')
-                    ->suffix(' siswa'),
+                    ->suffix(' siswa')
+                    ->sortable(),
                 IconColumn::make('is_inclusive')
                     ->label(__('grade.is_inclusive'))
-                    ->boolean(),
+                    ->boolean()
+                    ->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
                 Tables\Actions\EditAction::make(),
                 RelationManagerAction::make('student-grade-relation-manager')
                     ->label('siswa')
@@ -98,7 +109,13 @@ class GradeResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                ExportAction::make('export')
+                    ->exporter(GradeExporter::class),
             ]);
     }
 
