@@ -322,13 +322,23 @@ class Assessment extends Page implements HasForms, HasTable
         $originalScoreMin = (int) $original->min('score');
         $originalScoreMax = (int) $original->max('score');
 
+        // Cek jika originalScoreMax dan originalScoreMin sama
+        if ($originalScoreMax == $originalScoreMin) {
+            // Tangani kasus ini, misalnya dengan mengatur nilai default
+            $original->each(function ($item) use ($scoreMin, $scoreMax) {
+                StudentCompetency::find($item['id'])
+                    ->update([
+                        'score' => $scoreMin, // atau nilai lain yang sesuai
+                        'score_skill' => $scoreMin, // atau nilai lain yang sesuai
+                    ]);
+            });
+            return;
+        }
+
         // score adjusment
         $original->map(function ($item) use ($scoreMin, $scoreMax, $originalScoreMin, $originalScoreMax, $data) {
-            // apa yang dinilai
             $newScore = $scoreMin + (($item['score'] - $originalScoreMin) / ($originalScoreMax - $originalScoreMin) * ($scoreMax - $scoreMin));
-            // score skill
             $newScoreSkill = $scoreMin + (($item['score_skill'] - $originalScoreMin) / ($originalScoreMax - $originalScoreMin) * ($scoreMax - $scoreMin));
-            // update
             StudentCompetency::find($item['id'])
                 ->update([
                     'score' => $newScore,
