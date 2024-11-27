@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Enums\SchoolLevelEnum;
 use App\Settings\SchoolSettings;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -15,6 +16,8 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class SchoolSettingPage extends SettingsPage
 {
+    use HasPageShield;
+    
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
 
     protected static string $settings = SchoolSettings::class;

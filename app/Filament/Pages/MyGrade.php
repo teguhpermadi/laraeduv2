@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Models\Student;
 use App\Models\StudentGrade;
 use App\Models\TeacherGrade;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 class MyGrade extends Page implements HasTable
 {
+    use HasPageShield;
+    
     use InteractsWithTable;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';

@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Enums\CurriculumEnum;
 use App\Models\TeacherSubject;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\IconColumn;
@@ -15,6 +16,8 @@ use Filament\Tables\Table;
 
 class MySubject extends Page implements HasTable
 {
+    use HasPageShield;
+    
     use InteractsWithTable;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
