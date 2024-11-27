@@ -25,6 +25,7 @@ class Competency extends Model
         'half_semester',
         'code_skill',
         'description_skill',
+        'is_inclusive',
     ];  
 
     public function getActivitylogOptions(): LogOptions

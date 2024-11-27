@@ -24,6 +24,7 @@ class Student extends Model
         'city_born',
         'birthday',
         'nick_name',
+        'is_inclusive',
     ];
 
     public function getActivitylogOptions(): LogOptions

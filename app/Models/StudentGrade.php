@@ -24,6 +24,7 @@ class StudentGrade extends Model
         'academic_year_id',
         'student_id',
         'grade_id',
+        'is_inclusive',
     ];  
 
     public function getActivitylogOptions(): LogOptions
