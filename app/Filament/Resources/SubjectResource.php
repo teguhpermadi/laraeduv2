@@ -56,9 +56,12 @@ class SubjectResource extends Resource
             ->defaultSort('order')
             ->reorderable('order')
             ->filters([
-                //
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
                 Tables\Actions\EditAction::make(),
                 RelationManagerAction::make('teacher-subject-relation-manager')
                     ->label('Pengajar')
@@ -69,6 +72,9 @@ class SubjectResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
