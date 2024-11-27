@@ -35,7 +35,11 @@ class TeacherSubjectRelationManager extends RelationManager
                     ->default(session()->get('academic_year_id')),
                 Select::make('grade_id')
                     ->label(__('subject.grade.name'))
-                    ->options(Grade::pluck('name', 'id'))
+                    ->options(
+                        Grade::all()->mapWithKeys(function ($grade) {
+                            return [$grade->id => $grade->name . ($grade->is_inclusive ? ' (inklusif)' : '')];
+                        })
+                    )
                     ->unique(modifyRuleUsing: function (Unique $rule, callable $get) { 
                         $subject_id = $this->getOwnerRecord()->getKey();
                         

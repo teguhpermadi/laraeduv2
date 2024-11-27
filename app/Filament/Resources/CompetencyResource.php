@@ -6,6 +6,7 @@ use App\Enums\CurriculumEnum;
 use App\Filament\Resources\CompetencyResource\Pages;
 use App\Filament\Resources\CompetencyResource\RelationManagers;
 use App\Models\Competency;
+use App\Models\Grade;
 use App\Models\TeacherSubject;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
@@ -54,9 +55,9 @@ class CompetencyResource extends Resource
 
                                 // function map
                                 $data = $data->mapWithKeys(function ($item) {
-                                    return [$item->grade->id => $item->grade->name . ' ' . $item->grade->phase];
+                                    return [$item->grade->id => $item->grade->name . ' ' . $item->grade->phase . ' ' . ($item->grade->is_inclusive ? '(Inklusif)' : '')];
                                 });
-                                
+
                                 return $data;
                             })->afterStateUpdated(function ($state, callable $get, callable $set) {
                                 $set('subject_id', null);
@@ -99,6 +100,47 @@ class CompetencyResource extends Resource
                 Fieldset::make('competency')
                     ->label(__('competency.competency'))
                     ->schema([
+                        Forms\Components\Actions::make([
+                            Forms\Components\Actions\Action::make('referensi')
+                                ->slideOver()
+                                ->modalContent(function (callable $get) {
+                                    $teacherSubject = null;
+
+                                    if ($get('grade_id') && $get('subject_id')) {
+                                        // dapatkan grade dari grade_id
+                                        $grade = Grade::find($get('grade_id'));
+                                        $level = $grade->grade;
+
+                                        // dapatkan semua grade dengan level yang sama
+                                        $grades = Grade::where('grade', $level)->get();
+                                        // dapatkan grade_id dari grade yang sama
+                                        $grade_ids = $grades->pluck('id');
+
+                                        // cari referensi competency berdasarkan subject_id dan grade_id
+                                        $teacherSubject = TeacherSubject::where('subject_id', $get('subject_id'))
+                                            ->whereIn('grade_id', $grade_ids)
+                                            ->where('academic_year_id', session()->get('academic_year_id'))
+                                            ->with('competency')
+                                            ->first()->id;
+                                    }
+
+                                    // tampilkan view competency-reference
+                                    return view('competency-reference', [
+                                        'teacherSubjects' => $teacherSubject,
+                                    ]);
+                                })
+                                ->modalSubmitAction(false)
+                        ])
+                        ->columnSpanFull()
+                        ->visible(function (callable $get) {
+                            // jika grade id memiliki is_inclusive true maka tampilkan
+                            $grade = Grade::find($get('grade_id'));
+                            if ($grade) {
+                                return $grade->is_inclusive;
+                            }
+
+                            return false;
+                        }),
                         TextInput::make('code')
                             ->label(__('competency.code'))
                             ->required(),
@@ -137,6 +179,7 @@ class CompetencyResource extends Resource
                             })
                             ->label(__('competency.description_skill'))
                             ->required(),
+
                     ])
                     ->columns(2),
 
@@ -146,6 +189,7 @@ class CompetencyResource extends Resource
                     ->default(false)
                     ->boolean()
                     ->required(),
+
             ]);
     }
 

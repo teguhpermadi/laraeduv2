@@ -11,9 +11,11 @@ use App\Enums\PhaseEnum;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
@@ -48,6 +50,12 @@ class GradeResource extends Resource
                     ->label(__('grade.phase'))
                     ->options(PhaseEnum::class)
                     ->required(),
+                ToggleButtons::make('is_inclusive')
+                    ->boolean()
+                    ->default(false)
+                    ->required()
+                    ->inline()
+                    ->label(__('grade.is_inclusive')),
             ]);
     }
 
@@ -67,6 +75,9 @@ class GradeResource extends Resource
                     ->label(__('grade.student_grade_count'))
                     ->counts('studentGrade')
                     ->suffix(' siswa'),
+                IconColumn::make('is_inclusive')
+                    ->label(__('grade.is_inclusive'))
+                    ->boolean(),
             ])
             ->filters([
                 //
@@ -77,7 +88,12 @@ class GradeResource extends Resource
                     ->label('siswa')
                     ->slideOver()
                     ->button()
-                    ->relationManager(StudentGradeRelationManager::class),   
+                    ->relationManager(StudentGradeRelationManager::class),
+                RelationManagerAction::make('teacher-grade-relation-manager')
+                    ->label('walikelas')
+                    ->slideOver()
+                    ->button()
+                    ->relationManager(TeacherGradeRelationManager::class),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -18,6 +18,7 @@ class Grade extends Model
         'name',
         'grade',
         'phase',
+        'is_inclusive',
     ];
 
     public function getActivitylogOptions(): LogOptions

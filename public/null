@@ -1,56 +1,9 @@
-LegerQuran::get();
-use App\Models\LegerQuran;
-LegerQuran::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::first();
-use App\Models\LegerQuran;
-LegerQuranRecap::first()->update(['teacher_quran_grade_id', 1302]);
-use App\Models\LegerQuran;
-LegerQuranRecap::first();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-now();
-use App\Models\LegerQuran;
-now();
-use App\Models\LegerQuran;
-now();
-use App\Models\LegerQuran;
-now();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
-use App\Models\LegerQuran;
-use App\Models\LegerQuran;
-LegerQuranRecap::get();
+Grade::all()->mapWithKeys(function ($grade) {
+                            return [$grade->id => $grade->name . ' (' . ($grade->is_inclusive ? 'inklusif' : 'ekslusif') . ')'];
+                        })
+Grade::all()->mapWithKeys(function ($grade) {
+  return [$grade->id => $grade->name . ($grade->is_inclusive ? '(inklusif)' : '')];
+})
+Grade::all()->mapWithKeys(function ($grade) {
+  return [$grade->id => $grade->name . ($grade->is_inclusive ? ' (inklusif)' : '')];
+})

@@ -8,5 +8,6 @@ return [
     'grade.name' => 'tingkatan kelas',
     'phase' => 'fase',
     'teacherGrade.teacher.name' => 'walikelas',
-    'student_grade_count' => 'jumlah siswa'
+    'student_grade_count' => 'jumlah siswa',
+    'is_inclusive' => 'kelas inklusif'
 ];

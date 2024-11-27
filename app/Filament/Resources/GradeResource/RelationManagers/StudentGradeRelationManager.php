@@ -28,6 +28,7 @@ class StudentGradeRelationManager extends RelationManager
                 Hidden::make('academic_year_id')
                     ->default(session()->get('academic_year_id')),
                 Select::make('student_ids')
+                    ->label(__('student.name'))
                     ->multiple()
                     ->searchable()
                     ->options(Student::whereDoesntHave('studentGrade')->get()->pluck('name', 'id'))
