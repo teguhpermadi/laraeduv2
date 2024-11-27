@@ -8,7 +8,9 @@ use App\Filament\Resources\GradeResource\RelationManagers\StudentGradeRelationMa
 use App\Filament\Resources\GradeResource\RelationManagers\TeacherGradeRelationManager;
 use App\Models\Grade;
 use App\Enums\PhaseEnum;
+use App\Filament\Resources\GradeResource\RelationManagers\StudentInclusiveRelationManager;
 use Filament\Forms;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -16,6 +18,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -72,6 +75,21 @@ class GradeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                RelationManagerAction::make('student-grade-relation-manager')
+                    ->label('Siswa')
+                    ->button()
+                    ->slideOver()
+                    ->relationManager(StudentGradeRelationManager::make()),
+                RelationManagerAction::make('teacher-grade-relation-manager')
+                    ->label('Wali Kelas')
+                    ->button()
+                    ->slideOver()
+                    ->relationManager(TeacherGradeRelationManager::make()),
+                RelationManagerAction::make('student-inclusive-relation-manager')
+                    ->label('Siswa Inklusif')
+                    ->button()
+                    ->slideOver()
+                    ->relationManager(StudentInclusiveRelationManager::make()),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

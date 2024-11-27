@@ -13,6 +13,7 @@ class StudentInclusive extends Model
         'academic_year_id',
         'student_id',
         'teacher_id',
+        'grade_id',
         'category_inclusive',
     ];
 
@@ -34,5 +35,10 @@ class StudentInclusive extends Model
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);
+    }
+
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class);
     }
 }

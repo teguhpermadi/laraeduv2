@@ -43,4 +43,9 @@ class Grade extends Model
     {
         return $this->hasMany(StudentGrade::class);
     }
+
+    public function studentInclusive()
+    {
+        return $this->hasMany(StudentInclusive::class);
+    }
 }
