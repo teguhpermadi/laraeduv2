@@ -100,6 +100,47 @@ class CompetencyResource extends Resource
                 Fieldset::make('competency')
                     ->label(__('competency.competency'))
                     ->schema([
+                        Forms\Components\Actions::make([
+                            Forms\Components\Actions\Action::make('referensi')
+                                ->slideOver()
+                                ->modalContent(function (callable $get) {
+                                    $teacherSubject = null;
+
+                                    if ($get('grade_id') && $get('subject_id')) {
+                                        // dapatkan grade dari grade_id
+                                        $grade = Grade::find($get('grade_id'));
+                                        $level = $grade->grade;
+
+                                        // dapatkan semua grade dengan level yang sama
+                                        $grades = Grade::where('grade', $level)->get();
+                                        // dapatkan grade_id dari grade yang sama
+                                        $grade_ids = $grades->pluck('id');
+
+                                        // cari referensi competency berdasarkan subject_id dan grade_id
+                                        $teacherSubject = TeacherSubject::where('subject_id', $get('subject_id'))
+                                            ->whereIn('grade_id', $grade_ids)
+                                            ->where('academic_year_id', session()->get('academic_year_id'))
+                                            ->with('competency')
+                                            ->first()->id;
+                                    }
+
+                                    // tampilkan view competency-reference
+                                    return view('competency-reference', [
+                                        'teacherSubjects' => $teacherSubject,
+                                    ]);
+                                })
+                                ->modalSubmitAction(false)
+                        ])
+                        ->columnSpanFull()
+                        ->visible(function (callable $get) {
+                            // jika grade id memiliki is_inclusive true maka tampilkan
+                            $grade = Grade::find($get('grade_id'));
+                            if ($grade) {
+                                return $grade->is_inclusive;
+                            }
+
+                            return false;
+                        }),
                         TextInput::make('code')
                             ->label(__('competency.code'))
                             ->required(),
@@ -138,6 +179,7 @@ class CompetencyResource extends Resource
                             })
                             ->label(__('competency.description_skill'))
                             ->required(),
+
                     ])
                     ->columns(2),
 
@@ -147,28 +189,7 @@ class CompetencyResource extends Resource
                     ->default(false)
                     ->boolean()
                     ->required(),
-                Forms\Components\Actions::make([
-                    Forms\Components\Actions\Action::make('referensi')
-                        ->action(function (Forms\Get $get, Forms\Set $set) {
-                            // dapatkan grade dari grade_id
-                            $grade = Grade::find($get('grade_id'));
-                            $level = $grade->grade;
 
-                            // dapatkan semua grade dengan level yang sama
-                            $grades = Grade::where('grade', $level)->get();
-                            // dapatkan grade_id dari grade yang sama
-                            $grade_ids = $grades->pluck('id');
-
-                            // cari referensi competency berdasarkan subject_id dan grade_id
-                            $teacherSubject = TeacherSubject::where('subject_id', $get('subject_id'))
-                                ->whereIn('grade_id', $grade_ids)
-                                ->where('academic_year_id', session()->get('academic_year_id'))
-                                ->with('competency')
-                                ->get();
-
-                            dd($teacherSubject->toArray());
-                        })
-                ])
             ]);
     }
 
