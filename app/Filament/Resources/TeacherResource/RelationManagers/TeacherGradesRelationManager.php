@@ -4,6 +4,7 @@ namespace App\Filament\Resources\TeacherResource\RelationManagers;
 
 use App\Enums\CurriculumEnum;
 use App\Models\Grade;
+use App\Models\TeacherGrade;
 use Filament\Forms;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -59,7 +60,8 @@ class TeacherGradesRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->slideOver(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
