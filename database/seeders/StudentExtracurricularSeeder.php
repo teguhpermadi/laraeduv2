@@ -15,6 +15,12 @@ class StudentExtracurricularSeeder extends Seeder
     {
         $data = StudentExtracurricular::factory(50)->make()->toArray();
 
-        StudentExtracurricular::upsert($data, ['student_id', 'extracurricular_id', 'academic_year_id']);
+        foreach ($data as $item) {
+            try {
+                StudentExtracurricular::create($item);
+            } catch (\Throwable $th) {
+                //
+            }
+        }
     }
 }

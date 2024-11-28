@@ -40,7 +40,7 @@ class TeacherSubjectSeeder extends Seeder
                 Competency::updateOrCreate([
                     'teacher_subject_id' => $teacherSubject->id,
                     'code' => 'KD' . $i . '-S1',
-                    'description' => 'Kompetensi Dasar ' . $i . ' Semester 1',
+                    'description' => 'Kompetensi Dasar ' . $i . fake()->sentence(),
                     'passing_grade' => 75,
                     'half_semester' => true,
                 ]);
@@ -51,7 +51,7 @@ class TeacherSubjectSeeder extends Seeder
                 Competency::updateOrCreate([
                     'teacher_subject_id' => $teacherSubject->id,
                     'code' => 'KD' . $i . '-S2',
-                    'description' => 'Kompetensi Dasar ' . $i . ' Semester 2',
+                    'description' => 'Kompetensi Dasar ' . $i . fake()->sentence(),
                     'passing_grade' => 75,
                     'half_semester' => false,
                 ]);

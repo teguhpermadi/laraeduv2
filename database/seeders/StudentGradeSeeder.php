@@ -22,11 +22,7 @@ class StudentGradeSeeder extends Seeder
 
         foreach ($data as $d) {
             try {
-                StudentGrade::create([
-                    'academic_year_id' => $d['academic_year_id'],
-                    'grade_id' => $d['grade_id'],
-                    'student_id' => $d['student_id'],
-                ]);
+                StudentGrade::create($d);
             } catch (\Throwable $th) {
                 //
             }
