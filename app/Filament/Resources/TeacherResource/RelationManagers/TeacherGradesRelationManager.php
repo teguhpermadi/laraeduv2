@@ -31,12 +31,7 @@ class TeacherGradesRelationManager extends RelationManager
             ->schema([
                 Select::make('grade_id')
                     ->label(__('teacherGrade.grade_id'))
-                    ->options(
-                        // Grade::whereDoesntHave('teacherGrade', function ($query) {
-                        //     $query->where('academic_year_id', session('academic_year_id'));
-                        // })->pluck('name', 'id')
-                        Grade::pluck('name', 'id')
-                    )
+                    ->options(Grade::pluck('name', 'id'))
                     ->required(),
                 Select::make('curriculum')
                     ->label(__('teacherGrade.curriculum'))
