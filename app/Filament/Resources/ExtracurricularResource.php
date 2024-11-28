@@ -12,6 +12,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -58,10 +59,20 @@ class ExtracurricularResource extends Resource
                 //
             ])
             ->actions([
+                RelationManagerAction::make('student-extracurricular-relation-manager')
+                    ->label('Peserta')
+                    ->button()
+                    ->slideOver()
+                    ->relationManager(StudentExtracurricularRelationManager::make()),
+                RelationManagerAction::make('teacher-extracurricular-relation-manager')
+                    ->label('Guru')
+                    ->button()
+                    ->slideOver()
+                    ->relationManager(TeacherExtracurricularRelationManager::make()),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('Leger')
-                    ->url(fn (Extracurricular $record) => route('leger-extracurricular', $record->id))
-                    ->icon('heroicon-o-document-text'),
+                // Tables\Actions\Action::make('Leger')
+                //     ->url(fn (Extracurricular $record) => route('leger-extracurricular', $record->id))
+                //     ->icon('heroicon-o-document-text'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -61,15 +61,15 @@ class SubjectResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-                Tables\Actions\EditAction::make(),
                 RelationManagerAction::make('teacher-subject-relation-manager')
                     ->label('Pengajar')
                     ->button()
                     ->slideOver()
                     ->relationManager(TeacherSubjectRelationManager::make()),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

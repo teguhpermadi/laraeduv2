@@ -20,14 +20,16 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Actions\CreateAction;
+use Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 class StudentExtracurricularRelationManager extends RelationManager
 {
+    use CanBeEmbeddedInModals;
+
     protected static string $relationship = 'studentExtracurricular';
 
-    // title
     protected static ?string $title = 'Peserta';
 
     public function form(Form $form): Form
@@ -74,6 +76,7 @@ class StudentExtracurricularRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make()
+                    ->slideOver()
                     ->using(function (array $data, string $model): Model {
                         // academic_year_id
                         $academicYearId = $data['academic_year_id'];
