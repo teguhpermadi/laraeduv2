@@ -80,3 +80,9 @@ User::find(3)->hasRole('teacher_grade')
 
 
 User::find(3)->hasRole('teacher_grade')
+
+
+User::find(3)->hasRole('teacher_extracurricular')
+
+
+User::find(3)->hasRole('teacher_extracurricular')
