@@ -94,10 +94,6 @@ class GradeResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-                Tables\Actions\EditAction::make(),
                 RelationManagerAction::make('student-grade-relation-manager')
                     ->label('siswa')
                     ->slideOver()
@@ -108,6 +104,10 @@ class GradeResource extends Resource
                     ->slideOver()
                     ->button()
                     ->relationManager(TeacherGradeRelationManager::class),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

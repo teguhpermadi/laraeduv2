@@ -59,18 +59,20 @@ class TeacherGradeRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->createAnother(false)
-                    ->using(function($data){
-                        $data += ['grade_id' => $this->getOwnerRecord()->getKey()];
+                    ->slideOver()
+                    ->createAnother(false),
+                    // ->using(function($data){
+                    //     $data += ['grade_id' => $this->getOwnerRecord()->getKey()];
 
-                        return TeacherGrade::updateOrCreate([
-                            'academic_year_id' => $data['academic_year_id'],
-                            'grade_id' => $data['grade_id'],
-                        ], $data);
-                    }),
+                    //     return TeacherGrade::updateOrCreate([
+                    //         'academic_year_id' => $data['academic_year_id'],
+                    //         'grade_id' => $data['grade_id'],
+                    //     ], $data);
+                    // }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->slideOver(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

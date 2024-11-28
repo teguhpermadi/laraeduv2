@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class StudentGradeRelationManager extends RelationManager
@@ -48,22 +49,20 @@ class StudentGradeRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
+                    ->slideOver()
                     ->createAnother(false)
-                    ->using(function($data){
-                        $data += ['grade_id' => $this->getOwnerRecord()->getKey()];
-                        
-                        $insert = [];
+                    ->using(function (array $data, string $model): Model {
+                        // dd($data);
+                        // return $model::create($data);
                         foreach ($data['student_ids'] as $student) {
-                            $newData = [
-                                'academic_year_id' => $data['academic_year_id'],
-                                'grade_id' => $data['grade_id'],
-                                'student_id' => $student
-                            ];
-
-                            $insert[] = StudentGrade::create($newData);
+                            $studentGrade = new StudentGrade();
+                            $studentGrade->academic_year_id = $data['academic_year_id'];
+                            $studentGrade->grade_id = $this->getOwnerRecord()->getKey();
+                            $studentGrade->student_id = $student;
+                            $studentGrade->save();
                         }
 
-                        return $insert[0];
+                        return $studentGrade;
                     }),
             ])
             ->actions([
