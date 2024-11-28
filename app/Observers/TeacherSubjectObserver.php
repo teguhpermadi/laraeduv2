@@ -31,6 +31,9 @@ class TeacherSubjectObserver
             'passing_grade' => 70,
             'half_semester' => false,
         ]);
+
+        // berikan role teacher_subject kepada user
+        $teacherSubject->teacher->userable->user->assignRole('teacher_subject');
     }
 
     /**
@@ -46,7 +49,10 @@ class TeacherSubjectObserver
      */
     public function deleted(TeacherSubject $teacherSubject): void
     {
-        //
+        // cek apakah teacher_id memiliki teacher_subject lain, jika tidak maka hapus role teacher_subject dari user
+        if ($teacherSubject->teacher->subject->count() == 0) {
+            $teacherSubject->teacher->userable->user->removeRole('teacher_subject');
+        }
     }
 
     /**
