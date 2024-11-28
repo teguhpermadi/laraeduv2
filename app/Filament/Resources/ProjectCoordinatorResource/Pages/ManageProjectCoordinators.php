@@ -16,11 +16,7 @@ class ManageProjectCoordinators extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
-            ->using(function (array $data, string $model): Model {
-                $user = Teacher::find($data['teacher_id'])->userable->user;
-                $user->assignRole('project coordinator');
-                return $model::create($data);
-            }),
+                ->slideOver(),
         ];
     }
 }

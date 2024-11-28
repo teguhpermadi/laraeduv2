@@ -12,6 +12,18 @@ class TeacherGradeObserver
         $teacherGrade->teacher->userable->user->assignRole('teacher_grade');
     }
 
+    /**
+     * Handle the TeacherGrade "updated" event.
+     */
+    public function updated(TeacherGrade $teacherGrade): void
+    {
+        // periksa apakah teacher id berubah, jika ada teacher baru maka berikan role teacher_grade pada user dari teacher yang baru
+        if ($teacherGrade->isDirty('teacher_id')) {
+            $teacherGrade->teacher->userable->user->removeRole('teacher_grade');
+            $teacherGrade->teacher->userable->user->assignRole('teacher_grade');
+        }
+    }
+
     // jika deleted, hapus role teacher_grade dari user
     public function deleted(TeacherGrade $teacherGrade): void
     {

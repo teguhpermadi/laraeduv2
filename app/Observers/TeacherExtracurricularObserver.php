@@ -20,7 +20,11 @@ class TeacherExtracurricularObserver
      */
     public function updated(TeacherExtracurricular $teacherExtracurricular): void
     {
-        //
+        // periksa apakah teacher id berubah, jika ada teacher baru maka berikan role teacher_extracurricular pada user dari teacher yang baru
+        if ($teacherExtracurricular->isDirty('teacher_id')) {
+            $teacherExtracurricular->teacher->userable->user->removeRole('teacher_extracurricular');
+            $teacherExtracurricular->teacher->userable->user->assignRole('teacher_extracurricular');
+        }
     }
 
     /**

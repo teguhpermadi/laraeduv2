@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Models\Scopes\AcademicYearScope;
+use App\Observers\ProjectCoordinatorObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+#[ObservedBy(ProjectCoordinatorObserver::class)]
 class ProjectCoordinator extends Model
 {
     use HasFactory;

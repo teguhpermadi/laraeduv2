@@ -41,7 +41,11 @@ class TeacherSubjectObserver
      */
     public function updated(TeacherSubject $teacherSubject): void
     {
-        //
+        // periksa apakah teacher id berubah, jika ada teacher baru maka berikan role teacher_subject pada user dari teacher yang baru
+        if ($teacherSubject->isDirty('teacher_id')) {
+            $teacherSubject->teacher->userable->user->removeRole('teacher_subject');
+            $teacherSubject->teacher->userable->user->assignRole('teacher_subject');
+        }
     }
 
     /**
