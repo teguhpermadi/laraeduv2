@@ -10,6 +10,7 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\ViewField;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -17,12 +18,14 @@ use Filament\Forms\Form;
 use Filament\Pages\Page;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class LegerQuran extends Page implements HasForms, HasTable
 {  
@@ -217,7 +220,7 @@ class LegerQuran extends Page implements HasForms, HasTable
             LegerQuranNote::updateOrCreate([
                 'leger_quran_id' => $legerQuran->id,
             ], [
-                'note' => 'tes',
+                'note' => '-',
             ]);
         }
 
@@ -229,7 +232,7 @@ class LegerQuran extends Page implements HasForms, HasTable
             'updated_at' => $data['time_signature'],
         ]);
 
-        dd($data->toArray());
+        // dd($data->toArray());
 
         // refresh page to leger quran
         $this->redirect(route('filament.admin.pages.leger-quran.{id}', $this->teacherQuranGrade->id));
@@ -296,6 +299,20 @@ class LegerQuran extends Page implements HasForms, HasTable
                         $legerQuranNotes = ModelsLegerQuran::where('teacher_quran_grade_id', $this->teacherQuranGrade->id)->get();
                         foreach ($legerQuranNotes as $item) {
                             $item->quranNote()->updateOrCreate(['leger_quran_id' => $item->id], ['note' => '-']);
+                        }
+                    })
+            ])
+            ->bulkActions([
+                BulkAction::make('catatan')
+                    ->label('Buat Catatan')
+                    ->form([
+                        Textarea::make('note')
+                            ->label('Catatan')
+                            ->required(),
+                    ])
+                    ->action(function (Collection $records, array $data) {
+                        foreach ($records as $record) {
+                            $record->quranNote()->updateOrCreate(['leger_quran_id' => $record->id], ['note' => $data['note']]);
                         }
                     })
             ])

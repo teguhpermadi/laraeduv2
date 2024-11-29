@@ -173,12 +173,14 @@ class ProjectTargetRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->slideOver(),
             ])
             ->actions([
                 // group action
                 Tables\Actions\ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\EditAction::make()
+                        ->slideOver(),
                     Tables\Actions\DeleteAction::make(),
                 ]),
             ])

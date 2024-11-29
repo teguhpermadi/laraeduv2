@@ -169,6 +169,7 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                         return $this->download();
                     }),
                 Action::make('upload')
+                    ->slideOver()
                     ->form([
                         FileUpload::make('file')
                             ->directory('uploads')
@@ -201,6 +202,7 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                     })
                     ->modalWidth('sm'),
                 Action::make('leger')
+                    ->color('success')
                     ->url(fn () => route('filament.admin.pages.leger-quran.{id}', $this->teacherQuranGrade->id)),
             ])
             ->deferLoading()
