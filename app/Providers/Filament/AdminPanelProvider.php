@@ -76,8 +76,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),
-                ActivitylogPlugin::make()
-                    ->resource(ActivitylogResource::class),
+                // ActivitylogPlugin::make()
+                //     ->resource(ActivitylogResource::class),
                 FilamentEditProfilePlugin::make()
                     ->setSort(1)
                     ->setIcon('heroicon-o-user')
