@@ -34,8 +34,13 @@ class ProjectCoordinatorObserver
      */
     public function deleted(ProjectCoordinator $projectCoordinator): void
     {
-        // hapus role project coordinator dari user dari teacher yang dihapus dari project coordinator
-        $projectCoordinator->teacher->userable->user->removeRole('project_coordinator');
+        // periksa apakah teacher id berubah, 
+        // jika ada teacher baru maka berikan role project coordinator pada user dari teacher yang baru 
+        // dan hapus role dari teacher yang lama
+        if ($projectCoordinator->isDirty('teacher_id')) {
+            $projectCoordinator->teacher->userable->user->removeRole('project_coordinator');
+            $projectCoordinator->teacher->userable->user->assignRole('project_coordinator');
+        }
     }
 
     /**

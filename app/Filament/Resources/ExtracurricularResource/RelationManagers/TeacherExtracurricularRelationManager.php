@@ -53,7 +53,8 @@ class TeacherExtracurricularRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->slideOver(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

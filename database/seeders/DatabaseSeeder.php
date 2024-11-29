@@ -21,19 +21,19 @@ class DatabaseSeeder extends Seeder
             StudentSeeder::class,
             AcademicYearSeeder::class,
             GradeSeeder::class,
-            TeacherGradeSeeder::class,
-            StudentGradeSeeder::class,
-            TeacherGradeSeeder::class,
-            StudentGradeSeeder::class,
             SubjectSeeder::class,
-            TeacherSubjectSeeder::class,
+            // TeacherGradeSeeder::class,
+            // StudentGradeSeeder::class,
+            // TeacherGradeSeeder::class,
+            // StudentGradeSeeder::class,
+            // TeacherSubjectSeeder::class,
             // CompetencySeeder::class,
             // StudentCompetencySeeder::class,
 
             // Extracurricular
             ExtracurricularSeeder::class,
-            TeacherExtracurricularSeeder::class,
-            StudentExtracurricularSeeder::class,
+            // TeacherExtracurricularSeeder::class,
+            // StudentExtracurricularSeeder::class,
 
             // Project
             DimentionSeeder::class,

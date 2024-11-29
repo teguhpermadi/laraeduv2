@@ -36,7 +36,7 @@ class ListStudentExtracurriculars extends ListRecords
                         $query->where('extracurricular_id', $extracurricular->id);
                     });
             }   
-        } elseif ($user->hasRole('teacher extracurricular')) {
+        } elseif ($user->hasRole('teacher_extracurricular')) {
             // tampilkan data berdasarkan teacher extracurricular yang dimiliki oleh user
             $extracurricular = TeacherExtracurricular::where('teacher_id', $user->userable->userable_id)->get();
             foreach ($extracurricular as $extracurricular) {
