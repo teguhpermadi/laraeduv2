@@ -16,7 +16,8 @@ class ManageProjectCoordinators extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
-                ->slideOver(),
+                ->slideOver()
+                ->closeModalByClickingAway(false),
         ];
     }
 }

@@ -170,6 +170,7 @@ class AssessmentQuran extends Page implements HasForms, HasTable
                     }),
                 Action::make('upload')
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->form([
                         FileUpload::make('file')
                             ->directory('uploads')

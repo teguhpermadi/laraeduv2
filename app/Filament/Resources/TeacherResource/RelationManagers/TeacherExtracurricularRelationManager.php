@@ -57,6 +57,7 @@ class TeacherExtracurricularRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->using(function (array $data):Model {
                         return TeacherExtracurricular::updateOrCreate(
                             ['academic_year_id' => session('academic_year_id'), 'teacher_id' => $this->ownerRecord->id, 'extracurricular_id' => $data['extracurricular_id']],
@@ -66,6 +67,7 @@ class TeacherExtracurricularRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->closeModalByClickingAway(false)
                     ->slideOver(),
                 Tables\Actions\DeleteAction::make(),
             ])

@@ -60,6 +60,7 @@ class TeacherGradeRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->createAnother(false),
                     // ->using(function($data){
                     //     $data += ['grade_id' => $this->getOwnerRecord()->getKey()];
@@ -72,7 +73,8 @@ class TeacherGradeRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->slideOver(),
+                    ->slideOver()
+                    ->closeModalByClickingAway(false),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

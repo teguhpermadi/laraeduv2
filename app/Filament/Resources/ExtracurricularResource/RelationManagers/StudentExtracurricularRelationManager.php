@@ -77,6 +77,7 @@ class StudentExtracurricularRelationManager extends RelationManager
             ->headerActions([
                 CreateAction::make()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->using(function (array $data, string $model): Model {
                         // academic_year_id
                         $academicYearId = $data['academic_year_id'];

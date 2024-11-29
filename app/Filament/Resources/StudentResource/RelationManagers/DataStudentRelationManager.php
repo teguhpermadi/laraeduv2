@@ -133,6 +133,7 @@ class DataStudentRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->using(function (array $data):Model {
                         return DataStudent::updateOrCreate(
                             ['student_id' => $this->ownerRecord->id],
@@ -142,6 +143,7 @@ class DataStudentRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                ->closeModalByClickingAway(false)
                     ->slideOver(),
                 Tables\Actions\DeleteAction::make(),
             ])

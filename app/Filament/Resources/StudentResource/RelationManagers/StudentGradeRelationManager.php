@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class StudentGradeRelationManager extends RelationManager
 {
     use CanBeEmbeddedInModals;
-    
+
     protected static string $relationship = 'studentGrade';
 
     public function form(Form $form): Form
@@ -47,10 +47,12 @@ class StudentGradeRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
+                    ->closeModalByClickingAway(false)
                     ->slideOver(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->closeModalByClickingAway(false)
                     ->slideOver(),
                 Tables\Actions\DeleteAction::make(),
             ])

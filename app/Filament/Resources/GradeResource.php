@@ -97,11 +97,13 @@ class GradeResource extends Resource
                 RelationManagerAction::make('student-grade-relation-manager')
                     ->label('siswa')
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->button()
                     ->relationManager(StudentGradeRelationManager::class),
                 RelationManagerAction::make('teacher-grade-relation-manager')
                     ->label('walikelas')
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->button()
                     ->relationManager(TeacherGradeRelationManager::class),
                 Tables\Actions\DeleteAction::make(),

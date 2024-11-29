@@ -69,11 +69,13 @@ class QuranGradeResource extends Resource
                     ->label('Siswa')
                     ->button()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->relationManager(StudentQuranGradeRelationManager::make()),
                 RelationManagerAction::make('teacher-quran-grade-relation-manager')
                     ->label('Guru')
                     ->button()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->relationManager(TeacherQuranGradeRelationManager::make()),
                 Action::make('assessment-quran')
                     ->label('Nilai')

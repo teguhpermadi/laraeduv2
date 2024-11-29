@@ -25,4 +25,6 @@ return [
 
     // Labels untuk tema proyek
     'theme' => 'Tema',
+    'download' => 'Download',
+    'upload' => 'Upload',
 ]; 

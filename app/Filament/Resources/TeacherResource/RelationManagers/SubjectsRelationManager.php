@@ -87,6 +87,7 @@ class SubjectsRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->using(function (array $data):Model {
                         return TeacherSubject::updateOrCreate(
                             ['academic_year_id' => session('academic_year_id'), 'teacher_id' => $this->ownerRecord->id, 'subject_id' => $data['subject_id'], 'grade_id' => $data['grade_id']],
@@ -96,7 +97,8 @@ class SubjectsRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->slideOver(),
+                    ->slideOver()
+                    ->closeModalByClickingAway(false),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

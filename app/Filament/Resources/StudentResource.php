@@ -92,6 +92,8 @@ class StudentResource extends Resource
                     ->label('kelas')
                     ->button()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
+                    ->closeModalByClickingAway(false)
                     ->relationManager(StudentGradeRelationManager::class),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

@@ -14,9 +14,10 @@ class EditProject extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            // Actions\DeleteAction::make(),
             // action assesmen
             Actions\Action::make('assesment')
+                ->color('success')
                 ->url(fn (Project $record) => route('filament.admin.resources.projects.assesment', $record)),
         ];
     }

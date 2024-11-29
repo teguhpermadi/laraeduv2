@@ -65,6 +65,7 @@ class SubjectResource extends Resource
                     ->label('Pengajar')
                     ->button()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->relationManager(TeacherSubjectRelationManager::make()),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),

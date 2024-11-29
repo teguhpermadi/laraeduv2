@@ -14,6 +14,7 @@ class ManageTeacherQurans extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
+                ->closeModalByClickingAway(false)
                 ->slideOver(),
         ];
     }

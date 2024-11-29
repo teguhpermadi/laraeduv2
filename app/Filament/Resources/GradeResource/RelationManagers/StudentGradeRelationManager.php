@@ -50,6 +50,7 @@ class StudentGradeRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->createAnother(false)
                     ->using(function (array $data, string $model): Model {
                         // dd($data);

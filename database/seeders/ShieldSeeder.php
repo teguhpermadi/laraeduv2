@@ -359,7 +359,8 @@ class ShieldSeeder extends Seeder
                     "delete_any_project",
                     "force_delete_project",
                     "force_delete_any_project",
-                    "page_ProjectAssesment"
+                    "page_ProjectAssesment",
+                    "page_ProjectNote"
                 ]
             },
             {

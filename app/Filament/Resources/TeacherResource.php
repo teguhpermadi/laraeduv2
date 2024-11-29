@@ -92,16 +92,19 @@ class TeacherResource extends Resource
                     ->label('mata pelajaran')
                     ->button()
                     ->slideOver()   
+                    ->closeModalByClickingAway(false)
                     ->relationManager(SubjectsRelationManager::class),
                 RelationManagerAction::make('teacher-grade-relation-manager')
                     ->label('kelas')
                     ->button()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->relationManager(TeacherGradesRelationManager::class),
                 RelationManagerAction::make('teacher-extracurricular-relation-manager')
                     ->label('ekstrakurikuler')
                     ->button()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->relationManager(TeacherExtracurricularRelationManager::class),
                 Action::make('Userable')
                     ->action(function (Teacher $teacher) {

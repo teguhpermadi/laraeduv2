@@ -30,6 +30,7 @@ class ListCompetencies extends ListRecords
             Actions\CreateAction::make(),
             Action::make('download')
                 ->slideOver()
+                ->closeModalByClickingAway(false)
                 ->form([
                     Select::make('teacher_subject_id')
                         ->label(__('competency.teacher_subject_id'))
@@ -48,6 +49,7 @@ class ListCompetencies extends ListRecords
                 }),
             Action::make('upload')
                 ->slideOver()
+                ->closeModalByClickingAway(false)
                 ->form([
                     FileUpload::make('file')
                         ->directory('uploads')

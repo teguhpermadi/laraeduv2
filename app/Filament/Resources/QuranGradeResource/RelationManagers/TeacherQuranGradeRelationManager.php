@@ -50,10 +50,12 @@ class TeacherQuranGradeRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
+                ->closeModalByClickingAway(false)
                     ->slideOver(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                ->closeModalByClickingAway(false)
                     ->slideOver(),
                 Tables\Actions\DeleteAction::make(),
             ])

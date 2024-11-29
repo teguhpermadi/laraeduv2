@@ -106,6 +106,7 @@ class CompetencyResource extends Resource
                         Forms\Components\Actions::make([
                             Forms\Components\Actions\Action::make('referensi')
                                 ->slideOver()
+                                ->closeModalByClickingAway(false)
                                 ->modalContent(function (callable $get) {
                                     $teacherSubject = null;
 

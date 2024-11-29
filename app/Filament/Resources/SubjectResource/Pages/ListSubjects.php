@@ -17,6 +17,7 @@ class ListSubjects extends ListRecords
             Actions\CreateAction::make(),
             \EightyNine\ExcelImport\ExcelImportAction::make()
                 ->color("primary")
+                ->closeModalByClickingAway(false)
                 ->slideOver()
                 ->use(SubjectImport::class)
                 ->sampleExcel(

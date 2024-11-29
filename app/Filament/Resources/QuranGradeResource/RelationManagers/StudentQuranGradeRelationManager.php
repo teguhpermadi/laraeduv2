@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
 class StudentQuranGradeRelationManager extends RelationManager
 {
     use CanBeEmbeddedInModals;
-    
+
     protected static string $relationship = 'studentQuranGrade';
 
     // title
@@ -62,10 +62,12 @@ class StudentQuranGradeRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
+                    ->closeModalByClickingAway(false)
                     ->slideOver(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->closeModalByClickingAway(false)
                     ->slideOver(),
                 Tables\Actions\DeleteAction::make(),
             ])

@@ -99,11 +99,13 @@ class ExtracurricularResource extends Resource
                     ->label('Peserta')
                     ->button()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->relationManager(StudentExtracurricularRelationManager::make()),
                 RelationManagerAction::make('teacher-extracurricular-relation-manager')
                     ->label('Guru')
                     ->button()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->relationManager(TeacherExtracurricularRelationManager::make()),
                 Tables\Actions\EditAction::make(),
                 // Tables\Actions\Action::make('Leger')

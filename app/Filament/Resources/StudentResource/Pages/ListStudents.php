@@ -20,6 +20,7 @@ class ListStudents extends ListRecords
             Actions\CreateAction::make(),
             \EightyNine\ExcelImport\ExcelImportAction::make()
                 ->color("primary")
+                ->closeModalByClickingAway(false)
                 ->slideOver()
                 ->use(StudentImport::class)
                 ->sampleExcel(

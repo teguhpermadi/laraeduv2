@@ -18,6 +18,7 @@ class ListGrades extends ListRecords
             \EightyNine\ExcelImport\ExcelImportAction::make()
                 ->color("primary")
                 ->slideOver()
+                ->closeModalByClickingAway(false)
                 ->use(GradeImport::class)
                 ->sampleExcel(
                     sampleData: [

@@ -105,6 +105,7 @@ class ProjectResource extends Resource
                     ->label('Target')
                     ->button()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->relationManager(ProjectTargetRelationManager::make()),
                 Action::make('Assesment')
                     ->button()

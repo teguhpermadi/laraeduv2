@@ -26,6 +26,7 @@ class ListCompetencyQurans extends ListRecords
             Actions\CreateAction::make(),
             Actions\Action::make('download')
                 ->slideOver()
+                ->closeModalByClickingAway(false)
                 ->form([
                     Select::make('teacher_quran_grade_id')
                         ->label(__('competency-quran.teacher_quran_grade_id'))
@@ -42,6 +43,7 @@ class ListCompetencyQurans extends ListRecords
                 }),
             Actions\Action::make('upload')
                 ->slideOver()
+                ->closeModalByClickingAway(false)
                 ->form([
                     FileUpload::make('file')
                         ->directory('uploads')

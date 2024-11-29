@@ -58,6 +58,7 @@ class TeacherGradesRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->slideOver()
+                    ->closeModalByClickingAway(false)
                     ->using(function (array $data):Model {
                         return TeacherGrade::updateOrCreate(
                             ['academic_year_id' => session('academic_year_id'), 'teacher_id' => $this->ownerRecord->id, 'grade_id' => $data['grade_id']],
@@ -69,6 +70,7 @@ class TeacherGradesRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->closeModalByClickingAway(false)
                     ->slideOver(),
                 Tables\Actions\DeleteAction::make(),
             ])
