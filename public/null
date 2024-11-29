@@ -1,10 +1,28 @@
-Competency::get();
-$academic = AcademicYear::find(session('academic_year_id'));
-Student::get()
-Student::find(1)
-Student::find(1)->studentGrade()
-Student::find(1)->studentGrade
-Student::find(1)->studentGrade->first()
-Student::find(1)->studentGradeFirst
-Student::find(1)->studentGradeFirst->grade
-Student::find(1)->studentGradeFirst->grade->grade
+use Spatie\Permission\Models\Role;
+
+Role::get()
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+Permission::get()
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+Permission::get()
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+Permission::get()
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+Permission::get()
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+Role::get()
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+
+Role::get()
+Teacher::get()

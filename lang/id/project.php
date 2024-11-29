@@ -22,4 +22,7 @@ return [
     'reset' => 'Reset',
     'edit' => 'Edit Project Target',
     'resetNote' => 'Reset Catatan',
+
+    // Labels untuk tema proyek
+    'theme' => 'Tema',
 ]; 

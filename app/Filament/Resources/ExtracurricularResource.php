@@ -7,8 +7,11 @@ use App\Filament\Resources\ExtracurricularResource\RelationManagers;
 use App\Filament\Resources\ExtracurricularResource\RelationManagers\StudentExtracurricularRelationManager;
 use App\Filament\Resources\ExtracurricularResource\RelationManagers\TeacherExtracurricularRelationManager;
 use App\Models\Extracurricular;
+use App\Models\Student;
+use App\Models\StudentExtracurricular;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -52,8 +55,41 @@ class ExtracurricularResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('extracurricular.name')),
+                Tables\Columns\TextColumn::make('student_extracurricular_count')
+                    ->label('Jumlah Siswa')
+                    ->counts('studentExtracurricular'),
                 Tables\Columns\ToggleColumn::make('is_required')
-                    ->label(__('extracurricular.is_required')), 
+                    ->label(__('extracurricular.is_required'))
+                    ->afterStateUpdated(function (Builder $query, $state, Extracurricular $record) {
+                        // dd($query);
+                        if ($state) {
+                            $students = Student::pluck('id');
+                            foreach ($students as $student) {
+                                StudentExtracurricular::updateOrCreate([
+                                    'academic_year_id' => session('academic_year_id'),
+                                    'student_id' => $student,
+                                    'extracurricular_id' => $record->id,
+                                ]);
+                            }
+
+                            // notifikasi
+                            Notification::make()
+                                ->title('Berhasil')
+                                ->body('Semua siswa berhasil ditambahkan ke ekstrakurikuler ini.')
+                                ->success()
+                                ->send();
+                        } else {
+                            // delete semua data student extracurricular
+                            StudentExtracurricular::where('extracurricular_id', $record->id)->delete();
+
+                            // notifikasi
+                            Notification::make()
+                                ->title('Berhasil')
+                                ->body('Semua siswa berhasil dihapus dari ekstrakurikuler ini.')
+                                ->success()
+                                ->send();
+                        }
+                    }),
             ])
             ->filters([
                 //

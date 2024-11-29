@@ -65,4 +65,9 @@ class Teacher extends Model
     {
         return $this->hasMany(TeacherExtracurricular::class);
     }
+
+    public function teacherQuran()
+    {
+        return $this->hasMany(TeacherQuran::class);
+    }
 }

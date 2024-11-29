@@ -24,7 +24,9 @@ class ProjectCoordinatorResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Project';
+    protected static ?string $navigationGroup = 'Pengaturan';
+
+    protected static ?int $navigationSort = 8;
 
     // get model label
     public static function getModelLabel(): string

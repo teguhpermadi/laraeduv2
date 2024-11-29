@@ -66,13 +66,12 @@ class QuranGradeResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 RelationManagerAction::make('student-quran-grade-relation-manager')
-                    ->label('Lihat Siswa')
+                    ->label('Siswa')
                     ->button()
                     ->slideOver()
                     ->relationManager(StudentQuranGradeRelationManager::make()),
                 RelationManagerAction::make('teacher-quran-grade-relation-manager')
-                    ->label('Lihat Guru')
-                    ->color('success')
+                    ->label('Guru')
                     ->button()
                     ->slideOver()
                     ->relationManager(TeacherQuranGradeRelationManager::make()),

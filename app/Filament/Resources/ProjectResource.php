@@ -9,6 +9,7 @@ use App\Models\Grade;
 use App\Models\Project;
 use App\Models\ProjectCoordinator;
 use App\Enums\PhaseEnum;
+use App\Models\ProjectTheme;
 use Filament\Forms;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -65,6 +66,10 @@ class ProjectResource extends Resource
                 Select::make('phase')
                     ->label(__('project.phase'))
                     ->options(PhaseEnum::class)
+                    ->required(),
+                Select::make('project_theme_id')
+                    ->label(__('project.theme'))
+                    ->options(ProjectTheme::all()->pluck('name', 'id'))
                     ->required(),
                 TextInput::make('name')
                     ->label(__('project.name'))
