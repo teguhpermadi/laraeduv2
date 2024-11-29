@@ -14,6 +14,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
+use Illuminate\Database\Eloquent\Model;
 
 class TeacherGradesRelationManager extends RelationManager
 {
@@ -56,7 +57,15 @@ class TeacherGradesRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->slideOver(),
+                    ->slideOver()
+                    ->using(function (array $data):Model {
+                        return TeacherGrade::updateOrCreate(
+                            ['academic_year_id' => session('academic_year_id'), 'teacher_id' => $this->ownerRecord->id, 'grade_id' => $data['grade_id']],
+                            ['academic_year_id' => session('academic_year_id'), 'teacher_id' => $this->ownerRecord->id, 'grade_id' => $data['grade_id']]
+                        );
+
+                        return $teacherGrade;
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()

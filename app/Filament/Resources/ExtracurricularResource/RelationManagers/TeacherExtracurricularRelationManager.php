@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TeacherExtracurricularRelationManager extends RelationManager
@@ -54,7 +55,15 @@ class TeacherExtracurricularRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->slideOver(),
+                    ->slideOver()
+                    ->using(function (array $data):Model {
+                        return TeacherExtracurricular::updateOrCreate(
+                            ['academic_year_id' => session('academic_year_id'), 'teacher_id' => $this->ownerRecord->id, 'extracurricular_id' => $data['extracurricular_id']],
+                            ['academic_year_id' => session('academic_year_id'), 'teacher_id' => $this->ownerRecord->id, 'extracurricular_id' => $data['extracurricular_id']]
+                        );
+
+                        return $teacherExtracurricular;
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
