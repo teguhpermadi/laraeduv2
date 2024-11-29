@@ -29,8 +29,10 @@ class ListCompetencies extends ListRecords
         return [
             Actions\CreateAction::make(),
             Action::make('download')
+                ->slideOver()
                 ->form([
                     Select::make('teacher_subject_id')
+                        ->label(__('competency.teacher_subject_id'))
                         ->options(
                             TeacherSubject::mySubject()->with('grade')->get()->map(function ($item) {
                                 return [
@@ -45,6 +47,7 @@ class ListCompetencies extends ListRecords
                     return $this->export($data['teacher_subject_id']);
                 }),
             Action::make('upload')
+                ->slideOver()
                 ->form([
                     FileUpload::make('file')
                         ->directory('uploads')

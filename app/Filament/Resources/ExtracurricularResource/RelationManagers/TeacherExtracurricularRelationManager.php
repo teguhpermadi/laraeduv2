@@ -58,8 +58,8 @@ class TeacherExtracurricularRelationManager extends RelationManager
                     ->slideOver()
                     ->using(function (array $data):Model {
                         return TeacherExtracurricular::updateOrCreate(
-                            ['academic_year_id' => session('academic_year_id'), 'teacher_id' => $this->ownerRecord->id, 'extracurricular_id' => $data['extracurricular_id']],
-                            ['academic_year_id' => session('academic_year_id'), 'teacher_id' => $this->ownerRecord->id, 'extracurricular_id' => $data['extracurricular_id']]
+                            ['academic_year_id' => session('academic_year_id'), 'extracurricular_id' => $this->ownerRecord->id, 'teacher_id' => $data['teacher_id']],
+                            ['academic_year_id' => session('academic_year_id'), 'extracurricular_id' => $this->ownerRecord->id, 'teacher_id' => $data['teacher_id']]
                         );
 
                         return $teacherExtracurricular;

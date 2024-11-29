@@ -30,7 +30,7 @@ class AttitudeResource extends Resource
 
     protected static ?string $navigationGroup = 'Kelas Ku';
 
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 12;
 
     public static function getModelLabel(): string
     {

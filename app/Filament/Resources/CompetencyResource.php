@@ -34,6 +34,9 @@ class CompetencyResource extends Resource
 
     protected static ?string $navigationGroup = 'Pelajaran Ku';
 
+    protected static ?int $navigationSort = 7;
+
+
     public static function getNavigationLabel(): string
     {
         return __('competency.competency');

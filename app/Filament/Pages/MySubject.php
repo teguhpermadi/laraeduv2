@@ -26,6 +26,9 @@ class MySubject extends Page implements HasTable
 
     protected static string $view = 'filament.pages.my-subject';
 
+    protected static ?int $navigationSort = 8;
+
+
     public static function getNavigationLabel(): string
     {
         return __('my-subject.my-subject');

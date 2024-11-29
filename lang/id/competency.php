@@ -13,4 +13,5 @@ return [
     'half_semester' => 'Tengah Semester',
     'code_skill' => 'Kode Kompetensi Skill',
     'description_skill' => 'Deskripsi Kompetensi Skill',
+    'teacher_subject_id' => 'Guru Mata Pelajaran',
 ];

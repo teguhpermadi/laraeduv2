@@ -37,7 +37,7 @@ class AttendanceResource extends Resource
 
     protected static ?string $navigationGroup = 'Kelas Ku';
 
-    protected static ?int $navigationSort = 2;  
+    protected static ?int $navigationSort = 11;  
 
     public static function form(Form $form): Form
     {

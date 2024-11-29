@@ -26,7 +26,7 @@ class MyGrade extends Page implements HasTable
 
     protected static ?string $navigationGroup = 'Kelas Ku';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 10;
 
     // navigation label
     public static function getNavigationLabel(): string
