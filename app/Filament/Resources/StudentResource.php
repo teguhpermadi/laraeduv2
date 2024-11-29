@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
+use App\Filament\Resources\StudentResource\RelationManagers\DataStudentRelationManager;
 use App\Filament\Resources\StudentResource\RelationManagers\StudentGradeRelationManager;
 use App\Models\Student;
 use Filament\Forms;
@@ -82,12 +83,17 @@ class StudentResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                RelationManagerAction::make('data-student-relation-manager')
+                    ->label('data')
+                    ->button()
+                    ->slideOver()
+                    ->relationManager(DataStudentRelationManager::class),
                 RelationManagerAction::make('student-grade-relation-manager')
                     ->label('kelas')
                     ->button()
                     ->slideOver()
                     ->relationManager(StudentGradeRelationManager::class),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
