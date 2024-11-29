@@ -86,7 +86,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('5s')
-            ->viteTheme('resources/css/filament/admin/theme.css')
-            ->spa();
+            ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }

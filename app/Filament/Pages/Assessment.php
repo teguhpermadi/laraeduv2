@@ -267,6 +267,7 @@ class Assessment extends Page implements HasForms, HasTable
                     })
                     ->button(),
                 TableAction::make('upload')
+                    ->slideOver()
                     ->form([
                         FileUpload::make('file')
                             ->directory('uploads')

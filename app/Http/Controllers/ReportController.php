@@ -57,48 +57,59 @@ class ReportController extends Controller
     // cover student identity
     public function coverStudent($data)
     {
-        // dd($data);
+        // dd($data->toArray());
         if (is_null($data['dataStudent'])) {
             abort(403, 'Data siswa tidak ditemukan');
         }
 
-        $templateProcessor = new TemplateProcessor(storage_path('/app/public/templates/cover-student.docx'));
-        $templateProcessor->setValue('nama', $data['name']);
-        $templateProcessor->setValue('nisn', $data['nisn']);
-        $templateProcessor->setValue('nis', $data['nis']);
-        $templateProcessor->setValue('tempat_lahir', $data['city_born']);
+        $academicYear = AcademicYear::find(session('academic_year_id'));
 
-        $templateProcessor->setValue('tanggal_lahir', Carbon::createFromFormat('Y-m-d', $data['birthday'])->locale('id')->translatedFormat('d F Y'));
-        $templateProcessor->setValue('jenis_kelamin', $data['gender']);
-        $templateProcessor->setValue('agama', $data['dataStudent']['religion']);
-        $templateProcessor->setValue('pendidikan_sebelumnya', $data['previous_school']);
-        $templateProcessor->setValue('alamat', $data['student_address']);
-        $templateProcessor->setValue('kelurahan', $data['student_village']);
-        $templateProcessor->setValue('kecamatan', $data['student_district']);
-        $templateProcessor->setValue('kota', $data['student_city']);
-        $templateProcessor->setValue('provinsi', $data['student_province']);
+        $templateProcessor = new TemplateProcessor(storage_path('/app/public/templates/cover-student.docx'));
+        $templateProcessor->setValue('nama', ($data['name']) ? $data['name'] : '-');
+        $templateProcessor->setValue('nisn', ($data['nisn']) ? $data['nisn'] : '-');
+        $templateProcessor->setValue('nis', ($data['nis']) ? $data['nis'] : '-');
+        $templateProcessor->setValue('tempat_lahir', ($data['dataStudent']['city_born']) ? $data['dataStudent']['city_born'] : '-');
+
+        $templateProcessor->setValue('tanggal_lahir', ($data['birthday']) ? Carbon::createFromFormat('Y-m-d', $data['birthday'])->locale('id')->translatedFormat('d F Y') : '-');
+        $templateProcessor->setValue('jenis_kelamin', ($data['gender']) ? $data['gender'] : '-');
+        $templateProcessor->setValue('agama', ($data['dataStudent']['religion']) ? $data['dataStudent']['religion'] : '-');
+        $templateProcessor->setValue('pendidikan_sebelumnya', ($data['dataStudent']['previous_school']) ? $data['dataStudent']['previous_school'] : '-');
+        $templateProcessor->setValue('alamat', ($data['dataStudent']['student_address']) ? $data['dataStudent']['student_address'] : '-');
+        $templateProcessor->setValue('kelurahan', ($data['dataStudent']['student_village']) ? $data['dataStudent']['student_village'] : '-');
+        $templateProcessor->setValue('kecamatan', ($data['dataStudent']['student_district']) ? $data['dataStudent']['student_district'] : '-');
+        $templateProcessor->setValue('kota', ($data['dataStudent']['student_city']) ? $data['dataStudent']['student_city'] : '-');
+        $templateProcessor->setValue('provinsi', ($data['dataStudent']['student_province']) ? $data['dataStudent']['student_province'] : '-');
 
         // ayah
-        $templateProcessor->setValue('nama_ayah', $data['dataStudent']['father_name']);
-        $templateProcessor->setValue('pendidikan_ayah', $data['dataStudent']['father_education']);
-        $templateProcessor->setValue('pekerjaan_ayah', $data['dataStudent']['father_occupation']);
+        $templateProcessor->setValue('nama_ayah', ($data['dataStudent']['father_name']) ? $data['dataStudent']['father_name'] : '-');
+        $templateProcessor->setValue('pendidikan_ayah', ($data['dataStudent']['father_education']) ? $data['dataStudent']['father_education'] : '-');
+        $templateProcessor->setValue('pekerjaan_ayah', ($data['dataStudent']['father_occupation']) ? $data['dataStudent']['father_occupation'] : '-');
+        
         // ibu
-        $templateProcessor->setValue('nama_ibu', $data['dataStudent']['mother_name']);
-        $templateProcessor->setValue('pendidikan_ibu', $data['dataStudent']['mother_education']);
-        $templateProcessor->setValue('pekerjaan_ibu', $data['dataStudent']['mother_occupation']);
+        $templateProcessor->setValue('nama_ibu', ($data['dataStudent']['mother_name']) ? $data['dataStudent']['mother_name'] : '-');
+        $templateProcessor->setValue('pendidikan_ibu', ($data['dataStudent']['mother_education']) ? $data['dataStudent']['mother_education'] : '-');
+        $templateProcessor->setValue('pekerjaan_ibu', ($data['dataStudent']['mother_occupation']) ? $data['dataStudent']['mother_occupation'] : '-');
 
         // alamat
-        $templateProcessor->setValue('alamat_orangtua', $data['dataStudent']['parent_address']);
-        $templateProcessor->setValue('kelurahan_orangtua', $data['dataStudent']['parent_village']);
-        $templateProcessor->setValue('kecamatan_orangtua', $data['dataStudent']['parent_district']);
-        $templateProcessor->setValue('kota_orangtua', $data['dataStudent']['parent_city']);
-        $templateProcessor->setValue('provinsi_orangtua', $data['dataStudent']['parent_province']);
+        $templateProcessor->setValue('alamat_orangtua', ($data['dataStudent']['parent_address']) ? $data['dataStudent']['parent_address'] : '-');
+        $templateProcessor->setValue('kelurahan_orangtua', ($data['dataStudent']['parent_village']) ? $data['dataStudent']['parent_village'] : '-');
+        $templateProcessor->setValue('kecamatan_orangtua', ($data['dataStudent']['parent_district']) ? $data['dataStudent']['parent_district'] : '-');
+        $templateProcessor->setValue('kota_orangtua', ($data['dataStudent']['parent_city']) ? $data['dataStudent']['parent_city'] : '-');
+        $templateProcessor->setValue('provinsi_orangtua', ($data['dataStudent']['parent_province']) ? $data['dataStudent']['parent_province'] : '-');
+
+        // wali
+        $templateProcessor->setValue('nama_wali', ($data['dataStudent']['guardian_name']) ? $data['dataStudent']['guardian_name'] : '-');
+        $templateProcessor->setValue('pendidikan_wali', ($data['dataStudent']['guardian_education']) ? $data['dataStudent']['guardian_education'] : '-');
+        $templateProcessor->setValue('pekerjaan_wali', ($data['dataStudent']['guardian_occupation']) ? $data['dataStudent']['guardian_occupation'] : '-');
+        $templateProcessor->setValue('alamat_wali', ($data['dataStudent']['guardian_address']) ? $data['dataStudent']['guardian_address'] : '-');
 
         // tanda tangan
-        $templateProcessor->setValue('date_received', Carbon::createFromFormat('Y-m-d', $data['dataStudent']['date_received'])->locale('id')->translatedFormat('d F Y'));
-        $templateProcessor->setValue('headmaster', $data['academic']['teacher']['name']);
+        $templateProcessor->setValue('date_received', ($data['dataStudent']['date_received']) ? Carbon::createFromFormat('Y-m-d', $data['dataStudent']['date_received'])->locale('id')->translatedFormat('d F Y') : '-');
+        $templateProcessor->setValue('headmaster', ($academicYear->teacher->name) ? $academicYear->teacher->name : '-');
 
-        $filename = 'Identitas ' . $data['student']['name'] . ' - ' . $data['academic']['semester'] . '.docx';
+
+
+        $filename = 'Identitas ' . $data['name'] . ' - ' . $academicYear->semester . '.docx';
         $file_path = storage_path('/app/public/downloads/' . $filename);
         $templateProcessor->saveAs($file_path);
         return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
@@ -328,7 +339,27 @@ class ReportController extends Controller
             $templateProcessor->cloneBlock('block_status', 0, true, false, null);
         } else {
             $templateProcessor->cloneBlock('block_status', 1, true, false, null);
-            $templateProcessor->setValue('status', $student->attendanceFirst->status ?? '-');
+            
+            $description = '';
+            // next grade dari grade saat ini
+            $nowGrade = $student->studentGradeFirst->grade->grade;
+            $nextGrade = $nowGrade + 1;
+
+            switch ($student->attendanceFirst->status) {
+                case 1:
+                    $description = 'Berdasarkan pencapaian seluruh kompetensi, ananda ' . $student->name . ' dinyatakan NAIK KELAS dan dapat melanjutkan ke jenjang berikutnya.';
+                    break;
+
+                case 0:
+                    $description = 'Berdasarkan pencapaian seluruh kompetensi, ananda ' . $student->name . ' dinyatakan TIDAK NAIK KELAS dan tetap berada jenjang sekarang.';
+                    break;
+                    
+                default:
+                    $description = '-';
+                    break;
+            } 
+
+            $templateProcessor->setValue('status', $description ?? '-');
         }
 
         // setting mata pelajaran

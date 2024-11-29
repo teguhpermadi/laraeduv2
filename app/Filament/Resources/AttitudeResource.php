@@ -10,6 +10,7 @@ use App\Models\Attitude;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -47,7 +48,7 @@ class AttitudeResource extends Resource
                     ->reactive()
                     ->required()
                     ->options(Student::myStudentGrade()->pluck('name', 'id'))
-                    ->afterStateUpdated(function(callable $set, callable $get, $state){
+                    ->afterStateUpdated(function (callable $set, callable $get, $state) {
                         $grade_id = Student::find($state)->studentGrade->first()->grade_id;
                         $set('grade_id', $grade_id);
                     }),
@@ -79,33 +80,37 @@ class AttitudeResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     // Tables\Actions\DeleteBulkAction::make(),
                     BulkAction::make('assesment')
-                    ->form([
-                        Select::make('attitude_religius')
-                            ->label(__('attitude.attitude_religius'))
-                            ->options(LinkertScaleEnum::class)
-                            ->required(),
-                        Select::make('attitude_social')
-                            ->label(__('attitude.attitude_social'))
-                            ->options(LinkertScaleEnum::class)
-                            ->required(),
-                    ])
-                    ->action(function (Collection $records, $data) {
-                        $dataUpdate = [
-                            'attitude_religius' => $data['attitude_religius'],
-                            'attitude_social' => $data['attitude_social'],
-                        ]; 
-                        
-                        return $records->each->update($dataUpdate);
-                    }),
+                        ->form([
+                            Section::make()
+                                ->schema([
+                                    Select::make('attitude_religius')
+                                        ->label(__('attitude.attitude_religius'))
+                                        ->options(LinkertScaleEnum::class)
+                                        ->required(),
+                                    Select::make('attitude_social')
+                                        ->label(__('attitude.attitude_social'))
+                                        ->options(LinkertScaleEnum::class)
+                                        ->required(),
+                                ])
+                                ->columns(2),
+                        ])
+                        ->action(function (Collection $records, $data) {
+                            $dataUpdate = [
+                                'attitude_religius' => $data['attitude_religius'],
+                                'attitude_social' => $data['attitude_social'],
+                            ];
+
+                            return $records->each->update($dataUpdate);
+                        }),
                 ]),
             ])
-            ->modifyQueryUsing(function(Builder $query){
+            ->modifyQueryUsing(function (Builder $query) {
                 $query->myGrade();
             })
             ->paginated(false);

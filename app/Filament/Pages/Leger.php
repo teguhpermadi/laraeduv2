@@ -12,6 +12,8 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ViewField;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -19,6 +21,7 @@ use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
 use Filament\Tables\Contracts\HasTable;
@@ -26,6 +29,7 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class Leger extends Page implements HasForms, HasTable
 {
@@ -387,11 +391,11 @@ class Leger extends Page implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
+            ->heading('Catatan Guru')
+            ->description('Catatan guru akan tampil di rapor siswa')
             ->query(ModelsLeger::query())
             ->columns([
                 TextColumn::make('student.name'),
-                TextColumn::make('category')
-                ->badge(),
                 TextInputColumn::make('note.note'),
             ])
             ->filters([
@@ -411,6 +415,20 @@ class Leger extends Page implements HasForms, HasTable
                         // dd($leger->toArray());
                         foreach ($legers as $item) {
                             $item->note()->updateOrCreate(['leger_id' => $item->id], ['note' => '-']);
+                        }
+                    })
+            ])
+            ->bulkActions([
+                BulkAction::make('catatan')
+                    ->label('Buat Catatan')
+                    ->form([
+                        Textarea::make('note')
+                            ->label('Catatan')
+                            ->required(),
+                    ])
+                    ->action(function (Collection $records, array $data) {
+                        foreach ($records as $record) {
+                            $record->note()->updateOrCreate(['leger_id' => $record->id], ['note' => $data['note']]);
                         }
                     })
             ])

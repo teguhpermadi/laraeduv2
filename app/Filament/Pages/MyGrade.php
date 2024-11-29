@@ -2,12 +2,14 @@
 
 namespace App\Filament\Pages;
 
+use App\Models\AcademicYear;
 use App\Models\Student;
 use App\Models\StudentGrade;
 use App\Models\TeacherGrade;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -17,7 +19,7 @@ use Illuminate\Database\Eloquent\Builder;
 class MyGrade extends Page implements HasTable
 {
     use HasPageShield;
-    
+
     use InteractsWithTable;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
@@ -49,6 +51,21 @@ class MyGrade extends Page implements HasTable
                 TextColumn::make('student.name')
                     ->label('Nama Siswa')
                     ->searchable(),
+                IconColumn::make('student.attendanceFirst.status')
+                    ->label('Naik Kelas')
+                    ->boolean()
+                    ->hidden(
+                        function () {
+                            // sembunyikan jika academic semester genap
+                            $academic = AcademicYear::find(session('academic_year_id'));
+
+                            if ($academic->semester == 'ganjil') {
+                                return true;
+                            }
+
+                            return false;
+                        }
+                    ),
             ])
             ->actions([
                 // action cover raport
