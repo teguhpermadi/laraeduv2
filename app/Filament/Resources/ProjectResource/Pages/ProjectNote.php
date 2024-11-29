@@ -6,6 +6,7 @@ use App\Filament\Resources\ProjectResource;
 use App\Models\Project;
 use App\Models\ProjectNote as ModelsProjectNote;
 use App\Models\StudentGrade;
+use Filament\Forms\Components\Textarea;
 // action header
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\TextInput;
@@ -50,10 +51,12 @@ class ProjectNote extends Page implements HasForms, HasTable
                         ->label(__('project.note')),
                 ])
                 ->bulkActions([
-                    BulkAction::make('scoring')
-                        ->label(__('project.scoring'))
+                    BulkAction::make('note')
+                        ->label(__('project.note'))
+                        ->slideOver()
+                        ->closeModalByClickingAway(false)
                         ->form([
-                            TextInput::make('note')
+                            Textarea::make('note')
                                 ->label(__('project.note'))
                         ])
                         ->action(function (Collection $records, $data) {
