@@ -1,5 +1,1 @@
-DB::connection('laraedu')->table('academic_years')->get();
-DB::connection('laraeduv2')->table('academic_years')->get();
-DB::connection('laraedu')->table('academic_years')->get();
-DB::connection('mysql')->table('academic_years')->get();
-DB::connection('mysql')->table('academic_years')->get();
+PhaseEnum::phaseA->value
