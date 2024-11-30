@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-#[ObservedBy(TeacherSubjectObserver::class)]
+// #[ObservedBy(TeacherSubjectObserver::class)]
 class TeacherSubject extends Model
 {
     use HasFactory;

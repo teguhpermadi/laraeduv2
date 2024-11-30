@@ -1,1 +1,42 @@
 PhaseEnum::phaseA->value
+config(['database.default' => 'laraedu']);
+
+AcademicYear::get();
+config(['database.default' => 'laraedu']);
+
+AcademicYear::get();
+
+config(['database.default' => 'mysql']);
+
+AcademicYear::get();
+config(['database.default' => 'laraedu']);
+
+AcademicYear::get();
+
+TeacherSubject::get();
+DB::connection('laraedu')->table('academic_years')->get();
+DB::connection('laraedu')->table('academic_years')->with('teacherSubject')->get();
+$academicYear = DB::connection('laraedu')->table('academic_years')->get();
+$academicYear = DB::connection('laraedu')->table('academic_years')->get();
+$academicYear = DB::connection('laraedu')->table('academic_years')->get();
+
+foreach ($academicYear as $year) {
+  
+  $teacherSubjects = DB::connection('laraedu')->table('teacher_subjects')
+	->join('subjects', 'teacher_subjects.subject_id', '=', 'subjects.id')
+	->where('teacher_subjects.academic_year_id', $year->id)
+	->get();
+  
+  $teacherSubjects;
+}
+$academicYear = DB::connection('laraedu')->table('academic_years')->get();
+
+foreach ($academicYear as $year) {
+  
+  $teacherSubjects = DB::connection('laraedu')->table('teacher_subjects')
+	->join('subjects', 'teacher_subjects.subject_id', '=', 'subjects.id')
+	->where('teacher_subjects.academic_year_id', $year->id)
+	->get();
+}
+
+$teacherSubjects

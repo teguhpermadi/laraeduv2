@@ -17,11 +17,11 @@ class DatabaseSeeder extends Seeder
             // RoleSeeder::class,
             ShieldSeeder::class,
             AdminSeeder::class,
-            TeacherSeeder::class,
-            StudentSeeder::class,
-            AcademicYearSeeder::class,
-            GradeSeeder::class,
-            SubjectSeeder::class,
+            // TeacherSeeder::class,
+            // StudentSeeder::class,
+            // AcademicYearSeeder::class,
+            // GradeSeeder::class,
+            // SubjectSeeder::class,
             // TeacherGradeSeeder::class,
             // StudentGradeSeeder::class,
             // TeacherGradeSeeder::class,
@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             // StudentCompetencySeeder::class,
 
             // Extracurricular
-            ExtracurricularSeeder::class,
+            // ExtracurricularSeeder::class,
             // TeacherExtracurricularSeeder::class,
             // StudentExtracurricularSeeder::class,
 
