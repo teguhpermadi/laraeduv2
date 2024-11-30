@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('legers', function (Blueprint $table) {
-            $table->id()->from(600);
+            $table->id();
             $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
             $table->foreignId('teacher_subject_id')->constrained()->cascadeOnDelete();

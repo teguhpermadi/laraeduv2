@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('student_competency_qurans', function (Blueprint $table) {
-            $table->id()->from(1600);
+            $table->id();
             $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
             $table->foreignId('quran_grade_id')->constrained()->cascadeOnDelete();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
