@@ -21,6 +21,8 @@ use App\Jobs\CopyTeacherExtracurricularJob;
 use App\Jobs\CopyTeacherGradeJob;
 use App\Jobs\CopyTeacherJob;
 use App\Jobs\CopyTeacherSubjectJob;
+use App\Jobs\CopyUserableJob;
+use App\Jobs\CopyUserJob;
 use Illuminate\Support\Facades\Bus;
 
 class CopyDatabaseCommand extends Command
@@ -63,6 +65,8 @@ class CopyDatabaseCommand extends Command
             new CopyProjectTargetJob(),
             new CopyProjectNoteJob(),
             new CopyProjectStudentJob(),
+            new CopyUserJob(),
+            new CopyUserableJob(),
         ])->dispatch();
     }
 }
