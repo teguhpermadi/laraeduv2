@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('score')->default(0);
             $table->integer('sum')->default(0);
             $table->integer('rank')->default(0);
-            $table->string('description');
+            $table->text('description')->nullable();
             $table->json('metadata')->nullable();
             $table->string('category');
             $table->timestamps();

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->ulid('id')->primary()->unique();
             $table->foreignUlid('teacher_subject_id')->constrained('teacher_subjects')->cascadeOnDelete();
             $table->string('code')->nullable();
-            $table->string('description');
+            $table->text('description')->nullable();
             $table->string('passing_grade')->default(0);
             $table->boolean('half_semester')->default(false);
             $table->timestamps();

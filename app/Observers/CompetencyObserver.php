@@ -26,7 +26,7 @@ class CompetencyObserver
                 'created_at' => now(),
             ];
 
-            StudentCompetency::insert($data);
+            StudentCompetency::create($data);
         }
         
         // dd($students);

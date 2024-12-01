@@ -26,9 +26,10 @@ class ProjectTargetObserver
                 'student_id' => $student->student_id,
                 'project_target_id' => $projectTarget->id,
             ];
+            
+            StudentProject::create($data);
         }
 
-        StudentProject::insert($data);
     }
 
     /**

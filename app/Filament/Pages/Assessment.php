@@ -38,6 +38,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Illuminate\Support\Str;
 
 class Assessment extends Page implements HasForms, HasTable
 {
@@ -368,6 +369,7 @@ class Assessment extends Page implements HasForms, HasTable
         foreach ($students as $student) {
             foreach ($competencies as $competency) {
                 $data = [
+                    'id' => Str::ulid()->toBase32(),
                     'teacher_subject_id' => $teacher_subject_id,
                     'student_id' => $student,
                     'competency_id' => $competency,
@@ -385,10 +387,6 @@ class Assessment extends Page implements HasForms, HasTable
             ->body('Berhasil mereset nilai')
             ->success()
             ->send();
-
-        // dd($data);
-
-        // StudentCompetency::insert($data);
     }
 
     public function download()
