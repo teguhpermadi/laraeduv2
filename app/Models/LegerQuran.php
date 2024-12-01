@@ -10,17 +10,7 @@ class LegerQuran extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'academic_year_id',
-        'student_id',
-        'quran_grade_id',
-        'teacher_quran_grade_id',
-        'score',
-        'description',
-        'metadata',
-        'sum',
-        'rank',
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'metadata' => 'array',

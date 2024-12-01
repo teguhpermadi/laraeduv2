@@ -9,12 +9,7 @@ class LegerRecap extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'academic_year_id', 
-        'teacher_subject_id',
-        'category',
-        'updated_at',
-    ];
+    protected $guarded = [];
 
     public function academicYear()
     {

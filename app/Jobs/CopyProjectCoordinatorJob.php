@@ -31,7 +31,9 @@ class CopyProjectCoordinatorJob implements ShouldQueue
         $projectCoordinators = DB::connection('laraedu')->table('project_coordinators')->get();
 
         foreach ($projectCoordinators as $projectCoordinator) {
-            ProjectCoordinator::create($projectCoordinator);
+            $array = json_decode(json_encode($projectCoordinator), true);
+
+            ProjectCoordinator::create($array);
         }
     }
 

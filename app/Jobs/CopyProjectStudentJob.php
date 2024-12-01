@@ -31,7 +31,9 @@ class CopyProjectStudentJob implements ShouldQueue
         $projectStudents = DB::connection('laraedu')->table('project_students')->get();
 
         foreach ($projectStudents as $projectStudent) {
-            StudentProject::create($projectStudent);
+            $array = json_decode(json_encode($projectStudent), true);
+
+            StudentProject::create($array);
         }
     }
 

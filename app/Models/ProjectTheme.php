@@ -10,9 +10,7 @@ class ProjectTheme extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-    ];
+    protected $guarded = [];
 
     /**
      * The "booted" method of the model.

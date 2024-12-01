@@ -31,7 +31,9 @@ class CopyTeacherExtracurricularJob implements ShouldQueue
         $teacherExtracurriculars = DB::connection('laraedu')->table('teacher_extracurriculars')->get();
         
         foreach ($teacherExtracurriculars as $teacherExtracurricular) {
-            TeacherExtracurricular::create($teacherExtracurricular);
+            $array = json_decode(json_encode($teacherExtracurricular), true);
+
+            TeacherExtracurricular::create($array);
         }
     }
 

@@ -13,12 +13,7 @@ class ProjectNote extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'academic_year_id',
-        'project_id',
-        'student_id',
-        'note',
-    ];
+    protected $guarded = [];
     
     public function project()
     {

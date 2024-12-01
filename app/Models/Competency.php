@@ -17,15 +17,7 @@ class Competency extends Model
     use HasFactory;
     use LogsActivity;
 
-    protected $fillable = [
-        'teacher_subject_id',
-        'code',
-        'description',
-        'passing_grade',
-        'half_semester',
-        'code_skill',
-        'description_skill',
-    ];  
+    protected $guarded = [];
 
     public function getActivitylogOptions(): LogOptions
     {

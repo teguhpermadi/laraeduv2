@@ -31,7 +31,14 @@ class CopyCompetencyJob implements ShouldQueue
         $competencies = DB::connection('laraedu')->table('competencies')->get();
 
         foreach ($competencies as $competency) {
-            Competency::create($competency);
+            
+            $array = json_decode(json_encode($competency), true);
+
+            try {
+                Competency::create($array);
+            } catch (\Throwable $th) {
+                Log::error('CopyCompetencyJob failed: ' . $th->getMessage());
+            }
         }
     }
 

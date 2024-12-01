@@ -15,17 +15,7 @@ class Attendance extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'academic_year_id',
-        'grade_id',
-        'student_id',
-        'sick',
-        'permission',
-        'absent',
-        'note',
-        'achievement',
-        'status',
-    ];
+    protected $guarded = [];
 
     protected $hidden = [
         'created_at',

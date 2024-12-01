@@ -14,24 +14,7 @@ class Leger extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'academic_year_id',
-        'student_id',
-        'teacher_subject_id',
-        'teacher_id',
-        'subject_id',
-        'subject_order',
-        'score',
-        'description',
-        'metadata',
-        'sum',
-        'rank', 
-        'category',
-        'score_skill',
-        'sum_skill',
-        'description_skill',
-        'passing_grade',
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'metadata' => 'array',

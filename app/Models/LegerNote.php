@@ -9,10 +9,7 @@ class LegerNote extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'leger_id',
-        'note',
-    ];
+    protected $guarded = [];
 
     public function leger()
     {

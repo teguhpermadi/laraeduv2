@@ -9,10 +9,7 @@ class LegerQuranNote extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'leger_quran_id',
-        'note',
-    ];
+    protected $guarded = [];
 
     public function legerQuran()
     {

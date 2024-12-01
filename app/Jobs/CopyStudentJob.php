@@ -31,19 +31,8 @@ class CopyStudentJob implements ShouldQueue
         $students = DB::connection('laraedu')->table('students')->get();
 
         foreach ($students as $student) {
-            // atur ulang datanya
-            $data = [
-                'nisn' => $student->nisn,
-                'nis' => $student->nis,
-                'name' => $student->name,
-                'gender' => $student->gender,
-                'active' => $student->active,
-                'city_born' => $student->city_born,
-                'birthday' => $student->birthday,
-                'nick_name' => $student->nick_name,
-            ];
-
-            Student::create($data);
+            $array = json_decode(json_encode($student), true);
+            Student::create($array);
         }
     }
 

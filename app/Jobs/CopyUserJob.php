@@ -31,7 +31,8 @@ class CopyUserJob implements ShouldQueue
         $users = DB::connection('laraedu')->table('users')->get();
 
         foreach ($users as $user) {
-            User::create($user);
+            $array = json_decode(json_encode($user), true);
+            User::updateOrCreate($array);
         }
     }
 

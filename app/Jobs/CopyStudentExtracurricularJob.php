@@ -31,14 +31,37 @@ class CopyStudentExtracurricularJob implements ShouldQueue
         $studentExtracurriculars = DB::connection('laraedu')->table('student_extracurriculars')->get();
 
         foreach ($studentExtracurriculars as $studentExtracurricular) {
+            $score = '';
+
+            switch ($studentExtracurricular->score) {
+                case 'A':
+                    $score = 4;
+                    break;
+                case 'B':
+                    $score = 3;
+                    break;
+                case 'C':
+                    $score = 2;
+                    break;
+                case 'D':
+                    $score = 1;
+                    break;
+                default:
+                    $score = 0;
+                    break;
+            }
+
             $data = [
+                'id' => $studentExtracurricular->id,
                 'student_id' => $studentExtracurricular->student_id,
                 'extracurricular_id' => $studentExtracurricular->extracurricular_id,
                 'academic_year_id' => $studentExtracurricular->academic_year_id,
-                'score' => $studentExtracurricular->score,
+                'score' => $score,
             ];
 
-            StudentExtracurricular::create($data);
+            $array = json_decode(json_encode($data), true);
+
+            StudentExtracurricular::create($array);
         }
     }
 

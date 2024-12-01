@@ -14,14 +14,7 @@ class AcademicYear extends Model
     use HasFactory;
     use LogsActivity;
 
-    protected $fillable = [
-        'id',
-        'year',
-        'semester',
-        'teacher_id',
-        'date_report_half',
-        'date_report'
-    ];
+    protected $guarded = [];
 
     public function getActivitylogOptions(): LogOptions
     {

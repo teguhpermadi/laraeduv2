@@ -31,7 +31,9 @@ class CopyTeacherJob implements ShouldQueue
         $teachers = DB::connection('laraedu')->table('teachers')->get();
 
         foreach ($teachers as $teacher) {
-            Teacher::create($teacher);
+            $array = json_decode(json_encode($teacher), true);
+
+            Teacher::create($array);
         }
     }
 

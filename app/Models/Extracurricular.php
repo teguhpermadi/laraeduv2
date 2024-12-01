@@ -9,10 +9,7 @@ class Extracurricular extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'is_required',
-    ];
+    protected $guarded = [];
 
     public function teacherExtracurricular()
     {

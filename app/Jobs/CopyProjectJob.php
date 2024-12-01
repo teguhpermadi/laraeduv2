@@ -48,6 +48,7 @@ class CopyProjectJob implements ShouldQueue
             }
 
             $data = [
+                'id' => $project->id,
                 'academic_year_id' => $project->academic_year_id,
                 'grade_id' => $project->grade_id,
                 'teacher_id' => $project->teacher_id,
@@ -57,7 +58,9 @@ class CopyProjectJob implements ShouldQueue
                 'phase' => $phase,
             ];
 
-            Project::create($data);
+            $array = json_decode(json_encode($data), true);
+
+            Project::create($array);
         }
     }
 

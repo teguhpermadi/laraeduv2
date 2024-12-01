@@ -11,15 +11,7 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'academic_year_id',
-        'grade_id',
-        'teacher_id',
-        'project_theme_id',
-        'name',
-        'description',
-        'phase',
-    ];
+    protected $guarded = [];
 
     public function academic()
     {

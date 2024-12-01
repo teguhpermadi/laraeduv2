@@ -14,13 +14,7 @@ class CompetencyQuran extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'teacher_quran_grade_id',
-        'code',
-        'description',
-        'passing_grade',
-    ];
-
+    protected $guarded = [];
 
     public function teacherQuranGrade()
     {

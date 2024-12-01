@@ -1,110 +1,284 @@
 $teachers = DB::connection('laraedu')->table('teachers')->get();
-$projectNotes = DB::connection('laraedu')->table('project_notes')->get();
-$projectNotes = DB::connection('laraedu')->table('project_notes')->get();
 
-foreach ($projectNotes as $projectNote) {
-            ProjectNote::create($projectNote);
-        }
-$projectNotes = DB::connection('laraedu')->table('project_notes')->get();
-
-foreach ($projectNotes as $projectNote) {
-            $projectNote
-        }
-$projectNotes = DB::connection('laraedu')->table('project_notes')->get();
-
-foreach ($projectNotes as $projectNote) {
-            $projectNote;
-        }
-$projectNotes = DB::connection('laraedu')->table('project_notes')->get();
-
-foreach ($projectNotes as $projectNote) {
-            $projectNote;
-        }
-
-$projectNote;
-$teachers = DB::connection('laraedu')->table('teachers')->get();
-
-        $data = [];
-        foreach ($teachers as $teacher) {
-            
-            $data = [
-                'name' => $teacher->name,
-                'gender' => $teacher->gender,
-                'signature' => null,
-                'nip' => null,
-                'nuptk' => null,
-                'photo' => null,
-            ];
-
-            Teacher::create($data);
-        }
-$teachers = DB::connection('laraedu')->table('teachers')->get();
-
-$data = [];
 foreach ($teachers as $teacher) {
   
   $data = [
 	'name' => $teacher->name,
 	'gender' => $teacher->gender,
-	'signature' => null,
-	'nip' => null,
-	'nuptk' => null,
-	'photo' => null,
   ];
 
+  
   Teacher::create($data);
 }
-Teacher::get()
-$teachers = DB::connection('laraedu')->table('teachers')->get();
 $teachers = DB::connection('laraedu')->table('teachers')->get();
 
 foreach ($teachers as $teacher) {
-            
-            $data[] = [
-                'name' => $teacher->name,
-                'gender' => $teacher->gender,
-                'signature' => null,
-                'nip' => null,
-                'nuptk' => null,
-                'photo' => null,
-            ];
+  
+  $data = [
+	'name' => $teacher->name,
+	'gender' => $teacher->gender,
+  ];
 
-            
-        }
-
-$data;
-Teacher::get()
+  
+  Teacher::create($data);
+}
+Teacher::get();
 $teachers = DB::connection('laraedu')->table('teachers')->get();
 
-foreach ($teachers as $teacher) {
-            
-            $data[] = [
-                'name' => $teacher->name,
-                'gender' => $teacher->gender,
-                'signature' => null,
-                'nip' => null,
-                'nuptk' => null,
-                'photo' => null,
-            ];
-
-            
-        }
-
-$data;
-$teachers = DB::connection('laraedu')->table('teachers')->get();
-
-foreach ($teachers as $teacher) {
-            
+        foreach ($teachers as $teacher) {
             $data = [
                 'name' => $teacher->name,
                 'gender' => $teacher->gender,
-                'signature' => null,
-                'nip' => null,
-                'nuptk' => null,
-                'photo' => null,
             ];
 
-         Teacher::create($data);   
+            Teacher::create($data);
+        }
+$students = DB::connection('laraedu')->table('students')->get();
+
+        foreach ($students as $student) {
+            Student::create($student);
         }
 Teacher::get()'?>
+Teacher::get();
+$students = DB::connection('laraedu')->table('students')->get();
+foreach ($students as $student) {
+            Student::create($student);
+        }
+$students = DB::connection('laraedu')->table('students')->get();
+foreach ($students as $student) {
+            Student::create($student);
+        }
+$teachers = DB::connection('laraedu')->table('teachers')->get();
+
+        foreach ($teachers as $teacher) {
+            Teacher::create($teacher);
+        }
 Teacher::get()
+User::get()
+User::get()
+$users = DB::connection('laraedu')->table('users')->get();
+
+        foreach ($users as $user) {
+            User::updateOrCreate($user);
+        }
+User::get()
+$users = DB::connection('laraedu')->table('users')->get();
+
+        foreach ($users as $user) {
+            User::updateOrCreate($user);
+        }
+$users = DB::connection('laraedu')->table('users')->get();
+
+        foreach ($users as $user) {
+            User::create($user);
+        }
+$users = DB::connection('laraedu')->table('users')->get();
+$users;
+$users = DB::connection('laraedu')->table('users')->get();
+$users;
+
+$data = [];
+foreach ($users as $user) {
+            $data=$teacher;
+        }
+
+$data;
+$users = DB::connection('laraedu')->table('users')->get();
+$users;
+
+$data = [];
+foreach ($users as $user) {
+  $data[] = $teacher;
+}
+
+$data;
+$users = DB::connection('laraedu')->table('users')->get();
+$users;
+
+$data = [];
+foreach ($users as $user) {
+  $data[] = $user;
+}
+
+$data;
+$users = DB::connection('laraedu')->table('users')->get();
+$users;
+
+$data = [];
+foreach ($users as $user) {
+  $data[] = $user->toArray();
+}
+
+$data;
+$users = DB::connection('laraedu')->table('users')->get();
+$users;
+
+$data = [];
+foreach ($users as $user) {
+  $data[] = $user;
+}
+
+$data;
+$users = DB::connection('laraedu')->table('users')->get();
+$array = json_decode(json_encode($users), true);
+User::get()
+$studentExtracurriculars = DB::connection('laraedu')->table('student_extracurriculars')->get();
+
+        foreach ($studentExtracurriculars as $studentExtracurricular) {
+            $score = '';
+
+            switch ($studentExtracurricular->score) {
+                case 'A':
+                    $score = 4;
+                    break;
+                case 'B':
+                    $score = 3;
+                    break;
+                case 'C':
+                    $score = 2;
+                    break;
+                case 'D':
+                    $score = 1;
+                    break;
+                default:
+                    $score = 0;
+                    break;
+            }
+
+            $data = [
+                'student_id' => $studentExtracurricular->student_id,
+                'extracurricular_id' => $studentExtracurricular->extracurricular_id,
+                'academic_year_id' => $studentExtracurricular->academic_year_id,
+                'score' => $score,
+            ];
+
+            $array = json_decode(json_encode($data), true);
+
+            StudentExtracurricular::create($array);
+        }
+$studentExtracurriculars = DB::connection('laraedu')->table('student_extracurriculars')->get();
+
+foreach ($studentExtracurriculars as $studentExtracurricular) {
+  $score = '';
+
+  switch ($studentExtracurricular->score) {
+	case 'A':
+	  $score = 4;
+	  break;
+	case 'B':
+	  $score = 3;
+	  break;
+	case 'C':
+	  $score = 2;
+	  break;
+	case 'D':
+	  $score = 1;
+	  break;
+	default:
+	  $score = 0;
+	  break;
+  }
+
+  $data = [
+	'student_id' => $studentExtracurricular->student_id,
+	'extracurricular_id' => $studentExtracurricular->extracurricular_id,
+	'academic_year_id' => $studentExtracurricular->academic_year_id,
+	'score' => $score,
+  ];
+
+  $array = json_decode(json_encode($data), true);
+}
+
+$array;
+$studentExtracurriculars = DB::connection('laraedu')->table('student_extracurriculars')->get();
+
+foreach ($studentExtracurriculars as $studentExtracurricular) {
+  $score = '';
+
+  switch ($studentExtracurricular->score) {
+	case 'A':
+	  $score = 4;
+	  break;
+	case 'B':
+	  $score = 3;
+	  break;
+	case 'C':
+	  $score = 2;
+	  break;
+	case 'D':
+	  $score = 1;
+	  break;
+	default:
+	  $score = 0;
+	  break;
+  }
+
+  $data = [
+	'student_id' => $studentExtracurricular->student_id,
+	'extracurricular_id' => $studentExtracurricular->extracurricular_id,
+	'academic_year_id' => $studentExtracurricular->academic_year_id,
+	'score' => $score,
+  ];
+
+  $array = json_decode(json_encode($data), true);
+}
+
+$data;
+$studentExtracurriculars = DB::connection('laraedu')->table('student_extracurriculars')->get();
+
+foreach ($studentExtracurriculars as $studentExtracurricular) {
+  $score = '';
+
+  switch ($studentExtracurricular->score) {
+	case 'A':
+	  $score = 4;
+	  break;
+	case 'B':
+	  $score = 3;
+	  break;
+	case 'C':
+	  $score = 2;
+	  break;
+	case 'D':
+	  $score = 1;
+	  break;
+	default:
+	  $score = 0;
+	  break;
+  }
+
+  $data = [
+	'student_id' => $studentExtracurricular->student_id,
+	'extracurricular_id' => $studentExtracurricular->extracurricular_id,
+	'academic_year_id' => $studentExtracurricular->academic_year_id,
+	'score' => $score,
+  ];
+
+  $array = json_decode(json_encode($data), true);
+}
+
+$data;
+Competency::get()'?>
+Competency::get();
+Competency::find(549);
+Competency::find(54);
+config(['database.default'=> 'laraedu']);
+Competency::find(549);
+config(['database.default'=> 'laraedu']);
+Competency::find(549);
+
+Competency::find(549);
+config(['database.default'=> 'laraedu']);
+Competency::find(549);
+$competencies = DB::connection('laraedu')->table('competencies')->get();
+
+foreach ($competencies as $competency) {
+
+  $array = json_decode(json_encode($competency), true);
+
+  
+}
+
+$array;
+config(['database.default'=> 'laraedu']);
+Competency::find(549);

@@ -48,6 +48,7 @@ class CopyProjectTargetJob implements ShouldQueue
             }
 
             $data = [
+                'id' => $projectTarget->id,
                 'project_id' => $projectTarget->project_id,
                 'phase' => $phase,
                 'dimention_id' => $projectTarget->dimention_id,
@@ -57,8 +58,10 @@ class CopyProjectTargetJob implements ShouldQueue
                 'sub_value_id' => $projectTarget->sub_value_id,
                 'target_id' => $projectTarget->target_id,
             ];
+            
+            $array = json_decode(json_encode($data), true);
 
-            ProjectTarget::create($data);
+            ProjectTarget::create($array);
         }
     }
 

@@ -31,13 +31,9 @@ class CopySubjectJob implements ShouldQueue
         $subjects = DB::connection('laraedu')->table('subjects')->get();
 
         foreach ($subjects as $subject) {
-            $data = [
-                'name' => $subject->name,
-                'code' => $subject->code,
-                'order' => $subject->order,
-            ];
+            $array = json_decode(json_encode($subject), true);
 
-            Subject::create($data);
+            Subject::create($array);
         }
     }
 

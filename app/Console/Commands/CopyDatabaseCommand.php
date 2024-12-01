@@ -46,13 +46,36 @@ class CopyDatabaseCommand extends Command
      */
     public function handle()
     {
-        Bus::dispatch(new CopyTeacherJob());
-        Bus::dispatch(new CopyStudentJob());
-        Bus::dispatch(new CopyDataStudentJob());
-        Bus::dispatch(new CopyGradeJob());
-        Bus::dispatch(new CopySubjectJob());
-        Bus::dispatch(new CopyExtracurricularJob());
-        Bus::dispatch(new CopyAcademicYearJob());
+        Bus::chain([
+            new CopyTeacherJob(),
+            new CopyStudentJob(),
+            new CopyDataStudentJob(),
+            new CopyGradeJob(),
+            new CopySubjectJob(),
+            new CopyExtracurricularJob(),
+            new CopyAcademicYearJob(),
+            new CopyUserJob(),
+            new CopyUserableJob(),
+            new CopyTeacherGradeJob(),
+            new CopyTeacherSubjectJob(),
+            // new CopyStudentExtracurricularJob(),
+            new CopyTeacherExtracurricularJob(),
+            new CopyCompetencyJob(),
+            new CopyStudentCompetencyJob(),
+            new CopyProjectCoordinatorJob(),
+            new CopyProjectJob(),
+            new CopyProjectTargetJob(),
+            new CopyProjectNoteJob(),
+            new CopyProjectStudentJob(),
+        ])->dispatch();
+        
+        // Bus::dispatch(new CopyTeacherJob());
+        // Bus::dispatch(new CopyStudentJob());
+        // Bus::dispatch(new CopyDataStudentJob());
+        // Bus::dispatch(new CopyGradeJob());
+        // Bus::dispatch(new CopySubjectJob());
+        // Bus::dispatch(new CopyExtracurricularJob());
+        // Bus::dispatch(new CopyAcademicYearJob());
         // Bus::dispatch(new CopyUserJob());
         // Bus::dispatch(new CopyUserableJob());
         // Bus::dispatch(new CopyTeacherGradeJob());
@@ -66,7 +89,5 @@ class CopyDatabaseCommand extends Command
         // Bus::dispatch(new CopyProjectTargetJob());
         // Bus::dispatch(new CopyProjectNoteJob());
         // Bus::dispatch(new CopyProjectStudentJob());
-
-        // Bus::dispatch(new CopyDataStudentJob());
     }
 }

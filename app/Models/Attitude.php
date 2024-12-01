@@ -14,13 +14,7 @@ class Attitude extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'academic_year_id',
-        'grade_id',
-        'student_id',
-        'attitude_religius',
-        'attitude_social',
-    ];
+    protected $guarded = [];
 
     public function grade()
     {

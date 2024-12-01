@@ -49,12 +49,15 @@ class CopyGradeJob implements ShouldQueue
 
 
             $data = [
+                'id' => $grade->id,
                 'name' => $grade->name,
                 'grade' => $grade->grade,
                 'phase' => $phase,
             ];
 
-            Grade::create($data);
+            $array = json_decode(json_encode($data), true);
+
+            Grade::create($array);
         }
     }
 

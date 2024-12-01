@@ -15,16 +15,7 @@ class Student extends Model
     use LogsActivity;
     use SoftDeletes;
 
-    protected $fillable = [
-        'nisn',
-        'nis',
-        'name',
-        'gender',
-        'active',
-        'city_born',
-        'birthday',
-        'nick_name',
-    ];
+    protected $guarded = [];
 
     public function getActivitylogOptions(): LogOptions
     {

@@ -14,12 +14,7 @@ class Grade extends Model
     use SoftDeletes;
     use LogsActivity;
 
-    protected $fillable = [
-        'name',
-        'grade',
-        'phase',
-        'is_inclusive',
-    ];
+    protected $guarded = [];
 
     public function getActivitylogOptions(): LogOptions
     {

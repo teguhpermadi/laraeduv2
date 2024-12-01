@@ -27,16 +27,9 @@ class CopyAcademicYearJob implements ShouldQueue
 
         // Masukkan data ke database laraeduv2
         foreach ($academicYears as $year) {
-            // atur ulang datanya
-            $data = [
-                'year' => $year->year,
-                'semester' => $year->semester,
-                'teacher_id' => $year->teacher_id,
-                'date_report' => $year->date_report,
-                'date_report_half' => $year->date_report_half,
-            ];
+            $array = json_decode(json_encode($year), true);
 
-            AcademicYear::create($data);
+            AcademicYear::create($array);
         }
     }
 

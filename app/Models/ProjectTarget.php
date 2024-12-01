@@ -13,16 +13,7 @@ class ProjectTarget extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'project_id',
-        'phase',
-        'dimention_id',
-        'element_id',
-        'sub_element_id',
-        'value_id',
-        'sub_value_id',
-        'target_id',
-    ];  
+    protected $guarded = [];
 
     /**
      * Indicates if the model should be timestamped.

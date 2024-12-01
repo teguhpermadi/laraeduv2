@@ -9,10 +9,7 @@ class QuranGrade extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'level',
-    ];
+    protected $guarded = [];
 
     public function teacherQuranGrade(): HasMany
     {

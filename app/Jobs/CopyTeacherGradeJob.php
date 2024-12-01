@@ -32,13 +32,16 @@ class CopyTeacherGradeJob implements ShouldQueue
 
         foreach ($teacherGrades as $teacherGrade) {
             $data = [
+                'id' => $teacherGrade->id,
                 'academic_year_id' => $teacherGrade->academic_year_id,
                 'teacher_id' => $teacherGrade->teacher_id,
                 'grade_id' => $teacherGrade->grade_id,
                 'curriculum' => $teacherGrade->curriculum,
             ];
 
-            TeacherGrade::create($data);
+            $array = json_decode(json_encode($data), true);
+
+            TeacherGrade::create($array);
         }
     }
 

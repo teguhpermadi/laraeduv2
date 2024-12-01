@@ -9,11 +9,7 @@ class Element extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'code_dimention',
-        'code',
-        'description',
-    ];
+    protected $guarded = [];
 
     public function dimention()
     {

@@ -31,7 +31,9 @@ class CopyStudentCompetencyJob implements ShouldQueue
         $studentCompetencies = DB::connection('laraedu')->table('student_competencies')->get();
 
         foreach ($studentCompetencies as $studentCompetency) {
-            StudentCompetency::create($studentCompetency);
+            $array = json_decode(json_encode($studentCompetency), true);
+
+            StudentCompetency::create($array);
         }
     }
 

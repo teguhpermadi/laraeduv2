@@ -9,11 +9,7 @@ class LegerQuranRecap extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'academic_year_id',
-        'teacher_quran_grade_id',
-        'updated_at',
-    ];
+    protected $guarded = [];
 
     public function academicYear()
     {

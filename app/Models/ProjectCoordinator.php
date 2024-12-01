@@ -13,11 +13,7 @@ class ProjectCoordinator extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'academic_year_id',
-        'teacher_id',
-        'grade_id',
-    ];
+    protected $guarded = [];
 
     protected static function booted(): void
     {

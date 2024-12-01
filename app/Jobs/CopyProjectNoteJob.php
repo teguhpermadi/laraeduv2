@@ -31,7 +31,9 @@ class CopyProjectNoteJob implements ShouldQueue
         $projectNotes = DB::connection('laraedu')->table('project_notes')->get();
 
         foreach ($projectNotes as $projectNote) {
-            ProjectNote::create($projectNote);
+            $array = json_decode(json_encode($projectNote), true);
+
+            ProjectNote::create($array);
         }
     }
 
