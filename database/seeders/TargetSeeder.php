@@ -2032,6 +2032,8 @@ class TargetSeeder extends Seeder
             ]
         ];
 
-        Target::insert($data);
+        foreach ($data as $key => $value) {
+            Target::create($value);
+        }
     }
 }

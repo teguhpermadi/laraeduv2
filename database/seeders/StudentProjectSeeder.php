@@ -7,6 +7,7 @@ use App\Models\Project;
 use App\Models\StudentProject;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class StudentProjectSeeder extends Seeder
 {
@@ -26,6 +27,7 @@ class StudentProjectSeeder extends Seeder
                 $students = $project->grade->studentGrade;
                 foreach ($students as $student) {
                     $data[] = [
+                        'id'                => Str::ulid()->toBase32(),
                         'academic_year_id'  => $project->academic_year_id,
                         'student_id'        => $student->student_id,
                         'project_target_id' => $projectTarget->id,
@@ -37,6 +39,8 @@ class StudentProjectSeeder extends Seeder
             }
         }
 
-        StudentProject::insert($data);
+        foreach ($data as $key => $value) {
+            StudentProject::create($value);
+        }
     }
 }

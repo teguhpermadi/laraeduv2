@@ -231,6 +231,8 @@ class ProjectThemeSeeder extends Seeder
             ]
         ];
 
-        ProjectTheme::insert($data);
+        foreach ($data as $key => $value) {
+            ProjectTheme::create($value);
+        }
     }
 }

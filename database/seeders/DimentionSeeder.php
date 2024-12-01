@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Dimention;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class DimentionSeeder extends Seeder
 {
@@ -40,6 +41,8 @@ class DimentionSeeder extends Seeder
             ],
         ];
 
-        Dimention::insert($data);
+        foreach ($data as $key => $value) {
+            Dimention::create($value);
+        }
     }
 }

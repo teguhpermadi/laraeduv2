@@ -22,7 +22,7 @@ class ProjectTargetSeeder extends Seeder
         $project_id = Project::get()->random();
 
         for ($i=0; $i < 10; $i++) { 
-            $data[] = [
+            $data = [
                 'project_id' => $project_id->id,
                 'phase' => $target->phase,
                 'dimention_id' => $target->dimention->first()->id,
@@ -32,8 +32,9 @@ class ProjectTargetSeeder extends Seeder
                 'sub_value_id' => $subValue->first()->id,
                 'target_id' => $target->id,
             ];
+            
+            ProjectTarget::create($data);
         }
 
-        ProjectTarget::insert($data);
     }
 }

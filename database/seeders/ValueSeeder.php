@@ -160,6 +160,8 @@ class ValueSeeder extends Seeder
             ]
         ];
 
-        Value::insert($data);
+        foreach ($data as $key => $value) {
+            Value::create($value);
+        }
     }
 }

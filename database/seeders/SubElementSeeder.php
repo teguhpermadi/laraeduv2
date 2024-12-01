@@ -268,6 +268,8 @@ class SubElementSeeder extends Seeder
             ]
         ];
 
-        SubElement::insert($data);
+        foreach ($data as $key => $value) {
+            SubElement::create($value);
+        }
     }
 }

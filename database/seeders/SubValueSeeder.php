@@ -310,6 +310,8 @@ class SubValueSeeder extends Seeder
             ]
         ];
 
-        SubValue::insert($data);
+        foreach ($data as $key => $value) {
+            SubValue::create($value);
+        }
     }
 }

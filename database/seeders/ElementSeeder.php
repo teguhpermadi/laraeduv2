@@ -115,7 +115,9 @@ class ElementSeeder extends Seeder
                 'description' => 'Memiliki keluwesan berpikir dalam mencari alternatif solusi permasalahan'
             ],
         ];
-        
-        Element::insert($data);
+
+        foreach ($data as $key => $value) {
+            Element::create($value);
+        }
     }
 }

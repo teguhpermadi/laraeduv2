@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Competency;
 use App\Models\StudentCompetency;
 use App\Models\TeacherSubject;
+use Illuminate\Support\Str;
 
 class CompetencyObserver
 {
@@ -16,18 +17,19 @@ class CompetencyObserver
         $teacher_subject_id = $competency->teacher_subject_id;
         $teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
 
-        $data = [];
         foreach ($teacherSubject->studentGrade as $student) {
-            $data[] = [
+            $data = [
+                'id' => Str::ulid()->toBase32(),
                 'teacher_subject_id' => $teacher_subject_id,
                 'student_id' => $student->student_id,
                 'competency_id' => $competency->id,
                 'created_at' => now(),
             ];
+
+            StudentCompetency::insert($data);
         }
         
         // dd($students);
-        StudentCompetency::insert($data);
 
         // dapatkan semua competency berdasarkan teacher subject id
         $passing_grades = Competency::where('teacher_subject_id', $teacher_subject_id)->pluck('passing_grade');
