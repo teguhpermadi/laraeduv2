@@ -20,7 +20,7 @@ class AcademicYearFactory extends Factory
         return [
             'year' => fake()->year(),
             'semester' => fake()->randomElement(['ganjil', 'genap']),
-            'teacher_id' => Teacher::get()->random()->id,
+            // 'teacher_id' => Teacher::get()->random()->id,
             'date_report_half' => fake()->date(),
             'date_report' => fake()->date(),
         ];

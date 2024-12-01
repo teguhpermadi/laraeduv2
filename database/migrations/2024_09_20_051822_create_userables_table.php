@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('userables', function (Blueprint $table) {
-            $table->id()->from(1000);
-            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->ulid('id')->primary()->unique();
+            $table->foreignUlid('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('userable_id');
             $table->string('userable_type');
             $table->timestamps();

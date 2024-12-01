@@ -7,6 +7,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -20,7 +21,13 @@ class User extends Authenticatable implements HasAvatar
     use HasFactory, Notifiable;
     use HasRoles;
     use LogsActivity;
+    use HasUlids;
 
+    // Menentukan bahwa kita tidak menggunakan auto-increment
+    public $incrementing = false;
+
+    // Tipe primary key adalah string (karena ULID berupa string)
+    protected $keyType = 'string';
     /**
      * The attributes that are mass assignable.
      *
