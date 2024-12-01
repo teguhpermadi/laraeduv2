@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('data_students', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('student_id')->references('id')->on('students')->cascadeOnDelete();
+            $table->ulid('id')->primary()->unique();
+            $table->foreignUlid('student_id')->references('id')->on('students')->cascadeOnDelete();
             $table->string('student_address')->nullable();
             $table->string('student_province')->nullable();
             $table->string('student_city')->nullable();

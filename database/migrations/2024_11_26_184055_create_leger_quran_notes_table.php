@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('leger_quran_notes', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('leger_quran_id')->constrained()->cascadeOnDelete();
+            $table->ulid('id')->primary()->unique();
+            $table->foreignUlid('leger_quran_id')->constrained('leger_qurans')->cascadeOnDelete();
             $table->text('note');
             $table->timestamps();
         });

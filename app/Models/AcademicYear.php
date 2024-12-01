@@ -13,6 +13,13 @@ class AcademicYear extends Model
 {
     use HasFactory;
     use LogsActivity;
+    use HasUlids;
+
+    // Menentukan bahwa kita tidak menggunakan auto-increment
+    public $incrementing = false;
+
+    // Tipe primary key adalah string (karena ULID berupa string)
+    protected $keyType = 'string';
 
     protected $fillable = [
         'id',

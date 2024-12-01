@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('sub_elements', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary()->unique();
             $table->string('code_dimention');   
             $table->string('code_element');
             $table->string('code');

@@ -9,6 +9,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use App\Observers\SubjectObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 #[ObservedBy([SubjectObserver::class])]
 class Subject extends Model
@@ -16,6 +17,13 @@ class Subject extends Model
     use HasFactory;
     use LogsActivity;
     use SoftDeletes;
+    use HasUlids;
+
+    // Menentukan bahwa kita tidak menggunakan auto-increment
+    public $incrementing = false;
+
+    // Tipe primary key adalah string (karena ULID berupa string)
+    protected $keyType = 'string';
 
     protected $fillable = [
         'name',

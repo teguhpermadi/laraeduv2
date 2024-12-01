@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('project_notes', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('project_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('student_id')->constrained()->cascadeOnDelete();
+            $table->ulid('id')->primary()->unique();
+            $table->foreignUlid('academic_year_id')->constrained('academic_years')->cascadeOnDelete();
+            $table->foreignUlid('project_id')->constrained('projects')->cascadeOnDelete();
+            $table->foreignUlid('student_id')->constrained('students')->cascadeOnDelete();
             $table->text('note');
             $table->timestamps();
         });

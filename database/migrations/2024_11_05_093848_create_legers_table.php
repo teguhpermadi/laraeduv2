@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('legers', function (Blueprint $table) {
-            $table->id()->from(600);
-            $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('student_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('teacher_subject_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('teacher_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
+            $table->ulid('id')->primary()->unique();
+            $table->foreignUlid('academic_year_id')->constrained('academic_years')->cascadeOnDelete();
+            $table->foreignUlid('student_id')->constrained('students')->cascadeOnDelete();
+            $table->foreignUlid('teacher_subject_id')->constrained('teacher_subjects')->cascadeOnDelete();
+            $table->foreignUlid('teacher_id')->constrained('teachers')->cascadeOnDelete();
+            $table->foreignUlid('subject_id')->constrained('subjects')->cascadeOnDelete();
             $table->integer('score')->default(0);
             $table->integer('sum')->default(0);
             $table->integer('rank')->default(0);
-            $table->text('description');
+            $table->string('description');
             $table->json('metadata')->nullable();
             $table->string('category');
             $table->timestamps();

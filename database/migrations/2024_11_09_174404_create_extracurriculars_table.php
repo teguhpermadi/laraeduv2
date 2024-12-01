@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('extracurriculars', function (Blueprint $table) {
-            $table->id()->from(1000);
+            $table->ulid('id')->primary()->unique();
             $table->string('name');
             // wajib atau tidak
             $table->boolean('is_required')->default(false);

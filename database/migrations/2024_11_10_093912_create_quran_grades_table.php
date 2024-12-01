@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('quran_grades', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary()->unique();
             $table->string('name');
             $table->integer('level');
             $table->timestamps();

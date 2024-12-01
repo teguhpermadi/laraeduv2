@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('project_coordinators', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('academic_year_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('teacher_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('grade_id')->constrained()->cascadeOnDelete();
+            $table->ulid('id')->primary()->unique();
+            $table->foreignUlid('academic_year_id')->constrained('academic_years')->cascadeOnDelete();
+            $table->foreignUlid('teacher_id')->constrained('teachers')->cascadeOnDelete();
+            $table->foreignUlid('grade_id')->constrained('grades')->cascadeOnDelete();
             $table->timestamps();
 
             $table->unique(['academic_year_id', 'teacher_id', 'grade_id'], 'project_coordinator_unique');

@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('academic_years', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary()->unique();
             $table->string('year');
             $table->enum('semester', ['ganjil', 'genap']);
-            $table->foreignId('teacher_id')->nullable();
+            $table->foreignUlid('teacher_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->date('date_report_half')->nullable();
             $table->date('date_report')->nullable();
             $table->timestamps();

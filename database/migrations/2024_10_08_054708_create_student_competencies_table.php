@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('student_competencies', function (Blueprint $table) {
-            $table->id()->from(500);
-            $table->foreignId('teacher_subject_id')->constrained('teacher_subjects')->cascadeOnDelete();
-            $table->foreignId('competency_id')->constrained('competencies')->cascadeOnDelete();
-            $table->foreignId('student_id')->constrained('students')->cascadeOnDelete();
+            $table->ulid('id')->primary()->unique();
+            $table->foreignUlid('teacher_subject_id')->constrained('teacher_subjects')->cascadeOnDelete();
+            $table->foreignUlid('competency_id')->constrained('competencies')->cascadeOnDelete();
+            $table->foreignUlid('student_id')->constrained('students')->cascadeOnDelete();
             $table->integer('score')->default(0);
             $table->timestamps();
 

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('teachers', function (Blueprint $table) {
-            $table->id();
+            $table->ulid('id')->primary()->unique();
             $table->string('name')->unique();
             $table->enum('gender', ['laki-laki', 'perempuan']);
             $table->string('signature')->nullable();

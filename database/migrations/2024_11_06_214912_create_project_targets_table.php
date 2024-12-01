@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('project_targets', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('project_id')->constrained()->cascadeOnDelete();
+            $table->ulid('id')->primary()->unique();
+            $table->foreignUlid('project_id')->constrained('projects')->cascadeOnDelete();
             $table->string('phase');
-            $table->foreignId('dimention_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('element_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('sub_element_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('value_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('sub_value_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('target_id')->constrained()->cascadeOnDelete();
+            $table->foreignUlid('dimention_id')->constrained('dimentions')->cascadeOnDelete();
+            $table->foreignUlid('element_id')->constrained('elements')->cascadeOnDelete();
+            $table->foreignUlid('sub_element_id')->constrained('sub_elements')->cascadeOnDelete();
+            $table->foreignUlid('value_id')->constrained('values')->cascadeOnDelete();
+            $table->foreignUlid('sub_value_id')->constrained('sub_values')->cascadeOnDelete();
+            $table->foreignUlid('target_id')->constrained('targets')->cascadeOnDelete();
             $table->timestamps();
         });
     }

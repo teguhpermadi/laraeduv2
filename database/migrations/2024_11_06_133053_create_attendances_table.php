@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('attendances', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('academic_year_id')->references('id')->on('academic_years')->cascadeOnDelete();
-            $table->foreignId('grade_id')->references('id')->on('grades')->cascadeOnDelete();
-            $table->foreignId('student_id')->references('id')->on('students')->cascadeOnDelete();
+            $table->ulid('id')->primary()->unique();
+            $table->foreignUlid('academic_year_id')->references('id')->on('academic_years')->cascadeOnDelete();
+            $table->foreignUlid('grade_id')->references('id')->on('grades')->cascadeOnDelete();
+            $table->foreignUlid('student_id')->references('id')->on('students')->cascadeOnDelete();
             $table->string('sick')->default(0);
             $table->string('permission')->default(0);
             $table->string('absent')->default(0);

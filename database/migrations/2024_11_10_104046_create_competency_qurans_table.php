@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('competency_qurans', function (Blueprint $table) {
-            $table->id()->from(1500);
-            $table->foreignId('teacher_quran_grade_id')->constrained()->cascadeOnDelete();
+            $table->ulid('id')->primary()->unique();
+            $table->foreignUlid('teacher_quran_grade_id')->constrained('teacher_quran_grades')->cascadeOnDelete();
             $table->string('code');
             $table->text('description');
             $table->integer('passing_grade');

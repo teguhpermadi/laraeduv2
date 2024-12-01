@@ -9,11 +9,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Models\Scopes\OrderStudentScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 #[ScopedBy([AcademicYearScope::class, OrderStudentScope::class])]
 class Attendance extends Model
 {
     use HasFactory;
+    use HasUlids;
+
+    // Menentukan bahwa kita tidak menggunakan auto-increment
+    public $incrementing = false;
+
+    // Tipe primary key adalah string (karena ULID berupa string)
+    protected $keyType = 'string';
 
     protected $fillable = [
         'academic_year_id',

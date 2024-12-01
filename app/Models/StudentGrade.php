@@ -8,6 +8,7 @@ use App\Observers\StudentGradeObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
@@ -19,6 +20,13 @@ class StudentGrade extends Model
 {
     use HasFactory;
     use LogsActivity;
+    use HasUlids;
+
+    // Menentukan bahwa kita tidak menggunakan auto-increment
+    public $incrementing = false;
+
+    // Tipe primary key adalah string (karena ULID berupa string)
+    protected $keyType = 'string';
 
     protected $fillable = [
         'academic_year_id',
