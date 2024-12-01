@@ -71,7 +71,7 @@ class StudentGrade extends Model
             abort(403, 'Anda belum memiliki kelas yang ditugaskan');
         }   
 
-        return $query->whereIn('grade_id', $teacherGrade)->orderBy('student_id', 'asc');
+        return $query->whereIn('grade_id', $teacherGrade);
     }
 
     public function project()

@@ -23,6 +23,12 @@ class ReportController extends Controller
 {
     public function getDataCover($id)
     {
+        $academicYear = AcademicYear::find(session('academic_year_id'));
+
+        if($academicYear->teacher == null) {
+            abort(403, 'Data Kepala Sekolah belum diisi. Hubungi Admin untuk mengisi data tersebut.');
+        }
+
         $student = Student::find($id);
 
         $data = $this->cover($student);
@@ -48,6 +54,12 @@ class ReportController extends Controller
     // get data cover student
     public function getDataCoverStudent($id)
     {
+        $academicYear = AcademicYear::find(session('academic_year_id'));
+
+        if($academicYear->teacher == null) {
+            abort(403, 'Data Kepala Sekolah belum diisi. Hubungi Admin untuk mengisi data tersebut.');
+        }
+
         $student = Student::with('dataStudent')->find($id);
         $data = $this->coverStudent($student);
         return $data;
@@ -121,6 +133,10 @@ class ReportController extends Controller
 
         // get academic year
         $academicYear = AcademicYear::with('teacher')->find($academic);
+
+        if($academicYear->teacher == null) {
+            abort(403, 'Data Kepala Sekolah belum diisi. Hubungi Admin untuk mengisi data tersebut.');
+        }
 
         // get category
         $category = CategoryLegerEnum::HALF_SEMESTER->value;
@@ -274,6 +290,10 @@ class ReportController extends Controller
 
         // get academic year
         $academicYear = AcademicYear::find($academic);
+
+        if($academicYear->teacher == null) {
+            abort(403, 'Data Kepala Sekolah belum diisi. Hubungi Admin untuk mengisi data tersebut.');
+        }
 
         // get category
         $category = CategoryLegerEnum::FULL_SEMESTER->value;
@@ -475,6 +495,10 @@ class ReportController extends Controller
 
         $academicYear = AcademicYear::find($academic);
 
+        if($academicYear->teacher == null) {
+            abort(403, 'Data Kepala Sekolah belum diisi. Hubungi Admin untuk mengisi data tersebut.');
+        }
+
         $student = Student::with([
             'studentGradeFirst.grade.teacherGradeFirst',
             'studentGradeFirst.project.projectTarget.studentProject' => function ($query) use ($id) {
@@ -606,6 +630,10 @@ class ReportController extends Controller
         $academic = session('academic_year_id');
 
         $academicYear = AcademicYear::find($academic);
+
+        if($academicYear->teacher == null) {
+            abort(403, 'Data Kepala Sekolah belum diisi. Hubungi Admin untuk mengisi data tersebut.');
+        }
 
         $student = LegerQuran::where('student_id', $id)
             ->where('academic_year_id', $academic)

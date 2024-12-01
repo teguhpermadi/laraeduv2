@@ -47,10 +47,15 @@ class MyGrade extends Page implements HasTable
             ->query(StudentGrade::query())
             ->columns([
                 TextColumn::make('student.nisn')
-                    ->label('NISN'),
+                    ->label('NISN')
+                    ->sortable(),
                 TextColumn::make('student.name')
                     ->label('Nama Siswa')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('grade.name')
+                    ->label('Kelas')
+                    ->sortable(),
                 IconColumn::make('student.attendanceFirst.status')
                     ->label('Naik Kelas')
                     ->boolean()
@@ -101,6 +106,7 @@ class MyGrade extends Page implements HasTable
                     ->url(fn($record) => route('report-quran', $record->student_id))
                     ->button(),
             ])
+            ->defaultSort('grade.name')
             ->paginated(false)
             ->modifyQueryUsing(fn(Builder $query) => $query->myGrade());
     }
