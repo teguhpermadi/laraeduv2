@@ -7,6 +7,7 @@ use App\Models\ProjectTarget;
 use App\Models\Target;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class ProjectTargetSeeder extends Seeder
 {
@@ -22,7 +23,8 @@ class ProjectTargetSeeder extends Seeder
         $project_id = Project::get()->random();
 
         for ($i=0; $i < 10; $i++) { 
-            $data = [
+            $data[] = [
+                'id' => Str::ulid()->toBase32(),
                 'project_id' => $project_id->id,
                 'phase' => $target->phase,
                 'dimention_id' => $target->dimention->first()->id,
@@ -33,8 +35,8 @@ class ProjectTargetSeeder extends Seeder
                 'target_id' => $target->id,
             ];
             
-            ProjectTarget::create($data);
         }
-
+        
+        ProjectTarget::insert($data);
     }
 }
