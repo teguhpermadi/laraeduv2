@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('leger_notes', function (Blueprint $table) {
             $table->ulid('id')->primary()->unique();
-            $table->foreignUlid('leger_id')->unique()->constrained('leger_qurans')->cascadeOnDelete();
+            $table->foreignUlid('leger_id')->unique()->constrained('legers')->cascadeOnDelete();
             $table->text('note')->nullable();
             $table->timestamps();
         });

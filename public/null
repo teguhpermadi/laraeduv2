@@ -789,3 +789,5 @@ $kompetensi_siswa_mi = [
 
 fake()->randomElement($kompetensi_siswa_mi);
 Teacher::get()
+Notification::get()
+DB::table('notifications')->get()
