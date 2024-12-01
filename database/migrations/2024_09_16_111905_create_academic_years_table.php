@@ -15,7 +15,7 @@ return new class extends Migration
             $table->ulid('id')->primary()->unique();
             $table->string('year');
             $table->enum('semester', ['ganjil', 'genap']);
-            $table->foreignUlid('teacher_id')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->foreignUlid('teacher_id')->nullable()->constrained()->cascadeOnDelete();
             $table->date('date_report_half')->nullable();
             $table->date('date_report')->nullable();
             $table->timestamps();
