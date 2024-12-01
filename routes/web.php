@@ -39,3 +39,5 @@ Route::get('/school-cover', function(){
 Route::get('/student-identity', function(){
     return view('components.reports.student-identity');
 });
+
+Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);

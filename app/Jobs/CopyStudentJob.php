@@ -2,12 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Models\Student;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CopyStudentJob implements ShouldQueue
 {
@@ -28,10 +30,9 @@ class CopyStudentJob implements ShouldQueue
     {
         $students = DB::connection('laraedu')->table('students')->get();
 
-        $data = [];
         foreach ($students as $student) {
             // atur ulang datanya
-            $data[] = [
+            $data = [
                 'nisn' => $student->nisn,
                 'nis' => $student->nis,
                 'name' => $student->name,
@@ -42,8 +43,12 @@ class CopyStudentJob implements ShouldQueue
                 'nick_name' => $student->nick_name,
             ];
 
+            Student::create($data);
         }
+    }
 
-        DB::connection('mysql')->table('students')->upsert($data, ['id']);
+    public function failed(\Throwable $exception)
+    {
+        Log::error('CopyStudentJob failed: ' . $exception->getMessage());
     }
 }

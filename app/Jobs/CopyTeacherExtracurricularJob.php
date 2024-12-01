@@ -9,6 +9,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CopyTeacherExtracurricularJob implements ShouldQueue
 {
@@ -32,5 +33,10 @@ class CopyTeacherExtracurricularJob implements ShouldQueue
         foreach ($teacherExtracurriculars as $teacherExtracurricular) {
             TeacherExtracurricular::create($teacherExtracurricular);
         }
+    }
+
+    public function failed(\Throwable $exception)
+    {
+        Log::error('CopyTeacherExtracurricularJob failed: ' . $exception->getMessage());
     }
 }

@@ -1,42 +1,110 @@
-PhaseEnum::phaseA->value
-config(['database.default' => 'laraedu']);
+$teachers = DB::connection('laraedu')->table('teachers')->get();
+$projectNotes = DB::connection('laraedu')->table('project_notes')->get();
+$projectNotes = DB::connection('laraedu')->table('project_notes')->get();
 
-AcademicYear::get();
-config(['database.default' => 'laraedu']);
+foreach ($projectNotes as $projectNote) {
+            ProjectNote::create($projectNote);
+        }
+$projectNotes = DB::connection('laraedu')->table('project_notes')->get();
 
-AcademicYear::get();
+foreach ($projectNotes as $projectNote) {
+            $projectNote
+        }
+$projectNotes = DB::connection('laraedu')->table('project_notes')->get();
 
-config(['database.default' => 'mysql']);
+foreach ($projectNotes as $projectNote) {
+            $projectNote;
+        }
+$projectNotes = DB::connection('laraedu')->table('project_notes')->get();
 
-AcademicYear::get();
-config(['database.default' => 'laraedu']);
+foreach ($projectNotes as $projectNote) {
+            $projectNote;
+        }
 
-AcademicYear::get();
+$projectNote;
+$teachers = DB::connection('laraedu')->table('teachers')->get();
 
-TeacherSubject::get();
-DB::connection('laraedu')->table('academic_years')->get();
-DB::connection('laraedu')->table('academic_years')->with('teacherSubject')->get();
-$academicYear = DB::connection('laraedu')->table('academic_years')->get();
-$academicYear = DB::connection('laraedu')->table('academic_years')->get();
-$academicYear = DB::connection('laraedu')->table('academic_years')->get();
+        $data = [];
+        foreach ($teachers as $teacher) {
+            
+            $data = [
+                'name' => $teacher->name,
+                'gender' => $teacher->gender,
+                'signature' => null,
+                'nip' => null,
+                'nuptk' => null,
+                'photo' => null,
+            ];
 
-foreach ($academicYear as $year) {
+            Teacher::create($data);
+        }
+$teachers = DB::connection('laraedu')->table('teachers')->get();
+
+$data = [];
+foreach ($teachers as $teacher) {
   
-  $teacherSubjects = DB::connection('laraedu')->table('teacher_subjects')
-	->join('subjects', 'teacher_subjects.subject_id', '=', 'subjects.id')
-	->where('teacher_subjects.academic_year_id', $year->id)
-	->get();
-  
-  $teacherSubjects;
+  $data = [
+	'name' => $teacher->name,
+	'gender' => $teacher->gender,
+	'signature' => null,
+	'nip' => null,
+	'nuptk' => null,
+	'photo' => null,
+  ];
+
+  Teacher::create($data);
 }
-$academicYear = DB::connection('laraedu')->table('academic_years')->get();
+Teacher::get()
+$teachers = DB::connection('laraedu')->table('teachers')->get();
+$teachers = DB::connection('laraedu')->table('teachers')->get();
 
-foreach ($academicYear as $year) {
-  
-  $teacherSubjects = DB::connection('laraedu')->table('teacher_subjects')
-	->join('subjects', 'teacher_subjects.subject_id', '=', 'subjects.id')
-	->where('teacher_subjects.academic_year_id', $year->id)
-	->get();
-}
+foreach ($teachers as $teacher) {
+            
+            $data[] = [
+                'name' => $teacher->name,
+                'gender' => $teacher->gender,
+                'signature' => null,
+                'nip' => null,
+                'nuptk' => null,
+                'photo' => null,
+            ];
 
-$teacherSubjects
+            
+        }
+
+$data;
+Teacher::get()
+$teachers = DB::connection('laraedu')->table('teachers')->get();
+
+foreach ($teachers as $teacher) {
+            
+            $data[] = [
+                'name' => $teacher->name,
+                'gender' => $teacher->gender,
+                'signature' => null,
+                'nip' => null,
+                'nuptk' => null,
+                'photo' => null,
+            ];
+
+            
+        }
+
+$data;
+$teachers = DB::connection('laraedu')->table('teachers')->get();
+
+foreach ($teachers as $teacher) {
+            
+            $data = [
+                'name' => $teacher->name,
+                'gender' => $teacher->gender,
+                'signature' => null,
+                'nip' => null,
+                'nuptk' => null,
+                'photo' => null,
+            ];
+
+         Teacher::create($data);   
+        }
+Teacher::get()'?>
+Teacher::get()

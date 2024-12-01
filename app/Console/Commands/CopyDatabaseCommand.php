@@ -46,27 +46,27 @@ class CopyDatabaseCommand extends Command
      */
     public function handle()
     {
-        Bus::chain([
-            new CopyTeacherJob(),
-            new CopyStudentJob(),
-            new CopyDataStudentJob(),
-            new CopyGradeJob(),
-            new CopySubjectJob(),
-            new CopyExtracurricularJob(),
-            new CopyAcademicYearJob(),
-            new CopyTeacherGradeJob(),
-            new CopyTeacherSubjectJob(),
-            new CopyStudentExtracurricularJob(),
-            new CopyTeacherExtracurricularJob(),
-            new CopyCompetencyJob(),
-            new CopyStudentCompetencyJob(),
-            new CopyProjectCoordinatorJob(),
-            new CopyProjectJob(),
-            new CopyProjectTargetJob(),
-            new CopyProjectNoteJob(),
-            new CopyProjectStudentJob(),
-            new CopyUserJob(),
-            new CopyUserableJob(),
-        ])->dispatch();
+        Bus::dispatch(new CopyTeacherJob());
+        Bus::dispatch(new CopyStudentJob());
+        Bus::dispatch(new CopyDataStudentJob());
+        Bus::dispatch(new CopyGradeJob());
+        Bus::dispatch(new CopySubjectJob());
+        Bus::dispatch(new CopyExtracurricularJob());
+        Bus::dispatch(new CopyAcademicYearJob());
+        // Bus::dispatch(new CopyUserJob());
+        // Bus::dispatch(new CopyUserableJob());
+        // Bus::dispatch(new CopyTeacherGradeJob());
+        // Bus::dispatch(new CopyTeacherSubjectJob());
+        // Bus::dispatch(new CopyStudentExtracurricularJob());
+        // Bus::dispatch(new CopyTeacherExtracurricularJob());
+        // Bus::dispatch(new CopyCompetencyJob());
+        // Bus::dispatch(new CopyStudentCompetencyJob());
+        // Bus::dispatch(new CopyProjectCoordinatorJob());
+        // Bus::dispatch(new CopyProjectJob());
+        // Bus::dispatch(new CopyProjectTargetJob());
+        // Bus::dispatch(new CopyProjectNoteJob());
+        // Bus::dispatch(new CopyProjectStudentJob());
+
+        // Bus::dispatch(new CopyDataStudentJob());
     }
 }

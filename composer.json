@@ -20,6 +20,7 @@
         "laravel/tinker": "^2.9",
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpword": "*",
+        "rap2hpoutre/laravel-log-viewer": "^2.4",
         "rmsramos/activitylog": "^1.0",
         "spatie/laravel-activitylog": "^4.8",
         "staudenmeir/eloquent-json-relations": "^1.13",

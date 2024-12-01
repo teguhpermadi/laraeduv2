@@ -9,6 +9,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CopyUserableJob implements ShouldQueue
 {
@@ -32,5 +33,10 @@ class CopyUserableJob implements ShouldQueue
         foreach ($userables as $userable) {
             Userable::create($userable);
         }
+    }
+
+    public function failed(\Throwable $exception)
+    {
+        Log::error('CopyUserableJob failed: ' . $exception->getMessage());
     }
 }

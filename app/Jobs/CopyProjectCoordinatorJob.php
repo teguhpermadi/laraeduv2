@@ -9,6 +9,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CopyProjectCoordinatorJob implements ShouldQueue
 {
@@ -32,5 +33,10 @@ class CopyProjectCoordinatorJob implements ShouldQueue
         foreach ($projectCoordinators as $projectCoordinator) {
             ProjectCoordinator::create($projectCoordinator);
         }
+    }
+
+    public function failed(\Throwable $exception)
+    {
+        Log::error('CopyProjectCoordinatorJob failed: ' . $exception->getMessage());
     }
 }

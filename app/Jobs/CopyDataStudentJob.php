@@ -9,6 +9,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CopyDataStudentJob implements ShouldQueue
 {
@@ -51,8 +52,7 @@ class CopyDataStudentJob implements ShouldQueue
                 'guardian_education' => $dataStudent->guardian_education,
                 'guardian_occupation' => $dataStudent->guardian_occupation,
                 'guardian_phone' => $dataStudent->guardian_phone,
-                'guardian_address' => $dataStudent->guardian_address,
-                'guardian_village' => $dataStudent->guardian_village,
+                'guardian_village' => null,
                 'parent_address' => $dataStudent->parent_address,
                 'parent_province' => $dataStudent->parent_province,
                 'parent_city' => $dataStudent->parent_city,
@@ -64,5 +64,10 @@ class CopyDataStudentJob implements ShouldQueue
 
             DataStudent::create($data);
         }
+    }
+
+    public function failed(\Throwable $exception)
+    {
+        Log::error('CopyDataStudentJob failed: ' . $exception->getMessage());
     }
 }

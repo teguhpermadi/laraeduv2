@@ -9,6 +9,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CopyTeacherJob implements ShouldQueue
 {
@@ -29,20 +30,13 @@ class CopyTeacherJob implements ShouldQueue
     {
         $teachers = DB::connection('laraedu')->table('teachers')->get();
 
-        $data = [];
         foreach ($teachers as $teacher) {
-            // atur ulang datanya
-            $data[] = [
-                'name' => $teacher->name,
-                'gender' => $teacher->gender,
-                'signature' => null,
-                'nip' => null,
-                'nuptk' => null,
-                'photo' => null,
-            ];
-            
+            Teacher::create($teacher);
         }
+    }
 
-        DB::connection('mysql')->table('teachers')->upsert($data, ['id']);
+    public function failed(\Throwable $exception)
+    {
+        Log::error('CopyTeacherJob failed: ' . $exception->getMessage());
     }
 }

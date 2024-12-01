@@ -10,6 +10,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CopyProjectTargetJob implements ShouldQueue
 {
@@ -59,5 +60,10 @@ class CopyProjectTargetJob implements ShouldQueue
 
             ProjectTarget::create($data);
         }
+    }
+
+    public function failed(\Throwable $exception)
+    {
+        Log::error('CopyProjectTargetJob failed: ' . $exception->getMessage());
     }
 }

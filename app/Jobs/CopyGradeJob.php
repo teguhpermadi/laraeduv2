@@ -10,6 +10,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CopyGradeJob implements ShouldQueue
 {
@@ -55,5 +56,10 @@ class CopyGradeJob implements ShouldQueue
 
             Grade::create($data);
         }
+    }
+
+    public function failed(\Throwable $exception)
+    {
+        Log::error('CopyGradeJob failed: ' . $exception->getMessage());
     }
 }

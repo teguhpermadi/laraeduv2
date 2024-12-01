@@ -2,12 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Models\AcademicYear;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CopyAcademicYearJob implements ShouldQueue
 {
@@ -34,7 +36,12 @@ class CopyAcademicYearJob implements ShouldQueue
                 'date_report_half' => $year->date_report_half,
             ];
 
-            DB::connection('mysql')->table('academic_years')->insert($data);
+            AcademicYear::create($data);
         }
+    }
+
+    public function failed(\Throwable $exception)
+    {
+        Log::error('CopyAcademicYearJob failed: ' . $exception->getMessage());
     }
 }

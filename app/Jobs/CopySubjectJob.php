@@ -9,6 +9,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CopySubjectJob implements ShouldQueue
 {
@@ -38,5 +39,10 @@ class CopySubjectJob implements ShouldQueue
 
             Subject::create($data);
         }
+    }
+
+    public function failed(\Throwable $exception)
+    {
+        Log::error('CopySubjectJob failed: ' . $exception->getMessage());
     }
 }

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CopyProjectNoteJob implements ShouldQueue
 {
@@ -32,5 +33,10 @@ class CopyProjectNoteJob implements ShouldQueue
         foreach ($projectNotes as $projectNote) {
             ProjectNote::create($projectNote);
         }
+    }
+
+    public function failed(\Throwable $exception)
+    {
+        Log::error('CopyProjectNoteJob failed: ' . $exception->getMessage());
     }
 }

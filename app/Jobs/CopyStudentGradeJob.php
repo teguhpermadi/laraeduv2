@@ -9,6 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use App\Models\StudentGrade;
+use Illuminate\Support\Facades\Log;
 
 class CopyStudentGradeJob implements ShouldQueue
 {
@@ -38,5 +39,10 @@ class CopyStudentGradeJob implements ShouldQueue
 
             StudentGrade::create($data);
         }
+    }
+
+    public function failed(\Throwable $exception)
+    {
+        Log::error('CopyStudentGradeJob failed: ' . $exception->getMessage());
     }
 }

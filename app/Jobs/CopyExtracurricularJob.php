@@ -9,6 +9,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CopyExtracurricularJob implements ShouldQueue
 {
@@ -36,5 +37,10 @@ class CopyExtracurricularJob implements ShouldQueue
 
             Extracurricular::create($data);
         }
+    }
+
+    public function failed(\Throwable $exception)
+    {
+        Log::error('CopyExtracurricularJob failed: ' . $exception->getMessage());
     }
 }

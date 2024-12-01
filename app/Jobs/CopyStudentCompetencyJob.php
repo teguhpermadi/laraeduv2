@@ -9,6 +9,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CopyStudentCompetencyJob implements ShouldQueue
 {
@@ -32,5 +33,10 @@ class CopyStudentCompetencyJob implements ShouldQueue
         foreach ($studentCompetencies as $studentCompetency) {
             StudentCompetency::create($studentCompetency);
         }
+    }
+
+    public function failed(\Throwable $exception)
+    {
+        Log::error('CopyStudentCompetencyJob failed: ' . $exception->getMessage());
     }
 }
