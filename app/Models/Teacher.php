@@ -24,6 +24,7 @@ class Teacher extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'id',
         'name',
         'gender',
         'signature',

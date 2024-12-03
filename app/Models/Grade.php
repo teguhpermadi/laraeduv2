@@ -23,10 +23,11 @@ class Grade extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'id',
         'name',
         'grade',
         'phase',
-        'is_inclusive',
+        // 'is_inclusive',
     ];
 
     public function getActivitylogOptions(): LogOptions

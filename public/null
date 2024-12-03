@@ -51,3 +51,46 @@ foreach ($students as $student) {
 
 $data;
 Student::get()
+User::get()
+Teacher::get();
+Teacher::get();
+Teacher::count()
+Teacher::get();
+$students = DB::connection('laraedu')->table('students')->get();
+$students = DB::connection('laraedu')->table('teachers')->get();
+Teacher::get();
+Teacher::get();
+Teacher::get();
+Teacher::get();
+Teacher::get();
+Student::get();
+Grade::get();
+Grade::get();
+Grade::get();
+Grade::get();
+Grade::get();
+Grade::truncate();
+Grade::all()->delete;
+Grade::all()->delete();
+Grade::get()->delete;
+Grade::truncate()
+DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+DB::table('grades')->truncate();
+Grade::get()
+Grade::get()
+DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+DB::table('grade')->truncate();
+DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+DB::table('grades')->truncate();
+
+
+Grade::get();
+
+
+Student::get();
+
+
+Teacher::get();
+
+
+Subject::get();
