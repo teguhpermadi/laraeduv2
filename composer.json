@@ -19,6 +19,7 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "maatwebsite/excel": "^3.1",
+        "opcodesio/log-viewer": "^3.12",
         "phpoffice/phpword": "*",
         "rmsramos/activitylog": "^1.0",
         "spatie/laravel-activitylog": "^4.8",

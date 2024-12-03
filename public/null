@@ -1,1 +1,53 @@
-AcademicYear::get()
+$students = DB::connection('laraedu')->table('students')->get();
+$students = DB::connection('laraedu')->table('students')->get();
+
+foreach ($students as $student) {
+  $array = json_decode(json_encode($student), true);
+  
+}
+$students = DB::connection('laraedu')->table('students')->get();
+
+foreach ($students as $student) {
+  $array = json_decode(json_encode($student), true);
+  
+}
+$array;
+$students = DB::connection('laraedu')->table('students')->get();
+
+foreach ($students as $student) {
+  $array = json_decode(json_encode($student), true);
+
+  $data = [
+	'id' => $array['ulid'],
+	'nisn' => $array['nisn'],
+	'nis' => $array['nis'],
+	'name' => $array['name'],
+	'gender' => $array['gender'],
+	'active' => $array['active'],
+	'city_born' => $array['city_born'],
+	'birthday' => $array['birthday'],
+	'nick_name' => $array['nick_name'],
+  ];
+}
+
+$data;
+$students = DB::connection('laraedu')->table('students')->get();
+
+foreach ($students as $student) {
+  $array = json_decode(json_encode($student), true);
+
+  $data[] = [
+	'id' => $array['ulid'],
+	'nisn' => $array['nisn'],
+	'nis' => $array['nis'],
+	'name' => $array['name'],
+	'gender' => $array['gender'],
+	'active' => $array['active'],
+	'city_born' => $array['city_born'],
+	'birthday' => $array['birthday'],
+	'nick_name' => $array['nick_name'],
+  ];
+}
+
+$data;
+Student::get()
