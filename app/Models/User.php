@@ -34,6 +34,7 @@ class User extends Authenticatable implements HasAvatar
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'name',
         'username',
         'email',

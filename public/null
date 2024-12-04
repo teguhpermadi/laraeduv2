@@ -1,31 +1,28 @@
+User::with('userable')->get()
+$userables = DB::connection('laraedu')->table('userables')->get();
+$users = DB::connection('laraedu')->table('users')->get();
 
+$userables = DB::connection('laraedu')->table('userables')->get();
 
-Extracurricular::get();
-
-
-AcademicYear::get();
-
-
-
-        $academicYears = DB::connection('laraedu')->table('academic_years')->get();
-
-
-AcademicYear::get();
-
-
-Teacher::get();
-
-
-Student::get();
-
-
-Grade::get();
-
-
-Subject::get();
-
-
-Extracurricular::get();
-
-
-AcademicYear::get();
+array($users, $userables)
+User::get()
+Userable::get()
+$userables = DB::connection('laraedu')->table('userables')->get();
+User::find('01JE7HZRFV634WHFRKRCARK0QZ')
+User::get();
+User::truncate()
+Userable::get()
+TeacherGrade::get()
+TeacherGrade::get()
+TeacherGrade::get()
+TeacherGrade::get()
+TeacherGrade::get()
+TeacherGrade::get()
+TeacherGrade::get()
+TeacherGrade::get()
+TeacherGrade::get()
+TeacherGrade::get()
+TeacherGrade::get()
+TeacherGrade::get()
+TeacherGrade::get()
+TeacherGrade::get()

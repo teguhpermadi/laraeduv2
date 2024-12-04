@@ -19,6 +19,7 @@ class Userable extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'id',
         'user_id',
         'userable_id',
         'userable_type',
