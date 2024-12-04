@@ -21,7 +21,7 @@ class CopyStudentGradeCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Copy student grade from laraedu to laraeduv2';
 
     /**
      * Execute the console command.

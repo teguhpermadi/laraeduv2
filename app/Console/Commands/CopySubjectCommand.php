@@ -21,7 +21,7 @@ class CopySubjectCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Copy subject from laraedu to laraeduv2';
 
     /**
      * Execute the console command.

@@ -79,3 +79,275 @@ TeacherSubject::get();
 Competency::get()
 Competency::find('01je7tdegy0y3db0a3vrbbtqsk')
 Competency::with('teacherSubject')->find('01je7tdegy0y3db0a3vrbbtqsk')
+$competency::find('01je7tdegy0y3db0a3vrbbtqsk');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+$teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+
+foreach ($teacherSubject->studentGrade as $student) {
+  $data = [
+	'id' => Str::ulid()->toBase32(),
+	'teacher_subject_id' => $teacher_subject_id,
+	'student_id' => $student->student_id,
+	'competency_id' => $competency->id,
+	'created_at' => now(),
+  ];
+
+  
+  
+
+  
+}
+$competency::find('01je7tdegy0y3db0a3vrbbtqsk');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+
+$teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+
+foreach ($teacherSubject->studentGrade as $student) {
+  $data = [
+	'id' => Str::ulid()->toBase32(),
+	'teacher_subject_id' => $teacher_subject_id,
+	'student_id' => $student->student_id,
+	'competency_id' => $competency->id,
+	'created_at' => now(),
+  ];
+
+  
+  
+
+  
+}
+$competency = Competency::find('01je7tdegy0y3db0a3vrbbtqsk');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+
+$teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+
+foreach ($teacherSubject->studentGrade as $student) {
+  $data = [
+	'id' => Str::ulid()->toBase32(),
+	'teacher_subject_id' => $teacher_subject_id,
+	'student_id' => $student->student_id,
+	'competency_id' => $competency->id,
+	'created_at' => now(),
+  ];
+
+  
+  
+
+  
+}
+$competency = Competency::find('01je7tdegy0y3db0a3vrbbtqsk');
+$competency = Competency::get();
+$competency = Competency::find('01je86jm7jhgy67rm7ew220tc4');
+$competency = Competency::find('01je86jm7jhgy67rm7ew220tc4');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+$teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+
+foreach ($teacherSubject->studentGrade as $student) {
+  $data = [
+	'id' => Str::ulid()->toBase32(),
+	'teacher_subject_id' => $teacher_subject_id,
+	'student_id' => $student->student_id,
+	'competency_id' => $competency->id,
+	'created_at' => now(),
+  ];
+}
+$competency = Competency::find('01je86jm7jhgy67rm7ew220tc4');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+$teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+
+foreach ($teacherSubject->studentGrade as $student) {
+  $data = [
+	'id' => Str::ulid()->toBase32(),
+	'teacher_subject_id' => $teacher_subject_id,
+	'student_id' => $student->student_id,
+	'competency_id' => $competency->id,
+	'created_at' => now(),
+  ];
+  
+}
+
+$data;
+$competency = Competency::find('01je86jm7jhgy67rm7ew220tc4');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+$teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+
+foreach ($teacherSubject->studentGrade as $student) {
+  $data[] = [
+	'id' => Str::ulid()->toBase32(),
+	'teacher_subject_id' => $teacher_subject_id,
+	'student_id' => $student->student_id,
+	'competency_id' => $competency->id,
+	'created_at' => now(),
+  ];
+  
+}
+
+$data;
+$competency = Competency::find('01je86jm7jhgy67rm7ew220tc4');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+$teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+
+foreach ($teacherSubject->studentGrade as $student) {
+  $data[] = [
+	'id' => Str::ulid()->toBase32(),
+	'teacher_subject_id' => $teacher_subject_id,
+	'student_id' => $student->student_id,
+	'competency_id' => $competency->id,
+	'created_at' => now(),
+  ];
+  
+}
+
+$student;
+$competency = Competency::find('01je86jm7jhgy67rm7ew220tc4');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+$teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+
+foreach ($teacherSubject->studentGrade as $student) {
+  $data[] = [
+	'id' => Str::ulid()->toBase32(),
+	'teacher_subject_id' => $teacher_subject_id,
+	'student_id' => $student->student_id,
+	'competency_id' => $competency->id,
+	'created_at' => now(),
+  ];
+  
+}
+
+$teacherSubject->studentGrade
+$competency = Competency::find('01je86jm7jhgy67rm7ew220tc4');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+$academic_year_id = $competency->teacher_subject_id->academic_year_id;
+
+$teacherSubject = TeacherSubject::with('studentGrade')->where('academic_year_id', $academic_year_id)->find($teacher_subject_id);
+
+foreach ($teacherSubject->studentGrade as $student) {
+  $data[] = [
+	'id' => Str::ulid()->toBase32(),
+	'teacher_subject_id' => $teacher_subject_id,
+	'student_id' => $student->student_id,
+	'competency_id' => $competency->id,
+	'created_at' => now(),
+  ];
+  
+}
+
+$data;
+TeacherSubject::with('studentGrade')->get()
+$competency = Competency::find('01je86jm7jhgy67rm7ew220tc4');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+
+$academic_year_id = $teacher_subject_id->academic_year_id;
+
+$teacherSubject = TeacherSubject::with(['studentGrade' => function ($query) use ($academic_year_id) {
+  $query->where('academic_year_id', $academic_year_id);
+}])->find($teacher_subject_id);
+
+foreach ($teacherSubject->studentGrade as $student) {
+  $data[] = [
+	'id' => Str::ulid()->toBase32(),
+	'teacher_subject_id' => $teacher_subject_id,
+	'student_id' => $student->student_id,
+	'competency_id' => $competency->id,
+	'created_at' => now(),
+  ];
+
+
+}
+$data;
+$competency = Competency::find('01je86jm7jhgy67rm7ew220tc4');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+
+$academic_year_id = $teacher_subject_id->academic_year_id;
+
+$teacherSubject = TeacherSubject::with(['studentGrade' => function ($query) use ($academic_year_id) {
+  $query->where('academic_year_id', $academic_year_id);
+}])->find($teacher_subject_id);
+
+foreach ($teacherSubject->studentGrade as $student) {
+  $data[] = [
+	'id' => Str::ulid()->toBase32(),
+	'teacher_subject_id' => $teacher_subject_id,
+	'student_id' => $student->student_id,
+	'competency_id' => $competency->id,
+	'created_at' => now(),
+  ];
+}
+
+$data;
+$competency = Competency::find('01je86jm7jhgy67rm7ew220tc4');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+
+$academic_year_id = $teacher_subject_id->academic_year_id;
+
+$teacherSubject = TeacherSubject::with(['studentGrade' => function ($query) use ($academic_year_id) {
+  $query->where('academic_year_id', $academic_year_id);
+}])->find($teacher_subject_id);
+
+foreach ($teacherSubject->studentGrade as $student) {
+  $data[] = [
+	'id' => Str::ulid()->toBase32(),
+	'teacher_subject_id' => $teacher_subject_id,
+	'student_id' => $student->student_id,
+	'competency_id' => $competency->id,
+	'created_at' => now(),
+  ];
+}
+
+$data;
+$competency = Competency::find('01je86jm7jhgy67rm7ew220tc4');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+
+$academic_year_id = $teacher_subject_id->academic_year_id;
+
+$teacherSubject = TeacherSubject::with(['studentGrade' => function ($query) use ($academic_year_id) {
+  $query->where('academic_year_id', $academic_year_id);
+}])->find($teacher_subject_id);
+
+foreach ($teacherSubject->studentGrade as $student) {
+  $data[] = [
+	'id' => Str::ulid()->toBase32(),
+	'teacher_subject_id' => $teacher_subject_id,
+	'student_id' => $student->student_id,
+	'competency_id' => $competency->id,
+	'created_at' => now(),
+  ];
+}
+
+$data;
+$competency = Competency::find('01je86jm7jhgy67rm7ew220tc4');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+
+
+$academic_year_id = $competency->teacherSubject->academic_year_id;
+
+
+$teacherSubject = TeacherSubject::with(['studentGrade' => function ($query) use ($academic_year_id) {
+  $query->where('academic_year_id', $academic_year_id);
+}])->find($teacher_subject_id);
+
+foreach ($teacherSubject->studentGrade as $student) {
+  $data[] = [
+	'id' => Str::ulid()->toBase32(),
+	'teacher_subject_id' => $teacher_subject_id,
+	'student_id' => $student->student_id,
+	'competency_id' => $competency->id,
+	'created_at' => now(),
+  ];
+}
+
+$data;

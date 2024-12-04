@@ -21,7 +21,7 @@ class CopyAcademicYearCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Copy academic year from laraedu to laraeduv2';
 
     /**
      * Execute the console command.

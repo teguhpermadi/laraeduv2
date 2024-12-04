@@ -16,7 +16,14 @@ class CompetencyObserver
     public function created(Competency $competency): void
     {
         $teacher_subject_id = $competency->teacher_subject_id;
-        $teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+        
+        // dapatkan academic year id dari teacher subject
+        $academic_year_id = $competency->teacherSubject->academic_year_id;
+
+        // dapatkan teacher subject beserta student grade
+        $teacherSubject = TeacherSubject::with(['studentGrade' => function ($query) use ($academic_year_id) {
+            $query->where('academic_year_id', $academic_year_id);
+        }])->find($teacher_subject_id);
 
         foreach ($teacherSubject->studentGrade as $student) {
             $data = [
@@ -28,9 +35,9 @@ class CompetencyObserver
             ];
 
             // log info
-            Log::info($data);
+            // Log::info($data);
 
-            // StudentCompetency::create($data);
+            StudentCompetency::create($data);
         }
         
         // dd($students);
