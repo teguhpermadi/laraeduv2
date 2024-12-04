@@ -25,6 +25,7 @@ class Competency extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'id',
         'teacher_subject_id',
         'code',
         'description',

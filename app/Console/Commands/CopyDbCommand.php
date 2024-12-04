@@ -60,7 +60,7 @@ class CopyDbCommand extends Command
         $this->info('Copy user success');
 
         // handle give role to user
-        Artisan::call('app:give-role-to-user');
+        Artisan::call('app:give-role-to-user-admin');
         $this->info('Give role to user success');
 
         // handle academic year
@@ -78,5 +78,9 @@ class CopyDbCommand extends Command
         // handle teacher subject
         Artisan::call('app:copy-teacher-subject');
         $this->info('Copy teacher subject success');
+
+        // handle competency
+        Artisan::call('app:copy-competency');
+        $this->info('Copy competency success');
     }
 }
