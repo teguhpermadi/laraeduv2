@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\Competency;
 use App\Models\StudentCompetency;
 use App\Models\TeacherSubject;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class CompetencyObserver
@@ -26,7 +27,10 @@ class CompetencyObserver
                 'created_at' => now(),
             ];
 
-            StudentCompetency::create($data);
+            // log info
+            Log::info($data);
+
+            // StudentCompetency::create($data);
         }
         
         // dd($students);

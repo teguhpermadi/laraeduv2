@@ -28,6 +28,7 @@ class TeacherSubject extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'id',
         'academic_year_id',
         'teacher_id',
         'subject_id',

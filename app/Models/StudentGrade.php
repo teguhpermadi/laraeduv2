@@ -29,6 +29,7 @@ class StudentGrade extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'id',
         'academic_year_id',
         'student_id',
         'grade_id',

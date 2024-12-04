@@ -26,3 +26,56 @@ TeacherGrade::get()
 TeacherGrade::get()
 TeacherGrade::get()
 TeacherGrade::get()
+$studentGrades = DB::connection('laraedu')->table('student_grade')->get();
+StudentGrade::get()
+StudentGrade::get()
+$teacherSubjects = DB::connection('laraedu')->table('teacher_subjects')->get();
+StudentCompetency::get();
+TeacherSubject::get();
+Competency::get();
+StudentCompetency::get();
+StudentCompetency::count();
+Competency::count();
+Competency::count();
+StudentCompetency::count();
+TeacherSubject::with('studentGrade')->get();
+TeacherSubject::with('studentGrade')->first();
+TeacherSubject::with('studentGrade', 'competency')->first();
+TeacherSubject::with('studentGrade', 'competency')->last();
+TeacherSubject::with('studentGrade', 'competency')->lastes();
+TeacherSubject::with('studentGrade', 'competency')->lastest();
+TeacherSubject::with('studentGrade', 'competency')->latest();
+TeacherSubject::with('studentGrade', 'competency')->first();
+TeacherSubject::with('studentGrade', 'competency')->get();
+TeacherSubject::with('studentGrade', 'competency')->first();
+DB::table('student_competency')->truncate();
+StudentCompetency::truncate();
+StudentCompetency::get();
+Competency::get();
+Competency::truncate();
+Competency::get();
+Competency::get();
+$competency = Competency::find('01je7tdegy0y3db0a3vrbbtqsk');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+$teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+$competency = Competency::find('01je7tdegy0y3db0a3vrbbtqsk');
+
+$teacher_subject_id = $competency->teacher_subject_id;
+$teacherSubject = TeacherSubject::with('studentGrade')->find($teacher_subject_id);
+
+foreach ($teacherSubject->studentGrade as $student) {
+  $data[] = [
+	'id' => Str::ulid()->toBase32(),
+	'teacher_subject_id' => $teacher_subject_id,
+	'student_id' => $student->student_id,
+	'competency_id' => $competency->id,
+	'created_at' => now(),
+  ];
+}
+
+$data;
+TeacherSubject::get();
+Competency::get()
+Competency::find('01je7tdegy0y3db0a3vrbbtqsk')
+Competency::with('teacherSubject')->find('01je7tdegy0y3db0a3vrbbtqsk')

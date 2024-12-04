@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('score')->default(0);
             $table->timestamps();
 
-            $table->unique(['student_id', 'competency_id']);
+            $table->unique(['student_id', 'competency_id', 'teacher_subject_id'], 'student_competency_unique');
         });
     }
 
