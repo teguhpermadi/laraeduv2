@@ -1,96 +1,31 @@
-$students = DB::connection('laraedu')->table('students')->get();
-$students = DB::connection('laraedu')->table('students')->get();
 
-foreach ($students as $student) {
-  $array = json_decode(json_encode($student), true);
-  
-}
-$students = DB::connection('laraedu')->table('students')->get();
 
-foreach ($students as $student) {
-  $array = json_decode(json_encode($student), true);
-  
-}
-$array;
-$students = DB::connection('laraedu')->table('students')->get();
+Extracurricular::get();
 
-foreach ($students as $student) {
-  $array = json_decode(json_encode($student), true);
 
-  $data = [
-	'id' => $array['ulid'],
-	'nisn' => $array['nisn'],
-	'nis' => $array['nis'],
-	'name' => $array['name'],
-	'gender' => $array['gender'],
-	'active' => $array['active'],
-	'city_born' => $array['city_born'],
-	'birthday' => $array['birthday'],
-	'nick_name' => $array['nick_name'],
-  ];
-}
+AcademicYear::get();
 
-$data;
-$students = DB::connection('laraedu')->table('students')->get();
 
-foreach ($students as $student) {
-  $array = json_decode(json_encode($student), true);
 
-  $data[] = [
-	'id' => $array['ulid'],
-	'nisn' => $array['nisn'],
-	'nis' => $array['nis'],
-	'name' => $array['name'],
-	'gender' => $array['gender'],
-	'active' => $array['active'],
-	'city_born' => $array['city_born'],
-	'birthday' => $array['birthday'],
-	'nick_name' => $array['nick_name'],
-  ];
-}
+        $academicYears = DB::connection('laraedu')->table('academic_years')->get();
 
-$data;
-Student::get()
-User::get()
+
+AcademicYear::get();
+
+
 Teacher::get();
-Teacher::get();
-Teacher::count()
-Teacher::get();
-$students = DB::connection('laraedu')->table('students')->get();
-$students = DB::connection('laraedu')->table('teachers')->get();
-Teacher::get();
-Teacher::get();
-Teacher::get();
-Teacher::get();
-Teacher::get();
-Student::get();
-Grade::get();
-Grade::get();
-Grade::get();
-Grade::get();
-Grade::get();
-Grade::truncate();
-Grade::all()->delete;
-Grade::all()->delete();
-Grade::get()->delete;
-Grade::truncate()
-DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-DB::table('grades')->truncate();
-Grade::get()
-Grade::get()
-DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-DB::table('grade')->truncate();
-DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-DB::table('grades')->truncate();
-
-
-Grade::get();
 
 
 Student::get();
 
 
-Teacher::get();
+Grade::get();
 
 
 Subject::get();
+
+
+Extracurricular::get();
+
+
+AcademicYear::get();

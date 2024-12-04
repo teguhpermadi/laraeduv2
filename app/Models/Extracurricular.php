@@ -18,6 +18,7 @@ class Extracurricular extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'id',
         'name',
         'is_required',
     ];
