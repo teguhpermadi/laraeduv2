@@ -351,3 +351,7 @@ foreach ($teacherSubject->studentGrade as $student) {
 }
 
 $data;
+Teacher::get();
+User::get();
+$admin = User::where('email', 'admin@admin.com')->first();
+$admin = User::where('email', 'admin@admin.com')->first();
