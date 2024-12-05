@@ -51,7 +51,7 @@ class Student extends Model
         });
         
         static::addGlobalScope('order', function (Builder $builder) {
-            $builder->orderBy('id', 'asc');
+            $builder->orderBy('id', 'desc');
         });
     }
 
