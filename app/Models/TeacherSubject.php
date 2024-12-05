@@ -7,6 +7,7 @@ use App\Helpers\ScoreCriteriaHelper;
 use App\Models\Scopes\AcademicYearScope;
 use App\Observers\TeacherSubjectObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +16,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 #[ObservedBy(TeacherSubjectObserver::class)]
+#[ScopedBy(AcademicYearScope::class)]
 class TeacherSubject extends Model
 {
     use HasFactory;
@@ -69,7 +71,7 @@ class TeacherSubject extends Model
     public function studentGrade()
     {
         return $this->hasMany(StudentGrade::class, 'grade_id', 'grade_id')
-            ->withoutGlobalScope(AcademicYearScope::class)
+            // ->withoutGlobalScope(AcademicYearScope::class)
             ->orderBy('student_id', 'asc');
     }
 

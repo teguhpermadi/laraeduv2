@@ -204,6 +204,7 @@ class CompetencyResource extends Resource
                 TextColumn::make('code')
                     ->label(__('competency.code')),
                 TextColumn::make('description')
+                    ->wrap()
                     ->label(__('competency.description')),
                 ToggleColumn::make('half_semester')
                     ->label(__('competency.half_semester')),

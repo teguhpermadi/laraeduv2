@@ -10,4 +10,5 @@ return [
     'last_update' => 'Terakhir Diperbarui',
     'half_semester_last_update' => 'Pengumpulan Leger Tengah Semester',
     'full_semester_last_update' => 'Pengumpulan Leger Akhir Semester',
+    'curriculum' => 'Kurikulum',
 ];

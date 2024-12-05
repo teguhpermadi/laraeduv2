@@ -59,9 +59,11 @@ class MySubject extends Page implements HasTable
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('legerRecapHalfSemester.updated_at')
+                    ->wrapHeader()
                     ->label(__('my-subject.half_semester_last_update'))
                     ->dateTime('d M Y H:i'),
                 TextColumn::make('legerRecapFullSemester.updated_at')
+                    ->wrapHeader()
                     ->label(__('my-subject.full_semester_last_update'))
                     ->dateTime('d M Y H:i'),
 
