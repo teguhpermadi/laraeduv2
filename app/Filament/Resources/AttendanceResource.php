@@ -17,6 +17,7 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
@@ -80,6 +81,7 @@ class AttendanceResource extends Resource
             ->columns([
                 TextColumn::make('student.name')
                     ->searchable()
+                    ->wrap()
                     ->label(__('student.name')),
                 // kolom naik kelas / tinggal kelas
                 SelectColumn::make('status')
@@ -107,6 +109,23 @@ class AttendanceResource extends Resource
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
+                Action::make('catatan')
+                    ->slideOver()
+                    ->fillForm(fn (Attendance $record): array => [
+                        'note' => $record->note,
+                        'achievement' => $record->achievement,
+                    ])
+                    ->form([
+                        Textarea::make('note')
+                            ->label('catatan'),
+                        Textarea::make('achievement')
+                            ->label('penghargaan'),
+                    ])
+                    ->action(function (array $data, Attendance $record): void {
+                        $record->note = $data['note'];
+                        $record->achievement = $data['achievement'];
+                        $record->save();
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
