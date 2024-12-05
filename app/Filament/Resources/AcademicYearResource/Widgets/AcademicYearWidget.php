@@ -7,6 +7,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Widgets\Widget;
 
 class AcademicYearWidget extends Widget implements HasForms
@@ -47,5 +48,10 @@ class AcademicYearWidget extends Widget implements HasForms
     public function submit(): void
     {
         session()->put('academic_year_id', $this->form->getState()['academic_year_id']);
+
+        Notification::make()
+            ->title('Tahun akademik berhasil diubah.')
+            ->success()
+            ->send();
     }
 }
