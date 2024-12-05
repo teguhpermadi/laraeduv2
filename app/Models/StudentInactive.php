@@ -25,7 +25,7 @@ class StudentInactive extends Model
 
     public function academic()
     {
-        return $this->belongsTo(AcademicYear::class);
+        return $this->belongsTo(AcademicYear::class, 'academic_year_id');
     }
 
     public function student()

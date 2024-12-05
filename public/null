@@ -1,195 +1,21 @@
-TeacherSubject::with('competency', 'grade')->mySubject();
-TeacherSubject::with('competency', 'grade')->mySubject()->get();
-TeacherSubject::with('grade')->mySubject()->get();
-$teacherSubject = TeacherSubject::with('grade')->mySubject()->get()->toArray;
-$teacherSubject = TeacherSubject::with('grade')->mySubject()->get()->toArray();
-$teacherSubject = TeacherSubject::with('grade', 'subject')->mySubject()->get()->toArray();
-$subjects = TeacherSubject::with('grade', 'subject')->mySubject();
+use App\Models\StudentInactive;
 
-$subjects->maps(function($q){
-	$q->id;
-})
-$subjects = TeacherSubject::with('grade', 'subject')->mySubject();
-$subjects = TeacherSubject::with('grade', 'subject')->mySubject();
-$subjects->toArray()
-$subjects = TeacherSubject::with('grade', 'subject')->mySubject()->get();
-$subjects->toArray()
-$subjects = TeacherSubject::mySubject()->get();
-$subjects->toArray()
-TeacherSubject::whereIn('id', ['01JE8QJA1WK9MXTE1Y4EGSX2F4', '01JE8QJARZDJHGYR8TKMYBDEDP'])->get()
-TeacherSubject::whereIn('id', ['01JE8QJA1WK9MXTE1Y4EGSX2F4', '01JE8QJARZDJHGYR8TKMYBDEDP'])->with('subject', 'grade', 'academic')->get()
-TeacherSubject::whereIn('id', ['01JE8QJA1WK9MXTE1Y4EGSX2F4', '01JE8QJARZDJHGYR8TKMYBDEDP'])->with('academic')->get()
-TeacherSubject::whereIn('id', ['01JE8QJA1WK9MXTE1Y4EGSX2F4', '01JE8QJARZDJHGYR8TKMYBDEDP'])->with('academic')->get()
-$studentCompetencies = DB::connection('laraedu')->table('student_competencies')->get();
+StudentInactive::get();
+use App\Models\StudentInactive;
+
+StudentInactive::with('academic')->get();
+use App\Models\StudentInactive;
 
 
-foreach ($studentCompetencies as $studentCompetency) {
-  $array = json_decode(json_encode($studentCompetency), true);
 
-  $studentCompetency = StudentCompetency::where('teacher_subject_id', $array['teacher_subject_ulid'])
-	->where('competency_id', $array['competency_ulid'])
-	->where('student_id', $array['student_ulid'])
-	->first();
+AcademicYear::get();
+use App\Models\StudentInactive;
 
-}
-
-$studentCompetency
-$studentCompetencies = DB::connection('laraedu')->table('student_competencies')->get();
+StudentInactive::with('academic')->get();
 
 
-foreach ($studentCompetencies as $studentCompetency) {
-  $array = json_decode(json_encode($studentCompetency), true);
+use App\Models\StudentInactive;
 
-  $studentCompetency = StudentCompetency::where('teacher_subject_id', $array['teacher_subject_ulid'])
-	->where('competency_id', $array['competency_ulid'])
-	->where('student_id', $array['student_ulid'])
-	->first();
-
-}
-
-$array
-$studentCompetencies = DB::connection('laraedu')->table('student_competencies')->get();
+StudentInactive::with('academic')->get();
 
 
-foreach ($studentCompetencies as $studentCompetency) {
-  $array = json_decode(json_encode($studentCompetency), true);
-
-  $studentCompetency = StudentCompetency::where('teacher_subject_id', $array['teacher_subject_ulid'])
-	->where('competency_id', $array['competency_ulid'])
-	->where('student_id', $array['student_ulid'])
-	->first();
-
-  $studentCompetency->update([
-                    'score' => $array['score'],
-                    'score_skill' => $array['score_skill'],
-                ]);
-}
-TeacherSubject::find('01JE8QJ9QK5PRDRFXRWBNRKPCB')
-TeacherSubject::find('01JE8QJ9QK5PRDRFXRWBNRKPCB')->with('subject', 'grade', 'studentCompetency')
-TeacherSubject::with('subject', 'grade', 'studentCompetency')->find('01JE8QJ9QK5PRDRFXRWBNRKPCB')
-TeacherSubject::with('subject', 'grade')->find('01JE8QJ9QK5PRDRFXRWBNRKPCB')
-TeacherSubject::with('subject', 'grade', 'competency')->find('01JE8QJ9QK5PRDRFXRWBNRKPCB')
-TeacherSubject::with('subject', 'grade', 'competency.studentCompetency')->find('01JE8QJ9QK5PRDRFXRWBNRKPCB')
-
-
-$studentCompetencies = DB::connection('laraedu')->table('teacher_subjects')->get();
-
-
-$studentCompetencies = DB::connection('laraedu')->table('teacher_subjects')->with('subject')->get();
-
-
-$studentCompetencies = DB::connection('laraedu')->table('teacher_subjects')->join('subjects')->get();
-
-
-$studentCompetencies = DB::connection('laraedu')->table('teacher_subjects')->join('subjects', 'subjects.id', 'teacher_subjects.subject_id')->get();
-
-
-$studentCompetencies = DB::connection('laraedu')->table('teacher_subjects')->get();
-
-
-$studentCompetencies = DB::connection('laraedu')->table('teacher_subjects')->get();
-
-
-$studentCompetencies = DB::connection('laraedu')->table('teacher_subjects')->get();
-            $array = json_decode(json_encode($studentCompetency), true);
-
-
-$studentCompetencies = DB::connection('laraedu')->table('teacher_subjects')->get();
-$array = json_decode(json_encode($studentCompetencies), true);
-
-
-$studentCompetencies = DB::connection('laraedu')->table('teacher_subjects')->get();
-
-$data = [];
-foreach($studentCompetencies as $studentCompetency){
-  $array = json_decode(json_encode($studentCompetency), true);
-	$data [] = $array;
-}
-
-$data;
-
-
-$studentCompetencies = DB::connection('laraedu')->table('teacher_subjects')->get();
-
-$data = [];
-foreach($studentCompetencies as $studentCompetency){
-  $array = json_decode(json_encode($studentCompetency), true);
-  
-  $studentCompetency = StudentCompetency::where('teacher_subject_id', $array['teacher_subject_ulid'])
-	->where('competency_id', $array['competency_ulid'])
-	->where('student_id', $array['student_ulid'])
-	->first();
-  
-  $data[] = $studentCompetency;
-
-}
-
-$data;
-$studentCompetencies = DB::connection('laraedu')->table('student_competencies')->get();
-
-
-foreach ($studentCompetencies as $studentCompetency) {
-  $array = json_decode(json_encode($studentCompetency), true);
-
-  $studentCompetency = StudentCompetency::where('teacher_subject_id', $array['teacher_subject_ulid'])
-	->where('competency_id', $array['competency_ulid'])
-	->where('student_id', $array['student_ulid'])
-	->first();
-}
-$studentCompetencies = DB::connection('laraedu')->table('student_competencies')->get();
-
-
-foreach ($studentCompetencies as $studentCompetency) {
-  $array = json_decode(json_encode($studentCompetency), true);
-
-  $studentCompetency = StudentCompetency::where('teacher_subject_id', $array['teacher_subject_ulid'])
-	->where('competency_id', $array['competency_ulid'])
-	->where('student_id', $array['student_ulid'])
-	->first();
-}
-$studentCompetencies = DB::connection('laraedu')->table('student_competencies')->get();
-
-
-foreach ($studentCompetencies as $studentCompetency) {
-  $array = json_decode(json_encode($studentCompetency), true);
-
-  $studentCompetency = StudentCompetency::where('teacher_subject_id', $array['teacher_subject_ulid'])
-	->where('competency_id', $array['competency_ulid'])
-	->where('student_id', $array['student_ulid'])
-	->first();
-}
-$studentCompetencies = DB::connection('laraedu')->table('student_competencies')->get();
-
-$data = [];
-foreach ($studentCompetencies as $studentCompetency) {
-  $array = json_decode(json_encode($studentCompetency), true);
-
-  $studentCompetency = StudentCompetency::where('teacher_subject_id', $array['teacher_subject_ulid'])
-	->where('competency_id', $array['competency_ulid'])
-	->where('student_id', $array['student_ulid'])
-	->first();
-  
-  $data[] = $studentCompetency;
-}
-
-$data;
-$studentCompetencies = DB::connection('laraedu')->table('student_competencies')->get();
-
-$data = [];
-foreach ($studentCompetencies as $studentCompetency) {
-  $array = json_decode(json_encode($studentCompetency), true);
-
-  $sc = StudentCompetency::where('teacher_subject_id', $array['teacher_subject_ulid'])
-	->where('competency_id', $array['competency_ulid'])
-	->where('student_id', $array['student_ulid'])
-	->first();
-  
-  $data[] = $sc;
-}
-
-$data;
-$exams = DB::connection('laraedu')->table('exams')->get();
-$exams = DB::connection('laraedu')->table('exams')->first();
-$attendances = DB::connection('laraedu')->table('attendances')->get();
-$attendances = DB::connection('laraedu')->table('attendances')->get();
-$attendances = DB::connection('laraedu')->table('attitudes')->get();

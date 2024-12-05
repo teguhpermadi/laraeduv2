@@ -151,4 +151,9 @@ class Student extends Model
     {
         return $this->hasMany(StudentCompetency::class);
     }
+
+    public function inactive()
+    {
+        return $this->hasOne(StudentInactive::class);
+    }
 }
