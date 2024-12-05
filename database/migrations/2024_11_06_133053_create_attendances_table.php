@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('permission')->default(0);
             $table->string('absent')->default(0);
             $table->string('note')->nullable();
-            $table->string('achievement')->nullable();
+            $table->text('achievement')->nullable();
             $table->boolean('status')->nullable();
             $table->timestamps();
 

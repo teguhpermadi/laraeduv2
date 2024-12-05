@@ -190,3 +190,6 @@ foreach ($studentCompetencies as $studentCompetency) {
 $data;
 $exams = DB::connection('laraedu')->table('exams')->get();
 $exams = DB::connection('laraedu')->table('exams')->first();
+$attendances = DB::connection('laraedu')->table('attendances')->get();
+$attendances = DB::connection('laraedu')->table('attendances')->get();
+$attendances = DB::connection('laraedu')->table('attitudes')->get();

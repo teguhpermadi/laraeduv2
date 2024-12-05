@@ -19,7 +19,7 @@ class CopyDbCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Copy all database from laraedu to laraeduv2';
+    protected $description = 'Copy all database from laraedu to laraeduv2. Must be inactive AcademicYearScope';
 
     /**
      * Execute the console command.
@@ -82,5 +82,17 @@ class CopyDbCommand extends Command
         // handle competency
         Artisan::call('app:copy-competency');
         $this->info('Copy competency success');
+
+        // handle student competency
+        Artisan::call('app:copy-student-competency');
+        $this->info('Copy student competency success');
+
+        // handle attendance
+        Artisan::call('app:copy-attendance');
+        $this->info('Copy attendance success');
+
+        // handle attitude
+        Artisan::call('app:copy-attitude');
+        $this->info('Copy attitude success');
     }
 }

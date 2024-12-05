@@ -24,6 +24,7 @@ class Attendance extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'id',
         'academic_year_id',
         'grade_id',
         'student_id',

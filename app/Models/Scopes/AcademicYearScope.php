@@ -13,8 +13,8 @@ class AcademicYearScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $academic_year_id = session()->get('academic_year_id');
+        // $academic_year_id = session()->get('academic_year_id');
 
-        return $builder->where('academic_year_id', $academic_year_id);
+        // return $builder->where('academic_year_id', $academic_year_id);
     }
 }
