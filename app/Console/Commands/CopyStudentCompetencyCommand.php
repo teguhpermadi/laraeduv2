@@ -37,18 +37,16 @@ class CopyStudentCompetencyCommand extends Command
             $array = json_decode(json_encode($studentCompetency), true);
 
             // cari student competency berdasarkan teacher_subject_id, competency_id, dan student_id
-            $studentCompetency = StudentCompetency::where('teacher_subject_id', $array['teacher_subject_ulid'])
+            $sc = StudentCompetency::where('teacher_subject_id', $array['teacher_subject_ulid'])
                 ->where('competency_id', $array['competency_ulid'])
                 ->where('student_id', $array['student_ulid'])
                 ->first();
 
-            if ($studentCompetency) {
-                // update score dan score_skill
-                $studentCompetency->update([
-                    'score' => $array['score'],
-                    'score_skill' => $array['score_skill'],
-                ]);
-            }
+            // update score dan score_skill
+            $sc->update([
+                'score' => $array['score'],
+                'score_skill' => $array['score_skill'],
+            ]);
         }
 
         // exam
@@ -69,10 +67,12 @@ class CopyStudentCompetencyCommand extends Command
             // cari student competency berdasarkan competencyHalfSemester
             $studentCompetencyHalfSemester = StudentCompetency::where('teacher_subject_id', $array['teacher_subject_ulid'])
                 ->where('competency_id', $competencyHalfSemester->id)
+                ->where('student_id', $array['student_ulid'])
                 ->first();
 
             $studentCompetencyFullSemester = StudentCompetency::where('teacher_subject_id', $array['teacher_subject_ulid'])
                 ->where('competency_id', $competencyFullSemester->id)
+                ->where('student_id', $array['student_ulid'])
                 ->first();
 
             // update score exam half semester
