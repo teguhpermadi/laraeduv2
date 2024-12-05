@@ -29,7 +29,7 @@ class UserResource extends Resource
                 TextInput::make('name')
                     ->required(),
                 TextInput::make('username')
-                    ->unique('users', 'username')
+                    // ->unique('users', 'username')
                     ->required(),
                 TextInput::make('email')
                     ->email()

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -47,7 +48,8 @@ class Student extends Model
     protected static function booted(): void
     {
         static::addGlobalScope('active', function (Builder $builder) {
-            $builder->where('active', 1);
+            // $builder->where('active', 1);
+            $builder->whereDoesntHave('inactive');
         });
         
         static::addGlobalScope('order', function (Builder $builder) {

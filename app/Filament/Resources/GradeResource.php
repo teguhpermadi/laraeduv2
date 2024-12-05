@@ -106,7 +106,7 @@ class GradeResource extends Resource
                     ->closeModalByClickingAway(false)
                     ->button()
                     ->relationManager(TeacherGradeRelationManager::class),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
                 Tables\Actions\EditAction::make(),

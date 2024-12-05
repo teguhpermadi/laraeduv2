@@ -7,6 +7,7 @@ use App\Filament\Resources\TeacherQuranResource\RelationManagers;
 use App\Models\Teacher;
 use App\Models\TeacherQuran;
 use Filament\Forms;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
@@ -37,7 +38,7 @@ class TeacherQuranResource extends Resource
             ->schema([
                 Hidden::make('academic_year_id')
                     ->default(session('academic_year_id')),
-                Select::make('teacher_id')
+                CheckboxList::make('teacher_ids')
                     ->label('Guru')
                     ->options(Teacher::all()->pluck('name', 'id'))
                     ->searchable(),

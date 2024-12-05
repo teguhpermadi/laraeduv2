@@ -5,6 +5,7 @@ namespace App\Filament\Resources\GradeResource\RelationManagers;
 use App\Models\Student;
 use App\Models\StudentGrade;
 use Filament\Forms;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
@@ -15,6 +16,7 @@ use Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Components\Actions\Action;
 
 class StudentGradeRelationManager extends RelationManager
 {
@@ -28,9 +30,9 @@ class StudentGradeRelationManager extends RelationManager
             ->schema([
                 Hidden::make('academic_year_id')
                     ->default(session()->get('academic_year_id')),
-                Select::make('student_ids')
+                CheckboxList::make('student_ids')
                     ->label(__('student.name'))
-                    ->multiple()
+                    // ->multiple()
                     ->searchable()
                     ->options(Student::whereDoesntHave('studentGrade')->get()->pluck('name', 'id'))
                     ->required(),

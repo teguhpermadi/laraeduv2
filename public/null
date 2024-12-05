@@ -19,3 +19,26 @@ use App\Models\StudentInactive;
 StudentInactive::with('academic')->get();
 
 
+use App\Models\StudentInactive;
+
+        $studentInactives = StudentInactive::where('academic_year_id', session()->get('academic_year_id'))->get()->pluck('student_id');
+use App\Models\StudentInactive;
+
+
+Student::get()
+use App\Models\StudentInactive;
+
+
+Student::get()
+use App\Models\StudentInactive;
+
+
+Student::get()
+use App\Models\StudentInactive;
+
+
+Student::get()
+use App\Models\StudentInactive;
+
+
+Student::get()

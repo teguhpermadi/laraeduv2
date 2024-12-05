@@ -112,7 +112,7 @@ class TeacherResource extends Resource
                     })
                     ->hidden(fn (Teacher $record) => $record->userable()->exists()),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
             ])
