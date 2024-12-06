@@ -28,6 +28,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
+use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Rmsramos\Activitylog\ActivitylogPlugin;
 use Rmsramos\Activitylog\Resources\ActivitylogResource;
 
@@ -88,6 +89,7 @@ class AdminPanelProvider extends PanelProvider
                     ->setIcon('heroicon-o-user')
                     ->shouldShowDeleteAccountForm(false)
                     ->shouldShowAvatarForm(),
+                    FilamentApexChartsPlugin::make()
             ])
             ->databaseNotifications()
             ->databaseNotificationsPolling('5s')
