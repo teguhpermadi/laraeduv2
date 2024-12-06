@@ -72,8 +72,10 @@ class SubjectsRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('subject.name')
+                    ->sortable()
                     ->label(__('teacher.relation.subjects.subject')),
                 Tables\Columns\TextColumn::make('grade.name')
+                    ->sortable()
                     ->label(__('teacher.relation.subjects.grade')),
                 IconColumn::make('grade.is_inclusive')
                     ->label(__('grade.is_inclusive'))
@@ -105,6 +107,7 @@ class SubjectsRelationManager extends RelationManager
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->paginated(false);
     }
 }

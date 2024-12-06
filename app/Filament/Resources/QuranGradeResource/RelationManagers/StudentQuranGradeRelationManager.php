@@ -112,6 +112,7 @@ class StudentQuranGradeRelationManager extends RelationManager
 
                         return $record;
                     }),
-            ]);
+            ])
+            ->paginated(false);
     }
 }

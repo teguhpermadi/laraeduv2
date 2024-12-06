@@ -78,6 +78,7 @@ class TeacherExtracurricularRelationManager extends RelationManager
             ->modifyQueryUsing(function (Builder $query) {
                 // tampilkan teacher_extracurricular yang hanya pada academic_year_id yang sama
                 return $query->where('academic_year_id', session('academic_year_id'));
-            });
+            })
+            ->paginated(false);
     }
 }
