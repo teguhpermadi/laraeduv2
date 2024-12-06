@@ -19,9 +19,9 @@ class ListAttitudes extends ListRecords
         return [
             // Actions\CreateAction::make(),
             Action::make('generateAttitude')
-                ->label('Generate Attitude')
+                ->label('Buat Penilaian Sikap')
                 ->icon('heroicon-o-document-text')
-                ->color('success')
+                // ->color('success')
                 ->action(function() {
                     // get teacher id
                     $teacherId = auth()->user()->userable->userable_id;

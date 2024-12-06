@@ -41,7 +41,12 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login(Login::class)
             ->colors([
-                'primary' => Color::Purple,
+                'danger' => Color::Red,         // Merah untuk menandakan error atau bahaya
+                'gray' => Color::Zinc,          // Warna netral untuk komponen seperti panel
+                'info' => Color::Blue,          // Biru untuk info, cocok dengan Purple
+                'primary' => Color::Purple,     // Warna utama Purple
+                'success' => Color::Green,      // Hijau untuk status sukses atau berhasil
+                'warning' => Color::Amber,      // Kuning untuk status peringatan
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

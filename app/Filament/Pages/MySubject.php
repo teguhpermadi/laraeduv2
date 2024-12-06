@@ -78,9 +78,11 @@ class MySubject extends Page implements HasTable
                         ->url(fn(TeacherSubject $record): string => route('filament.admin.pages.assessment.{id}', $record)),
                     Action::make('leger')
                         ->button()
+                        ->color('warning')
                         ->url(fn(TeacherSubject $record): string => route('filament.admin.pages.leger.{id}', $record)),
                 ],
                 position: ActionsPosition::BeforeColumns
-            );
+            )
+            ->paginated(false);
     }
 }

@@ -8,8 +8,12 @@ use App\Models\StudentGrade;
 use App\Models\TeacherGrade;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Page;
+use Filament\Support\Colors\Color;
+use Filament\Support\Enums\ActionSize;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -46,16 +50,19 @@ class MyGrade extends Page implements HasTable
         return $table
             ->query(StudentGrade::query())
             ->columns([
-                TextColumn::make('student.nisn')
-                    ->label('NISN')
-                    ->sortable(),
-                TextColumn::make('student.name')
-                    ->label('Nama Siswa')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('grade.name')
-                    ->label('Kelas')
-                    ->sortable(),
+                Stack::make([
+                    TextColumn::make('student.nisn')
+                        ->label('NISN')
+                        ->sortable(),
+                    TextColumn::make('student.name')
+                        ->label('Nama Siswa')
+                        ->wrap()
+                        ->searchable()
+                        ->sortable(),
+                    TextColumn::make('grade.name')
+                        ->label('Kelas')
+                        ->sortable(),
+                ]),
                 IconColumn::make('student.attendanceFirst.status')
                     ->label('Naik Kelas')
                     ->boolean()
@@ -76,33 +83,45 @@ class MyGrade extends Page implements HasTable
                 // action cover raport
                 Action::make('cover')
                     ->label('Cover')
+                    ->size(ActionSize::Small)
+                    ->color(Color::Emerald)
                     ->url(fn($record) => route('report-cover', $record->student_id))
                     ->button(),
                 // action identitas raport  
                 Action::make('identitas')
+                    ->size(ActionSize::Small)
                     ->label('Identitas')
+                    ->color(Color::Fuchsia)
                     ->url(fn($record) => route('report-cover-student', $record->student_id))
                     ->button(),
                 // action tengah semester
                 // buat warna biru untuk action tengah semester 
                 Action::make('middle')
                     ->label('Tengah Semester')
+                    ->size(ActionSize::Small)
+                    ->color(Color::Amber)
                     ->url(fn($record) => route('report-half-semester', $record->student_id))
-                    ->color('success')
+                    ->color('warning')
                     ->button(),
                 // action akhir semester
                 Action::make('full')
                     ->label('Akhir Semester')
+                    ->size(ActionSize::Small)
+                    ->color(Color::Pink)
                     ->url(fn($record) => route('report-full-semester', $record->student_id))
                     ->button(),
                 // action project
                 Action::make('project')
                     ->label('Project')
+                    ->size(ActionSize::Small)
+                    ->color(Color::Indigo)
                     ->url(fn($record) => route('report-project', $record->student_id))
                     ->button(),
                 // action quran
                 Action::make('quran')
                     ->label('Quran')
+                    ->size(ActionSize::Small)
+                    ->color(Color::Blue)
                     ->url(fn($record) => route('report-quran', $record->student_id))
                     ->button(),
             ])
