@@ -48,8 +48,7 @@ class Student extends Model
     protected static function booted(): void
     {
         static::addGlobalScope('active', function (Builder $builder) {
-            // $builder->where('active', 1);
-            $builder->whereDoesntHave('inactive');
+            $builder->where('active', 1);
         });
         
         static::addGlobalScope('order', function (Builder $builder) {
