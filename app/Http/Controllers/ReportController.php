@@ -171,6 +171,10 @@ class ReportController extends Controller
             abort(403, 'Data leger tidak ditemukan');
         }
 
+        if($student->attendanceFirst == null){
+            abort(403, 'Data kehadiran belum diisi.');
+        }
+
         $schoolSettings = app(SchoolSettings::class);
 
         $templateProcessor = new TemplateProcessor(storage_path('/app/public/templates/reportHalf.docx'));
@@ -326,6 +330,10 @@ class ReportController extends Controller
 
         if ($leger->isEmpty()) {
             abort(403, 'Data leger tidak ditemukan');
+        }
+
+        if($student->attendanceFirst == null){
+            abort(403, 'Data kehadiran belum diisi.');
         }
 
         $schoolSettings = app(SchoolSettings::class);
