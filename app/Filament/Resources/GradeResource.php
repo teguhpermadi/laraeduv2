@@ -20,7 +20,7 @@ use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
+use Guava\FilamentModalRelationManagers\Actions\Table\RelationManagerAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 

@@ -15,7 +15,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
+use Guava\FilamentModalRelationManagers\Actions\Table\RelationManagerAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 

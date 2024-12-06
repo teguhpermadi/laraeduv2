@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Userable;
-use Guava\FilamentModalRelationManagers\Actions\RelationManagerAction;
+use Guava\FilamentModalRelationManagers\Actions\Table\RelationManagerAction;
 use Illuminate\Database\Eloquent\Collection;
 
 class TeacherResource extends Resource
