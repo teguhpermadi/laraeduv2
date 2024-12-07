@@ -34,6 +34,7 @@ class Student extends Model
         'city_born',
         'birthday',
         'nick_name',
+        'photo',
     ];
 
     public function getActivitylogOptions(): LogOptions

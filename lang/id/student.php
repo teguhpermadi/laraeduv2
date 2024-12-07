@@ -39,4 +39,5 @@ return [
     'parent_village' => 'desa orang tua',
     'date_received' => 'tanggal diterima',
     'grade_received' => 'kelas diterima',
+    'photo' => 'foto',
 ];

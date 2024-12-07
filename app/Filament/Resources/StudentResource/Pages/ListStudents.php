@@ -9,9 +9,12 @@ use Closure;
 use Filament\Actions;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
+use JoseEspinal\RecordNavigation\Traits\HasRecordsList;
 
 class ListStudents extends ListRecords
 {
+    use HasRecordsList;
+    
     protected static string $resource = StudentResource::class;
 
     protected function getHeaderActions(): array

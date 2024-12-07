@@ -9,17 +9,21 @@ use App\Filament\Resources\StudentResource\RelationManagers\StudentGradeRelation
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Guava\FilamentModalRelationManagers\Actions\Table\RelationManagerAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Storage;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class StudentResource extends Resource
 {
@@ -62,6 +66,18 @@ class StudentResource extends Resource
                     ->label(__('student.city_born')),
                 DatePicker::make('birthday')
                     ->label(__('student.birthday')),
+                FileUpload::make('photo')
+                    ->label(__('student.photo'))
+                    ->directory('photo_students')
+                    ->image()
+                    ->avatar()
+                    ->imageEditor()
+                    ->circleCropper()
+                    ->optimize('jpg')
+                    ->resize(50)
+                    ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file, $record) {
+                        return $record->nisn . '.' . $file->getClientOriginalExtension();
+                    }),
                 Toggle::make('active')
                     ->label(__('student.active')),
             ]);
@@ -71,6 +87,9 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('photo')
+                    ->circular()
+                    ->size(100),
                 TextColumn::make('name')
                     ->label(__('student.name'))
                     ->searchable(),
