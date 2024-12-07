@@ -74,7 +74,6 @@ class StudentResource extends Resource
                     ->imageEditor()
                     ->circleCropper()
                     ->optimize('jpg')
-                    ->resize(50)
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file, $record) {
                         return $record->nisn . '.' . $file->getClientOriginalExtension();
                     }),

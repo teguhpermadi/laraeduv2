@@ -16,8 +16,11 @@ use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\ActionsPosition;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -72,6 +75,9 @@ class StudentExtracurricularResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('student.photo')
+                    ->circular()
+                    ->size(100),
                 TextColumn::make('student.name')
                     ->label(__('extracurricular.student')),
                 TextColumn::make('extracurricular.name')
@@ -84,13 +90,21 @@ class StudentExtracurricularResource extends Resource
                 
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
+                // Tables\Actions\EditAction::make(),
+                Action::make('Lihat foto')
+                    ->slideOver()
+                    ->modalWidth('sm')
+                    ->modalHeading(fn (StudentExtracurricular $record) => $record->student->name)
+                    ->modalContent(function (StudentExtracurricular $record) {
+                        return view('student-extracurricular-preview', compact('record'));
+                    })
+            ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->recordUrl(null);
     }
 
     public static function getRelations(): array
