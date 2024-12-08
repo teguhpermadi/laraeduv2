@@ -23,17 +23,20 @@ class LegerPreviewMyGrade extends Component
 
         foreach ($myGrade as $grade) { // setiap grade
 
-
             $no = 1;
             foreach ($grade->studentGrade as $student) { // setiap student
+
+                $attendance = $student->student->attendance->first();
 
                 $data[$grade->id][$student->student_id] = [
                     'no' => $no++,
                     'student' => $student->student->toArray(),
+                    'attendance' => $attendance,
                 ];
 
                 foreach ($grade->grade->teacherSubject as $subject) { // setiap subject
                     $leger = $student->student->leger()
+                        ->where('academic_year_id', $grade->academic_year_id)
                         ->where('category', 'full_semester')
                         ->where('subject_id', $subject->subject_id)
                         ->first();
@@ -46,6 +49,7 @@ class LegerPreviewMyGrade extends Component
                 }
 
                 $legers = $student->student->leger()
+                    ->where('academic_year_id', $grade->academic_year_id)
                     ->where('category', 'full_semester')
                     ->get();
 

@@ -37,3 +37,7 @@ $myGrade = TeacherGrade::myGrade()->mySubject()->get();
 $myGrade = TeacherGrade::mySubject()->get();
 $myGrade = TeacherGrade::with('grade')->mySubject()->get();
 $myGrade = TeacherGrade::myGrade()->mySubject()->get();
+$myGrade = TeacherGrade::myGrade()->mySubject()->with('attendance')->get();
+$myGrade = TeacherGrade::myGrade()->mySubject()->with('student.attendance')->get();
+$myGrade = TeacherGrade::myGrade()->mySubject()->with('studentGrade.student.attendance')->get();
+$myGrade = TeacherGrade::myGrade()->with('studentGrade.student.attendance')->get();
