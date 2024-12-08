@@ -33,3 +33,7 @@ Student::with('leger.subject')->find('01JE8QJ5XGZHBZN97TAHNR4MVR');
 
 
 Student::with('leger.subject')->find('01JE8QJ5XGZHBZN97TAHNR4MVR');
+$myGrade = TeacherGrade::myGrade()->mySubject()->get();
+$myGrade = TeacherGrade::mySubject()->get();
+$myGrade = TeacherGrade::with('grade')->mySubject()->get();
+$myGrade = TeacherGrade::myGrade()->mySubject()->get();
