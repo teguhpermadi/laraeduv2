@@ -1,1 +1,19 @@
-Student::get();
+AcademicYear::find('01jeawtmrg5hzybbxres29539p')
+StudentCompetencyQuran::gte()
+StudentCompetencyQuran::get()
+$data = [
+    'academic_year_id' => '01jeawtmrg5hzybbxres29539p',
+    'quran_grade_id' => '01jehra2azegfw75zaeefkf5ad',
+    'student_id' => '01jebavfdkn2b6gkhyvx0vgcq8',
+    'competency_quran_id' => '01jehs7zwwcm6rgayyxetj7vt4',
+  ];
+
+StudentCompetencyQuran::create($data)
+$data = [
+    'academic_year_id' => '01jeawtmrg5hzybbxres29539p',
+    'quran_grade_id' => '01jehra2azegfw75zaeefkf5ad',
+    'student_id' => '01jebavfdkn2b6gkhyvx0vgcq8',
+    'competency_quran_id' => '01jehs7zwwcm6rgayyxetj7vt4',
+  ];
+
+StudentCompetencyQuran::get()

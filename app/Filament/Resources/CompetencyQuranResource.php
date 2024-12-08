@@ -50,7 +50,7 @@ class CompetencyQuranResource extends Resource
         return $form
             ->schema([
                 Hidden::make('academic_year_id')
-                    ->default(session('academic_year_id')),
+                    ->default(session()->get('academic_year_id')),
                 Hidden::make('teacher_id')
                     ->default(auth()->user()->userable->userable_id),
                 Hidden::make('teacher_quran_grade_id'),

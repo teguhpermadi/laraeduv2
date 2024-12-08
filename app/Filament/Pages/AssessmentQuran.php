@@ -31,6 +31,8 @@ use Filament\Notifications\Notification;
 use Illuminate\Support\Collection;
 
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Enums\ActionsPosition;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -126,11 +128,21 @@ class AssessmentQuran extends Page implements HasForms, HasTable
             ->emptyStateHeading($this->empty_state['heading'])
             ->emptyStateDescription($this->empty_state['desc'])
             ->columns([
+                ImageColumn::make('student.photo')
+                    ->circular(),
                 TextColumn::make('student.name'),
                 TextInputColumn::make('score'),
             ])
             ->filters([])
-            ->actions([])
+            ->actions([
+                Action::make('preview')
+                    ->slideOver()
+                    ->modalWidth('sm')
+                    ->modalHeading(fn (StudentCompetencyQuran $record) => $record->student->name)
+                    ->modalContent(function (StudentCompetencyQuran $record) {
+                        return view('student-photo-preview', compact('record'));
+                    })
+                ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 BulkAction::make('scoreAdjustment')
                     ->label('Atur Nilai')

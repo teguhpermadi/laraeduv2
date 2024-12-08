@@ -6,6 +6,7 @@ use App\Models\CompetencyQuran;
 use App\Models\Scopes\AcademicYearScope;
 use App\Models\TeacherQuranGrade;
 use App\Models\StudentCompetencyQuran;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class CompetencyQuranObserver
@@ -26,15 +27,14 @@ class CompetencyQuranObserver
         // if studentqurangrade exists, then create    
         if ($countStudent > 0) {
             foreach ($teacherQuranGrade->studentQuranGrade as $student) {
-                $data[] = [
-                    'id' => Str::ulid()->toBase32(),
-                    'academic_year_id' => session('academic_year_id'),
+                $data = [
+                    // 'id' => Str::ulid()->toBase32(),
+                    'academic_year_id' => session()->get('academic_year_id'),
                     'quran_grade_id' => $teacherQuranGrade->quranGrade->id,
-                    'student_id' => $student->student_id,
                     'competency_quran_id' => $competencyQuran->id,
-                    'created_at' => now(),
+                    'student_id' => $student->student_id,
                 ];
-                
+
                 StudentCompetencyQuran::create($data);
             }
         }

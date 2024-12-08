@@ -96,7 +96,7 @@ class StudentExtracurricularResource extends Resource
                     ->modalWidth('sm')
                     ->modalHeading(fn (StudentExtracurricular $record) => $record->student->name)
                     ->modalContent(function (StudentExtracurricular $record) {
-                        return view('student-extracurricular-preview', compact('record'));
+                        return view('student-photo-preview', compact('record'));
                     })
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([

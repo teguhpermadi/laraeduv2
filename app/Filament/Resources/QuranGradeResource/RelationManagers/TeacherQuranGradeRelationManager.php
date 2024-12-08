@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\QuranGradeResource\RelationManagers;
 
+use App\Models\Teacher;
 use Filament\Forms;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -33,7 +34,14 @@ class TeacherQuranGradeRelationManager extends RelationManager
                     ->required()
                     ->searchable()
                     ->preload()
-                    ->relationship('teacher', 'name'),
+                    ->options(
+                        // teacher yang memiliki teacher_quran
+                        Teacher::query()
+                            ->whereHas('teacherQuran', function (Builder $query) {
+                                $query->where('academic_year_id', session('academic_year_id'));
+                            })
+                            ->pluck('name', 'id')
+                    ),
             ]);
     }
 
