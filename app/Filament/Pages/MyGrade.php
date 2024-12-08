@@ -79,6 +79,12 @@ class MyGrade extends Page implements HasTable
                         }
                     ),
             ])
+            ->headerActions([
+                Action::make('preview')
+                    ->label('Leger Kelas')
+                    ->url(fn() => route('leger-preview-my-grade'))
+                    ->button(),
+            ])
             ->actions([
                 // action cover raport
                 Action::make('cover')

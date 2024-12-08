@@ -70,4 +70,9 @@ class Leger extends Model
     {
         return $this->hasOne(LegerNote::class);
     }
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
+    }
 }

@@ -39,3 +39,5 @@ Route::get('/school-cover', function(){
 Route::get('/student-identity', function(){
     return view('components.reports.student-identity');
 });
+
+Route::get('/leger-preview-my-grade', \App\Livewire\LegerPreviewMyGrade::class)->name('leger-preview-my-grade');

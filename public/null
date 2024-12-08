@@ -1,28 +1,35 @@
-AcademicYear::find('01jeawtmrg5hzybbxres29539p')
-StudentCompetencyQuran::gte()
-StudentCompetencyQuran::get()
-$data = [
-    'academic_year_id' => '01jeawtmrg5hzybbxres29539p',
-    'quran_grade_id' => '01jehra2azegfw75zaeefkf5ad',
-    'student_id' => '01jebavfdkn2b6gkhyvx0vgcq8',
-    'competency_quran_id' => '01jehs7zwwcm6rgayyxetj7vt4',
-  ];
+$myGrade = TeacherGrade::myGrade()->first();
 
-StudentCompetencyQuran::create($data)
-$data = [
-    'academic_year_id' => '01jeawtmrg5hzybbxres29539p',
-    'quran_grade_id' => '01jehra2azegfw75zaeefkf5ad',
-    'student_id' => '01jebavfdkn2b6gkhyvx0vgcq8',
-    'competency_quran_id' => '01jehs7zwwcm6rgayyxetj7vt4',
-  ];
+$myStudent = $myGrade->studentGrade->pluck('student_id');
 
-StudentCompetencyQuran::get()
-$student = LegerQuran::first();
-$student = LegerQuran::get();
-use App\Models\LegerQuran;
-$student = LegerQuran::first();
-use App\Models\LegerQuran;
+Student::find('01jebavey37q0tfaysctb6e81h')->leger
+$myGrade = TeacherGrade::myGrade()->first();
 
-$student = LegerQuran::first();
+$myStudent = $myGrade->studentGrade->pluck('student_id');
 
-$student->quranNote
+Student::with('leger')->find('01jebavey37q0tfaysctb6e81h')
+
+
+
+
+
+
+Student::where('name', 'ABDULLAH AZZAM BASYIR')->get()
+
+
+
+
+Student::with('leger')->find('01JE8QJ5XGZHBZN97TAHNR4MVR')
+
+
+$myGrade = TeacherGrade::myGrade()->first();
+$myGrade = TeacherGrade::myGrade()->mySubject()->first();
+
+
+Student::with('leger')->find('01JE8QJ5XGZHBZN97TAHNR4MVR');
+
+
+Student::with('leger.subject')->find('01JE8QJ5XGZHBZN97TAHNR4MVR');
+
+
+Student::with('leger.subject')->find('01JE8QJ5XGZHBZN97TAHNR4MVR');

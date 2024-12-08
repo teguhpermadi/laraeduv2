@@ -45,7 +45,7 @@ class TeacherGrade extends Model
 
     public function academic()
     {
-        return $this->belongsTo(AcademicYear::class);
+        return $this->belongsTo(AcademicYear::class, 'academic_year_id');
     }
 
     public function teacher()
@@ -71,4 +71,11 @@ class TeacherGrade extends Model
 
         $query->where('teacher_id', $teacher_id)->with('StudentGrade');
     }
+
+    public function scopeMySubject(Builder $query): void
+    {
+        $academic_year_id = session()->get('academic_year_id');
+
+        $query->with('grade.teacherSubject.subject');
+    }   
 }
