@@ -677,10 +677,13 @@ class ReportController extends Controller
         $templateProcessor->setValue('nisn', $student->student->nisn);
         $templateProcessor->setValue('nis', $student->student->nis);
 
+        $templateProcessor->setValue('grade_name', $student->student->studentGradeFirst->grade->name);
+        $templateProcessor->setValue('grade_level', $student->student->studentGradeFirst->grade->phase);
+
         $templateProcessor->setValue('quran_grade', $student->quranGrade->name);
         $templateProcessor->setValue('teacher_quran_grade', $student->quranGrade->teacherQuranGrade->first()->teacher->name);
 
-        $templateProcessor->setValue('note', $student->description);
+        $templateProcessor->setValue('note', $student->quranNote->note);
 
         // setting competency quran
         $competencyQuran = $student->metadata;

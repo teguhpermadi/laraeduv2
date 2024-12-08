@@ -17,3 +17,12 @@ $data = [
   ];
 
 StudentCompetencyQuran::get()
+$student = LegerQuran::first();
+$student = LegerQuran::get();
+use App\Models\LegerQuran;
+$student = LegerQuran::first();
+use App\Models\LegerQuran;
+
+$student = LegerQuran::first();
+
+$student->quranNote
