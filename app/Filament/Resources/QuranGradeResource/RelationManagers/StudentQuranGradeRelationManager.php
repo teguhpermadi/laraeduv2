@@ -5,6 +5,7 @@ namespace App\Filament\Resources\QuranGradeResource\RelationManagers;
 use App\Models\Student;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Forms;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
@@ -31,7 +32,7 @@ class StudentQuranGradeRelationManager extends RelationManager
             ->schema([
                 Hidden::make('academic_year_id')
                     ->default(session('academic_year_id')),
-                Select::make('student_id')
+                CheckboxList::make('student_id')
                     ->label(__('quran-grade.fields.students.label'))
                     ->required()
                     ->multiple()
