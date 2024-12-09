@@ -35,7 +35,6 @@ class StudentQuranGradeRelationManager extends RelationManager
                 CheckboxList::make('student_id')
                     ->label(__('quran-grade.fields.students.label'))
                     ->required()
-                    ->multiple()
                     ->searchable()
                     ->preload()
                     ->options(function () {

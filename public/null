@@ -1,43 +1,12 @@
-$myGrade = TeacherGrade::myGrade()->first();
-
-$myStudent = $myGrade->studentGrade->pluck('student_id');
-
-Student::find('01jebavey37q0tfaysctb6e81h')->leger
-$myGrade = TeacherGrade::myGrade()->first();
-
-$myStudent = $myGrade->studentGrade->pluck('student_id');
-
-Student::with('leger')->find('01jebavey37q0tfaysctb6e81h')
-
-
-
-
-
-
-Student::where('name', 'ABDULLAH AZZAM BASYIR')->get()
-
-
-
-
-Student::with('leger')->find('01JE8QJ5XGZHBZN97TAHNR4MVR')
-
-
-$myGrade = TeacherGrade::myGrade()->first();
-$myGrade = TeacherGrade::myGrade()->mySubject()->first();
-
-
-Student::with('leger')->find('01JE8QJ5XGZHBZN97TAHNR4MVR');
-
-
-Student::with('leger.subject')->find('01JE8QJ5XGZHBZN97TAHNR4MVR');
-
-
-Student::with('leger.subject')->find('01JE8QJ5XGZHBZN97TAHNR4MVR');
-$myGrade = TeacherGrade::myGrade()->mySubject()->get();
-$myGrade = TeacherGrade::mySubject()->get();
-$myGrade = TeacherGrade::with('grade')->mySubject()->get();
-$myGrade = TeacherGrade::myGrade()->mySubject()->get();
-$myGrade = TeacherGrade::myGrade()->mySubject()->with('attendance')->get();
-$myGrade = TeacherGrade::myGrade()->mySubject()->with('student.attendance')->get();
-$myGrade = TeacherGrade::myGrade()->mySubject()->with('studentGrade.student.attendance')->get();
-$myGrade = TeacherGrade::myGrade()->with('studentGrade.student.attendance')->get();
+$teacherQuranGrade = TeacherQuranGrade::with(['quranGrade', 'studentQuranGrade', 'competencyQuran' => function ($query) {
+            $query->orderBy('id', 'asc');
+        }])
+            ->myQuranGrade()
+            ->where('quran_grade_id', $id)
+            ->first();
+$teacherQuranGrade = TeacherQuranGrade::with(['quranGrade', 'studentQuranGrade', 'competencyQuran' => function ($query) {
+            $query->orderBy('id', 'asc');
+        }])
+            ->myQuranGrade()
+            ->where('quran_grade_id', $id)
+            ->first();
