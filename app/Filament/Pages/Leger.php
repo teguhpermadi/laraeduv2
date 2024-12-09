@@ -397,7 +397,11 @@ class Leger extends Page implements HasForms, HasTable
             ->columns([
                 TextColumn::make('student.name'),
                 TextColumn::make('category')
-                    ->badge(),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        CategoryLegerEnum::HALF_SEMESTER->value => 'warning',
+                        CategoryLegerEnum::FULL_SEMESTER->value => 'primary',
+                    }),
                 TextInputColumn::make('note.note'),
             ])
             ->filters([
