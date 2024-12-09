@@ -396,6 +396,8 @@ class Leger extends Page implements HasForms, HasTable
             ->query(ModelsLeger::query())
             ->columns([
                 TextColumn::make('student.name'),
+                TextColumn::make('category')
+                    ->badge(),
                 TextInputColumn::make('note.note'),
             ])
             ->filters([
