@@ -36,3 +36,4 @@ use Illuminate\Database\Eloquent\Builder;
 $quranGrade = QuranGrade::whereHas('teacherQuranGrade', function(Builder $query) {
 	$query->where('teacher_id', 1);
 })->get();
+$students = Student::get()->pluck('name', 'id');

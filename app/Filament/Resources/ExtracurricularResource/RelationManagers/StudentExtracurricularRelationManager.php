@@ -7,6 +7,7 @@ use App\Models\Grade;
 use App\Models\Student;
 use App\Models\StudentGrade;
 use Filament\Forms;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
@@ -39,20 +40,20 @@ class StudentExtracurricularRelationManager extends RelationManager
                 Hidden::make('academic_year_id')
                     ->default(session('academic_year_id')),
                 // tampilkan semua student berdasarkan studentgrade
-                Select::make('student_id')
+                CheckboxList::make('student_id')
                     ->label(__('extracurricular.student'))
-                    ->multiple()
                     ->searchable()
                     ->live()
                     ->reactive()
                     ->options(function () {
                             // tampilkan semua student yang belum memiliki student_extracurricular
-                            $students = Student::query()
-                                ->whereDoesntHave('studentExtracurricular', function ($query) {
-                                    $query->where('extracurricular_id', $this->ownerRecord->id);
-                                })
-                                ->pluck('name', 'id');
+                            // $students = Student::query()
+                            //     ->whereDoesntHave('studentExtracurricular', function ($query) {
+                            //         $query->where('extracurricular_id', $this->ownerRecord->id);
+                            //     })
+                            //     ->pluck('name', 'id');
 
+                            $students = Student::get()->pluck('name', 'id');
                             return $students;
                         }
                     )
