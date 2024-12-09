@@ -76,6 +76,10 @@ class AssessmentQuran extends Page implements HasForms, HasTable
             ->where('quran_grade_id', $id)
             ->first();
 
+        if(!$teacherQuranGrade){
+            abort(403, 'Anda bukan pemilik kelas quran ini.');
+        }
+
         $this->teacherQuranGrade = $teacherQuranGrade;
         $this->quranGrade = $teacherQuranGrade->quranGrade;
         $this->competencyQuran = $teacherQuranGrade->competencyQuran->pluck('description', 'id');

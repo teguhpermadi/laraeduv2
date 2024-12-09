@@ -1,12 +1,38 @@
-$teacherQuranGrade = TeacherQuranGrade::with(['quranGrade', 'studentQuranGrade', 'competencyQuran' => function ($query) {
-            $query->orderBy('id', 'asc');
-        }])
-            ->myQuranGrade()
-            ->where('quran_grade_id', $id)
-            ->first();
-$teacherQuranGrade = TeacherQuranGrade::with(['quranGrade', 'studentQuranGrade', 'competencyQuran' => function ($query) {
-            $query->orderBy('id', 'asc');
-        }])
-            ->myQuranGrade()
-            ->where('quran_grade_id', $id)
-            ->first();
+$quranGrade = QuranGrade::get()
+$quranGrade = QuranGrade::wiht('TeacherQuranGrade')->get();
+$quranGrade = QuranGrade::wiht('teacherQuranGrade')->get();
+$quranGrade = QuranGrade::with('teacherQuranGrade')->get();
+$quranGrade = TeacherQuranGrade::myQuranGrade()->get();
+$myQuranGrade = TeacherQuranGrade::myQuranGrade()->get();
+
+$quranGrade = QuranGrade::get();
+
+$quranGrade = QuranGrade::whereHas('teacherQuranGrade')->get();
+
+$quranGrade = QuranGrade::whereHas('teacherQuranGrade')->get();
+
+$quranGrade = QuranGrade::whereHas('teacherQuranGrade')->get();
+
+$quranGrade = QuranGrade::whereHas('teacherQuranGrade')->get();
+
+$quranGrade = QuranGrade::whereHas('teacherQuranGrade', function(Builder $query) {
+	$query->where('teacher_id', 1);
+})->get();
+
+use Illuminate\Database\Eloquent\Builder;
+
+$quranGrade = QuranGrade::whereHas('teacherQuranGrade', function(Builder $query) {
+	$query->where('teacher_id', 1);
+})->get();
+
+use Illuminate\Database\Eloquent\Builder;
+
+$quranGrade = QuranGrade::whereHas('teacherQuranGrade', function(Builder $query) {
+	$query->where('teacher_id', 1)->get();
+})->get();
+
+use Illuminate\Database\Eloquent\Builder;
+
+$quranGrade = QuranGrade::whereHas('teacherQuranGrade', function(Builder $query) {
+	$query->where('teacher_id', 1);
+})->get();
