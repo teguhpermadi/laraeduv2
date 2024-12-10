@@ -50,11 +50,14 @@ class QuranGradeResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label(__('quran-grade.fields.name.label')),
+                    ->label(__('quran-grade.fields.name.label'))
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('level')
-                    ->label(__('quran-grade.fields.level.label')),
+                    ->label(__('quran-grade.fields.level.label'))
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('teacherQuranGrade.teacher.name')
-                    ->label(__('quran-grade.fields.teacher.label')),
+                    ->label(__('quran-grade.fields.teacher.label'))
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('student_quran_grade_count')
                     ->label(__('quran-grade.fields.students.label'))
                     ->counts('studentQuranGrade')
@@ -83,7 +86,8 @@ class QuranGradeResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->orderBy('level', 'asc'));
     }
 
     public static function getRelations(): array
