@@ -310,17 +310,6 @@ class ShieldSeeder extends Seeder
                 "name": "teacher_quran",
                 "guard_name": "web",
                 "permissions": [
-                "view_any_quran::grade",
-                    "create_quran::grade",
-                    "update_quran::grade",
-                    "restore_quran::grade",
-                    "restore_any_quran::grade",
-                    "replicate_quran::grade",
-                    "reorder_quran::grade",
-                    "delete_quran::grade",
-                    "delete_any_quran::grade",
-                    "force_delete_quran::grade",
-                    "force_delete_any_quran::grade",
                     "view_competency::quran",
                     "view_any_competency::quran",
                     "create_competency::quran",
@@ -334,7 +323,8 @@ class ShieldSeeder extends Seeder
                     "force_delete_competency::quran",
                     "force_delete_any_competency::quran",
                     "page_AssessmentQuran",
-                    "page_LegerQuran"
+                    "page_LegerQuran",
+                    "page_MyQuranGrade"
                 ]
             },
             {
@@ -498,7 +488,19 @@ class ShieldSeeder extends Seeder
                     "delete_teacher::quran",
                     "delete_any_teacher::quran",
                     "force_delete_teacher::quran",
-                    "force_delete_any_teacher::quran"
+                    "force_delete_any_teacher::quran",
+                    "view_quran::grade",
+                    "view_any_quran::grade",
+                    "create_quran::grade",
+                    "update_quran::grade",
+                    "restore_quran::grade",
+                    "restore_any_quran::grade",
+                    "replicate_quran::grade",
+                    "reorder_quran::grade",
+                    "delete_quran::grade",
+                    "delete_any_quran::grade",
+                    "force_delete_quran::grade",
+                    "force_delete_any_quran::grade",
                 ]
             }
         ]
