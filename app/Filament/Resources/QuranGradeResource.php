@@ -26,7 +26,7 @@ class QuranGradeResource extends Resource
     protected static ?string $navigationGroup = 'Mengaji';
 
     protected static ?string $modelLabel = 'Kelas Mengaji';
-    
+
     protected static ?string $pluralModelLabel = 'Kelas Mengaji';
 
     protected static ?int $navigationSort = 1;
@@ -55,7 +55,7 @@ class QuranGradeResource extends Resource
                     ->label(__('quran-grade.fields.level.label')),
                 Tables\Columns\TextColumn::make('teacherQuranGrade.teacher.name')
                     ->label(__('quran-grade.fields.teacher.label')),
-                Tables\Columns\TextColumn::make('student_quran_grade_count') 
+                Tables\Columns\TextColumn::make('student_quran_grade_count')
                     ->label(__('quran-grade.fields.students.label'))
                     ->counts('studentQuranGrade')
                     ->suffix(' siswa'),
@@ -64,7 +64,6 @@ class QuranGradeResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
                 RelationManagerAction::make('student-quran-grade-relation-manager')
                     ->label('Siswa')
                     ->button()
@@ -77,10 +76,8 @@ class QuranGradeResource extends Resource
                     ->slideOver()
                     ->closeModalByClickingAway(false)
                     ->relationManager(TeacherQuranGradeRelationManager::make()),
-                Action::make('assessment-quran')
-                    ->label('Nilai')
-                    ->url(fn (QuranGrade $record): string => route('filament.admin.pages.assessment-quran.{id}', $record))
-                    ->button(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

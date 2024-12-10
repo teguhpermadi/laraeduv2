@@ -71,10 +71,7 @@ class AssessmentQuran extends Page implements HasForms, HasTable
     {
         $teacherQuranGrade = TeacherQuranGrade::with(['quranGrade', 'studentQuranGrade', 'competencyQuran' => function ($query) {
             $query->orderBy('id', 'asc');
-        }])
-            ->myQuranGrade()
-            ->where('quran_grade_id', $id)
-            ->first();
+        }])->find($id);
 
         if(!$teacherQuranGrade){
             abort(403, 'Anda bukan pemilik kelas quran ini.');
