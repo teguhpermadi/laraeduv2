@@ -23,7 +23,7 @@ class QuranGradeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Mengaji';
+    protected static ?string $navigationGroup = 'Pengaturan';
 
     protected static ?string $modelLabel = 'Kelas Mengaji';
 

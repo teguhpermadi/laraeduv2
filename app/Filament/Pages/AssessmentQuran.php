@@ -401,11 +401,15 @@ class AssessmentQuran extends Page implements HasForms, HasTable
         
         // membuat file excel
         $writer = new Xlsx($spreadsheet);
+         // Set sheet pertama sebagai sheet aktif
+         $spreadsheet->setActiveSheetIndex(0);
+
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $filename = 'penilaian ngaji ' . $quranGrade->name . ' ' . $academicYear->year . ' ' . $academicYear->semester . '.xlsx';
+
+        $filename = 'penilaian ngaji ' . $quranGrade->name . '.xlsx';
+        
         $file_path = storage_path('/app/public/downloads/' . $filename);
         $writer->save($file_path);
-
         return response()->download($file_path)->deleteFileAfterSend(true);
     }
 }
