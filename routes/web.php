@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::get('{id}/leger-print', \App\Livewire\LegerPreview::class)->name('leger-print');
 Route::get('{id}/leger-quran-print', \App\Livewire\LegerPreviewQuran::class)->name('leger-quran-print');
