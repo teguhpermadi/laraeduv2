@@ -69,6 +69,7 @@ class CompetencyQuranResource extends Resource
                     }),
                 TextInput::make('code')
                     ->label(__('competency-quran.fields.code'))
+                    ->helperText('Kode kompetensi harus unik dan tidak boleh sama dengan kompetensi lain yang Anda miliki')
                     ->required(),
                 Textarea::make('description')
                     ->label(__('competency-quran.fields.description'))
