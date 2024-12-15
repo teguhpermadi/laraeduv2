@@ -109,7 +109,7 @@ class StudentExtracurricularResource extends Resource
             ], position: ActionsPosition::BeforeColumns)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                     BulkAction::make('Export')
                         ->action(function (Collection $records) {
                             $data = StudentExtracurricular::whereIn('id', $records->pluck('id'))->get();
@@ -170,12 +170,12 @@ class StudentExtracurricularResource extends Resource
                                 $sheet->setCellValue('F' . $row, $item->score);
                                 
                                 // buat agar menjadi rata tengah
-                                $sheet->getCell('A' . $row)->getStyle()->getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
-                                $sheet->getCell('B' . $row)->getStyle()->getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
-                                $sheet->getCell('C' . $row)->getStyle()->getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
-                                $sheet->getCell('D' . $row)->getStyle()->getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
-                                $sheet->getCell('E' . $row)->getStyle()->getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
-                                $sheet->getCell('F' . $row)->getStyle()->getAlignment()->setHorizontal(Alignment::VERTICAL_CENTER);
+                                $sheet->getCell('A' . $row)->getStyle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
+                                $sheet->getCell('B' . $row)->getStyle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
+                                $sheet->getCell('C' . $row)->getStyle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
+                                $sheet->getCell('D' . $row)->getStyle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
+                                $sheet->getCell('E' . $row)->getStyle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
+                                $sheet->getCell('F' . $row)->getStyle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)->setVertical(Alignment::VERTICAL_CENTER);
 
                                 // buat kolom C menjadi width 30
                                 $sheet->getColumnDimension('C')->setWidth(50);
