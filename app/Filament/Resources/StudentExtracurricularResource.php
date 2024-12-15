@@ -147,7 +147,7 @@ class StudentExtracurricularResource extends Resource
 
                                 // jika foto tidak ada, maka tidak akan ditampilkan dan akan diisi dengan placeholder
                                 if ($item->student->photo) {
-                                    $drawing->setPath(public_path('storage/' . $item->student->photo)); /* put your path and image here */
+                                    $drawing->setPath(asset('storage/' . $item->student->photo)); /* put your path and image here */
                                 } else {
                                     $drawing->setPath('https://pic.pnnet.dev/300x400'); /* put your path and image here */
                                 }
