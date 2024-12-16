@@ -18,6 +18,8 @@ use PhpOffice\PhpWord\SimpleType\TblWidth;
 use PhpOffice\PhpWord\Element\TextRun;
 use App\Enums\LinkertScaleEnum;
 use App\Models\LegerQuran;
+use Illuminate\Support\Facades\Log;
+use PhpOffice\PhpWord\SimpleType\DocProtect;
 
 class ReportController extends Controller
 {
@@ -46,7 +48,7 @@ class ReportController extends Controller
         $filename = 'Cover ' . $data['name'] . '.docx';
         $file_path = storage_path('/app/public/downloads/' . $filename);
         $templateProcessor->saveAs($file_path);
-
+        
         // download file
         return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
     }
@@ -212,7 +214,7 @@ class ReportController extends Controller
                 'subject' => $subject->teacherSubject->subject->name,
                 'score' => $subject->score,
                 'passing_grade' => $subject->teacherSubject->passing_grade,
-                'description' => $subject->description,
+                'description' => htmlspecialchars($subject->description),
                 'criteria' => $subject->teacherSubject->getScoreCriteria($subject->score),
             ];
         }
@@ -271,7 +273,7 @@ class ReportController extends Controller
                 // dd($row);
                 $values[] = [
                     "order_subject_{$index}" => $order++,
-                    "competency_{$index}" => $row['description'],
+                    "competency_{$index}" => htmlspecialchars($row['description']),
                     "score_{$index}" => $row['score'],
                     "passing_grade_{$index}" => $row['passing_grade'] ?? '-', // Default nilai jika tidak ada passing grade
                 ];
@@ -401,7 +403,7 @@ class ReportController extends Controller
                 'subject' => $subject->teacherSubject->subject->name,
                 'score' => $subject->score,
                 'passing_grade' => $subject->teacherSubject->passing_grade,
-                'description' => $subject->description,
+                'description' => htmlspecialchars($subject->description),
                 'criteria' => $subject->teacherSubject->getScoreCriteria($subject->score),
             ];
         }
@@ -480,7 +482,7 @@ class ReportController extends Controller
                 // dd($row);
                 $values[] = [
                     "order_subject_{$index}" => $order++,
-                    "competency_{$index}" => $row['description'],
+                    "competency_{$index}" => htmlspecialchars($row['description']),
                     "score_{$index}" => $row['score'],
                     "passing_grade_{$index}" => $row['passing_grade'] ?? '-', // Default nilai jika tidak ada passing grade
                 ];
@@ -619,7 +621,7 @@ class ReportController extends Controller
             
             $templateProcessor->setValue("project_number_{$j}", $j);
             $templateProcessor->setValue("title_{$j}", $project->name);
-            $templateProcessor->setValue("description_{$j}", $project->description);
+            $templateProcessor->setValue("description_{$j}", htmlspecialchars($project->description));
 
             $templateProcessor->cloneRowAndSetValues("number_target_{$j}", $values);
             $templateProcessor->setValue("project_note_{$j}", ($note) ? $note->note : '-');
@@ -647,6 +649,8 @@ class ReportController extends Controller
             ->where('academic_year_id', $academic)
             ->with('quranGrade.teacherQuranGrade')
             ->first();
+
+        // dd($student->toArray());
 
         $report = $this->getQuranReport($academicYear, $student);
 
@@ -694,11 +698,14 @@ class ReportController extends Controller
         foreach ($competencyQuran as $key => $value) {
             $data[] = [
                 'quran_order' => $i++,
-                'quran_competency' => $value['description'],
+                'quran_competency' => htmlspecialchars($value['description']),
                 'score' => $value['score'],
                 'criteria' => $student->quranGrade->teacherQuranGrade->first()->getScoreCriteria($value['score']),
             ];
         }
+
+        // dd($dataSubset);
+        Log::info('Data Quran:', $data);
 
         $templateProcessor->cloneRowAndSetValues('quran_order', $data);
 
@@ -706,6 +713,6 @@ class ReportController extends Controller
         $filename = 'Rapor Quran ' . $student->student->name . ' - ' . str_replace('/', ' ', $academicYear->year) . ' ' . $academicYear->semester . '.docx';
         $file_path = storage_path('/app/public/downloads/' . $filename);
         $templateProcessor->saveAs($file_path);
-        return response()->download($file_path)->deleteFileAfterSend(true);; // <<< HERE
+        return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
     }
 }
