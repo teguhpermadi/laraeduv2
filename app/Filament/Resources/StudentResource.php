@@ -18,6 +18,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\TextInputColumn;
 use Filament\Tables\Table;
 use Guava\FilamentModalRelationManagers\Actions\Table\RelationManagerAction;
 use Illuminate\Database\Eloquent\Builder;
@@ -96,6 +97,93 @@ class StudentResource extends Resource
                     ->label(__('student.gender')),
                 TextColumn::make('nis')
                     ->label(__('student.nis')),
+                TextInputColumn::make('birthday')
+                    ->label(__('student.birthday'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.student_address')
+                    ->label(__('student.student_address'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.student_province')
+                    ->label(__('student.student_province'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.student_city')
+                    ->label(__('student.student_city'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.student_district')
+                    ->label(__('student.student_district'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.student_village')
+                    ->label(__('student.student_village'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.religion')
+                    ->label(__('student.religion'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.previous_school')
+                    ->label(__('student.previous_school'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.father_name')
+                    ->label(__('student.father_name'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.father_education')
+                    ->label(__('student.father_education'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.father_occupation')
+                    ->label(__('student.father_occupation'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.father_phone')
+                    ->label(__('student.father_phone'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.mother_name')
+                    ->label(__('student.mother_name'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.mother_education')
+                    ->label(__('student.mother_education'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.mother_occupation')
+                    ->label(__('student.mother_occupation'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.mother_phone')
+                    ->label(__('student.mother_phone'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.guardian_name')
+                    ->label(__('student.guardian_name'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.guardian_education')
+                    ->label(__('student.guardian_education'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.guardian_occupation')
+                    ->label(__('student.guardian_occupation'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.guardian_phone')
+                    ->label(__('student.guardian_phone'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.guardian_address')
+                    ->label(__('student.guardian_address'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.guardian_village')
+                    ->label(__('student.guardian_village'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.parent_address')
+                    ->label(__('student.parent_address'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.parent_province')
+                    ->label(__('student.parent_province'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.parent_city')
+                    ->label(__('student.parent_city'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.parent_district')
+                    ->label(__('student.parent_district'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.parent_village')
+                    ->label(__('student.parent_village'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.date_received')
+                    ->label(__('student.date_received'))
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextInputColumn::make('dataStudent.grade_received')
+                    ->label(__('student.grade_received'))
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -114,7 +202,7 @@ class StudentResource extends Resource
                     ->closeModalByClickingAway(false)
                     ->relationManager(StudentGradeRelationManager::class),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
             ])
