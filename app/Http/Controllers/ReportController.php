@@ -608,10 +608,10 @@ class ReportController extends Controller
                     "value_description_{$j}" => $target->value->description,
                     "sub_value_description_{$j}" => $target->subValue->description,
                     "target_description_{$j}" => $target->target->description,
-                    "bsb_{$j}" => ($score == 1) ? 'V' : '-',
-                    "bsh_{$j}" => ($score == 2) ? 'V' : '-',
-                    "mb_{$j}" => ($score == 3) ? 'V' : '-',
-                    "bb_{$j}" => ($score == 4) ? 'V' : '-',
+                    "bsb_{$j}" => ($score == 4) ? 'V' : '-',
+                    "bsh_{$j}" => ($score == 3) ? 'V' : '-',
+                    "mb_{$j}" => ($score == 2) ? 'V' : '-',
+                    "bb_{$j}" => ($score == 1) ? 'V' : '-',
                     // "project_note_{$j}" => $target->studentProject->first()->projectNote->note,
                 ];                    
             }
