@@ -20,7 +20,7 @@ class ProjectTargetObserver
 
         $data = [];
         foreach ($students as $student) {
-            $data[] = [
+            $data = [
                 'id' => Str::ulid()->toBase32(),
                 'academic_year_id' => $project->academic_year_id,
                 'student_id' => $student->student_id,
