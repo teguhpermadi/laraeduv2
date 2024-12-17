@@ -175,7 +175,7 @@ class ProjectAssesment extends Page implements HasForms, HasTable
         // dd($project->projectTarget);
         // cek terlebih dahulu student_id berdasarkan grade_id dari project
         $students = StudentGrade::where('grade_id', $project->grade_id)->get();
-        dd($students);
+        // dd($students);
 
         foreach ($students as $student) {
             foreach ($project->projectTarget as $target) {
