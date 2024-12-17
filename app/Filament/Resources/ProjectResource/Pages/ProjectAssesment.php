@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Filament\Actions\Action as HeaderAction;
 use Filament\Forms\Components\FileUpload;
+use Illuminate\Support\Facades\Log;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -153,13 +154,19 @@ class ProjectAssesment extends Page implements HasForms, HasTable
                         $studentProjects = Excel::toArray(new StudentProjectImport, storage_path('/app/public/' . $data['file']));
                         foreach ($studentProjects as $row) {
                             foreach ($row as $value) {
-                                StudentProject::updateOrCreate([
-                                    'academic_year_id' => $value['academic_year_id'],
-                                    'student_id' => $value['student_id'],
-                                    'project_target_id' => $value['project_target_id'],
-                                ], [
-                                    'score' => $value['score'],
-                                ]);
+                                try {
+                                    //code...
+                                    StudentProject::updateOrCreate([
+                                        'academic_year_id' => $value['academic_year_id'],
+                                        'student_id' => $value['student_id'],
+                                        'project_target_id' => $value['project_target_id'],
+                                    ], [
+                                        'score' => $value['score'],
+                                    ]);
+                                } catch (\Throwable $th) {
+                                    //throw $th;
+                                    Log::error($th->getMessage());
+                                }
                             }
                         }
                     })
