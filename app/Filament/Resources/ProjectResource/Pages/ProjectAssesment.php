@@ -105,7 +105,7 @@ class ProjectAssesment extends Page implements HasForms, HasTable
                     ->label(__('project.student')),
                 SelectColumn::make('score')
                     ->label(__('project.score'))
-                    ->options(LinkertScaleEnum::class)
+                    ->options(LinkertScaleEnum::class),
             ])
             ->bulkActions([
                 BulkAction::make('scoring')
@@ -174,16 +174,25 @@ class ProjectAssesment extends Page implements HasForms, HasTable
         $project = Project::find($this->record);
         // dd($project->projectTarget);
         // cek terlebih dahulu student_id berdasarkan grade_id dari project
-        $students = StudentGrade::where('grade_id', $project->grade_id)->get();
+        $students = StudentGrade::where('grade_id', $project->grade_id)
+            ->where('academic_year_id', session('academic_year_id'))
+            ->get();
         // dd($students);
 
         foreach ($students as $student) {
             foreach ($project->projectTarget as $target) {
 
+                // delete all student project berdasarkan academic_year_id, student_id, project_target_id
+                StudentProject::where('academic_year_id', session('academic_year_id'))
+                    ->where('student_id', $student->student_id)
+                    ->where('project_target_id', $target->id)
+                    ->delete();
+
                 StudentProject::create([
                     'academic_year_id' => session('academic_year_id'),
                     'student_id' => $student->student_id,
                     'project_target_id' => $target->id,
+                ], [
                     'score' => 0,
                 ]);
             }
