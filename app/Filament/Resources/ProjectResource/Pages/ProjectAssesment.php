@@ -175,14 +175,20 @@ class ProjectAssesment extends Page implements HasForms, HasTable
         // dd($project->projectTarget);
         // cek terlebih dahulu student_id berdasarkan grade_id dari project
         $students = StudentGrade::where('grade_id', $project->grade_id)->get();
+        dd($students);
 
         foreach ($students as $student) {
             foreach ($project->projectTarget as $target) {
-                StudentProject::updateOrCreate([
+
+                // delete all student project berdasarkan academic_year_id, student_id, project_target_id
+                StudentProject::where('academic_year_id', session('academic_year_id'))
+                    ->where('project_target_id', $target->id)
+                    ->delete();
+
+                StudentProject::create([
                     'academic_year_id' => session('academic_year_id'),
                     'student_id' => $student->student_id,
                     'project_target_id' => $target->id,
-                ], [
                     'score' => 0,
                 ]);
             }
