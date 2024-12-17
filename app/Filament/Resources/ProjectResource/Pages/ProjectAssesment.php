@@ -180,11 +180,6 @@ class ProjectAssesment extends Page implements HasForms, HasTable
         foreach ($students as $student) {
             foreach ($project->projectTarget as $target) {
 
-                // delete all student project berdasarkan academic_year_id, student_id, project_target_id
-                StudentProject::where('academic_year_id', session('academic_year_id'))
-                    ->where('project_target_id', $target->id)
-                    ->delete();
-
                 StudentProject::create([
                     'academic_year_id' => session('academic_year_id'),
                     'student_id' => $student->student_id,
