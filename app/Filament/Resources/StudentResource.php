@@ -97,6 +97,9 @@ class StudentResource extends Resource
                     ->label(__('student.gender')),
                 TextColumn::make('nis')
                     ->label(__('student.nis')),
+                TextInputColumn::make('nisn')
+                    ->label(__('student.nisn'))
+                    ->searchable(),
                 TextInputColumn::make('birthday')
                     ->label(__('student.birthday'))
                     ->toggleable(isToggledHiddenByDefault: true),
