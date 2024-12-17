@@ -65,13 +65,20 @@ class Attendance extends Model
 
     public function scopeMyGrade(Builder $query)
     {
-        $grade = TeacherGrade::myGrade()->first();
+        $grades = TeacherGrade::myGrade()->get();
 
-        if (!$grade) {
+        if (!$grades) {
             abort(403, 'Anda belum memiliki kelas yang ditugaskan');
         }
 
-        $students = $grade->grade->studentGrade->pluck('student_id');
+        // $students = $grade->grade->studentGrade->pluck('student_id');
+        $students = [];
+        foreach ($grades as $grade) {
+            foreach ($grade->studentGrade as $student) {
+                $students[] = $student->student_id;
+            }
+        }
+
         $query->whereIn('student_id', $students);
     }
 }

@@ -23,34 +23,20 @@ class ListAttendances extends ListRecords
                 ->icon('heroicon-o-document-text')
                 // ->color('success')
                 ->action(function() {
-                    // get teacher id
-                    $teacherId = auth()->user()->userable->userable_id;
-                    // get grade id
-                    $gradeId = TeacherGrade::where('teacher_id', $teacherId)
-                        ->where('academic_year_id', session('academic_year_id'))
-                        ->first()
-                        ->grade_id;
-
-                    // dapatkan semua student berdasarkan teachergrade dan studentgrade
-                    $students = TeacherGrade::where('teacher_id', $teacherId)
-                        ->where('academic_year_id', session('academic_year_id'))
-                        ->first()
-                        ->studentGrade
-                        ->pluck('student_id');
-
-                    // dd($students);
-
+                    $grades = TeacherGrade::myGrade()->get();
+                    
                     // foreach student
-                    foreach ($students as $student) {
-                        // update or create attendance
-                        Attendance::updateOrCreate(
-                            [
-                                'student_id' => $student,
-                                'academic_year_id' => session('academic_year_id'),
-                                'grade_id' => $gradeId
-                            ],
-                            ['date' => now()]
-                        );
+                    foreach ($grades as $grade) {
+                        foreach ($grade->studentGrade as $student) {
+                            Attendance::updateOrCreate(
+                                [
+                                    'student_id' => $student->student_id,
+                                    'grade_id' => $grade->grade_id,
+                                    'academic_year_id' => session('academic_year_id'),
+                                ],
+                                ['date' => now()]
+                            );
+                        }
                     }
 
                     // buatkan notifikasi bahasa indonesia
