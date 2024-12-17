@@ -56,7 +56,7 @@ class LegerPreviewMyGrade extends Component
                 // buatkan jumlah dari setiap nilai
                 $data[$grade->id][$student->student_id]['total'] = $legers->sum('score');
                 // buatkan rata-rata dari setiap nilai
-                $data[$grade->id][$student->student_id]['average'] = $legers->avg('score');
+                $data[$grade->id][$student->student_id]['average'] = round($legers->avg('score'), 2);
                 // buatkan ranking dari setiap nilai
             }
 
