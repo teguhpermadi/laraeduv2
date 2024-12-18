@@ -89,9 +89,11 @@ class StudentExtracurricularResource extends Resource
                     ->circular()
                     ->size(100),
                 TextColumn::make('student.name')
-                    ->label(__('extracurricular.student')),
+                    ->label(__('extracurricular.student'))
+                    ->searchable(),
                 TextColumn::make('extracurricular.name')
-                    ->label(__('extracurricular.extracurricular')),
+                    ->label(__('extracurricular.extracurricular'))
+                    ->searchable(),
                 SelectColumn::make('score')
                     ->label(__('extracurricular.score'))
                     ->options(LinkertScaleEnum::class),

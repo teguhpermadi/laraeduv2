@@ -1,3 +1,17 @@
-TeacherQuranGrade::find('01jemhmmzppf4e9npqg76ntw84')
-TeacherQuranGrade::with('studentQuranGrade')->find('01jemhmmzppf4e9npqg76ntw84')
-TeacherQuranGrade::with('studentQuranGrade.studentCompetencyQuran')->find('01jemhmmzppf4e9npqg76ntw84')
+ProjectTarget::get()
+Project::get()
+Project::find('01jfbehj9rayre2vmjbpz44b02')
+Project::with('projectTarget')->find('01jfbehj9rayre2vmjbpz44b02')
+Project::with('projectTarget.studentProject')->find('01jfbehj9rayre2vmjbpz44b02')
+Project::with('projectTarget.studentProject.student')->find('01jfbehj9rayre2vmjbpz44b02')
+Project::with('projectTarget.studentProject.student_count')->find('01jfbehj9rayre2vmjbpz44b02')
+Project::with('projectTarget.studentProject.students_count')->find('01jfbehj9rayre2vmjbpz44b02')
+Project::with('projectTarget.studentProject.student')->find('01jfbehj9rayre2vmjbpz44b02')
+StudentProject::count()
+$project = Project::find('01jfbehj9rayre2vmjbpz44b02');
+$project = Project::wiht('projectTarget')->find('01jfbehj9rayre2vmjbpz44b02');
+$project = Project::wiht('projectTarget')->find('01jfbehj9rayre2vmjbpz44b02');
+$project = Project::with('projectTarget')->find('01jfbehj9rayre2vmjbpz44b02');
+$project = Project::with('projectTarget')->find('01jfbehj9rayre2vmjbpz44b02');
+
+$project->projectTarget->pluck('id');
