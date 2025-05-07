@@ -20,3 +20,63 @@ $transcripts = Transcript::where('academic_year_id', \session()->get('academic_y
 $transcripts = Transcript::where('academic_year_id', \session()->get('academic_year_id'))->get();
 Student::has('transcript')->get()
 Student::with('transcript')->find('01JE8QJ8FRJCRR1N0F7B40E9R4');
+Student::with('transcript')->find('01JE8QJ8FRJCRR1N0F7B40E9R4');
+Student::with('transcript')->find('01JE8QJ8FRJCRR1N0F7B40E9R4');
+Student::with('transcript')->find('01JE8QJ8FRJCRR1N0F7B40E9R4');
+Student::with('transcript')->find('01JE8QJ8FRJCRR1N0F7B40E9R4');
+Student::with('transcript')->find('01JE8QJ8FRJCRR1N0F7B40E9R4');
+Student::with('transcript')->find('01JE8QJ8FRJCRR1N0F7B40E9R4');
+Student::with('transcript')->find('01JE8QJ8FRJCRR1N0F7B40E9R4');
+Student::with('transcript')->find('01JE8QJ8FRJCRR1N0F7B40E9R4');
+Student::with('transcript')->find('01JE8QJ8FRJCRR1N0F7B40E9R4');
+Student::with('transcript')->find('01JE8QJ8FRJCRR1N0F7B40E9R4');
+Student::with('transcript')->find('01JE8QJ8FRJCRR1N0F7B40E9R4');
+Student::find('01JE8QJ8FRJCRR1N0F7B40E9R4');
+Student::with('transcript')->find('01JE8QJ8FRJCRR1N0F7B40E9R4');
+
+Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+
+$t = Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+$t->average_score;
+
+$t = Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+$t->average_score(10,20,70);
+
+$t = Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+$t->average_score(10,20,70);
+
+$t = Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+
+
+$t = Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+
+
+$t = Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+
+
+$t = Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+
+
+$t = Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+$t->average_score(10,20,70);
+
+$t = Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+$t->average(10,20,70);
+
+$t = Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+
+
+$t = Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+$t->calculateAverage(10,20,70);
+
+$t = Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+$t->calculateAverage(33,33,33);
+
+$t = Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+$t->calculateAverage(50,30,20);
+
+$t = Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+$t->calculateAverage(60,30,10);
+
+$t = Transcript::find('01jtn8hafgv6fcks2eqwh9z289');
+

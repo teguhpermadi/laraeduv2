@@ -51,6 +51,8 @@ class Transcript extends Model
         ];
     }
 
+    protected $appends = ['average'];
+
     public function student()
     {
         return $this->belongsTo(Student::class);
@@ -69,5 +71,29 @@ class Transcript extends Model
     public function teacherSubject()
     {
         return $this->belongsTo(TeacherSubject::class);
+    }
+
+    public function calculateAverage($weight_report = self::DEFAULT_WEIGHTS['report_score'], $weight_written_exam = self::DEFAULT_WEIGHTS['written_exam'], $weight_practical_exam = self::DEFAULT_WEIGHTS['practical_exam'])
+    {
+        $report_score = $this->report_score;
+        $written_exam = $this->written_exam;
+        $practical_exam = $this->practical_exam;
+
+        $total_weight = $weight_report;
+
+        if ($written_exam) {
+            $total_weight += $weight_written_exam;
+        }
+
+        if ($practical_exam) {
+            $total_weight += $weight_practical_exam;
+        }
+
+        // nilai rata-rata
+        $average_score = ($report_score * $weight_report) + 
+                (($written_exam ?? 0) * $weight_written_exam) + 
+                (($practical_exam ?? 0) * $weight_practical_exam);
+        
+        return \round($average_score / $total_weight, 2);
     }
 }
