@@ -16,8 +16,11 @@ return new class extends Migration
             $table->foreignUlid('student_id')->constrained('students')->cascadeOnDelete();
             $table->foreignUlid('academic_year_id')->constrained('academic_years')->cascadeOnDelete();
             $table->foreignUlid('subject_id')->constrained('subjects')->cascadeOnDelete();
-            $table->string('type');
-            $table->string('score');
+            $table->foreignUlid('teacher_subject_id')->constrained('teacher_subjects')->cascadeOnDelete();
+            $table->decimal('report_score')->default(0);
+            $table->decimal('written_exam')->default(0);
+            $table->decimal('practical_exam')->default(0);
+            $table->decimal('average_score', 8, 2)->default(0);
             $table->json('metadata')->nullable();
             $table->timestamps();
         });

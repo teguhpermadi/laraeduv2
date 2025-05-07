@@ -10,6 +10,7 @@ use App\Models\AcademicYear;
 use App\Models\Grade;
 use App\Models\Student;
 use App\Models\StudentGrade;
+use App\Models\TeacherSubject;
 use App\Models\Transcript;
 use Filament\Actions;
 use Filament\Actions\Action;
@@ -72,10 +73,11 @@ class ListTranscripts extends ListRecords
                 ->action(function ($data) {
                     $studentIds = $data['student_ids'];
                     $academicYearIds = $data['academic_year_id'];
+                    $gradeId = $data['grade_id'];
 
                     $students = Student::with(['leger' => function ($query) use ($academicYearIds) {
                         $query->with('academicYear');
-                        $query->select('id', 'student_id', 'subject_id', 'academic_year_id', 'score', 'score_skill');
+                        $query->select('id', 'student_id', 'subject_id', 'academic_year_id','teacher_subject_id', 'score', 'score_skill');
                         $query->where('category', CategoryLegerEnum::FULL_SEMESTER->value);
                         $query->whereIn('academic_year_id', $academicYearIds);
                     }])
@@ -93,6 +95,7 @@ class ListTranscripts extends ListRecords
                         // ];
                         
                         foreach ($legers as $i => $leger) { // setiap mata pelajaran
+                            
                             // $data[$student->id][$i] = [
                             //     'student_id' => $student->id,
                             //     'academic_year_id' => session()->get('academic_year_id'),
@@ -100,22 +103,30 @@ class ListTranscripts extends ListRecords
                             //     'score' => $leger->average('score'),
                             //     'metadata' => $leger->toArray(),
                             // ];
+                            $teacherSubject = TeacherSubject::where('academic_year_id', session()->get('academic_year_id'))
+                                    ->where('subject_id', $i)
+                                    ->where('grade_id', $gradeId)
+                                    ->first();
+
                             $param = $student->id . $i;
-                            $data[] = [
+                            $data = [
                                 'id' => IdHelper::deterministicUlidLike($param),
                                 'student_id' => $student->id,
                                 'academic_year_id' => session()->get('academic_year_id'),
+                                'teacher_subject_id' => $teacherSubject->id,
                                 'subject_id' => $i,
-                                'score' => $leger->average('score'),
-                                'type' => TranscriptEnum::REPORT_SCORE->value,
-                                'metadata' => \json_encode($leger->toArray()),
+                                'report_score' => $leger->average('score'),
+                                'written_exam' => \random_int(50, 100),
+                                'practical_exam' => \random_int(50, 100),
                             ];
+
+                            Transcript::updateOrCreate(['id' => $data['id']], $data); // dd($data);
                         }
                         
                     }
 
                     // dd($data);
-                    Transcript::upsert($data, uniqueBy:['id'], update:['score', 'metadata', 'type']);
+                    // Transcript::upsert($data, uniqueBy:['id'], update:['report_score', 'written_exam', 'practical_exam']);
 
                     Notification::make()
                         ->title('Sync Success')

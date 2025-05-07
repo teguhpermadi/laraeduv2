@@ -17,7 +17,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -66,11 +68,11 @@ class TranscriptResource extends Resource
                     )
                     ->required(),
                 TextInput::make('score')
-                        ->numeric()
-                        ->inputMode('decimal')
-                        ->minValue(1)
-                        ->maxValue(100)
-                        ->required(),
+                    ->numeric()
+                    ->inputMode('decimal')
+                    ->minValue(1)
+                    ->maxValue(100)
+                    ->required(),
             ]);
     }
 
@@ -80,14 +82,24 @@ class TranscriptResource extends Resource
             ->columns([
                 TextColumn::make('student.name')
                     ->searchable()
+                    ->size(TextColumn\TextColumnSize::ExtraSmall)
                     ->sortable(),
-                TextColumn::make('subject.name')
+                TextColumn::make('subject.code')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('score')
+                TextColumn::make('report_score')
+                    ->wrapHeader()
                     ->sortable(),
-                TextColumn::make('type')
-                    ->badge(),
+                TextColumn::make('written_exam')
+                    ->wrapHeader()
+                    ->sortable(),
+                TextColumn::make('practical_exam')
+                    ->wrapHeader()
+                    ->sortable(),
+                TextColumn::make('average_score')
+                    ->wrapHeader()
+                    ->sortable()
+                    ->summarize(Sum::make()),
             ])
             ->filters([
                 //
@@ -101,8 +113,9 @@ class TranscriptResource extends Resource
                 ]),
             ])
             ->groups([
-                'student.name',
-                'subject.name',
+                Group::make('student.name')
+                    ->label('Student')
+                    ->collapsible(),
             ]);
     }
 
