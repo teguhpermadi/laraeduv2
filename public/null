@@ -15,3 +15,8 @@ $transcriptKustom = Transcript::create([
         'catatan' => 'Penilaian khusus untuk program akselerasi',
     ]
 ]);
+session('academic_year_id')
+$transcripts = Transcript::where('academic_year_id', \session()->get('academic_year_id'))->get();
+$transcripts = Transcript::where('academic_year_id', \session()->get('academic_year_id'))->get();
+Student::has('transcript')->get()
+Student::with('transcript')->find('01JE8QJ8FRJCRR1N0F7B40E9R4');

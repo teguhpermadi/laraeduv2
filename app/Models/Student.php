@@ -158,4 +158,9 @@ class Student extends Model
     {
         return $this->hasOne(StudentInactive::class);
     }
+
+    public function transcript()
+    {
+        return $this->hasMany(Transcript::class);
+    }
 }

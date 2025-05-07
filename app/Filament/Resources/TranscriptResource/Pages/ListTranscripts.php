@@ -27,6 +27,9 @@ class ListTranscripts extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Action::make('preview')
+                ->label('Preview')
+                ->url(fn () => route('transcript-preview')),
             Action::make('sycn')
                 ->label('Sync')
                 ->slideOver()

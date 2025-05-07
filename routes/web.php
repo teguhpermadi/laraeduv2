@@ -41,3 +41,5 @@ Route::get('/student-identity', function(){
 });
 
 Route::get('/leger-preview-my-grade', \App\Livewire\LegerPreviewMyGrade::class)->name('leger-preview-my-grade');
+
+Route::get('transcript/preview', \App\Livewire\TranscriptPreview::class)->name('transcript-preview');
