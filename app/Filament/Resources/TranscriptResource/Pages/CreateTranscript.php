@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateTranscript extends CreateRecord
 {
     protected static string $resource = TranscriptResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

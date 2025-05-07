@@ -375,3 +375,53 @@ $input = 'tegu' . '07052024';
 
 md5($input);
 Student::first()
+use App\Helpers\IdHelper;
+
+$id = IdHelper::deterministicUlidLike('user_id:123|slug:my-profile');
+
+echo $id; 
+use App\Helpers\IdHelper;
+
+$id = IdHelper::deterministicUlidLike('user_id:123|slug:my-profile');
+
+echo $id; 
+use App\Helpers\IdHelper;
+
+$id = IdHelper::deterministicUlidLike('user_id:123|slug:my-profile');
+
+echo $id; 
+use App\Helpers\IdHelper;
+
+$id = IdHelper::deterministicUlidLike('user_id:123|slug:my-profile');
+
+echo $id; 
+use App\Helpers\IdHelper;
+
+$id = IdHelper::deterministicUlidLike('user_id:123|slug:my-profile');
+
+echo $id; 
+use App\Helpers\IdHelper;
+
+$id = IdHelper::deterministicUlidLike('user_id:123|slug:my-profile');
+
+echo $id; 
+use App\Helpers\IdHelper;
+
+$id = IdHelper::deterministicUlidLike('teguhpermadi');
+
+echo $id; 
+use App\Helpers\IdHelper;
+
+$id = IdHelper::deterministicUlidLike('teguhpermadi');
+
+echo $id; 
+use App\Helpers\IdHelper;
+
+$id = IdHelper::deterministicUlidLike('teguhpermadi');
+
+echo $id; 
+use App\Helpers\IdHelper;
+
+$id = IdHelper::deterministicUlidLike('teguhpermadi');
+
+echo $id; 

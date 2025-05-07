@@ -5,6 +5,7 @@ namespace App\Filament\Resources\TranscriptResource\Pages;
 use App\Enums\CategoryLegerEnum;
 use App\Enums\TranscriptEnum;
 use App\Filament\Resources\TranscriptResource;
+use App\Helpers\IdHelper;
 use App\Models\AcademicYear;
 use App\Models\Grade;
 use App\Models\Student;
@@ -79,7 +80,6 @@ class ListTranscripts extends ListRecords
                         $query->whereIn('academic_year_id', $academicYearIds);
                     }])
                         ->whereIn('id', $studentIds)
-                        ->latest()
                         ->get();
 
                     $data = [];
@@ -102,7 +102,7 @@ class ListTranscripts extends ListRecords
                             // ];
                             $param = $student->id . $i;
                             $data[] = [
-                                'id' => \Str::ulid(),
+                                'id' => IdHelper::deterministicUlidLike($param),
                                 'student_id' => $student->id,
                                 'academic_year_id' => session()->get('academic_year_id'),
                                 'subject_id' => $i,
@@ -114,7 +114,7 @@ class ListTranscripts extends ListRecords
                         
                     }
 
-                    dd($data);
+                    // dd($data);
                     Transcript::upsert($data, uniqueBy:['id'], update:['score', 'metadata', 'type']);
 
                     Notification::make()

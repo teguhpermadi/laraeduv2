@@ -2,10 +2,18 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\TranscriptEnum;
 use App\Filament\Resources\TranscriptResource\Pages;
 use App\Filament\Resources\TranscriptResource\RelationManagers;
+use App\Models\Grade;
+use App\Models\StudentGrade;
+use App\Models\Subject;
 use App\Models\Transcript;
 use Filament\Forms;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,7 +32,45 @@ class TranscriptResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Hidden::make('academic_year_id')
+                    ->default(session('academic_year_id')),
+                Select::make('grade_id')
+                    ->label('Grade')
+                    ->live()
+                    ->options(Grade::all()->pluck('name', 'id'))
+                    ->required(),
+                Select::make('subject_id')
+                    ->label('Subject')
+                    ->reactive()
+                    ->options(
+                        function (callable $get) {
+                            return Subject::get()->pluck('name', 'id');
+                        }
+                    )
+                    ->required(),
+                Radio::make('type')
+                    ->label('Type')
+                    ->options(TranscriptEnum::class)
+                    ->required(),
+                Select::make('student_id')
+                    ->label('Student')
+                    ->reactive()
+                    ->options(
+                        function (callable $get) {
+                            $studentGrade = StudentGrade::where('grade_id', $get('grade_id'))
+                                ->where('academic_year_id', $get('academic_year_id'))
+                                ->with('student')
+                                ->get();
+                            return $studentGrade->pluck('student.name', 'student.id');
+                        }
+                    )
+                    ->required(),
+                TextInput::make('score')
+                        ->numeric()
+                        ->inputMode('decimal')
+                        ->minValue(1)
+                        ->maxValue(100)
+                        ->required(),
             ]);
     }
 
@@ -33,8 +79,10 @@ class TranscriptResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('student.name')
+                    ->searchable()
                     ->sortable(),
                 TextColumn::make('subject.name')
+                    ->searchable()
                     ->sortable(),
                 TextColumn::make('score')
                     ->sortable(),
@@ -53,7 +101,8 @@ class TranscriptResource extends Resource
                 ]),
             ])
             ->groups([
-                // 
+                'student.name',
+                'subject.name',
             ]);
     }
 
