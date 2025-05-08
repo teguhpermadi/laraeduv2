@@ -1,6 +1,7 @@
 <?php
 
 use App\Settings\SchoolSettings;
+use App\Settings\TranscriptWeight;
 
 return [
 
@@ -10,6 +11,7 @@ return [
      */
     'settings' => [
         SchoolSettings::class,
+        TranscriptWeight::class,
     ],
 
     /*
