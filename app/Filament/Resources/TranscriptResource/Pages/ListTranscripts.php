@@ -18,6 +18,10 @@ use Filament\Forms\Components\Actions\Action as ActionsAction;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Enums\MaxWidth;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ListTranscripts extends ListRecords
 {
@@ -29,7 +33,31 @@ class ListTranscripts extends ListRecords
             Actions\CreateAction::make(),
             Action::make('preview')
                 ->label('Preview')
-                ->url(fn () => route('transcript-preview')),
+                ->url(fn() => route('transcript-preview')),
+            Action::make('download')
+                ->label('Download')
+                ->modalWidth(MaxWidth::Medium)
+                ->closeModalByClickingAway(false)
+                ->form([
+                    Select::make('teacher_subject_id')
+                        ->label('Teacher Subject')
+                        ->options(Grade::with('teacherSubject')->where('grade', 6)->first()->teacherSubject->pluck('subject.name', 'id'))
+                        ->required()
+                ])
+                ->action(function ($data) {
+                    // dd($data);
+                    $transcripts = Transcript::where('teacher_subject_id', $data['teacher_subject_id'])->get();
+                    if($transcripts->isEmpty()) {
+                        Notification::make()
+                            ->title('Failed')
+                            ->danger()
+                            ->body('Sync data first!')
+                            ->send();
+                    } else {
+                        return $this->download($data['teacher_subject_id']);
+                    }
+
+                }),
             Action::make('sycn')
                 ->label('Sync')
                 ->slideOver()
@@ -74,62 +102,7 @@ class ListTranscripts extends ListRecords
                         ),
                 ])
                 ->action(function ($data) {
-                    $studentIds = $data['student_ids'];
-                    $academicYearIds = $data['academic_year_id'];
-                    $gradeId = $data['grade_id'];
-
-                    $students = Student::with(['leger' => function ($query) use ($academicYearIds) {
-                        $query->with('academicYear');
-                        $query->select('id', 'student_id', 'subject_id', 'academic_year_id','teacher_subject_id', 'score', 'score_skill');
-                        $query->where('category', CategoryLegerEnum::FULL_SEMESTER->value);
-                        $query->whereIn('academic_year_id', $academicYearIds);
-                    }])
-                        ->whereIn('id', $studentIds)
-                        ->get();
-
-                    $data = [];
-                    foreach ($students as $student) { // setiap siswa
-                        $legers = $student->leger->groupBy('subject.id');
-                        // $data[$student->id] = [
-                        //     'student_id' => $student->id,
-                        //     'academic_year_id' => session()->get('academic_year_id'),
-                        //     'score' => $legers->average('score'),
-                        //     'metadata' => $legers->toArray(),
-                        // ];
-                        
-                        foreach ($legers as $i => $leger) { // setiap mata pelajaran
-                            
-                            // $data[$student->id][$i] = [
-                            //     'student_id' => $student->id,
-                            //     'academic_year_id' => session()->get('academic_year_id'),
-                            //     'subject_id' => $i,
-                            //     'score' => $leger->average('score'),
-                            //     'metadata' => $leger->toArray(),
-                            // ];
-                            $teacherSubject = TeacherSubject::where('academic_year_id', session()->get('academic_year_id'))
-                                    ->where('subject_id', $i)
-                                    ->where('grade_id', $gradeId)
-                                    ->first();
-
-                            $param = $student->id . $i;
-                            $data = [
-                                'id' => IdHelper::deterministicUlidLike($param),
-                                'student_id' => $student->id,
-                                'academic_year_id' => session()->get('academic_year_id'),
-                                'teacher_subject_id' => $teacherSubject->id,
-                                'subject_id' => $i,
-                                'report_score' => $leger->average('score'),
-                                'written_exam' => \random_int(50, 100),
-                                'practical_exam' => \random_int(50, 100),
-                            ];
-
-                            Transcript::updateOrCreate(['id' => $data['id']], $data); // dd($data);
-                        }
-                        
-                    }
-
-                    // dd($data);
-                    // Transcript::upsert($data, uniqueBy:['id'], update:['report_score', 'written_exam', 'practical_exam']);
+                    $this->sync($data);
 
                     Notification::make()
                         ->title('Sync Success')
@@ -137,5 +110,132 @@ class ListTranscripts extends ListRecords
                         ->send();
                 }),
         ];
+    }
+
+    public function sync($data)
+    {
+        $studentIds = $data['student_ids'];
+        $academicYearIds = $data['academic_year_id'];
+        $gradeId = $data['grade_id'];
+
+        $students = Student::with(['leger' => function ($query) use ($academicYearIds) {
+            $query->with('academicYear');
+            $query->select('id', 'student_id', 'subject_id', 'academic_year_id', 'teacher_subject_id', 'score', 'score_skill');
+            $query->where('category', CategoryLegerEnum::FULL_SEMESTER->value);
+            $query->whereIn('academic_year_id', $academicYearIds);
+        }])
+            ->whereIn('id', $studentIds)
+            ->orderBy('id', 'asc')
+            ->get();
+
+            // dd($students);
+
+        $data = [];
+        foreach ($students as $student) { // setiap siswa
+            $legers = $student->leger->groupBy('subject.id');
+            
+            foreach ($legers as $i => $leger) { // setiap mata pelajaran
+                $teacherSubject = TeacherSubject::where('academic_year_id', session()->get('academic_year_id'))
+                    ->where('subject_id', $i)
+                    ->where('grade_id', $gradeId)
+                    ->first();
+
+                $param = $student->id . $i;
+                $data[] = [
+                    'id' => IdHelper::deterministicUlidLike($param),
+                    'student_id' => $student->id,
+                    'academic_year_id' => session()->get('academic_year_id'),
+                    'teacher_subject_id' => $teacherSubject->id,
+                    'subject_id' => $i,
+                    'report_score' => $leger->average('score'),
+                ];
+
+                // Transcript::updateOrCreate(['id' => $data['id']], $data); // dd($data);
+            }
+        }
+
+        // dd($data);
+        Transcript::upsert($data, uniqueBy:['id'], update:['report_score', 'written_exam', 'practical_exam']);
+    }
+
+    public function download($teacher_subject_id)
+    {
+        $transcripts = Transcript::where('teacher_subject_id', $teacher_subject_id)->orderBy('student_id', 'asc')->get();
+        $teacher_subject = TeacherSubject::with('academic', 'teacher', 'subject', 'grade.teacherGrade', 'competency')->find($teacher_subject_id);
+
+        $academic = $teacher_subject->academic;
+        $teacher = $teacher_subject->teacher;
+        $grade = $teacher_subject->grade;
+        $subject = $teacher_subject->subject;
+
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->createSheet();
+        $sheet = $spreadsheet->getSheet(0); // Indeks dimulai dari 0
+
+        // identitas
+        $judulIdentitas = [
+            ['TRANSKRIP NILAI IJAZAH'],
+            [null],
+            ['Tahun Akademik'],
+            ['Semester'],
+            ['Nama Guru'],
+            ['Mata Pelajaran'],
+            ['Kelas'],
+        ];
+        $sheet->fromArray($judulIdentitas, null, 'B1');
+
+        $identitas = [
+            [': ' . $academic->year],
+            [': ' . $academic->semester],
+            [': ' . $teacher->name],
+            [': ' . $subject->name],
+            [': ' . $grade->name],
+        ];
+
+        $sheet->fromArray($identitas, null, 'D3');
+
+        // Membuat lembar pertama
+        $sheet1 = $spreadsheet->getActiveSheet();
+        $sheet1->setTitle('Transcript');
+
+        $sheet->setCellValue('A10', 'id');
+        $sheet->setCellValue('B10', 'nisn');
+        $sheet->setCellValue('C10', 'nama siswa');
+        $sheet->setCellValue('D10', 'nilai rapor');
+        $sheet->setCellValue('E10', 'nilai ujian tulis');
+        $sheet->setCellValue('F10', 'nilai ujian praktek');
+
+        $row = 11;
+        foreach ($transcripts as $transcript) {
+            $sheet1->setCellValue('A' . $row, $transcript->id);
+            $sheet1->setCellValue('B' . $row, $transcript->student->nisn);
+            $sheet1->setCellValue('C' . $row, $transcript->student->name);
+            $sheet1->setCellValue('D' . $row, $transcript->report_score);
+            $sheet1->setCellValue('E' . $row, $transcript->written_exam);
+            $sheet1->setCellValue('F' . $row, $transcript->practical_exam);
+            $row++;
+        }
+
+        // setting width
+        $sheet->getColumnDimension('C')->setWidth(25);
+        $sheet->getColumnDimension('D')->setWidth(25);
+        $sheet->getColumnDimension('E')->setWidth(25);
+        $sheet->getColumnDimension('F')->setWidth(25);
+
+        // hide column A
+        $sheet->getColumnDimension('A')->setVisible(false);
+
+        // bisa di edit
+        $sheet->getStyle('D:F')->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
+        // proteksi semua cell
+        $sheet->getProtection()->setPassword('PhpSpreadsheet');
+        $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
+
+        $writer = new Xlsx($spreadsheet);
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx'); // <<< HERE
+        $filename = "Transkrip Nilai " . $teacher_subject->subject->code . ' ' . $teacher_subject->grade->name . ".xlsx"; // <<< HERE
+        $file_path = storage_path('/app/public/downloads/' . $filename);
+        $writer->save($file_path);
+        return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
     }
 }

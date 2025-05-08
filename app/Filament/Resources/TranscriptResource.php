@@ -116,7 +116,10 @@ class TranscriptResource extends Resource
                 Group::make('student.name')
                     ->label('Student')
                     ->collapsible(),
-            ]);
+            ])
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->orderBy('student_id', 'asc');
+            });
     }
 
     public static function getRelations(): array

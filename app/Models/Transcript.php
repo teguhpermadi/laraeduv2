@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 
-#[ObservedBy(TranscriptObserver::class)]
+// #[ObservedBy(TranscriptObserver::class)]
 class Transcript extends Model
 {
     use HasUlids;

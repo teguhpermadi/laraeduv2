@@ -18,11 +18,13 @@ return new class extends Migration
             $table->foreignUlid('subject_id')->constrained('subjects')->cascadeOnDelete();
             $table->foreignUlid('teacher_subject_id')->constrained('teacher_subjects')->cascadeOnDelete();
             $table->decimal('report_score')->default(0);
-            $table->decimal('written_exam')->default(0);
-            $table->decimal('practical_exam')->default(0);
+            $table->decimal('written_exam')->nullable();
+            $table->decimal('practical_exam')->nullable();
             $table->decimal('average_score', 8, 2)->default(0);
             $table->json('metadata')->nullable();
             $table->timestamps();
+
+            $table->unique(['student_id', 'academic_year_id', 'subject_id'], 'transcript_unique');
         });
     }
 
