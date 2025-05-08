@@ -6,6 +6,7 @@ use App\Enums\CategoryLegerEnum;
 use App\Enums\TranscriptEnum;
 use App\Filament\Resources\TranscriptResource;
 use App\Helpers\IdHelper;
+use App\Imports\TranscriptImport;
 use App\Models\AcademicYear;
 use App\Models\Grade;
 use App\Models\Student;
@@ -15,10 +16,12 @@ use App\Models\Transcript;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Actions\Action as ActionsAction;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Enums\MaxWidth;
+use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -30,7 +33,7 @@ class ListTranscripts extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            // Actions\CreateAction::make(),
             Action::make('preview')
                 ->label('Preview')
                 ->url(fn() => route('transcript-preview')),
@@ -47,7 +50,7 @@ class ListTranscripts extends ListRecords
                 ->action(function ($data) {
                     // dd($data);
                     $transcripts = Transcript::where('teacher_subject_id', $data['teacher_subject_id'])->get();
-                    if($transcripts->isEmpty()) {
+                    if ($transcripts->isEmpty()) {
                         Notification::make()
                             ->title('Failed')
                             ->danger()
@@ -56,7 +59,20 @@ class ListTranscripts extends ListRecords
                     } else {
                         return $this->download($data['teacher_subject_id']);
                     }
-
+                }),
+            Action::make('upload')
+                ->label('Upload')
+                ->modalWidth(MaxWidth::Medium)
+                ->closeModalByClickingAway(false)
+                ->form([
+                    FileUpload::make('file')
+                        ->directory('uploads')
+                        ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/x-excel'])
+                        ->preserveFilenames()
+                        ->required()
+                ])
+                ->action(function ($data) {
+                    Excel::import(new TranscriptImport, storage_path('/app/public/' . $data['file']));
                 }),
             Action::make('sycn')
                 ->label('Sync')
@@ -128,12 +144,12 @@ class ListTranscripts extends ListRecords
             ->orderBy('id', 'asc')
             ->get();
 
-            // dd($students);
+        // dd($students);
 
         $data = [];
         foreach ($students as $student) { // setiap siswa
             $legers = $student->leger->groupBy('subject.id');
-            
+
             foreach ($legers as $i => $leger) { // setiap mata pelajaran
                 $teacherSubject = TeacherSubject::where('academic_year_id', session()->get('academic_year_id'))
                     ->where('subject_id', $i)
@@ -155,7 +171,7 @@ class ListTranscripts extends ListRecords
         }
 
         // dd($data);
-        Transcript::upsert($data, uniqueBy:['id'], update:['report_score', 'written_exam', 'practical_exam']);
+        Transcript::upsert($data, uniqueBy: ['id'], update: ['report_score', 'written_exam', 'practical_exam']);
     }
 
     public function download($teacher_subject_id)
@@ -202,8 +218,8 @@ class ListTranscripts extends ListRecords
         $sheet->setCellValue('B10', 'nisn');
         $sheet->setCellValue('C10', 'nama siswa');
         $sheet->setCellValue('D10', 'nilai rapor');
-        $sheet->setCellValue('E10', 'nilai ujian tulis');
-        $sheet->setCellValue('F10', 'nilai ujian praktek');
+        $sheet->setCellValue('E10', 'ujian tulis');
+        $sheet->setCellValue('F10', 'ujian praktek');
 
         $row = 11;
         foreach ($transcripts as $transcript) {

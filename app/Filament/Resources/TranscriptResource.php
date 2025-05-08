@@ -19,6 +19,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -102,10 +103,11 @@ class TranscriptResource extends Resource
                     ->summarize(Sum::make()),
             ])
             ->filters([
-                //
+                SelectFilter::make('subject_id')
+                    ->options(Subject::get()->pluck('name', 'id')),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -115,6 +117,9 @@ class TranscriptResource extends Resource
             ->groups([
                 Group::make('student.name')
                     ->label('Student')
+                    ->collapsible(),
+                Group::make('subject.name')
+                    ->label('Subject')
                     ->collapsible(),
             ])
             ->modifyQueryUsing(function (Builder $query) {
