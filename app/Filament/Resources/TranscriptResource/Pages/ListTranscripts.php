@@ -4,6 +4,7 @@ namespace App\Filament\Resources\TranscriptResource\Pages;
 
 use App\Enums\CategoryLegerEnum;
 use App\Enums\TranscriptEnum;
+use App\Filament\Pages\TranscriptWeightSettings;
 use App\Filament\Resources\TranscriptResource;
 use App\Helpers\IdHelper;
 use App\Imports\TranscriptImport;
@@ -13,6 +14,7 @@ use App\Models\Student;
 use App\Models\StudentGrade;
 use App\Models\TeacherSubject;
 use App\Models\Transcript;
+use App\Settings\TranscriptWeight;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Actions\Action as ActionsAction;
@@ -126,6 +128,56 @@ class ListTranscripts extends ListRecords
                         ->success()
                         ->send();
                 }),
+            Action::make('recalculate')
+                ->label('Re-Calculate')
+                ->modalWidth(MaxWidth::Medium)
+                ->closeModalByClickingAway(false)
+                ->form([
+                    Select::make('dataset')
+                        ->label('Dataset')
+                        ->options(function () {
+                            $transcriptWeight = app(TranscriptWeight::class);
+                            return [
+                                'dataset1' => 'Rapor ' . $transcriptWeight->weight_report1 . '%, Tulis ' . $transcriptWeight->weight_written_exam1 . '%, Praktek ' . $transcriptWeight->weight_practical_exam1 . '%',
+                                'dataset2' => 'Rapor ' . $transcriptWeight->weight_report2 . '%, Tulis ' . $transcriptWeight->weight_written_exam2 . '%, Praktek ' . $transcriptWeight->weight_practical_exam2 . '%',
+                                // tambahkan dataset lainnya jika diperlukan
+                            ];
+                        })
+                        ->required(),
+                ])
+                ->action(function ($data) {
+                    $dataset = $data['dataset'];
+                    $transcriptWeightSetting = app(TranscriptWeight::class);
+
+                    $weight_report = 0;
+                    $weight_written_exam = 0;
+                    $weight_practical_exam = 0;
+
+                    switch ($dataset) {
+                        case 'dataset1':
+                            $weight_report = $transcriptWeightSetting->weight_report1;
+                            $weight_written_exam = $transcriptWeightSetting->weight_written_exam1;
+                            $weight_practical_exam = $transcriptWeightSetting->weight_practical_exam1;
+                            break;
+                        case 'dataset2':
+                            $weight_report = $transcriptWeightSetting->weight_report2;
+                            $weight_written_exam = $transcriptWeightSetting->weight_written_exam2;
+                            $weight_practical_exam = $transcriptWeightSetting->weight_practical_exam2;
+                            break;
+                    }
+
+                    $transcripts = Transcript::all();
+
+                    foreach ($transcripts as $transcript) {
+                        $transcript->average_score = $transcript->calculateAverage($weight_report, $weight_written_exam, $weight_practical_exam);
+                        $transcript->save();
+                    }
+
+                    Notification::make()
+                        ->title('Recalculate Success')
+                        ->success()
+                        ->send();
+                })
         ];
     }
 

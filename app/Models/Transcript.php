@@ -90,10 +90,10 @@ class Transcript extends Model
         }
 
         // nilai rata-rata
-        $average_score = ($report_score * $weight_report) + 
-                (($written_exam ?? 0) * $weight_written_exam) + 
-                (($practical_exam ?? 0) * $weight_practical_exam);
-        
+        $average_score = ($report_score * $weight_report) +
+            (($written_exam ?? 0) * $weight_written_exam) +
+            (($practical_exam ?? 0) * $weight_practical_exam);
+
         return \round($average_score / $total_weight, 2);
     }
 }
