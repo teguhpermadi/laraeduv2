@@ -22,7 +22,7 @@
             datasets: [{
                     label: 'Rapor ' + weight_report1 + '%, Tulis ' + weight_written_exam1 + '%, Praktek ' + weight_practical_exam1 + '%',
                     data: dataset1,
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderColor: 'rgb(75, 192, 192)',
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     tension: 0.4,
                 },

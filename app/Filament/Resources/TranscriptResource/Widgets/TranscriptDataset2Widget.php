@@ -29,9 +29,9 @@ class TranscriptDataset2Widget extends BaseWidget
 
         return [
             Stat::make('Tertinggi Dataset 2', $topDataset2->averageDataset2)
-                ->description($topDataset2->student->name),
+                ->description($topDataset2->student->name .  ' - ' .$topDataset2->subject->name),
             Stat::make('Terendah Dataset 2', $bottomDataset2->averageDataset2)
-                ->description($bottomDataset2->student->name),
+                ->description($bottomDataset2->student->name .  ' - ' . $topDataset2->subject->name),
         ];
     }
 }

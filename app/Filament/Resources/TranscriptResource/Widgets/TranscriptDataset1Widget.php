@@ -6,6 +6,7 @@ use App\Models\Transcript;
 use App\Settings\TranscriptWeight;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Filament\Support\Colors\Color;
 
 class TranscriptDataset1Widget extends BaseWidget
 {
@@ -29,9 +30,9 @@ class TranscriptDataset1Widget extends BaseWidget
 
         return [
             Stat::make('Tertinggi Dataset 1', $topDataset1->averageDataset1)
-                ->description($topDataset1->student->name),
+                ->description($topDataset1->student->name .  ' - ' .$topDataset1->subject->name),
             Stat::make('Terendah Dataset 1', $bottomDataset1->averageDataset1)
-                ->description($bottomDataset1->student->name),
+                ->description($bottomDataset1->student->name .  ' - ' . $topDataset1->subject->name),
         ];
     }
 }
