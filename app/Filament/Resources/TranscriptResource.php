@@ -119,6 +119,7 @@ class TranscriptResource extends Resource
             ->modifyQueryUsing(function (Builder $query) {
                 // $query->orderBy('student_id', 'asc');
             })
+            ->defaultSort('student_id', 'asc')
             ->paginated(false);
     }
 

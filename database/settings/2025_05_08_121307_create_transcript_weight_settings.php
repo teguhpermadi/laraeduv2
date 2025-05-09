@@ -12,5 +12,8 @@ return new class extends SettingsMigration
         $this->migrator->add('transcript_weight.weight_report2', 70);
         $this->migrator->add('transcript_weight.weight_written_exam2', 20);
         $this->migrator->add('transcript_weight.weight_practical_exam2', 10);
+        $this->migrator->add('transcript_weight.weight_report1', null);
+        $this->migrator->add('transcript_weight.weight_written_exam1', null);
+        $this->migrator->add('transcript_weight.weight_practical_exam1', null);
     }
 };

@@ -8,6 +8,7 @@ use App\Filament\Pages\TranscriptWeightSettings;
 use App\Filament\Resources\TranscriptResource;
 use App\Filament\Resources\TranscriptResource\Widgets\TranscriptDataset1Widget;
 use App\Filament\Resources\TranscriptResource\Widgets\TranscriptDataset2Widget;
+use App\Filament\Resources\TranscriptResource\Widgets\TranscriptWidget;
 use App\Helpers\IdHelper;
 use App\Imports\TranscriptImport;
 use App\Models\AcademicYear;
@@ -35,6 +36,13 @@ use Illuminate\Database\Eloquent\Builder;
 class ListTranscripts extends ListRecords
 {
     protected static string $resource = TranscriptResource::class;
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            TranscriptWidget::class,
+        ];
+    }
 
     protected function getHeaderActions(): array
     {
@@ -144,7 +152,6 @@ class ListTranscripts extends ListRecords
                             return [
                                 'dataset1' => 'Rapor ' . $transcriptWeight->weight_report1 . '%, Tulis ' . $transcriptWeight->weight_written_exam1 . '%, Praktek ' . $transcriptWeight->weight_practical_exam1 . '%',
                                 'dataset2' => 'Rapor ' . $transcriptWeight->weight_report2 . '%, Tulis ' . $transcriptWeight->weight_written_exam2 . '%, Praktek ' . $transcriptWeight->weight_practical_exam2 . '%',
-                                // tambahkan dataset lainnya jika diperlukan
                             ];
                         })
                         ->required(),
@@ -172,10 +179,17 @@ class ListTranscripts extends ListRecords
 
                     $transcripts = Transcript::all();
 
+                    // re-calculate average all transcript by dataset choice
                     foreach ($transcripts as $transcript) {
                         $transcript->average_score = $transcript->calculateAverage($weight_report, $weight_written_exam, $weight_practical_exam);
                         $transcript->save();
                     }
+
+                    // save transcript weight setting by dataset choice
+                    $transcriptWeightSetting->weight_report = $weight_report;
+                    $transcriptWeightSetting->weight_written_exam = $weight_written_exam;
+                    $transcriptWeightSetting->weight_practical_exam = $weight_practical_exam;
+                    $transcriptWeightSetting->save();
 
                     Notification::make()
                         ->title('Recalculate Success')
@@ -197,7 +211,7 @@ class ListTranscripts extends ListRecords
         foreach ($teacherSubjects as $teacherSubject) {
             $tabs[$teacherSubject->id] = Tab::make($teacherSubject->subject->code)
                 ->modifyQueryUsing(function (Builder $query) use ($teacherSubject) {
-                    return $query->where('teacher_subject_id', $teacherSubject->id)->orderBy('student_id', 'asc');
+                    return $query->where('teacher_subject_id', $teacherSubject->id);
                 });
         }
 
@@ -240,6 +254,9 @@ class ListTranscripts extends ListRecords
                     'teacher_subject_id' => $teacherSubject->id,
                     'subject_id' => $i,
                     'report_score' => $leger->average('score'),
+                    'written_exam' => null,
+                    'practical_exam' => null,
+                    'average_score' => 0,
                 ];
 
                 // Transcript::updateOrCreate(['id' => $data['id']], $data); // dd($data);
@@ -247,7 +264,7 @@ class ListTranscripts extends ListRecords
         }
 
         // dd($data);
-        Transcript::upsert($data, uniqueBy: ['id'], update: ['report_score', 'written_exam', 'practical_exam']);
+        Transcript::upsert($data, uniqueBy: ['id'], update: ['report_score', 'written_exam', 'practical_exam', 'average_score']);
     }
 
     public function download($teacher_subject_id)
