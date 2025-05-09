@@ -6,6 +6,8 @@ use App\Enums\CategoryLegerEnum;
 use App\Enums\TranscriptEnum;
 use App\Filament\Pages\TranscriptWeightSettings;
 use App\Filament\Resources\TranscriptResource;
+use App\Filament\Resources\TranscriptResource\Widgets\TranscriptDataset1Widget;
+use App\Filament\Resources\TranscriptResource\Widgets\TranscriptDataset2Widget;
 use App\Helpers\IdHelper;
 use App\Imports\TranscriptImport;
 use App\Models\AcademicYear;
@@ -31,6 +33,14 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class ListTranscripts extends ListRecords
 {
     protected static string $resource = TranscriptResource::class;
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            TranscriptDataset1Widget::class,
+            TranscriptDataset2Widget::class,
+        ];
+    }
 
     protected function getHeaderActions(): array
     {

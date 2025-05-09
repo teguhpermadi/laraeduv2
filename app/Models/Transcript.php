@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\TranscriptEnum;
 use App\Observers\TranscriptObserver;
+use App\Settings\TranscriptWeight;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
@@ -51,7 +52,10 @@ class Transcript extends Model
         ];
     }
 
-    protected $appends = ['average'];
+    protected $appends = [
+        'averageDataset1',
+        'averageDataset2',
+    ];
 
     public function student()
     {
@@ -95,5 +99,27 @@ class Transcript extends Model
             (($practical_exam ?? 0) * $weight_practical_exam);
 
         return \round($average_score / $total_weight, 2);
+    }
+
+    public function getAverageDataset1Attribute()
+    {
+        // get transcript setting dataset 1
+        $transcriptWeightSetting = app(TranscriptWeight::class);
+        $weight_report = $transcriptWeightSetting->weight_report1;
+        $weight_written_exam = $transcriptWeightSetting->weight_written_exam1;
+        $weight_practical_exam = $transcriptWeightSetting->weight_practical_exam1;
+
+        return $this->calculateAverage($weight_report, $weight_written_exam, $weight_practical_exam);
+    }
+
+    public function getAverageDataset2Attribute()
+    {
+        // get transcript setting dataset 1
+        $transcriptWeightSetting = app(TranscriptWeight::class);
+        $weight_report = $transcriptWeightSetting->weight_report2;
+        $weight_written_exam = $transcriptWeightSetting->weight_written_exam2;
+        $weight_practical_exam = $transcriptWeightSetting->weight_practical_exam2;
+
+        return $this->calculateAverage($weight_report, $weight_written_exam, $weight_practical_exam);
     }
 }

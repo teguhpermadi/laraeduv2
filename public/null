@@ -1,19 +1,37 @@
-TeacherSubject::get()
+Transcript::first()
+Transcript::first()
+Transcript::first()
+Transcript::max('averageDataset1');
+Transcript::all()
+Transcript::all()->toArray()
+$t = Transcript::all()->toArray();
+$t->max('averageDataset1')
+$t = Transcript::all();
+$t->max('averageDataset1')
+$t = Transcript::get();
+$t->max('averageDataset1')
+$t = Transcript::get();
 
-Grade::where('grade', 6)->get()->pluck('id');
-$g = Grade::where('grade', 6)->get()->pluck('id');
-TeacherSubject::whereIn('grade_id', $g)->get()
-
-TeacherSubject::whereIn(['grade_id' => function($q){
-$q->where('grade', 6)->get();
-}])->get()
-$g = Grade::where('grade', 6)->get();
-$g = Grade::with('teacherSubject')->where('grade', 6)->get();
-$g = Grade::with('teacherSubject')->where('grade', 6)->get()->teacherSubject;
-$g = Grade::with('teacherSubject')->where('grade', 6)->get()->first()->teacherSubject;
-$g = Grade::with('teacherSubject')->where('grade', 6)->first()->teacherSubject;
-$g = Grade::with('teacherSubject')->where('grade', 6)->first()->teacherSubject;
-$g = Grade::with('teacherSubject')->where('grade', 6)->first()->teacherSubject;
-$g = Grade::with('teacherSubject')->where('grade', 6)->first()->teacherSubject;
-$g = Grade::with('teacherSubject.subject')->where('grade', 6)->first()->teacherSubject;
-$g = Grade::with('teacherSubject')->where('grade', 6)->first()->teacherSubject->pluck('subject.name', 'id');
+$t = Transcript::get();
+$t->max('averageDataset1')
+$t = Transcript::get();
+$t->max('averageDataset1')->select('id')
+$t = Transcript::get();
+$t->max('averageDataset1')->id
+$t = Transcript::get();
+$t->max('averageDataset1')
+$t = Transcript::get();
+$t = Transcript::limit(2)->get();
+$t = Transcript::limit(2)->get();
+$t->sortByDesc('averageDataset1')->first();
+$t = Transcript::get();
+$t->sortByDesc('averageDataset1')->first();
+$transcript = Transcript::get();
+$topDataset1 = $transcript->sortByDesc('averageDataset1')->first();
+$bottomDataset1 = $transcript->sortBy('averageDataset1')->first();
+$transcript = Transcript::get();
+$topDataset1 = $transcript->sortByDesc('averageDataset1')->first();
+$bottomDataset1 = $transcript->sortBy('averageDataset1')->first();
+$transcript = Transcript::get();
+$topDataset1 = $transcript->sortByDesc('averageDataset1')->first();
+$bottomDataset1 = $transcript->sortBy('averageDataset1')->first();
