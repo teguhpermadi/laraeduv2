@@ -12,14 +12,11 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TeacherGradeRelationManager extends RelationManager
 {
-    use CanBeEmbeddedInModals;  
-    
     protected static string $relationship = 'teacherGrade';
 
     public static function getModelLabel(): string

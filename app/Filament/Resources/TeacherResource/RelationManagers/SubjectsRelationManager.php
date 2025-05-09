@@ -17,14 +17,11 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
-use Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rules\Unique;
 
 class SubjectsRelationManager extends RelationManager
 {
-    use CanBeEmbeddedInModals;
-
     protected static string $relationship = 'subject';
 
     protected static ?string $title = 'Mata Pelajaran';

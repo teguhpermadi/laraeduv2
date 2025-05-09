@@ -6,9 +6,10 @@ use App\Models\Transcript;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class TranscriptImport implements ToCollection, WithHeadingRow
+class TranscriptImport implements ToCollection, WithHeadingRow, WithCalculatedFormulas
 {
     use Importable;
 

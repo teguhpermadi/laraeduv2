@@ -21,12 +21,9 @@ use App\Models\Value;
 use App\Models\Target;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard\Step as WizardStep;
-use Guava\FilamentModalRelationManagers\Concerns\CanBeEmbeddedInModals;
 
 class ProjectTargetRelationManager extends RelationManager
 {
-    use CanBeEmbeddedInModals;
-
     protected static string $relationship = 'ProjectTarget';
 
     public function form(Form $form): Form

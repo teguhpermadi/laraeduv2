@@ -36,7 +36,8 @@ class ListTranscripts extends ListRecords
             // Actions\CreateAction::make(),
             Action::make('preview')
                 ->label('Preview')
-                ->url(fn() => route('transcript-preview')),
+                ->url(fn() => route('transcript-preview'))
+                ->openUrlInNewTab(),
             Action::make('download')
                 ->label('Download')
                 ->modalWidth(MaxWidth::Medium)

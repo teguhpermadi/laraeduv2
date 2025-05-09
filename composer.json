@@ -12,7 +12,7 @@
         "eightynine/filament-excel-import": "^3.1",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-settings-plugin": "^3.3",
-        "guava/filament-modal-relation-managers": "^1.0",
+        "guava/filament-modal-relation-managers": "*",
         "joaopaulolndev/filament-edit-profile": "^1.0",
         "josespinal/filament-record-navigation": "^2.0",
         "joshembling/image-optimizer": "^1.4",
