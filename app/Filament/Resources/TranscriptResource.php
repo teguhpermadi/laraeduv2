@@ -17,6 +17,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\Summarizers\Average;
+use Filament\Tables\Columns\Summarizers\Range;
 use Filament\Tables\Columns\Summarizers\Sum;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -100,11 +102,11 @@ class TranscriptResource extends Resource
                 TextColumn::make('average_score')
                     ->wrapHeader()
                     ->sortable()
-                    ->summarize(Sum::make()),
+                    ->summarize([Average::make(), Range::make()->label('Range')]),
             ])
             ->filters([
-                SelectFilter::make('subject_id')
-                    ->options(Subject::get()->pluck('name', 'id')),
+                // SelectFilter::make('subject_id')
+                //     ->options(Subject::get()->pluck('name', 'id')),
             ])
             ->actions([
                 // Tables\Actions\EditAction::make(),
@@ -114,17 +116,10 @@ class TranscriptResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->groups([
-                Group::make('student.name')
-                    ->label('Student')
-                    ->collapsible(),
-                Group::make('subject.name')
-                    ->label('Subject')
-                    ->collapsible(),
-            ])
             ->modifyQueryUsing(function (Builder $query) {
-                $query->orderBy('student_id', 'asc');
-            });
+                // $query->orderBy('student_id', 'asc');
+            })
+            ->paginated(false);
     }
 
     public static function getRelations(): array
@@ -138,8 +133,8 @@ class TranscriptResource extends Resource
     {
         return [
             'index' => Pages\ListTranscripts::route('/'),
-            'create' => Pages\CreateTranscript::route('/create'),
-            'edit' => Pages\EditTranscript::route('/{record}/edit'),
+            // 'create' => Pages\CreateTranscript::route('/create'),
+            // 'edit' => Pages\EditTranscript::route('/{record}/edit'),
         ];
     }
 }

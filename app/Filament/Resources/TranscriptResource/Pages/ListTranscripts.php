@@ -23,24 +23,18 @@ use Filament\Forms\Components\Actions\Action as ActionsAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
+use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Enums\MaxWidth;
 use Maatwebsite\Excel\Facades\Excel;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Illuminate\Database\Eloquent\Builder;
 
 class ListTranscripts extends ListRecords
 {
     protected static string $resource = TranscriptResource::class;
-
-    protected function getHeaderWidgets(): array
-    {
-        return [
-            TranscriptDataset1Widget::class,
-            TranscriptDataset2Widget::class,
-        ];
-    }
 
     protected function getHeaderActions(): array
     {
@@ -189,6 +183,25 @@ class ListTranscripts extends ListRecords
                         ->send();
                 })
         ];
+    }
+
+    public function getTabs(): array
+    {
+        $grade = Grade::where('grade', 6)->first();
+        $teacherSubjects = TeacherSubject::where('academic_year_id', session('academic_year_id'))
+        ->where('grade_id', $grade->id)
+        ->get();
+
+        $tabs = [];
+
+        foreach ($teacherSubjects as $teacherSubject) {
+            $tabs[$teacherSubject->id] = Tab::make($teacherSubject->subject->code)
+                ->modifyQueryUsing(function (Builder $query) use ($teacherSubject) {
+                    return $query->where('teacher_subject_id', $teacherSubject->id)->orderBy('student_id', 'asc');
+                });
+        }
+
+        return $tabs;
     }
 
     public function sync($data)
