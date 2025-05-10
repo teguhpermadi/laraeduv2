@@ -41,7 +41,7 @@
 
                         <div class="form-group mb-3">
                             <label for="time_signature">Time Signature (Opsional)</label>
-                            <input type="datetime-local" class="form-control" id="time_signature" name="time_signature">
+                            <input type="datetime-local" class="form-control" id="time_signature" name="time_signature" value="{{ now()->format('Y-m-d\TH:i') }}">
                             <small class="form-text text-muted">Jika kosong, akan menggunakan waktu saat ini</small>
                         </div>
 
@@ -62,6 +62,13 @@
                     <div class="mt-4" id="result" style="display: none;">
                         <div class="alert" id="resultAlert" role="alert"></div>
                         <div id="resultDetails"></div>
+                        
+                        <!-- Link ke Halaman Leger Print -->
+                        <div id="legerPrintLink" class="mt-3" style="display: none;">
+                            <a id="viewLegerBtn" href="#" class="btn btn-success" target="_blank">
+                                <i class="fas fa-print"></i> Lihat Hasil Leger
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,10 +78,25 @@
 
 <!-- Include Bootstrap JS (optional) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Include Font Awesome untuk ikon -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
 <!-- Your script -->
 <script>
     $(document).ready(function() {
+        // Set nilai default untuk time_signature jika belum diisi
+        if (!$('#time_signature').val()) {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            
+            const formattedDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+            $('#time_signature').val(formattedDateTime);
+        }
+        
         $('#processLegerForm').on('submit', function(e) {
             e.preventDefault();
             
@@ -90,9 +112,11 @@
             const resultDiv = $('#result');
             const resultAlert = $('#resultAlert');
             const resultDetails = $('#resultDetails');
+            const legerPrintLink = $('#legerPrintLink');
             
             // Sembunyikan hasil sebelumnya jika ada
             resultDiv.hide();
+            legerPrintLink.hide();
             
             // Tampilkan progress bar
             const progressContainer = $('#progressContainer');
@@ -159,6 +183,13 @@
                         detailsHtml += '</ul>';
                         
                         resultDetails.html(detailsHtml);
+                        
+                        // Tampilkan link ke halaman leger-print
+                        legerPrintLink.show();
+                        
+                        // Set URL untuk tombol lihat leger
+                        const teacherSubjectId = response.data.teacher_subject_id;
+                        $('#viewLegerBtn').attr('href', `/${teacherSubjectId}/leger-print`);
                     }, 1000);
                 },
                 error: function(xhr) {
@@ -184,6 +215,9 @@
                         }
                         
                         resultDetails.html('');
+                        
+                        // Sembunyikan link leger-print jika terjadi error
+                        legerPrintLink.hide();
                     }, 1000);
                 },
                 complete: function() {

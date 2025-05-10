@@ -234,7 +234,8 @@ class ProcessLegerController extends Controller
     {
         // Ambil daftar teacher subject untuk dropdown
         $teacherSubjects = TeacherSubject::with(['teacher', 'subject', 'academic'])
-            ->orderBy('created_at', 'desc')
+            ->orderBy('teacher_id', 'desc')
+            ->orderBy('grade_id', 'asc')
             ->take(100)
             ->get()
             ->map(function ($item) {
