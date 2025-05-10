@@ -9,6 +9,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Include jQuery BEFORE your script -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include DataTables CSS and JS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <style>
         .progress {
             height: 25px;
@@ -16,13 +20,44 @@
         .progress-bar {
             transition: width 0.5s ease;
         }
+        .container-fluid {
+            padding: 20px;
+        }
+        .table-responsive {
+            width: 100%;
+        }
     </style>
 </head>
 <body>
 
-<div class="container mt-5">
+<div class="container-fluid mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
+            <!-- Form Pemilihan Tahun Akademik -->
+            <div class="card mb-4">
+                <div class="card-header">Pilih Tahun Akademik</div>
+                <div class="card-body">
+                    <form id="academicYearForm">
+                        @csrf
+                        <div class="form-group mb-3">
+                            <label for="academic_year_id">Tahun Akademik</label>
+                            <select class="form-control" id="academic_year_id" name="academic_year_id" required>
+                                <option value="">-- Pilih Tahun Akademik --</option>
+                                @foreach(\App\Models\AcademicYear::all() as $academicYear)
+                                    <option value="{{ $academicYear->id }}" {{ session('academic_year_id') == $academicYear->id ? 'selected' : '' }}>
+                                        {{ $academicYear->year }} - {{ $academicYear->semester }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success" id="setAcademicYearBtn">Set Tahun Akademik</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Form Proses Leger -->
             <div class="card">
                 <div class="card-header">Proses Leger</div>
 
@@ -72,6 +107,47 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Tabel Teacher Subject dengan Leger -->
+            <div class="card mt-4">
+                <div class="card-header">Daftar Teacher Subject dengan Leger</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="legerTable" class="table table-striped table-bordered" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Nama Guru</th>
+                                    <th>Mata Pelajaran</th>
+                                    <th>Kelas</th>
+                                    <th>Tahun Akademik</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($teacherSubjectsWithLeger as $index => $item)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $item->teacher->name }}</td>
+                                        <td>{{ $item->subject->name }}</td>
+                                        <td>{{ $item->grade->name }}</td>
+                                        <td>{{ $item->academic->year }} {{ $item->academic->semester }}</td>
+                                        <td>
+                                            <a href="{{ route('leger-print', $item->id) }}" class="btn btn-sm btn-primary" target="_blank">
+                                                <i class="fas fa-print"></i> Lihat Leger
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center">Belum ada data leger yang diproses</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -84,6 +160,23 @@
 <!-- Your script -->
 <script>
     $(document).ready(function() {
+        // Inisialisasi DataTable
+        $('#legerTable').DataTable({
+            responsive: true,
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/id.json'
+            },
+            columnDefs: [
+                { orderable: false, targets: 5 }, // Kolom aksi tidak bisa diurutkan
+                { width: '5%', targets: 0 }, // Kolom nomor
+                { width: '25%', targets: 1 }, // Kolom nama guru
+                { width: '20%', targets: 2 }, // Kolom mata pelajaran
+                { width: '20%', targets: 3 }, // Kolom kelas
+                { width: '15%', targets: 4 }, // Kolom tahun akademik
+                { width: '15%', targets: 5 }  // Kolom aksi
+            ]
+        });
+        
         // Set nilai default untuk time_signature jika belum diisi
         if (!$('#time_signature').val()) {
             const now = new Date();
@@ -97,6 +190,43 @@
             $('#time_signature').val(formattedDateTime);
         }
         
+        // Handler untuk form academic year
+        $('#academicYearForm').on('submit', function(e) {
+            e.preventDefault();
+            
+            const academicYearId = $('#academic_year_id').val();
+            if (!academicYearId) {
+                alert('Silakan pilih Tahun Akademik terlebih dahulu!');
+                return;
+            }
+            
+            // Kirim data ke server untuk menyimpan ke session
+            $.ajax({
+                url: '{{ route("leger.set-academic-year") }}',
+                type: 'POST',
+                data: $(this).serialize(),
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        // Tampilkan notifikasi sukses
+                        alert(response.message);
+                        
+                        // Reload halaman untuk memperbarui data
+                        location.reload();
+                    } else {
+                        alert('Terjadi kesalahan: ' + response.message);
+                    }
+                },
+                error: function(xhr) {
+                    alert('Terjadi kesalahan saat menyimpan data.');
+                }
+            });
+        });
+        
+        // Handler untuk form process leger
         $('#processLegerForm').on('submit', function(e) {
             e.preventDefault();
             
@@ -190,6 +320,11 @@
                         // Set URL untuk tombol lihat leger
                         const teacherSubjectId = response.data.teacher_subject_id;
                         $('#viewLegerBtn').attr('href', `/${teacherSubjectId}/leger-print`);
+                        
+                        // Reload halaman setelah 3 detik untuk memperbarui tabel
+                        setTimeout(function() {
+                            location.reload();
+                        }, 3000);
                     }, 1000);
                 },
                 error: function(xhr) {

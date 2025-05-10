@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProcessLegerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -45,5 +46,9 @@ Route::get('/leger-preview-my-grade', \App\Livewire\LegerPreviewMyGrade::class)-
 Route::get('transcript/preview', \App\Livewire\TranscriptPreview::class)->name('transcript-preview');
 
 // Route untuk ProcessLegerController
-Route::get('/leger/process', [App\Http\Controllers\ProcessLegerController::class, 'index'])->name('leger.index');
-Route::post('/leger/process', [App\Http\Controllers\ProcessLegerController::class, 'process'])->name('leger.process');
+Route::get('/leger/process', [ProcessLegerController::class, 'index'])->name('leger.index');
+Route::post('/leger/process', [ProcessLegerController::class, 'process'])->name('leger.process');
+
+// Route untuk leger process
+Route::post('/leger/set-academic-year', [ProcessLegerController::class, 'setAcademicYear'])->name('leger.set-academic-year');
+Route::get('/leger/get-teacher-subjects', [ProcessLegerController::class, 'getTeacherSubjects'])->name('leger.get-teacher-subjects');

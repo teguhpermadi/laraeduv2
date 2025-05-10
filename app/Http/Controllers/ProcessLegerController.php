@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\CategoryLegerEnum;
+use App\Models\AcademicYear;
 use App\Models\Leger as ModelsLeger;
 use App\Models\LegerNote;
 use App\Models\LegerRecap;
@@ -233,7 +234,82 @@ class ProcessLegerController extends Controller
     public function index()
     {
         // Ambil daftar teacher subject untuk dropdown
-        $teacherSubjects = TeacherSubject::with(['teacher', 'subject', 'academic'])
+        $academicYearId = session('academic_year_id');
+        
+        $query = TeacherSubject::with(['teacher', 'subject', 'academic', 'grade'])->whereDoesntHave('leger');
+        
+        // Filter berdasarkan academic_year_id jika ada di session
+        if ($academicYearId) {
+            $query->where('academic_year_id', $academicYearId);
+        }
+        
+        $teacherSubjects = $query->orderBy('teacher_id', 'desc')
+            ->orderBy('grade_id', 'asc')
+            ->take(100)
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'text' => $item->teacher->name . ' - ' . $item->subject->code . ' ' . $item->grade->name . ' (' . $item->academic->year . ' '. $item->academic->semester.')',
+                ];
+            });
+            
+        // Ambil daftar teacher subject yang sudah memiliki leger
+        $teacherSubjectsWithLeger = TeacherSubject::with(['teacher', 'subject', 'grade', 'academic'])
+            ->whereHas('leger')
+            ->when($academicYearId, function($query) use ($academicYearId) {
+                return $query->where('academic_year_id', $academicYearId);
+            })
+            ->orderBy('teacher_id', 'desc')
+            ->orderBy('grade_id', 'asc')
+            ->get();
+
+        return view('leger.process', [
+            'teacherSubjects' => $teacherSubjects,
+            'teacherSubjectsWithLeger' => $teacherSubjectsWithLeger,
+        ]);
+    }
+    
+    /**
+     * Menyimpan academic_year_id ke session
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function setAcademicYear(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'academic_year_id' => 'required|exists:academic_years,id',
+        ]);
+        
+        // Simpan ke session
+        session(['academic_year_id' => $request->input('academic_year_id')]);
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Tahun akademik berhasil disimpan ke session',
+        ]);
+    }
+    
+    /**
+     * Mendapatkan daftar teacher subject berdasarkan academic_year_id
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getTeacherSubjects(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'academic_year_id' => 'required|exists:academic_years,id',
+        ]);
+        
+        $academicYearId = $request->input('academic_year_id');
+        
+        // Ambil daftar teacher subject berdasarkan academic_year_id
+        $teacherSubjects = TeacherSubject::with(['teacher', 'subject', 'academic', 'grade'])
+            ->where('academic_year_id', $academicYearId)
             ->orderBy('teacher_id', 'desc')
             ->orderBy('grade_id', 'asc')
             ->take(100)
@@ -244,9 +320,11 @@ class ProcessLegerController extends Controller
                     'text' => $item->teacher->name . ' - ' . $item->subject->code . ' ' . $item->grade->name . ' (' . $item->academic->year . ' '. $item->academic->semester.')',
                 ];
             });
-
-        return view('leger.process', [
-            'teacherSubjects' => $teacherSubjects,
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Berhasil mendapatkan daftar teacher subject',
+            'data' => $teacherSubjects,
         ]);
     }
 }
