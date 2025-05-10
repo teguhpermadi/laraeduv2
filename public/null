@@ -1,37 +1,59 @@
-Transcript::first()
-Transcript::first()
-Transcript::first()
-Transcript::max('averageDataset1');
-Transcript::all()
-Transcript::all()->toArray()
-$t = Transcript::all()->toArray();
-$t->max('averageDataset1')
-$t = Transcript::all();
-$t->max('averageDataset1')
-$t = Transcript::get();
-$t->max('averageDataset1')
-$t = Transcript::get();
+$transcripts = Transcript::where('academic_year_id', session('academic_year_id'))->get();
+$transcripts = Transcript::where('academic_year_id', session('academic_year_id'))->groupBy('student_id')->get();
+$transcripts = Transcript::where('academic_year_id', session('academic_year_id'))->get();
+$students = Student::whereHas('leger')->get()
+$students = Student::whereHas(['leger' => function($q){
+  $q->where('academic_year_id', session('academic_year_id'));
+}])->get()
+$students = Student::with(['leger' => function($q){
+  $q->where('academic_year_id', session('academic_year_id'));
+}])->get()
+$students = Student::whereHas('leger')->with(['leger' => function($q){
+  $q->where('academic_year_id', session('academic_year_id'));
+}])->get()
+$students = Student::whereHas('leger')->with(['leger' => function($q){
+  $q->where('academic_year_id', session('academic_year_id'));
+}])->get()
+$students = Student::whereHas('transcript')->with(['transcript' => function($q){
+  $q->where('academic_year_id', session('academic_year_id'));
+}])->get()
+$students = Student::whereHas('transcript')->get()
+$students = Student::whereHas('transcript')->get();
+$students = Student::whereHas('transcript')->get();
+$students = Student::whereHas('transcript')->get();
+$students = Student::whereHas('transcript')->get();
+$students = Student::whereHas('transcript')->first();
+$student = Student::whereHas('transcript')->first();
 
-$t = Transcript::get();
-$t->max('averageDataset1')
-$t = Transcript::get();
-$t->max('averageDataset1')->select('id')
-$t = Transcript::get();
-$t->max('averageDataset1')->id
-$t = Transcript::get();
-$t->max('averageDataset1')
-$t = Transcript::get();
-$t = Transcript::limit(2)->get();
-$t = Transcript::limit(2)->get();
-$t->sortByDesc('averageDataset1')->first();
-$t = Transcript::get();
-$t->sortByDesc('averageDataset1')->first();
-$transcript = Transcript::get();
-$topDataset1 = $transcript->sortByDesc('averageDataset1')->first();
-$bottomDataset1 = $transcript->sortBy('averageDataset1')->first();
-$transcript = Transcript::get();
-$topDataset1 = $transcript->sortByDesc('averageDataset1')->first();
-$bottomDataset1 = $transcript->sortBy('averageDataset1')->first();
-$transcript = Transcript::get();
-$topDataset1 = $transcript->sortByDesc('averageDataset1')->first();
-$bottomDataset1 = $transcript->sortBy('averageDataset1')->first();
+$student->transcripts
+$student = Student::whereHas('transcript')->first();
+
+$student->transcripts
+$student = Student::whereHas('transcript')->first();
+
+$student->transcript
+$student = Student::whereHas('transcript')->first();
+
+$student->transcript->orderBy('subject_id', 'asc');
+$student = Student::whereHas('transcript')->first();
+
+$student->transcript->orderBy('subject_id');
+$student = Student::whereHas('transcript')->first();
+
+$student->transcript->orderBy('subject_id');
+$student = Student::whereHas('transcript')->first();
+
+$student->transcript->orderBy('subject_id');
+$student = Student::whereHas('transcript')->first();
+
+$student->transcript->orderBy('subject_id');
+$student = Student::whereHas('transcript')->first();
+
+$student->transcript->sortBy('subject_id');
+$subjects = Transcript::select('subject_id')->distinct()->get();
+$subjects = Transcript::select('subject_id')->distinct()->count();
+$subjects = Transcript::select('subject_id')->distinct()->get();
+$subjects = Transcript::select('subject_id')->distinct()->get();
+$subjects = Transcript::select('subject_id')->distinct()->get();
+$subjects->count()
+$subjects = Transcript::select('subject_id')->distinct()->get();

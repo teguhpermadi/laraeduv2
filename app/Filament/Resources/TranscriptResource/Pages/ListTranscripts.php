@@ -4,6 +4,7 @@ namespace App\Filament\Resources\TranscriptResource\Pages;
 
 use App\Enums\CategoryLegerEnum;
 use App\Enums\TranscriptEnum;
+use App\Exports\TranscriptExport;
 use App\Filament\Pages\TranscriptWeightSettings;
 use App\Filament\Resources\TranscriptResource;
 use App\Filament\Resources\TranscriptResource\Widgets\TranscriptDataset1Widget;
@@ -199,11 +200,17 @@ class ListTranscripts extends ListRecords
                     } else {
                         Notification::make()
                             ->title('Recalculate Failed')
-                            ->body('Transcript data not found') 
+                            ->body('Transcript data not found')
                             ->danger()
                             ->send();
                     }
-                })
+                }),
+            Action::make('export')
+                ->label('Export')
+                ->action(function () {
+                    // get all transcript by academic_year_id
+                    return Excel::download(new TranscriptExport(), 'transcript.xlsx');
+                }),
         ];
     }
 
