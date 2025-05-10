@@ -101,7 +101,7 @@ class ListTranscripts extends ListRecords
                         ->required(),
                     Select::make('academic_year_id')
                         ->label('Academic Year')
-                        ->live()
+                        ->reactive()
                         ->multiple()
                         ->options(AcademicYear::all()->map(function ($item) {
                             return [
