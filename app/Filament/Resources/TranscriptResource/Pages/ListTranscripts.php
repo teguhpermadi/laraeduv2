@@ -179,22 +179,30 @@ class ListTranscripts extends ListRecords
 
                     $transcripts = Transcript::all();
 
-                    // re-calculate average all transcript by dataset choice
-                    foreach ($transcripts as $transcript) {
-                        $transcript->average_score = $transcript->calculateAverage($weight_report, $weight_written_exam, $weight_practical_exam);
-                        $transcript->save();
+                    if (! $transcripts) {
+                        // re-calculate average all transcript by dataset choice
+                        foreach ($transcripts as $transcript) {
+                            $transcript->average_score = $transcript->calculateAverage($weight_report, $weight_written_exam, $weight_practical_exam);
+                            $transcript->save();
+                        }
+
+                        // save transcript weight setting by dataset choice
+                        $transcriptWeightSetting->weight_report = $weight_report;
+                        $transcriptWeightSetting->weight_written_exam = $weight_written_exam;
+                        $transcriptWeightSetting->weight_practical_exam = $weight_practical_exam;
+                        $transcriptWeightSetting->save();
+
+                        Notification::make()
+                            ->title('Recalculate Success')
+                            ->success()
+                            ->send();
+                    } else {
+                        Notification::make()
+                            ->title('Recalculate Failed')
+                            ->body('Transcript data not found') 
+                            ->danger()
+                            ->send();
                     }
-
-                    // save transcript weight setting by dataset choice
-                    $transcriptWeightSetting->weight_report = $weight_report;
-                    $transcriptWeightSetting->weight_written_exam = $weight_written_exam;
-                    $transcriptWeightSetting->weight_practical_exam = $weight_practical_exam;
-                    $transcriptWeightSetting->save();
-
-                    Notification::make()
-                        ->title('Recalculate Success')
-                        ->success()
-                        ->send();
                 })
         ];
     }
@@ -203,8 +211,8 @@ class ListTranscripts extends ListRecords
     {
         $grade = Grade::where('grade', 6)->first();
         $teacherSubjects = TeacherSubject::where('academic_year_id', session('academic_year_id'))
-        ->where('grade_id', $grade->id)
-        ->get();
+            ->where('grade_id', $grade->id)
+            ->get();
 
         $tabs = [];
 
