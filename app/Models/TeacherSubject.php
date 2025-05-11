@@ -36,7 +36,6 @@ class TeacherSubject extends Model
         'subject_id',
         'grade_id',
         'time_allocation',
-        'curriculum',
         'passing_grade',
     ];
 
