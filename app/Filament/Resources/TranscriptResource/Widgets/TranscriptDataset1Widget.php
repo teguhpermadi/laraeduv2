@@ -22,17 +22,39 @@ class TranscriptDataset1Widget extends BaseWidget
 
         return $description1;
     }
+
     protected function getStats(): array
     {
         $transcript = Transcript::get();
         $topDataset1 = $transcript->sortByDesc('averageDataset1')->first();
         $bottomDataset1 = $transcript->sortBy('averageDataset1')->first();
 
-        return [
-            Stat::make('Tertinggi Dataset 1', $topDataset1->averageDataset1)
-                ->description($topDataset1->student->name .  ' - ' .$topDataset1->subject->name),
-            Stat::make('Terendah Dataset 1', $bottomDataset1->averageDataset1)
-                ->description($bottomDataset1->student->name .  ' - ' . $topDataset1->subject->name),
-        ];
+        // group by subject
+        $subjects = $transcript->groupBy('subject_id');
+        $subjects = $subjects->map(function ($subject) {
+            return $subject->sortByDesc('averageDataset1')->first();
+        });
+
+        $stats = [];
+        // tertinggi dataset 1
+        $stats[] = Stat::make('Tertinggi Dataset 1', $topDataset1->averageDataset1)
+            ->description($topDataset1->student->name . '- ' . $topDataset1->subject->name)
+            ->color(Color::Green)
+            ->extraAttributes(['class' => 'col-span-2']);
+        // terendah dataset 1
+        $stats[] = Stat::make('Terendah Dataset 1', $bottomDataset1->averageDataset1)
+            ->description($bottomDataset1->student->name . '- ' . $topDataset1->subject->name)
+            ->color(Color::Red)
+            ->extraAttributes(['class' => 'col-span-2']);
+
+        // stats subject
+        foreach ($subjects as $subject) {
+            $stats[] = Stat::make('Tertinggi di ' . $subject->subject->name, $subject->averageDataset1)
+                ->description($subject->student->name)
+                ->color(Color::Gray)
+                ->extraAttributes(['class' => 'col-span-2']);
+        }
+
+        return $stats;
     }
 }

@@ -1,6 +1,6 @@
 <div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    
     <div class="grid grid-cols-2 md:grid-cols-2 gap-1">
         <div class="p-3">
             @livewire(\App\Filament\Resources\TranscriptResource\Widgets\TranscriptDataset1Widget::class)

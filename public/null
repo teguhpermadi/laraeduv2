@@ -1,8 +1,15 @@
-$teacherSubjectId = '01JE8QJ9QK5PRDRFXRWBNRKPCB';
-$teacherSubject = TeacherSubject::with([
-                'teacher',
-                'subject',
-                'academic',
-                'competency',
-                'studentGrade'
-            ])->findOrFail($teacherSubjectId);
+$transcript = Transcript::get();
+$transcript = Transcript::count();
+$transcript = Transcript::get();
+$transcript = Transcript::get();
+$transcript->groupBy('subject_id');
+$transcript = Transcript::get();
+$subjects = $transcript->groupBy('subject_id');
+$subjects = $subjects->map(function ($subject) {
+  return $subject->sortByDesc('averageDataset1')->first();
+});
+$transcript = Transcript::with('subject', 'student')->get();
+$subjects = $transcript->groupBy('subject_id');
+$subjects = $subjects->map(function ($subject) {
+  return $subject->sortByDesc('averageDataset1')->first();
+});

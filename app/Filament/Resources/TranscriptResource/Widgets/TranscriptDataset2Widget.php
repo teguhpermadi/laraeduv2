@@ -6,6 +6,7 @@ use App\Models\Transcript;
 use App\Settings\TranscriptWeight;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Filament\Support\Colors\Color;
 
 class TranscriptDataset2Widget extends BaseWidget
 {
@@ -21,17 +22,39 @@ class TranscriptDataset2Widget extends BaseWidget
 
         return $description2;
     }
+    
     protected function getStats(): array
     {
         $transcript = Transcript::get();
         $topDataset2 = $transcript->sortByDesc('averageDataset2')->first();
         $bottomDataset2 = $transcript->sortBy('averageDataset2')->first();
 
-        return [
-            Stat::make('Tertinggi Dataset 2', $topDataset2->averageDataset2)
-                ->description($topDataset2->student->name .  ' - ' .$topDataset2->subject->name),
-            Stat::make('Terendah Dataset 2', $bottomDataset2->averageDataset2)
-                ->description($bottomDataset2->student->name .  ' - ' . $topDataset2->subject->name),
-        ];
+        // group by subject
+        $subjects = $transcript->groupBy('subject_id');
+        $subjects = $subjects->map(function ($subject) {
+            return $subject->sortByDesc('averageDataset2')->first();
+        });
+
+        $stats = [];
+        // tertinggi dataset 2
+        $stats[] = Stat::make('Tertinggi Dataset 2', $topDataset2->averageDataset2)
+            ->description($topDataset2->student->name . ' - ' . $topDataset2->subject->name)
+            ->color(Color::Green)
+            ->extraAttributes(['class' => 'col-span-2']);
+        // terendah dataset 2
+        $stats[] = Stat::make('Terendah Dataset 2', $bottomDataset2->averageDataset2)
+            ->description($bottomDataset2->student->name . ' - ' . $topDataset2->subject->name)
+            ->color(Color::Red)
+            ->extraAttributes(['class' => 'col-span-2']);
+
+        // stats subject
+        foreach ($subjects as $subject) {
+            $stats[] = Stat::make('Tertinggi di ' . $subject->subject->name, $subject->averageDataset2)
+                ->description($subject->student->name)
+                ->color(Color::Gray)
+                ->extraAttributes(['class' => 'col-span-2']);
+        }
+
+        return $stats;
     }
 }
