@@ -23,6 +23,7 @@ use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Actions\Action as ActionsAction;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Components\Tab;
@@ -114,8 +115,9 @@ class ListTranscripts extends ListRecords
                         ->reactive()
                         ->multiple()
                         ->options(function (callable $get) {
+                            $academic = session('academic_year_id');
                             $studentGrade = StudentGrade::where('grade_id', $get('grade_id'))
-                                ->where('academic_year_id', $get('academic_year_id'))
+                                ->where('academic_year_id', $academic)
                                 ->with('student')
                                 ->get();
 
@@ -125,8 +127,10 @@ class ListTranscripts extends ListRecords
                         ->hintAction(
                             fn(Select $component) => ActionsAction::make('select all')
                                 ->action(function (callable $get) use ($component) {
+                                    $academic = session('academic_year_id');
+
                                     $studentGrade = StudentGrade::where('grade_id', $get('grade_id'))
-                                        ->where('academic_year_id', $get('academic_year_id'))
+                                        ->where('academic_year_id', $academic)
                                         ->get();
 
                                     return $component->state($studentGrade->pluck('student_id')->toArray());
@@ -229,6 +233,12 @@ class ListTranscripts extends ListRecords
                     return $query->where('teacher_subject_id', $teacherSubject->id);
                 });
         }
+
+        // tabs all transcript
+        $tabs['all'] = Tab::make('All')
+            ->modifyQueryUsing(function (Builder $query) {
+                return $query;
+            });
 
         return $tabs;
     }

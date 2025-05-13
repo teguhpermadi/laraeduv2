@@ -15,7 +15,7 @@ use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 #[ScopedBy([AcademicYearScope::class, OrderStudentScope::class])]
-// #[ObservedBy(StudentGradeObserver::class)]
+#[ObservedBy(StudentGradeObserver::class)]
 class StudentGrade extends Model
 {
     use HasFactory;
