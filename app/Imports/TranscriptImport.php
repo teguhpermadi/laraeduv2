@@ -25,8 +25,8 @@ class TranscriptImport implements ToCollection, WithHeadingRow, WithCalculatedFo
                     'id' => $row['id'],
                 ], [
                     'report_score' => $row['nilai_rapor'],
-                    'written_exam' => $row['ujian_tulis'],
-                    'practical_exam' => $row['ujian_praktek'],
+                    'written_exam' => !empty($row['ujian_tulis']) ? $row['ujian_tulis'] : 0,
+                    'practical_exam' => !empty($row['ujian_praktek']) ? $row['ujian_praktek'] : 0,
                 ]);
             }
         }
