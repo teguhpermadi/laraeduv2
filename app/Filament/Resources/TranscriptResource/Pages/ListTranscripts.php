@@ -24,6 +24,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\Actions\Action as ActionsAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Components\Tab;
@@ -136,6 +137,15 @@ class ListTranscripts extends ListRecords
                                     return $component->state($studentGrade->pluck('student_id')->toArray());
                                 })
                         ),
+                    Radio::make('type')
+                        ->label('Sync Type')
+                        ->options([
+                            'all' => 'Report Written Practical - All Data will be reseted',
+                            'report' => 'Report - Only Report will be reseted',
+                            'written' => 'Written - Only Written Exam will be reseted',
+                            'practical' => 'Practical - Only Practical Exam will be reseted',
+                        ])
+                        ->required(),
                 ])
                 ->action(function ($data) {
                     $this->sync($data);
@@ -248,6 +258,7 @@ class ListTranscripts extends ListRecords
         $studentIds = $data['student_ids'];
         $academicYearIds = $data['academic_year_id'];
         $gradeId = $data['grade_id'];
+        $type = $data['type'];
 
         $students = Student::with(['leger' => function ($query) use ($academicYearIds) {
             $query->with('academicYear');
@@ -272,6 +283,7 @@ class ListTranscripts extends ListRecords
                     ->first();
 
                 $param = $student->id . $i;
+
                 $data[] = [
                     'id' => IdHelper::deterministicUlidLike($param),
                     'student_id' => $student->id,
@@ -288,8 +300,30 @@ class ListTranscripts extends ListRecords
             }
         }
 
-        // dd($data);
-        Transcript::upsert($data, uniqueBy: ['id'], update: ['report_score', 'written_exam', 'practical_exam', 'average_score']);
+        // if type is report, written, practical
+        // sync only that type
+        switch ($type) {
+            case 'report':
+                // sync only report
+                Transcript::upsert($data, uniqueBy: ['id'], update: ['report_score']);
+                break;
+
+            case 'written':
+                // sync only written
+                Transcript::upsert($data, uniqueBy: ['id'], update: ['written_exam']);
+                break;
+                
+            case 'practical':
+                // sync only practical
+                Transcript::upsert($data, uniqueBy: ['id'], update: ['practical_exam']);
+                break;
+
+            default:
+                // sync all
+                Transcript::upsert($data, uniqueBy: ['id'], update: ['report_score', 'written_exam', 'practical_exam', 'average_score']);
+                break;
+        }
+
     }
 
     public function download($teacher_subject_id)
