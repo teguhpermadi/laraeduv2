@@ -291,8 +291,6 @@ class ListTranscripts extends ListRecords
                     'teacher_subject_id' => $teacherSubject->id,
                     'subject_id' => $i,
                     'report_score' => $leger->average('score'),
-                    'written_exam' => null,
-                    'practical_exam' => null,
                     'average_score' => 0,
                 ];
 
@@ -305,17 +303,17 @@ class ListTranscripts extends ListRecords
         switch ($type) {
             case 'report':
                 // sync only report
-                Transcript::upsert($data, uniqueBy: ['id'], update: ['report_score']);
+                Transcript::upsert($data, uniqueBy: ['id'], update: ['report_score', 'average_score']);
                 break;
 
             case 'written':
                 // sync only written
-                Transcript::upsert($data, uniqueBy: ['id'], update: ['written_exam']);
+                Transcript::upsert($data, uniqueBy: ['id'], update: ['written_exam', 'average_score']);
                 break;
                 
             case 'practical':
                 // sync only practical
-                Transcript::upsert($data, uniqueBy: ['id'], update: ['practical_exam']);
+                Transcript::upsert($data, uniqueBy: ['id'], update: ['practical_exam', 'average_score']);
                 break;
 
             default:
