@@ -194,7 +194,7 @@ class ListTranscripts extends ListRecords
 
                     $transcripts = Transcript::all();
 
-                    if (! $transcripts) {
+                    if ($transcripts) {
                         // re-calculate average all transcript by dataset choice
                         foreach ($transcripts as $transcript) {
                             $transcript->average_score = $transcript->calculateAverage($weight_report, $weight_written_exam, $weight_practical_exam);
