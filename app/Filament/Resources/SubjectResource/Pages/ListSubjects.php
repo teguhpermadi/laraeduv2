@@ -4,7 +4,9 @@ namespace App\Filament\Resources\SubjectResource\Pages;
 
 use App\Filament\Resources\SubjectResource;
 use App\Imports\SubjectImport;
+use App\Jobs\UpdateTeacherSubjectCompetencyJob;
 use Filament\Actions;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ListRecords;
 
 class ListSubjects extends ListRecords
@@ -15,6 +17,20 @@ class ListSubjects extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\Action::make('updateCompetency')
+                ->label('Update Kompetensi Guru')
+                ->color('success')
+                ->icon('heroicon-o-arrow-path')
+                ->requiresConfirmation()
+                ->action(function () {
+                    UpdateTeacherSubjectCompetencyJob::dispatch();
+                    
+                    Notification::make()
+                        ->title('Proses Update Kompetensi Dimulai')
+                        ->body('Job untuk update kompetensi guru telah dijalankan di background')
+                        ->success()
+                        ->send();
+                }),
             \EightyNine\ExcelImport\ExcelImportAction::make()
                 ->color("primary")
                 ->closeModalByClickingAway(false)
@@ -29,11 +45,7 @@ class ListSubjects extends ListRecords
                         ]
                     ],
                     fileName: 'subject-template.xlsx',
-                    // exportClass: App\Exports\SampleExport::class, 
                     sampleButtonLabel: 'Download Template',
-                    // customiseActionUsing: fn(Action $action) => $action->color('secondary')
-                    //     ->icon('heroicon-m-clipboard')
-                    //     ->requiresConfirmation(),
                 ),
         ];
     }
