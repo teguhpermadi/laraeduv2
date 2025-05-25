@@ -20,6 +20,7 @@ use App\Enums\LinkertScaleEnum;
 use App\Models\LegerQuran;
 use Illuminate\Support\Facades\Log;
 use PhpOffice\PhpWord\SimpleType\DocProtect;
+use Illuminate\Support\Str;
 
 class ReportController extends Controller
 {
@@ -27,7 +28,7 @@ class ReportController extends Controller
     {
         $academicYear = AcademicYear::find(session('academic_year_id'));
 
-        if($academicYear->teacher == null) {
+        if ($academicYear->teacher == null) {
             abort(403, 'Data Kepala Sekolah belum diisi. Hubungi Admin untuk mengisi data tersebut.');
         }
 
@@ -48,7 +49,7 @@ class ReportController extends Controller
         $filename = 'Cover ' . $data['name'] . '.docx';
         $file_path = storage_path('/app/public/downloads/' . $filename);
         $templateProcessor->saveAs($file_path);
-        
+
         // download file
         return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
     }
@@ -58,7 +59,7 @@ class ReportController extends Controller
     {
         $academicYear = AcademicYear::find(session('academic_year_id'));
 
-        if($academicYear->teacher == null) {
+        if ($academicYear->teacher == null) {
             abort(403, 'Data Kepala Sekolah belum diisi. Hubungi Admin untuk mengisi data tersebut.');
         }
 
@@ -98,7 +99,7 @@ class ReportController extends Controller
         $templateProcessor->setValue('nama_ayah', ($data['dataStudent']['father_name']) ? $data['dataStudent']['father_name'] : '-');
         $templateProcessor->setValue('pendidikan_ayah', ($data['dataStudent']['father_education']) ? $data['dataStudent']['father_education'] : '-');
         $templateProcessor->setValue('pekerjaan_ayah', ($data['dataStudent']['father_occupation']) ? $data['dataStudent']['father_occupation'] : '-');
-        
+
         // ibu
         $templateProcessor->setValue('nama_ibu', ($data['dataStudent']['mother_name']) ? $data['dataStudent']['mother_name'] : '-');
         $templateProcessor->setValue('pendidikan_ibu', ($data['dataStudent']['mother_education']) ? $data['dataStudent']['mother_education'] : '-');
@@ -136,7 +137,7 @@ class ReportController extends Controller
         // get academic year
         $academicYear = AcademicYear::with('teacher')->find($academic);
 
-        if($academicYear->teacher == null) {
+        if ($academicYear->teacher == null) {
             abort(403, 'Data Kepala Sekolah belum diisi. Hubungi Admin untuk mengisi data tersebut.');
         }
 
@@ -173,7 +174,7 @@ class ReportController extends Controller
             abort(403, 'Data leger tidak ditemukan');
         }
 
-        if($student->attendanceFirst == null){
+        if ($student->attendanceFirst == null) {
             abort(403, 'Data kehadiran belum diisi.');
         }
 
@@ -297,7 +298,7 @@ class ReportController extends Controller
         // get academic year
         $academicYear = AcademicYear::find($academic);
 
-        if($academicYear->teacher == null) {
+        if ($academicYear->teacher == null) {
             abort(403, 'Data Kepala Sekolah belum diisi. Hubungi Admin untuk mengisi data tersebut.');
         }
 
@@ -334,7 +335,7 @@ class ReportController extends Controller
             abort(403, 'Data leger tidak ditemukan');
         }
 
-        if($student->attendanceFirst == null){
+        if ($student->attendanceFirst == null) {
             abort(403, 'Data kehadiran belum diisi.');
         }
 
@@ -345,7 +346,7 @@ class ReportController extends Controller
         $templateProcessor->setValue('school_name', $schoolSettings->school_name);
         $templateProcessor->setValue('school_address', $schoolSettings->school_address);
         $templateProcessor->setValue('headmaster', $academic->teacher->name);
-        $templateProcessor->setValue('date_report', Carbon::createFromFormat('Y-m-d', $academic->date_report)->locale('id')->translatedFormat('d F Y'));
+
         $templateProcessor->setValue('year', $academic->year);
         $templateProcessor->setValue('semester', $academic->semester);
 
@@ -364,30 +365,46 @@ class ReportController extends Controller
 
         $templateProcessor->setValue('teacher_name', $student->studentGradeFirst->grade->teacherGradeFirst->teacher->name);
 
+        // next grade dari grade saat ini
+        $nowGrade = (int) $student->studentGradeFirst->grade->grade;
+        $nextGrade = (int) $nowGrade + 1;
+
+        // jika kelas saat ini adalah 6 atau kelas 9 atau kelas 12 dan semester genap
+        if (($nowGrade === 6 & $academic->semester == SemesterEnum::GENAP->value) || ($nowGrade === 9 & $academic->semester == SemesterEnum::GENAP->value) || ($nowGrade === 12 & $academic->semester == SemesterEnum::GENAP->value)) {
+            $templateProcessor->setValue('date_report', Carbon::createFromFormat('Y-m-d', $academic->date_graduation)->locale('id')->translatedFormat('d F Y'));
+        } else {
+            $templateProcessor->setValue('date_report', Carbon::createFromFormat('Y-m-d', $academic->date_report)->locale('id')->translatedFormat('d F Y'));
+        }
+
         // jika semester ganjil
         if ($academic->semester === SemesterEnum::GANJIL->value) {
             $templateProcessor->cloneBlock('block_status', 0, true, false, null);
         } else {
             $templateProcessor->cloneBlock('block_status', 1, true, false, null);
-            
+
             $description = '';
-            // next grade dari grade saat ini
-            $nowGrade = $student->studentGradeFirst->grade->grade;
-            $nextGrade = $nowGrade + 1;
 
             switch ($student->attendanceFirst->status) {
                 case 1:
-                    $description = 'Berdasarkan pencapaian seluruh kompetensi, ananda ' . $student->name . ' dinyatakan NAIK KELAS dan dapat melanjutkan ke jenjang berikutnya.';
+                    // jika grade saat ini adalah 6 atau kelas 9 atau kelas 12 maka
+                    if ($nowGrade === 6 || $nowGrade === 9 || $nowGrade === 12) {
+                        // dinyatakan LULUS
+                        $description = 'Berdasarkan pencapaian seluruh kompetensi, ananda ' . $student->name . ' dinyatakan LULUS dari ' . $schoolSettings->school_name . ' dan dapat melanjutkan ke jenjang berikutnya.';
+                    } else {
+                        // dinyatakan NAIK KELAS
+                        $description = 'Berdasarkan pencapaian seluruh kompetensi, ananda ' . Str::upper($student->name) . ' dinyatakan NAIK KELAS dan dapat melanjutkan ke kelas ' . $nextGrade . '.';
+                    }
+
                     break;
 
                 case 0:
-                    $description = 'Berdasarkan pencapaian seluruh kompetensi, ananda ' . $student->name . ' dinyatakan TIDAK NAIK KELAS dan tetap berada jenjang sekarang.';
+                    $description = 'Berdasarkan pencapaian seluruh kompetensi, ananda ' . $student->name . ' dinyatakan TIDAK NAIK KELAS dan tetap berada di kelas ' . $nowGrade . '.';
                     break;
-                    
+
                 default:
                     $description = '-';
                     break;
-            } 
+            }
 
             $templateProcessor->setValue('status', $description ?? '-');
         }
@@ -505,7 +522,7 @@ class ReportController extends Controller
 
         $academicYear = AcademicYear::find($academic);
 
-        if($academicYear->teacher == null) {
+        if ($academicYear->teacher == null) {
             abort(403, 'Data Kepala Sekolah belum diisi. Hubungi Admin untuk mengisi data tersebut.');
         }
 
@@ -588,7 +605,7 @@ class ReportController extends Controller
         // dd($projects->toArray());
 
         // setiap project
-        
+
         foreach ($projects as $index => $project) {
             $j = $index + 1;
             // dd($project->toArray());
@@ -613,19 +630,18 @@ class ReportController extends Controller
                     "mb_{$j}" => ($score == 2) ? 'V' : '-',
                     "bb_{$j}" => ($score == 1) ? 'V' : '-',
                     // "project_note_{$j}" => $target->studentProject->first()->projectNote->note,
-                ];                    
+                ];
             }
-            
+
             $note = $project->note->first();
             // dd($note->toArray());
-            
+
             $templateProcessor->setValue("project_number_{$j}", $j);
             $templateProcessor->setValue("title_{$j}", $project->name);
             $templateProcessor->setValue("description_{$j}", htmlspecialchars($project->description));
 
             $templateProcessor->cloneRowAndSetValues("number_target_{$j}", $values);
             $templateProcessor->setValue("project_note_{$j}", ($note) ? $note->note : '-');
-            
         }
 
         // generate filename
@@ -641,7 +657,7 @@ class ReportController extends Controller
 
         $academicYear = AcademicYear::find($academic);
 
-        if($academicYear->teacher == null) {
+        if ($academicYear->teacher == null) {
             abort(403, 'Data Kepala Sekolah belum diisi. Hubungi Admin untuk mengisi data tersebut.');
         }
 

@@ -23,6 +23,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -67,6 +68,11 @@ class AcademicYearResource extends Resource
                 DatePicker::make('date_report')
                     ->required()
                     ->label('Tanggal rapor akhir semester'),
+                DatePicker::make('date_graduation')
+                    ->visible(function (Get $get) {
+                        return $get('semester') == SemesterEnum::GENAP->value;
+                    })
+                    ->label('Tanggal lulus'),
             ]);
     }
 
@@ -80,6 +86,15 @@ class AcademicYearResource extends Resource
                     ->label(__('academic-year.list.semester')),
                 TextColumn::make('teacher.name')
                     ->label(__('academic-year.list.teacher_id')),
+                TextColumn::make('date_report_half')
+                    ->label('Tanggal rapor tengah semester')
+                    ->date(),
+                TextColumn::make('date_report')
+                    ->label('Tanggal rapor akhir semester')
+                    ->date(),
+                TextColumn::make('date_graduation')
+                    ->label('Tanggal lulus')
+                    ->date(),
             ])
             ->filters([
                 //
@@ -128,26 +143,26 @@ class AcademicYearResource extends Resource
                         // Mapping data yang akan di-copy
                         // ... existing code ...
 
-$copyMethods = [
-    'teacherSubject' => function ($sourceId, $targetId) {
-        CopyTeacherSubjectsJob::dispatch($sourceId, $targetId);
-    },
-    'studentGrade' => function ($sourceId, $targetId) {
-        CopyStudentGradeJob::dispatch($sourceId, $targetId);
-    },
-    'teacherGrade' => function ($sourceId, $targetId) {
-        self::copyTeacherGrades($sourceId, $targetId);
-    },
-    'teacherExtracurricular' => function ($sourceId, $targetId) {
-        self::copyTeacherExtracurriculars($sourceId, $targetId);
-    },
-    'studentExtracurricular' => function ($sourceId, $targetId) {
-        self::copyStudentExtracurriculars($sourceId, $targetId);
-    },
-    'projectCoordinator' => function ($sourceId, $targetId) {
-        self::copyProjectCoordinators($sourceId, $targetId);
-    },
-];
+                        $copyMethods = [
+                            'teacherSubject' => function ($sourceId, $targetId) {
+                                CopyTeacherSubjectsJob::dispatch($sourceId, $targetId);
+                            },
+                            'studentGrade' => function ($sourceId, $targetId) {
+                                CopyStudentGradeJob::dispatch($sourceId, $targetId);
+                            },
+                            'teacherGrade' => function ($sourceId, $targetId) {
+                                self::copyTeacherGrades($sourceId, $targetId);
+                            },
+                            'teacherExtracurricular' => function ($sourceId, $targetId) {
+                                self::copyTeacherExtracurriculars($sourceId, $targetId);
+                            },
+                            'studentExtracurricular' => function ($sourceId, $targetId) {
+                                self::copyStudentExtracurriculars($sourceId, $targetId);
+                            },
+                            'projectCoordinator' => function ($sourceId, $targetId) {
+                                self::copyProjectCoordinators($sourceId, $targetId);
+                            },
+                        ];
 
                         // Eksekusi copy data berdasarkan target yang dipilih
                         foreach ($selectedTargets as $target) {
