@@ -1,15 +1,121 @@
-$transcript = Transcript::get();
-$transcript = Transcript::count();
-$transcript = Transcript::get();
-$transcript = Transcript::get();
-$transcript->groupBy('subject_id');
-$transcript = Transcript::get();
-$subjects = $transcript->groupBy('subject_id');
-$subjects = $subjects->map(function ($subject) {
-  return $subject->sortByDesc('averageDataset1')->first();
-});
-$transcript = Transcript::with('subject', 'student')->get();
-$subjects = $transcript->groupBy('subject_id');
-$subjects = $subjects->map(function ($subject) {
-  return $subject->sortByDesc('averageDataset1')->first();
-});
+TeacherSubject::where('academic_year_id', '01jtyp9861n32p4t1gehdy1t56')->get();
+TeacherSubject::get();
+TeacherSubject::withoutGlobalScope()->where('academic_year_id', '01jtyp9861n32p4t1gehdy1t56')->get();
+TeacherSubject::withoutGlobalScopes()->where('academic_year_id', '01jtyp9861n32p4t1gehdy1t56')->get();
+TeacherSubject::withoutGlobalScopes()->where('academic_year_id', '01jtyp9861n32p4t1gehdy1t56')->get();
+TeacherSubject::withoutGlobalScopes()->get();
+TeacherSubject::withoutGlobalScopes()->where('academic_year_id', '01JE8QJ9MCQE6JV98JH66XBM1Z')->get();
+
+
+AcademicYear::get();
+TeacherSubject::withoutGlobalScopes()->where('academic_year_id', '01jty94v6y86rff7ccwexcera8')->get();
+
+
+$academicYearId = '01jty94v6y86rff7ccwexcera8';
+$query = TeacherSubject::query();
+$query->where('academic_year_id', $academicYearId);
+$query->chunk(200);
+$academicYearId = '01jty94v6y86rff7ccwexcera8';
+$query = TeacherSubject::query();
+$query->where('academic_year_id', $academicYearId);
+$query->chunk(200, function ($teacherSubjects) use (&$totalProcessed) {
+  foreach ($teacherSubjects as $teacherSubject) {
+  
+  })
+$academicYearId = '01jty94v6y86rff7ccwexcera8';
+$query = TeacherSubject::query();
+$query->where('academic_year_id', $academicYearId);
+$query->chunk(200, function ($teacherSubjects) use (&$totalProcessed) {
+  foreach ($teacherSubjects as $teacherSubject) {
+  
+  }})
+$academicYearId = '01jty94v6y86rff7ccwexcera8';
+$query = TeacherSubject::query();
+$query->where('academic_year_id', $academicYearId);
+$query->chunk(200, function ($teacherSubjects) use (&$totalProcessed) {
+  foreach ($teacherSubjects as $teacherSubject) {
+  Competency::where('teacher_subject_id', $teacherSubject->id)->get();
+  }})
+Competency::get()
+
+
+Competency::where('code', 'half_semester')->get()
+
+
+use App\Enums\CategoryLegerEnum;
+
+Competency::where('code', CategoryLegerEnum::HALF_SEMESTER->value)->get()
+
+
+use App\Enums\CategoryLegerEnum;
+
+Competency::where('code', CategoryLegerEnum::HALF_SEMESTER->value)->get()
+
+
+use App\Enums\CategoryLegerEnum;
+
+
+
+
+use App\Enums\CategoryLegerEnum;
+
+Competency::where('code', CategoryLegerEnum::HALF_SEMESTER->value)->get()
+
+
+use App\Enums\CategoryLegerEnum;
+
+Competency::where('code', CategoryLegerEnum::FULL_SEMESTER->value)->get()
+use App\Enums\CategoryLegerEnum;
+
+
+
+TeacherSubject::get();
+use App\Enums\CategoryLegerEnum;
+
+
+
+Competency::find('01jtzqdqjgc79wyzkewvt6b101');
+use App\Enums\CategoryLegerEnum;
+
+
+$teacherSubject = '01jtzqdqjfrx80rhmxjvh4cvjb';
+Competency::find('01jtzqdqjgc79wyzkewvt6b101');
+use App\Enums\CategoryLegerEnum;
+
+
+$teacherSubject = '01jtzqdqjfrx80rhmxjvh4cvjb';
+Competency::where('teacher_subject_id', $teacherSubject)->get()
+use App\Enums\CategoryLegerEnum;
+
+
+$teacherSubject = '01jtzqdqjfrx80rhmxjvh4cvjb';
+Competency::where('teacher_subject_id', $teacherSubject)->get();
+
+Competency::updateOrCreate(
+  [
+	'teacher_subject_id' => $teacherSubject,
+	'code' => CategoryLegerEnum::HALF_SEMESTER->value
+  ],
+  [
+	'description' => CategoryLegerEnum::HALF_SEMESTER->getLabel(),
+	'passing_grade' => 70,
+	'half_semester' => true
+  ]
+);
+use App\Enums\CategoryLegerEnum;
+
+
+$teacherSubject = '01jtzqdqjfrx80rhmxjvh4cvjb';
+Competency::where('teacher_subject_id', $teacherSubject)->get();
+
+Competency::updateOrCreate(
+  [
+	'teacher_subject_id' => $teacherSubject,
+	'code' => CategoryLegerEnum::FULL_SEMESTER->value
+  ],
+  [
+	'description' => CategoryLegerEnum::FULL_SEMESTER->getLabel(),
+	'passing_grade' => 70,
+	'half_semester' => false
+  ]
+);
