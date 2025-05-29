@@ -9,9 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use App\Models\Scopes\OrderStudentScope;
+use App\Observers\StudentQuranGradeObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 #[ScopedBy([AcademicYearScope::class, OrderStudentScope::class])]
+#[ObservedBy([StudentQuranGradeObserver::class])]
 class StudentQuranGrade extends Model
 {
     use HasFactory;

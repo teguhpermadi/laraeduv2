@@ -258,10 +258,7 @@ class AssessmentQuran extends Page implements HasForms, HasTable
         $data = TeacherQuranGrade::myQuranGrade()->with('studentQuranGrade', 'competencyQuran')->where('quran_grade_id', $quran_grade_id)->first();
         // dd($data);
 
-        if (count($data->studentQuranGrade) == 0) {
-            // hapus semua student competency berdasarkan quran grade id
-            StudentCompetencyQuran::where('quran_grade_id', $quran_grade_id)->delete();
-        }
+        StudentCompetencyQuran::where('quran_grade_id', $quran_grade_id)->delete();
 
         // get competencies
         $competencies = $data->competencyQuran;
