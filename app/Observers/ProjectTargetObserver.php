@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Models\ProjectTarget;
 use App\Models\StudentGrade;
 use App\Models\StudentProject;
+use App\Models\TeacherGrade;
 use Illuminate\Support\Str;
 
 class ProjectTargetObserver
@@ -16,7 +17,7 @@ class ProjectTargetObserver
     {
         // $project = ProjectTarget::with('project.grade.studentGrade')->get();
         $project = $projectTarget->project;
-        $students = $project->grade->studentGrade;
+        $students = TeacherGrade::myGrade()->first()->studentGrade;
 
         $data = [];
         foreach ($students as $student) {

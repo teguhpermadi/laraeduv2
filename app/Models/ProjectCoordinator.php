@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Models\Scopes\AcademicYearScope;
 use App\Observers\ProjectCoordinatorObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 #[ObservedBy(ProjectCoordinatorObserver::class)]
+#[ScopedBy(AcademicYearScope::class)]
 class ProjectCoordinator extends Model
 {
     use HasFactory;

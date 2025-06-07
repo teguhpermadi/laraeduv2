@@ -1,121 +1,53 @@
-TeacherSubject::where('academic_year_id', '01jtyp9861n32p4t1gehdy1t56')->get();
-TeacherSubject::get();
-TeacherSubject::withoutGlobalScope()->where('academic_year_id', '01jtyp9861n32p4t1gehdy1t56')->get();
-TeacherSubject::withoutGlobalScopes()->where('academic_year_id', '01jtyp9861n32p4t1gehdy1t56')->get();
-TeacherSubject::withoutGlobalScopes()->where('academic_year_id', '01jtyp9861n32p4t1gehdy1t56')->get();
-TeacherSubject::withoutGlobalScopes()->get();
-TeacherSubject::withoutGlobalScopes()->where('academic_year_id', '01JE8QJ9MCQE6JV98JH66XBM1Z')->get();
+Project::get()
+Project::get()
+Project::get()
+Project::get()
+Project::get()
+Project::find('01jf8zrg7y44vde0scz7zfr1x3');
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade;
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->count_student_grade;
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade()->count_student_grade;
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade;
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade;
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade();
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade;
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade;
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->studentGrade_count;
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->student_grade_count;
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->student_grade_count;
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->studentGrade_count;
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->studentGrade;
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->studentGrade->count();
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->studentGrade;
+Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade;
+Project::find('01jf8zrg7y44vde0scz7zfr1x3');
 
+TeacherGrade::get()
 
-AcademicYear::get();
-TeacherSubject::withoutGlobalScopes()->where('academic_year_id', '01jty94v6y86rff7ccwexcera8')->get();
+TeacherGrade::scopeMyGrade->get()
 
+TeacherGrade::scopeMyGrade()->get()
 
-$academicYearId = '01jty94v6y86rff7ccwexcera8';
-$query = TeacherSubject::query();
-$query->where('academic_year_id', $academicYearId);
-$query->chunk(200);
-$academicYearId = '01jty94v6y86rff7ccwexcera8';
-$query = TeacherSubject::query();
-$query->where('academic_year_id', $academicYearId);
-$query->chunk(200, function ($teacherSubjects) use (&$totalProcessed) {
-  foreach ($teacherSubjects as $teacherSubject) {
-  
-  })
-$academicYearId = '01jty94v6y86rff7ccwexcera8';
-$query = TeacherSubject::query();
-$query->where('academic_year_id', $academicYearId);
-$query->chunk(200, function ($teacherSubjects) use (&$totalProcessed) {
-  foreach ($teacherSubjects as $teacherSubject) {
-  
-  }})
-$academicYearId = '01jty94v6y86rff7ccwexcera8';
-$query = TeacherSubject::query();
-$query->where('academic_year_id', $academicYearId);
-$query->chunk(200, function ($teacherSubjects) use (&$totalProcessed) {
-  foreach ($teacherSubjects as $teacherSubject) {
-  Competency::where('teacher_subject_id', $teacherSubject->id)->get();
-  }})
-Competency::get()
+TeacherGrade::myGrade()->get()
 
+TeacherGrade::myGrade()
 
-Competency::where('code', 'half_semester')->get()
+TeacherGrade::myGrade()->get()
 
+TeacherGrade::myGrade()->studentGrade
 
-use App\Enums\CategoryLegerEnum;
+TeacherGrade::myGrade()->firts()
 
-Competency::where('code', CategoryLegerEnum::HALF_SEMESTER->value)->get()
+TeacherGrade::myGrade()->first()
 
+TeacherGrade::myGrade()->get()
 
-use App\Enums\CategoryLegerEnum;
+TeacherGrade::myGrade()->first()
 
-Competency::where('code', CategoryLegerEnum::HALF_SEMESTER->value)->get()
+TeacherGrade::myGrade()->first()->studentGrade
 
+TeacherGrade::myGrade()->first()->studentGrade->count
 
-use App\Enums\CategoryLegerEnum;
+TeacherGrade::myGrade()->first()->studentGrade->count()
 
-
-
-
-use App\Enums\CategoryLegerEnum;
-
-Competency::where('code', CategoryLegerEnum::HALF_SEMESTER->value)->get()
-
-
-use App\Enums\CategoryLegerEnum;
-
-Competency::where('code', CategoryLegerEnum::FULL_SEMESTER->value)->get()
-use App\Enums\CategoryLegerEnum;
-
-
-
-TeacherSubject::get();
-use App\Enums\CategoryLegerEnum;
-
-
-
-Competency::find('01jtzqdqjgc79wyzkewvt6b101');
-use App\Enums\CategoryLegerEnum;
-
-
-$teacherSubject = '01jtzqdqjfrx80rhmxjvh4cvjb';
-Competency::find('01jtzqdqjgc79wyzkewvt6b101');
-use App\Enums\CategoryLegerEnum;
-
-
-$teacherSubject = '01jtzqdqjfrx80rhmxjvh4cvjb';
-Competency::where('teacher_subject_id', $teacherSubject)->get()
-use App\Enums\CategoryLegerEnum;
-
-
-$teacherSubject = '01jtzqdqjfrx80rhmxjvh4cvjb';
-Competency::where('teacher_subject_id', $teacherSubject)->get();
-
-Competency::updateOrCreate(
-  [
-	'teacher_subject_id' => $teacherSubject,
-	'code' => CategoryLegerEnum::HALF_SEMESTER->value
-  ],
-  [
-	'description' => CategoryLegerEnum::HALF_SEMESTER->getLabel(),
-	'passing_grade' => 70,
-	'half_semester' => true
-  ]
-);
-use App\Enums\CategoryLegerEnum;
-
-
-$teacherSubject = '01jtzqdqjfrx80rhmxjvh4cvjb';
-Competency::where('teacher_subject_id', $teacherSubject)->get();
-
-Competency::updateOrCreate(
-  [
-	'teacher_subject_id' => $teacherSubject,
-	'code' => CategoryLegerEnum::FULL_SEMESTER->value
-  ],
-  [
-	'description' => CategoryLegerEnum::FULL_SEMESTER->getLabel(),
-	'passing_grade' => 70,
-	'half_semester' => false
-  ]
-);
+TeacherGrade::myGrade()->first()->studentGrade
