@@ -689,7 +689,6 @@ class ReportController extends Controller
         $templateProcessor->setValue('school_name', $schoolSettings->school_name);
         $templateProcessor->setValue('school_address', $schoolSettings->school_address);
         $templateProcessor->setValue('headmaster', $academicYear->teacher->name);
-        $templateProcessor->setValue('date_report', Carbon::createFromFormat('Y-m-d', $academicYear->date_report)->locale('id')->translatedFormat('d F Y'));
         $templateProcessor->setValue('year', $academicYear->year);
         $templateProcessor->setValue('semester', $academicYear->semester);
 
@@ -704,6 +703,17 @@ class ReportController extends Controller
         $templateProcessor->setValue('teacher_quran_grade', $student->quranGrade->teacherQuranGrade->first()->teacher->name);
 
         $templateProcessor->setValue('note', $student->quranNote->note);
+
+        // next grade dari grade saat ini
+        $nowGrade = (int) $student->studentGradeFirst->grade->grade;
+        $nextGrade = (int) $nowGrade + 1;
+
+        // jika kelas saat ini adalah 6 atau kelas 9 atau kelas 12 dan semester genap
+        if (($nowGrade === 6 & $academicYear->semester == SemesterEnum::GENAP->value) || ($nowGrade === 9 & $academicYear->semester == SemesterEnum::GENAP->value) || ($nowGrade === 12 & $academicYear->semester == SemesterEnum::GENAP->value)) {
+            $templateProcessor->setValue('date_report', Carbon::createFromFormat('Y-m-d', $academicYear->date_graduation)->locale('id')->translatedFormat('d F Y'));
+        } else {
+            $templateProcessor->setValue('date_report', Carbon::createFromFormat('Y-m-d', $academicYear->date_report)->locale('id')->translatedFormat('d F Y'));
+        }
 
         // setting competency quran
         $competencyQuran = $student->metadata;
