@@ -9,16 +9,14 @@ use JoseEspinal\RecordNavigation\Traits\HasRecordNavigation;
 
 class EditStudent extends EditRecord
 {
-    use HasRecordNavigation;
+    // use HasRecordNavigation;
 
     protected static string $resource = StudentResource::class;
 
     protected function getHeaderActions(): array
     {
-        $existingActions = [
-            // Actions\DeleteAction::make(),
+        return [
+            Actions\DeleteAction::make(),
         ];
-
-        return array_merge($existingActions, $this->getNavigationActions());
     }
 }
