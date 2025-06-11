@@ -705,7 +705,7 @@ class ReportController extends Controller
         $templateProcessor->setValue('note', $student->quranNote->note);
 
         // next grade dari grade saat ini
-        $nowGrade = (int) $student->studentGradeFirst->grade->grade;
+        $nowGrade = (int) $student->student->studentGradeFirst->grade->grade;
         $nextGrade = (int) $nowGrade + 1;
 
         // jika kelas saat ini adalah 6 atau kelas 9 atau kelas 12 dan semester genap
