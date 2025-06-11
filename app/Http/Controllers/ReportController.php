@@ -663,7 +663,7 @@ class ReportController extends Controller
 
         $student = LegerQuran::where('student_id', $id)
             ->where('academic_year_id', $academic)
-            ->with('quranGrade.teacherQuranGrade')
+            ->with('quranGrade.teacherQuranGrade', 'studentGradeFirst.grade')
             ->first();
 
         // dd($student->toArray());
