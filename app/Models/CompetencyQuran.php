@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Scopes\AcademicYearScope;
+
 use App\Observers\CompetencyQuranObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;

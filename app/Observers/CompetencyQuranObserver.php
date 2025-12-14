@@ -29,7 +29,7 @@ class CompetencyQuranObserver
             foreach ($teacherQuranGrade->studentQuranGrade as $student) {
                 $data = [
                     // 'id' => Str::ulid()->toBase32(),
-                    'academic_year_id' => session()->get('academic_year_id'),
+                    'academic_year_id' => $teacherQuranGrade->academic_year_id,
                     'quran_grade_id' => $teacherQuranGrade->quranGrade->id,
                     'competency_quran_id' => $competencyQuran->id,
                     'student_id' => $student->student_id,

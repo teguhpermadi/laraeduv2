@@ -25,6 +25,14 @@ class CompetencyQuranResource extends Resource
 {
     protected static ?string $model = CompetencyQuran::class;
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->whereHas('teacherQuranGrade', function ($query) {
+                $query->where('academic_year_id', session()->get('academic_year_id'));
+            });
+    }
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     // buatkan navigation group
@@ -57,13 +65,13 @@ class CompetencyQuranResource extends Resource
                 Select::make('quran_grade_id')
                     ->required()
                     ->label(__('competency-quran.fields.quran_grade_id'))
-                    ->options(function(){
+                    ->options(function () {
                         $options = TeacherQuranGrade::myQuranGrade()->with('quranGrade')->get()->pluck('quranGrade.name', 'id');
                         return $options;
                     })
                     ->live()
                     ->reactive()
-                    ->afterStateUpdated(function(Get $get, Set $set, $state){
+                    ->afterStateUpdated(function (Get $get, Set $set, $state) {
                         // $teacherQuranGrade = TeacherQuranGrade::myQuranGrade()->where('quran_grade_id', $get('quran_grade_id'))->first();
                         $set('teacher_quran_grade_id', $state);
                     }),
