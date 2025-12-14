@@ -29,8 +29,9 @@ class StudentQuranGradeRelationManager extends RelationManager
             ->schema([
                 Hidden::make('academic_year_id')
                     ->default(session('academic_year_id')),
-                CheckboxList::make('student_id')
+                Select::make('student_id')
                     ->label(__('quran-grade.fields.students.label'))
+                    ->multiple()
                     ->required()
                     ->searchable()
                     ->preload()
