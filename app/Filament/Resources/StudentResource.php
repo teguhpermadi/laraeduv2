@@ -95,7 +95,7 @@ class StudentResource extends Resource
                     ->searchable(),
                 TextColumn::make('gender')
                     ->label(__('student.gender')),
-                TextColumn::make('nis')
+                TextInputColumn::make('nis')
                     ->label(__('student.nis')),
                 TextInputColumn::make('nisn')
                     ->label(__('student.nisn'))
