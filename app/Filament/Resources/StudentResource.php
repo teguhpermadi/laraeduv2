@@ -14,8 +14,11 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
@@ -190,6 +193,17 @@ class StudentResource extends Resource
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\SelectFilter::make('active')
+                    ->label(__('student.active'))
+                    ->options([
+                        true => 'Aktif',
+                        false => 'Tidak Aktif',
+                    ])
+                    ->default(true)
+                    ->modifyQueryUsing(function (Builder $query, $state) {
+                        $query->when($state === true, fn(Builder $query) => $query->withoutGlobalScope('active')->where('active', true));
+                        $query->when($state === false, fn(Builder $query) => $query->withoutGlobalScope('active')->where('active', false));
+                    })
             ])
             ->actions([
                 RelationManagerAction::make('data-student-relation-manager')
@@ -214,6 +228,16 @@ class StudentResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
+                    BulkAction::make('inactive')
+                        ->label('Nonaktifkan')
+                        ->icon('heroicon-o-x-circle')
+                        ->requiresConfirmation()
+                        ->action(fn(\Illuminate\Database\Eloquent\Collection $records) => $records->each->update(['active' => false])),
+                    BulkAction::make('active')
+                        ->label('Aktifkan')
+                        ->icon('heroicon-o-check-circle')
+                        ->requiresConfirmation()
+                        ->action(fn(\Illuminate\Database\Eloquent\Collection $records) => $records->each->update(['active' => true])),
                 ]),
             ]);
     }
