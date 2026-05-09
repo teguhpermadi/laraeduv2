@@ -6,6 +6,7 @@ use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
 use App\Filament\Resources\StudentResource\RelationManagers\DataStudentRelationManager;
 use App\Filament\Resources\StudentResource\RelationManagers\StudentGradeRelationManager;
+use App\Models\Scopes\StudentActiveScope;
 use App\Models\Student;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
@@ -22,6 +23,7 @@ use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Guava\FilamentModalRelationManagers\Actions\Table\RelationManagerAction;
 use Illuminate\Database\Eloquent\Builder;
@@ -103,6 +105,8 @@ class StudentResource extends Resource
                 TextInputColumn::make('nisn')
                     ->label(__('student.nisn'))
                     ->searchable(),
+                ToggleColumn::make('active')
+                    ->label(__('student.active')),
                 TextInputColumn::make('birthday')
                     ->label(__('student.birthday'))
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -196,13 +200,16 @@ class StudentResource extends Resource
                 Tables\Filters\SelectFilter::make('active')
                     ->label(__('student.active'))
                     ->options([
-                        true => 'Aktif',
-                        false => 'Tidak Aktif',
+                        '1' => 'Aktif',
+                        '0' => 'Tidak Aktif',
                     ])
-                    ->default(true)
-                    ->modifyQueryUsing(function (Builder $query, $state) {
-                        $query->when($state === true, fn(Builder $query) => $query->withoutGlobalScope('active')->where('active', true));
-                        $query->when($state === false, fn(Builder $query) => $query->withoutGlobalScope('active')->where('active', false));
+                    ->default('1')
+                    ->query(function (Builder $query, $state) {
+                        if ($state === '1') {
+                            $query->where('active', 1);
+                        } elseif ($state === '0') {
+                            $query->where('active', 0);
+                        }
                     })
             ])
             ->actions([
@@ -263,6 +270,7 @@ class StudentResource extends Resource
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
+                StudentActiveScope::class,
             ]);
     }
 }

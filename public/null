@@ -1,53 +1,56 @@
-Project::get()
-Project::get()
-Project::get()
-Project::get()
-Project::get()
-Project::find('01jf8zrg7y44vde0scz7zfr1x3');
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade;
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->count_student_grade;
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade()->count_student_grade;
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade;
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade;
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade();
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade;
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade;
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->studentGrade_count;
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->student_grade_count;
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->student_grade_count;
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->studentGrade_count;
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->studentGrade;
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->studentGrade->count();
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade->studentGrade;
-Project::find('01jf8zrg7y44vde0scz7zfr1x3')->grade;
-Project::find('01jf8zrg7y44vde0scz7zfr1x3');
-
-TeacherGrade::get()
-
-TeacherGrade::scopeMyGrade->get()
-
-TeacherGrade::scopeMyGrade()->get()
-
-TeacherGrade::myGrade()->get()
-
-TeacherGrade::myGrade()
-
-TeacherGrade::myGrade()->get()
-
-TeacherGrade::myGrade()->studentGrade
-
-TeacherGrade::myGrade()->firts()
-
-TeacherGrade::myGrade()->first()
-
-TeacherGrade::myGrade()->get()
-
-TeacherGrade::myGrade()->first()
-
-TeacherGrade::myGrade()->first()->studentGrade
-
-TeacherGrade::myGrade()->first()->studentGrade->count
-
-TeacherGrade::myGrade()->first()->studentGrade->count()
-
-TeacherGrade::myGrade()->first()->studentGrade
+Student::count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('active')->count()
+Student::withoutGlobalScope('StudentActiveScope')->count()
+Student::withoutGlobalScope('StudentActiveScope')->count()
+Student::withoutGlobalScope('StudentActiveScope')->count()
+Student::withoutGlobalScope('StudentActiveScope')->count()
+Student::withoutGlobalScope(\App\Models\Scopes\StudentActiveScope)->count()
+Student::withoutGlobalScope(StudentActiveScope)->count()
+Student::withoutGlobalScope(StudentActiveScope)->count()
+Student::withoutGlobalScope('StudentActiveScope')->count()
+Student::where('active', 0)->count()
+Student::where('active', 0)->count()
+Student::where('active', 0)->count()
+Student::where('active', 0)->count()
+Student::withoutGlobalScope()->where('active', 0)->count()
+Student::withoutGlobalScope('StudentActiveScope')->where('active', 0)->count()
+Student::withoutGlobalScope('StudentActiveScope')->where('active', 1)->count()
+Student::withoutGlobalScope('StudentActiveScope')->where('active', 0)->count()
+Student::withoutGlobalScopes('StudentActiveScope')->where('active', 0)->count()
+Student::withoutGlobalScopes()->where('active', 0)->count()
+Student::withoutGlobalScopes()->where('active', 0)->get()

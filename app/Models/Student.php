@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\StudentActiveScope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
+#[ScopedBy([StudentActiveScope::class])]
 class Student extends Model
 {
     use HasFactory;
@@ -37,6 +39,10 @@ class Student extends Model
         'photo',
     ];
 
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -48,10 +54,7 @@ class Student extends Model
 
     protected static function booted(): void
     {
-        static::addGlobalScope('active', function (Builder $builder) {
-            $builder->where('active', 1);
-        });
-        
+
         static::addGlobalScope('order', function (Builder $builder) {
             $builder->orderBy('id', 'desc');
         });
@@ -84,7 +87,7 @@ class Student extends Model
 
     public function scopeMyStudentGrade(Builder $query, $teacher_id = null)
     {
-        if(is_null($teacher_id)){
+        if (is_null($teacher_id)) {
             $teacher_id = auth()->user()->userable->userable_id;
         }
 
@@ -92,8 +95,8 @@ class Student extends Model
 
         if (!$grade) {
             abort(403, 'Anda belum memiliki kelas yang ditugaskan');
-        }   
-  
+        }
+
         $myStudents = $grade->grade->studentGrade->pluck('student_id');
 
         $query->whereIn('id', $myStudents);
@@ -102,7 +105,7 @@ class Student extends Model
     public function studentExtracurricular()
     {
         return $this->hasMany(StudentExtracurricular::class);
-    }   
+    }
 
     public function studentQuranGrade()
     {
