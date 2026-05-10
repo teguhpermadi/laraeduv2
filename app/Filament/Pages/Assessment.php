@@ -35,9 +35,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use App\Services\AssessmentExportService;
+use App\Services\AssessmentImportService;
 use Illuminate\Support\Str;
 
 class Assessment extends Page implements HasForms, HasTable
@@ -263,9 +262,7 @@ class Assessment extends Page implements HasForms, HasTable
                     })
                     ->button(),
                 TableAction::make('download')
-                    ->action(function () {
-                        return $this->download();
-                    })
+                    ->action(fn () => $this->download())
                     ->button(),
                 TableAction::make('upload')
                     ->slideOver()
@@ -281,23 +278,8 @@ class Assessment extends Page implements HasForms, HasTable
                             )
                             ->required()
                     ])
-                    ->action(function (array $data) {
-                        $studentCompetencies = Excel::toArray(new StudentCompetencyImport, storage_path('/app/public/' . $data['file']));
-
-                        $data = [];
-                        foreach ($studentCompetencies as $row) {
-                            foreach ($row as $value) {
-                                StudentCompetency::where([
-                                    'teacher_subject_id' => $value['teacher_subject_id'],
-                                    'student_id' => $value['student_id'],
-                                    'competency_id' => $value['competency_id'],
-                                ])
-                                    ->update([
-                                        'score' => $value['score'],
-                                        'score_skill' => $value['score_skill'],
-                                    ]);
-                            }
-                        }
+                    ->action(function (array $data, AssessmentImportService $service) {
+                        $service->import($data['file']);
                     }),
                 TableAction::make('leger')
                     ->color('success')
@@ -391,184 +373,6 @@ class Assessment extends Page implements HasForms, HasTable
 
     public function download()
     {
-        $teacher_subject_id = $this->teacher_subject_id;
-
-        $teacherSubject = TeacherSubject::with([
-            'academic',
-            'teacher',
-            'grade.teacherGrade',
-            'subject',
-            'competency.studentCompetency.student',
-            // 'exam',
-        ])->find($teacher_subject_id);
-
-        $academic = $teacherSubject->academic;
-        $teacher = $teacherSubject->teacher;
-        $grade = $teacherSubject->grade;
-        $subject = $teacherSubject->subject;
-        $competencies = $teacherSubject->competency;
-        $countStudent = $teacherSubject->grade->studentGrade->count();
-
-        // Inisialisasi spreadsheet
-        $spreadsheet = new Spreadsheet();
-        $countSheet = 0;
-
-        // buat sheet berdasarkan banyaknya kompetensi
-        foreach ($competencies as $competency) {
-            $spreadsheet->createSheet();
-            // Membuat lembar pertama
-            $sheet = $spreadsheet->getSheet($countSheet); // Indeks dimulai dari 0
-            // $sheet->setTitle('Sheet' . ($countSheet + 1));
-            $sheet->setTitle('Sheet ' . ($competency->code));
-
-            $is_exam = false;
-
-            if($competency->code == 'TENGAH SEMESTER' || $competency->code == 'AKHIR SEMESTER'){
-                $is_exam = true;
-            } else {
-                $is_exam = false;
-            }
-
-            // identitas
-            $identitas = [
-                ['Identitas pelajaran'],
-                [null],
-                ['Nama Guru',': ' . $teacher->name],
-                ['Mata Pelajaran', ': ' . $subject->name],
-                ['Kelas', ': ' . $grade->name],
-                ['Tahun Akademik', ': ' . $academic->year],
-                ['Semester', ': ' . $academic->semester],
-                
-            ];
-
-            // jika bukan ujian
-            if($is_exam == false){
-                $identitas[9] = ['Kompetensi', ': (' . $competency->code . ') ', $competency->description];
-                $identitas[10] = ['Keterampilan', ': (' . $competency->code_skill . ') ', $competency->description_skill];
-            }
-
-            // dd($identitas);
-
-            $sheet->fromArray($identitas);
-
-            // kosongkan datanya
-            $data = [];
-            $data[] = [
-                'nis',
-                'nama siswa',
-                'score',
-                'score_skill',
-                'teacher_subject_id',
-                'student_id',
-                'competency_id',
-            ];
-
-            foreach ($competency->studentCompetency as $studentCompetency) {
-                $data[] = [
-                    $studentCompetency->student->nis,
-                    $studentCompetency->student->name,
-                    $studentCompetency->score,
-                    $studentCompetency->score_skill,
-                    $studentCompetency->teacher_subject_id,
-                    $studentCompetency->student_id,
-                    $studentCompetency->competency_id,
-                ];
-
-            }
-
-            // dd($data);
-
-            $sheet->fromArray($data, null, 'A13', true);
-
-            $countSheet++;
-
-            $sheet->getColumnDimension('A')->setWidth(15);
-            $sheet->getColumnDimension('B')->setWidth(30);
-
-            // count student
-            $rowStudent = 13 + $countStudent;
-
-            // bisa di edit
-            $sheet->getStyle('C14:C' . $rowStudent)->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
-            
-            // jika k13
-            if ($teacherSubject->teacherGrade->curriculum === CurriculumEnum::K13->value) {
-                $sheet->getStyle('D14:D' . $rowStudent)->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
-            }
-
-            // jika ujian
-            if($is_exam == true){
-                // proteksi cell D
-                $sheet->getStyle('D13:D' . $rowStudent)->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_PROTECTED);
-                // warna font cell D putih
-                $sheet->getStyle('D13:D' . $rowStudent)->getFont()->getColor()->setARGB('FFFFFFFF');
-            }
-
-            // proteksi semua cell
-            $sheet->getProtection()->setPassword('PhpSpreadsheet');
-            $spreadsheet->getActiveSheet()->getProtection()->setSheet(true);
-
-            // validasi tiap-tiap cell
-            for ($i = 14; $i <= $rowStudent; $i++) {
-                $validation = $sheet->getCell('C' . $i)->getDataValidation();
-                $validation->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_WHOLE);
-                $validation->setErrorStyle(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP);
-                $validation->setAllowBlank(false);
-                $validation->setShowInputMessage(true);
-                $validation->setShowErrorMessage(true);
-                $validation->setErrorTitle('Input error');
-                $validation->setError('Number is not allowed!');
-                $validation->setPromptTitle('Allowed input');
-                $validation->setPrompt('Only numbers between 0 and 100 are allowed.');
-                $validation->setFormula1(0);
-                $validation->setFormula2(100);
-
-                // jika k13
-                if ($teacherSubject->teacherGrade->curriculum === CurriculumEnum::K13->value || $is_exam == true) {
-                    $validation = $sheet->getCell('D' . $i)->getDataValidation();
-                    $validation->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_WHOLE);
-                    $validation->setErrorStyle(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP);
-                    $validation->setAllowBlank(false);
-                    $validation->setShowInputMessage(true);
-                    $validation->setShowErrorMessage(true);
-                    $validation->setErrorTitle('Input error');
-                    $validation->setError('Number is not allowed!');
-                    $validation->setPromptTitle('Allowed input');
-                    $validation->setPrompt('Only numbers between 0 and 100 are allowed.');
-                    $validation->setFormula1(0);
-                    $validation->setFormula2(100);
-                }
-            }
-
-            // berikan warna putih pada font pada cell D jika bukan k13
-            if ($teacherSubject->teacherGrade->curriculum !== CurriculumEnum::K13->value) {
-                $sheet->getStyle('D13:D' . $rowStudent)->getFont()->getColor()->setARGB('FFFFFFFF');
-            }
-
-            // berikan warna putih pada text pada cell E
-            $sheet->getStyle('E13:E' . $rowStudent)->getFont()->getColor()->setARGB('FFFFFFFF');
-
-            // berikan warna putih pada text pada cell F
-            $sheet->getStyle('F13:F' . $rowStudent)->getFont()->getColor()->setARGB('FFFFFFFF');
-
-            // berikan warna putih pada text pada cell G
-            $sheet->getStyle('G13:G' . $rowStudent)->getFont()->getColor()->setARGB('FFFFFFFF');
-
-            // Set active cell to C14
-            $sheet->setSelectedCell('C14');
-        }
-
-        // Membuat file Excel
-        $writer = new Xlsx($spreadsheet);
-
-        // Set sheet pertama sebagai sheet aktif
-        $spreadsheet->setActiveSheetIndex(0);
-
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx'); // <<< HERE
-        // $filename = "studentCompetency-".$subject->code.".xlsx"; // <<< HERE
-        $filename = "nilai " . $teacherSubject->subject->name . ' ' . $teacherSubject->grade->name . ".xlsx"; // <<< HERE
-        $file_path = storage_path('/app/public/downloads/' . $filename);
-        $writer->save($file_path);
-        return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
+        return app(AssessmentExportService::class)->export($this->teacher_subject_id);
     }
 }
