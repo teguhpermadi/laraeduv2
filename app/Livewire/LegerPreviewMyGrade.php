@@ -26,7 +26,11 @@ class LegerPreviewMyGrade extends Component
             $no = 1;
             foreach ($grade->studentGrade as $student) { // setiap student
 
-                $attendance = $student->student->attendance->first();
+                if (!$student->student) {
+                    continue;
+                }
+
+                $attendance = $student->student->attendance ? $student->student->attendance->first() : null;
 
                 $data[$grade->id][$student->student_id] = [
                     'no' => $no++,
