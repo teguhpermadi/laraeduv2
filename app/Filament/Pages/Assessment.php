@@ -264,6 +264,11 @@ class Assessment extends Page implements HasForms, HasTable
                 TableAction::make('download')
                     ->action(fn () => $this->download())
                     ->button(),
+                TableAction::make('downloadRdm')
+                    ->label('Download RDM')
+                    ->color('info')
+                    ->action(fn () => $this->downloadRdm())
+                    ->button(),
                 TableAction::make('upload')
                     ->slideOver()
                     ->closeModalByClickingAway(false)
@@ -374,5 +379,10 @@ class Assessment extends Page implements HasForms, HasTable
     public function download()
     {
         return app(AssessmentExportService::class)->export($this->teacher_subject_id);
+    }
+
+    public function downloadRdm()
+    {
+        return app(AssessmentExportService::class)->exportToRdm($this->teacher_subject_id);
     }
 }
