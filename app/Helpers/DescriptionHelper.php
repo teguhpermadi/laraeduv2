@@ -27,22 +27,25 @@ class DescriptionHelper
         $countPassedSkill = 0;
         $countNotPassedSkill = 0;
 
-        foreach ($filter as $competency) {
-            if ($competency->score >= $competency->competency->passing_grade) {
-                $passed .= $competency->competency->description . '; ';
-                $countPassed++;
-            } else {
-                $notPassed .= $competency->competency->description . '; ';
-                $countNotPassed++;
-            }
+        foreach ($filter as $sc) {
+            $competency = $sc->competency;
+            // Check if aspect is knowledge (default to knowledge if aspect is not set or empty)
+            $isKnowledge = !$competency->aspect || $competency->aspect === \App\Enums\CompetencyAspectEnum::KNOWLEDGE;
 
-            // jika competency skill ada isinya
-            if ($competency->score_skill) {
-                if ($competency->score_skill >= $competency->competency->passing_grade) {
-                    $passedSkill .= $competency->competency->description_skill . '; ';
+            if ($isKnowledge) {
+                if ($sc->score >= $competency->passing_grade) {
+                    $passed .= $competency->description . '; ';
+                    $countPassed++;
+                } else {
+                    $notPassed .= $competency->description . '; ';
+                    $countNotPassed++;
+                }
+            } else {
+                if ($sc->score >= $competency->passing_grade) {
+                    $passedSkill .= $competency->description . '; ';
                     $countPassedSkill++;
                 } else {
-                    $notPassedSkill .= $competency->competency->description_skill . '; ';
+                    $notPassedSkill .= $competency->description . '; ';
                     $countNotPassedSkill++;
                 }
             }

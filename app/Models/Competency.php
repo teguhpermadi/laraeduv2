@@ -29,11 +29,16 @@ class Competency extends Model
         'teacher_subject_id',
         'code',
         'description',
+        'aspect',
         'passing_grade',
         'half_semester',
-        'code_skill',
-        'description_skill',
+        'metadata',
     ];  
+
+    protected $casts = [
+        'aspect' => \App\Enums\CompetencyAspectEnum::class,
+        'metadata' => 'array',
+    ];
 
     public function getActivitylogOptions(): LogOptions
     {

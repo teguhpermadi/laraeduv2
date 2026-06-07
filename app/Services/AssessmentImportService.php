@@ -22,14 +22,16 @@ class AssessmentImportService
 
         foreach ($studentCompetencies as $row) {
             foreach ($row as $value) {
+                if (!isset($value['teacher_subject_id']) || !isset($value['student_id']) || !isset($value['competency_id'])) {
+                    continue;
+                }
                 StudentCompetency::where([
                     'teacher_subject_id' => $value['teacher_subject_id'],
                     'student_id' => $value['student_id'],
                     'competency_id' => $value['competency_id'],
                 ])
                 ->update([
-                    'score' => $value['score'],
-                    'score_skill' => $value['score_skill'],
+                    'score' => $value['score'] ?? 0,
                 ]);
             }
         }

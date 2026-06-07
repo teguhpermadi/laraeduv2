@@ -179,14 +179,18 @@ class ProcessLegerCommand extends Command
         }
 
         $students = $teacherSubject->studentGrade->map(function ($student) use ($competencies, $subjectOrder, $teacher_id, $subject_id) {
+            // Separate competencies by aspect
+            $knowledgeCompIds = $competencies->filter(fn($c) => !$c->aspect || $c->aspect === \App\Enums\CompetencyAspectEnum::KNOWLEDGE)->pluck('id');
+            $skillCompIds = $competencies->filter(fn($c) => $c->aspect === \App\Enums\CompetencyAspectEnum::SKILL)->pluck('id');
+
             // Buat description dengan description helper
             $description = \App\Helpers\DescriptionHelper::getDescription($student->studentCompetency->whereIn('competency_id', $competencies->pluck('id')));
-            $avg_score = $student->studentCompetency->whereIn('competency_id', $competencies->pluck('id'))->avg('score');
-            $avg_skill = $student->studentCompetency->whereIn('competency_id', $competencies->pluck('id'))->avg('score_skill');
-            $sum_score = $student->studentCompetency->whereIn('competency_id', $competencies->pluck('id'))->sum('score');
-            $sum_skill = $student->studentCompetency->whereIn('competency_id', $competencies->pluck('id'))->sum('score_skill');
+            $avg_score = $student->studentCompetency->whereIn('competency_id', $knowledgeCompIds)->avg('score') ?? 0;
+            $avg_skill = $student->studentCompetency->whereIn('competency_id', $skillCompIds)->avg('score') ?? 0;
+            $sum_score = $student->studentCompetency->whereIn('competency_id', $knowledgeCompIds)->sum('score') ?? 0;
+            $sum_skill = $student->studentCompetency->whereIn('competency_id', $skillCompIds)->sum('score') ?? 0;
             // Passing grade adalah rata-rata dari passing grade competency
-            $passing_grade = $competencies->avg('passing_grade');
+            $passing_grade = $competencies->avg('passing_grade') ?? 70;
 
             return [
                 'student_id' => $student->student->id,
@@ -206,15 +210,14 @@ class ProcessLegerCommand extends Command
                 'competencies' => $student->studentCompetency
                     ->whereIn('competency_id', $competencies->pluck('id'))
                     ->sortBy('competency_id')
-                    ->map(function ($competency) {
+                    ->map(function ($sc) {
                         return [
-                            'competency_id' => $competency->competency_id,
-                            'code' => $competency->competency->code,
-                            'score' => $competency->score,
-                            'passing_grade' => $competency->competency->passing_grade,
-                            'description' => $competency->competency->description,
-                            'score_skill' => $competency->score_skill,
-                            'description_skill' => $competency->competency->description_skill,
+                            'competency_id' => $sc->competency_id,
+                            'code' => $sc->competency->code,
+                            'score' => $sc->score,
+                            'passing_grade' => $sc->competency->passing_grade,
+                            'description' => $sc->competency->description,
+                            'aspect' => $sc->competency->aspect ? $sc->competency->aspect->value : 'knowledge',
                         ];
                     }),
             ];

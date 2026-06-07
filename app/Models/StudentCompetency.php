@@ -29,8 +29,12 @@ class StudentCompetency extends Model
         'competency_id',
         'student_id',
         'score',
-        'score_skill',
+        'metadata',
     ];  
+
+    protected $casts = [
+        'metadata' => 'array',
+    ];
 
     protected $hidden = ['created_at', 'updated_at'];
 

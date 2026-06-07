@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-#[ScopedBy([StudentActiveScope::class])]
+// #[ScopedBy([StudentActiveScope::class])]
 class Student extends Model
 {
     use HasFactory;

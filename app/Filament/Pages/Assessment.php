@@ -145,22 +145,17 @@ class Assessment extends Page implements HasForms, HasTable
                                 function () {
                                     $comptencies = Competency::where('teacher_subject_id', $this->teacherSubject)
                                         ->get()
-                                        ->pluck('description', 'id');
+                                        ->mapWithKeys(function ($item) {
+                                            $aspectLabel = $item->aspect ? $item->aspect->getLabel() : 'Pengetahuan';
+                                            return [$item->id => $item->code . ' - [' . $aspectLabel . '] - ' . $item->description];
+                                        });
                                     return $comptencies;
                                 }
                             )
                             ->live()
                             ->afterStateUpdated(function ($state) {
-                                $competency = Competency::find($state); 
-
-                                if($competency->code == 'TENGAH SEMESTER' || $competency->code == 'AKHIR SEMESTER' || $competency->teacherSubject->teacherGrade->curriculum == CurriculumEnum::KURMER->value){
-                                    $this->visible = false;
-                                } else {
-                                    $this->visible = true;
-                                }
-
+                                $this->visible = false;
                                 $this->resetTable();
-
                             }),
                     ])
                     ->headerActions([
@@ -169,7 +164,7 @@ class Assessment extends Page implements HasForms, HasTable
                             ->label(__('assessment.add_competency'))
                             ->form([
                                 Section::make()
-                                    ->columns(3)
+                                    ->columns(4)
                                     ->schema([
                                         Hidden::make('academic_year_id')
                                             ->default(session()->get('academic_year_id')),
@@ -178,12 +173,15 @@ class Assessment extends Page implements HasForms, HasTable
                                         TextInput::make('code')
                                             ->label(__('competency.code'))
                                             ->required(),
+                                        Select::make('aspect')
+                                            ->label('Aspek')
+                                            ->options(\App\Enums\CompetencyAspectEnum::class)
+                                            ->default(\App\Enums\CompetencyAspectEnum::KNOWLEDGE->value)
+                                            ->required(),
                                         TextInput::make('passing_grade')
                                             ->label(__('competency.passing_grade'))
                                             ->numeric()
                                             ->required(),
-
-                                        // half semester
                                         Radio::make('half_semester')
                                             ->label(__('competency.half_semester'))
                                             ->default(false)
@@ -195,9 +193,6 @@ class Assessment extends Page implements HasForms, HasTable
                                     ->required(),
                             ])
                             ->action(function (array $data): void {
-                                // $record->author()->associate($data['authorId']);
-                                // $record->save();
-                                // dd($data);
                                 Competency::create($data);
                             }),
                     ]),
@@ -215,17 +210,11 @@ class Assessment extends Page implements HasForms, HasTable
             ->emptyStateHeading($this->empty_state['heading'])
             ->emptyStateDescription($this->empty_state['desc'])
             ->columns([
-                // TextColumn::make('competency_id'),
                 TextColumn::make('student.name')
                     ->label(__('assessment.student_id'))
                     ->searchable(),
                 TextInputColumn::make('score')
                     ->label(__('assessment.score'))
-                    ->rules(['numeric', 'min:0', 'max:100']),
-                // score skill
-                TextInputColumn::make('score_skill')
-                    ->label(__('assessment.score_skill'))
-                    ->visible($this->visible)
                     ->rules(['numeric', 'min:0', 'max:100']),
             ])
             ->bulkActions([
@@ -305,7 +294,6 @@ class Assessment extends Page implements HasForms, HasTable
             $original->push([
                 'id' => $key->id,
                 'score' => $key->score,
-                'score_skill' => $key->score_skill,
             ]);
         }
 
@@ -315,24 +303,21 @@ class Assessment extends Page implements HasForms, HasTable
         // Cek jika originalScoreMax dan originalScoreMin sama
         if ($originalScoreMax == $originalScoreMin) {
             // Tangani kasus ini, misalnya dengan mengatur nilai default
-            $original->each(function ($item) use ($scoreMin, $scoreMax) {
+            $original->each(function ($item) use ($scoreMin) {
                 StudentCompetency::find($item['id'])
                     ->update([
-                        'score' => $scoreMin, // atau nilai lain yang sesuai
-                        'score_skill' => $scoreMin, // atau nilai lain yang sesuai
+                        'score' => $scoreMin,
                     ]);
             });
             return;
         }
 
         // score adjusment
-        $original->map(function ($item) use ($scoreMin, $scoreMax, $originalScoreMin, $originalScoreMax, $data) {
+        $original->map(function ($item) use ($scoreMin, $scoreMax, $originalScoreMin, $originalScoreMax) {
             $newScore = $scoreMin + (($item['score'] - $originalScoreMin) / ($originalScoreMax - $originalScoreMin) * ($scoreMax - $scoreMin));
-            $newScoreSkill = $scoreMin + (($item['score_skill'] - $originalScoreMin) / ($originalScoreMax - $originalScoreMin) * ($scoreMax - $scoreMin));
             StudentCompetency::find($item['id'])
                 ->update([
                     'score' => $newScore,
-                    'score_skill' => $newScoreSkill,
                 ]);
         });
     }

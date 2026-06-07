@@ -42,10 +42,8 @@ class CopyStudentCompetencyCommand extends Command
                 ->where('student_id', $array['student_ulid'])
                 ->first();
 
-            // update score dan score_skill
             $sc->update([
                 'score' => $array['score'],
-                'score_skill' => $array['score_skill'],
             ]);
         }
 

@@ -77,6 +77,43 @@
             </table>
         </div>
 
+        <!-- Score Skill Table -->
+        <div class="bg-white/10 p-4 rounded-md mt-4">
+            <h1 class="text-2xl font-bold text-black text-center mb-2">Score Skill Table</h1>
+            <table class="text-black w-full border-collapse border border-gray-300">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="border border-gray-300 p-3 text-center">No</th>
+                        <th class="border border-gray-300 p-3 text-left">Nama</th>
+                        @foreach ($grade->grade->teacherSubject as $subject)
+                            <th class="border border-gray-300 p-3 text-center">{{ $subject->subject->code }}</th>
+                        @endforeach
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($data[$grade->id] as $student)
+                        <tr class="border odd:bg-gray-100">
+                            <td class="p-3 text-center">{{ $student['no'] }}</td>
+                            <td class="p-3 text-left">{{ $student['student']['name'] }}</td>
+                            @if (isset($student['leger']))
+                                @foreach ($student['leger'] as $leger)
+                                    @if ($leger)
+                                        <td class="p-3 text-center">{{ $leger['score'] }}</td>
+                                    @else
+                                        <td class="p-3 text-center">-</td>
+                                    @endif
+                                @endforeach
+                            @else
+                                @for ($i = 0; $i < count($grade->grade->teacherSubject); $i++)
+                                    <td class="p-3 text-center">-</td>
+                                @endfor
+                            @endif
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
         <br>
 
         <div class="bg-white/10 p-4 rounded-md">

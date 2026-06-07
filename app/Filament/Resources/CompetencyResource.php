@@ -144,47 +144,19 @@ class CompetencyResource extends Resource
                             }
 
                             return false;
-                        }),
-                        TextInput::make('code')
+                        }),                        TextInput::make('code')
                             ->label(__('competency.code'))
                             ->helperText('Kode kompetensi harus unik dan tidak boleh sama dengan kompetensi lain yang Anda miliki')
                             ->required(),
+                        Select::make('aspect')
+                            ->label('Aspek')
+                            ->options(\App\Enums\CompetencyAspectEnum::class)
+                            ->default(\App\Enums\CompetencyAspectEnum::KNOWLEDGE->value)
+                            ->required(),
                         Textarea::make('description')
                             ->label(__('competency.description'))
+                            ->columnSpanFull()
                             ->required(),
-
-                        // skill
-                        TextInput::make('code_skill')
-                            ->visible(function (callable $get) {
-                                if ($get('teacher_subject_id')) {
-                                    $teacherSubject = TeacherSubject::with('teacherGrade')->find($get('teacher_subject_id'));
-                                    if ($teacherSubject->teacherGrade->curriculum == CurriculumEnum::K13->value) {
-                                        return true;
-                                    } else {
-                                        return false;
-                                    }
-                                } else {
-                                    return false;
-                                }
-                            })
-                            ->required()
-                            ->label(__('competency.code_skill')),
-                        Textarea::make('description_skill')
-                            ->visible(function (callable $get) {
-                                if ($get('teacher_subject_id')) {
-                                    $teacherSubject = TeacherSubject::with('teacherGrade')->find($get('teacher_subject_id'));
-                                    if ($teacherSubject->teacherGrade->curriculum == CurriculumEnum::K13->value) {
-                                        return true;
-                                    } else {
-                                        return false;
-                                    }
-                                } else {
-                                    return false;
-                                }
-                            })
-                            ->label(__('competency.description_skill'))
-                            ->required(),
-
                     ])
                     ->columns(2),
 
@@ -204,6 +176,9 @@ class CompetencyResource extends Resource
             ->columns([
                 TextColumn::make('code')
                     ->label(__('competency.code')),
+                TextColumn::make('aspect')
+                    ->label('Aspek')
+                    ->badge(),
                 TextColumn::make('description')
                     ->wrap()
                     ->label(__('competency.description')),
