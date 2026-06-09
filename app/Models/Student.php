@@ -166,4 +166,9 @@ class Student extends Model
     {
         return $this->hasMany(Transcript::class);
     }
+
+    public function studentRdm()
+    {
+        return $this->hasOne(StudentRdm::class);
+    }
 }

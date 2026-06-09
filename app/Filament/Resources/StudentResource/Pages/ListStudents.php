@@ -5,7 +5,9 @@ namespace App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource;
 use App\Filament\Resources\StudentResource\Widgets\StudentWidget;
 use App\Imports\StudentImport;
+use App\Imports\StudentRdmImport;
 use Closure;
+use EightyNine\ExcelImport\ExcelImportAction;
 use Filament\Actions;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Resources\Pages\ListRecords;
@@ -14,14 +16,15 @@ use JoseEspinal\RecordNavigation\Traits\HasRecordsList;
 class ListStudents extends ListRecords
 {
     use HasRecordsList;
-    
+
     protected static string $resource = StudentResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),
-            \EightyNine\ExcelImport\ExcelImportAction::make()
+            ExcelImportAction::make()
+                ->label('Import Siswa')
                 ->color("primary")
                 ->closeModalByClickingAway(false)
                 ->slideOver()
@@ -71,6 +74,23 @@ class ListStudents extends ListRecords
                     // customiseActionUsing: fn(Action $action) => $action->color('secondary')
                     //     ->icon('heroicon-m-clipboard')
                     //     ->requiresConfirmation(),
+                ),
+            ExcelImportAction::make()
+                ->label('Import RDM')
+                ->color("info")
+                ->closeModalByClickingAway(false)
+                ->slideOver()
+                ->use(StudentRdmImport::class)
+                ->sampleExcel(
+                    sampleData: [
+                        [
+                            "rdm_id",
+                            "nis",
+                            "nisn",
+                        ]
+                    ],
+                    fileName: 'student-rdm-template.xlsx',
+                    sampleButtonLabel: 'Download Template',
                 ),
         ];
     }
