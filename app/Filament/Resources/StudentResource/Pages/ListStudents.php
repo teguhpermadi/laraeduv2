@@ -23,7 +23,7 @@ class ListStudents extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
-            ExcelImportAction::make()
+            ExcelImportAction::make('import_siswa')
                 ->label('Import Siswa')
                 ->color("primary")
                 ->closeModalByClickingAway(false)
@@ -75,7 +75,7 @@ class ListStudents extends ListRecords
                     //     ->icon('heroicon-m-clipboard')
                     //     ->requiresConfirmation(),
                 ),
-            ExcelImportAction::make()
+            ExcelImportAction::make('import_rdm')
                 ->label('Import RDM')
                 ->color("info")
                 ->closeModalByClickingAway(false)
