@@ -64,4 +64,9 @@ class StudentCompetency extends Model
 
         return null; // Atau bisa mengembalikan nilai default jika competency tidak ditemukan
     }
+
+    public function studentRdm()
+    {
+        return $this->hasOne(StudentRdm::class);
+    }
 }

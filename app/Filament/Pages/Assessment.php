@@ -3,6 +3,11 @@
 namespace App\Filament\Pages;
 
 use App\Enums\CurriculumEnum;
+use App\Exports\RdmExport;
+use App\Exports\RdmSheetExport;
+use App\Exports\RdmSumatifExport;
+use App\Imports\RdmImport;
+use App\Imports\RdmSumatifImport;
 use App\Imports\StudentCompetencyImport;
 use App\Models\Competency;
 use App\Models\Grade;
@@ -37,6 +42,7 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Services\AssessmentExportService;
 use App\Services\AssessmentImportService;
+use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Support\Str;
 
 class Assessment extends Page implements HasForms, HasTable
@@ -107,7 +113,7 @@ class Assessment extends Page implements HasForms, HasTable
         // check curriculum
         $curriculum = $data->teacherGrade->curriculum;
         // ubah menjadi switch
-        switch($curriculum){
+        switch ($curriculum) {
             case CurriculumEnum::K13->value:
                 $this->visible = false;
                 break;
@@ -116,7 +122,6 @@ class Assessment extends Page implements HasForms, HasTable
                 $this->visible = false;
                 break;
         }
-
     }
 
     public function form(Form $form): Form
@@ -151,16 +156,15 @@ class Assessment extends Page implements HasForms, HasTable
                             )
                             ->live()
                             ->afterStateUpdated(function ($state) {
-                                $competency = Competency::find($state); 
+                                $competency = Competency::find($state);
 
-                                if($competency->code == 'TENGAH SEMESTER' || $competency->code == 'AKHIR SEMESTER' || $competency->teacherSubject->teacherGrade->curriculum == CurriculumEnum::KURMER->value){
+                                if ($competency->code == 'TENGAH SEMESTER' || $competency->code == 'AKHIR SEMESTER' || $competency->teacherSubject->teacherGrade->curriculum == CurriculumEnum::KURMER->value) {
                                     $this->visible = false;
                                 } else {
                                     $this->visible = true;
                                 }
 
                                 $this->resetTable();
-
                             }),
                     ])
                     ->headerActions([
@@ -262,12 +266,7 @@ class Assessment extends Page implements HasForms, HasTable
                     })
                     ->button(),
                 TableAction::make('download')
-                    ->action(fn () => $this->download())
-                    ->button(),
-                TableAction::make('downloadRdm')
-                    ->label('Download RDM')
-                    ->color('info')
-                    ->action(fn () => $this->downloadRdm())
+                    ->action(fn() => $this->download())
                     ->button(),
                 TableAction::make('upload')
                     ->slideOver()
@@ -289,6 +288,81 @@ class Assessment extends Page implements HasForms, HasTable
                 TableAction::make('leger')
                     ->color('success')
                     ->url(route('filament.admin.pages.leger.{id}', $this->teacher_subject_id)),
+                ActionGroup::make([
+                    TableAction::make('importRdm')
+                        ->label('Import from RDM')
+                        ->icon('heroicon-o-document-arrow-up')
+                        ->slideOver()
+                        ->closeModalByClickingAway(false)
+                        ->form([
+                            FileUpload::make('file')
+                                ->directory('uploads')
+                                ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/x-excel'])
+                                ->getUploadedFileNameForStorageUsing(
+                                    function (TemporaryUploadedFile $file) {
+                                        return 'rdm.' . $file->getClientOriginalExtension();
+                                    }
+                                )
+                                ->required()
+                        ])
+                        ->action(function (array $data) {
+                            $import = new RdmImport($this->teacher_subject_id, $this->academic_year_id);
+                            $import->processImport($data['file']);
+
+                            \Filament\Notifications\Notification::make()
+                                ->title('Berhasil')
+                                ->body('Data RDM berhasil diimport.')
+                                ->success()
+                                ->send();
+                        }),
+                    TableAction::make('exportRdm')
+                        ->label('Export to RDM')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->action(fn() => $this->exportRdm()),
+                    TableAction::make('importSumatifRdm')
+                        ->label('Import Sumatif from RDM')
+                        ->icon('heroicon-o-arrow-down-on-square-stack')
+                        ->slideOver()
+                        ->closeModalByClickingAway(false)
+                        ->form([
+                            FileUpload::make('file')
+                                ->label('File Excel SAS/PAS dari RDM')
+                                ->directory('uploads')
+                                ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/x-excel'])
+                                ->getUploadedFileNameForStorageUsing(
+                                    function (TemporaryUploadedFile $file) {
+                                        return 'rdm_sumatif.' . $file->getClientOriginalExtension();
+                                    }
+                                )
+                                ->required()
+                        ])
+                        ->action(function (array $data) {
+                            $import = new RdmSumatifImport($this->teacher_subject_id);
+                            $result = $import->processImport($data['file']);
+
+                            if ($result['error']) {
+                                \Filament\Notifications\Notification::make()
+                                    ->title('Gagal')
+                                    ->body($result['error'])
+                                    ->danger()
+                                    ->send();
+                                return;
+                            }
+
+                            \Filament\Notifications\Notification::make()
+                                ->title('Berhasil')
+                                ->body("Import selesai. {$result['imported']} data berhasil, {$result['skipped']} data dilewati.")
+                                ->success()
+                                ->send();
+                        }),
+                    TableAction::make('exportSumatifRdm')
+                        ->label('Export Sumatif to RDM')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->action(fn() => $this->exportSumatifRdm()),
+                ])
+                    ->button()
+                    ->label('RDM')
+                    ->icon('heroicon-o-server-stack'),
             ])
             ->deferLoading()
             ->striped()
@@ -362,7 +436,7 @@ class Assessment extends Page implements HasForms, HasTable
                     'competency_id' => $competency,
                     // 'created_at' => now(),
                 ];
-                
+
                 // update or create
                 StudentCompetency::updateOrCreate($data, ['score' => 0]);
             }
@@ -381,8 +455,23 @@ class Assessment extends Page implements HasForms, HasTable
         return app(AssessmentExportService::class)->export($this->teacher_subject_id);
     }
 
-    public function downloadRdm()
+    public function exportRdm()
     {
-        return app(AssessmentExportService::class)->exportToRdm($this->teacher_subject_id);
+        $teacherSubject = \App\Models\TeacherSubject::with(['grade', 'subject'])->find($this->teacher_subject_id);
+        $gradeName = $teacherSubject?->grade?->name ?? 'export';
+        $subjectName = $teacherSubject?->subject?->name ?? 'rdm';
+        $filename = 'Import to RDM ' . $gradeName . '_' . $subjectName . '.xlsx';
+
+        return (new RdmExport($this->teacher_subject_id))->download($filename);
+    }
+
+    public function exportSumatifRdm()
+    {
+        $teacherSubject = \App\Models\TeacherSubject::with(['grade', 'subject'])->find($this->teacher_subject_id);
+        $gradeName = $teacherSubject?->grade?->name ?? 'export';
+        $subjectName = $teacherSubject?->subject?->name ?? 'rdm';
+        $filename = 'Import Sumatif to RDM ' . $gradeName . '_' . $subjectName . '.xlsx';
+
+        return (new RdmSumatifExport($this->teacher_subject_id))->download($filename);
     }
 }
