@@ -53,6 +53,11 @@ class StudentCompetency extends Model
         return $this->belongsTo(Competency::class);
     }
 
+    public function teacherSubject()
+    {
+        return $this->belongsTo(TeacherSubject::class, 'teacher_subject_id', 'id')->withoutGlobalScope(\App\Models\Scopes\AcademicYearScope::class);
+    }
+
     public function getScoreCriteria()
     {
         // Pastikan relasi competency sudah ter-load
