@@ -300,7 +300,7 @@ class Assessment extends Page implements HasForms, HasTable
                                 ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/x-excel'])
                                 ->getUploadedFileNameForStorageUsing(
                                     function (TemporaryUploadedFile $file) {
-                                        return 'rdm.' . $file->getClientOriginalExtension();
+                                        return 'rdm_upload_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                                     }
                                 )
                                 ->required()
@@ -331,7 +331,7 @@ class Assessment extends Page implements HasForms, HasTable
                                 ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/x-excel'])
                                 ->getUploadedFileNameForStorageUsing(
                                     function (TemporaryUploadedFile $file) {
-                                        return 'rdm_sumatif.' . $file->getClientOriginalExtension();
+                                        return 'rdm_upload_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                                     }
                                 )
                                 ->required()
