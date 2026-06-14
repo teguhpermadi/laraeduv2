@@ -1,1 +1,32 @@
-TeacherSubject::with('teacher', 'subject')->find('01kr7m2gb7d28emxgzmqenkgqp');
+LegerRecap::get()
+StudentCompetency::lastest()
+StudentCompetency::latest()
+StudentCompetency::latest()->first()
+StudentCompetency::where('teacher_subject_id', '01ktmxvw50f2nxp139h2kkk6sn')
+            ->latest('updated_at')
+            ->first();
+StudentCompetency::where('teacher_subject_id', '01ktmxvw50f2nxp139h2kkk6sn')
+            ->latest('updated_at')
+            ->first();
+StudentCompetency::where('teacher_subject_id', '01ktmxvw50f2nxp139h2kkk6sn')
+            ->latest('updated_at')
+            ->first();
+StudentCompetency::where('teacher_subject_id', '01ktmxvw50f2nxp139h2kkk6sn')
+            ->latest('updated_at')
+            ->first();
+
+LegerRecap::where('teacher_subject_id', '01ktmxvw50f2nxp139h2kkk6sn')->first()
+StudentCompetency::where('teacher_subject_id', '01ktmxvw50f2nxp139h2kkk6sn')->latest('updated_at')->first();
+LegerRecap::where('teacher_subject_id', '01ktmxvw50f2nxp139h2kkk6sn')->first()
+$sc = StudentCompetency::where('teacher_subject_id', '01ktmxvw50f2nxp139h2kkk6sn')->latest('updated_at')->first();
+$lr = LegerRecap::where('teacher_subject_id', '01ktmxvw50f2nxp139h2kkk6sn')->first();
+
+[$sc, $lr]
+$sc = StudentCompetency::where('teacher_subject_id', '01ktmxw25gpnq6a6mk9xgab0dh')->latest('updated_at')->first();
+$lr = LegerRecap::where('teacher_subject_id', '01ktmxw25gpnq6a6mk9xgab0dh')->first();
+
+[$sc, $lr]
+$sc = StudentCompetency::where('teacher_subject_id', '01ktmxw7fgfkrdgqr3wa9a52f4')->latest('updated_at')->first();
+$lr = LegerRecap::where('teacher_subject_id', '01ktmxw7fgfkrdgqr3wa9a52f4')->first();
+
+[$sc, $lr]

@@ -59,6 +59,9 @@ class TeacherSubjectResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('subject.name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('competency_count')
+                    ->label('Jumlah Kompetensi')
+                    ->counts('competency'),
                 Tables\Columns\TextColumn::make('passing_grade')
                     ->numeric()
                     ->sortable(),
@@ -67,12 +70,12 @@ class TeacherSubjectResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('syncLeger')
-                    ->label(fn (TeacherSubject $record): string => app(LegerSyncCheckService::class)->overallNeedsSync($record) ? 'Sync' : 'Tersinkronisasi')
-                    ->color(fn (TeacherSubject $record): string => app(LegerSyncCheckService::class)->overallNeedsSync($record) ? 'danger' : 'success')
-                    ->icon(fn (TeacherSubject $record): string => app(LegerSyncCheckService::class)->overallNeedsSync($record) ? 'heroicon-o-arrow-path' : 'heroicon-o-check-circle')
-                    ->disabled(fn (TeacherSubject $record): bool => ! app(LegerSyncCheckService::class)->overallNeedsSync($record))
+                    ->label(fn(TeacherSubject $record): string => app(LegerSyncCheckService::class)->overallNeedsSync($record) ? 'Sync' : 'Tersinkronisasi')
+                    ->color(fn(TeacherSubject $record): string => app(LegerSyncCheckService::class)->overallNeedsSync($record) ? 'danger' : 'success')
+                    ->icon(fn(TeacherSubject $record): string => app(LegerSyncCheckService::class)->overallNeedsSync($record) ? 'heroicon-o-arrow-path' : 'heroicon-o-check-circle')
+                    ->disabled(fn(TeacherSubject $record): bool => ! app(LegerSyncCheckService::class)->overallNeedsSync($record))
                     ->action(function (TeacherSubject $record) {
                         try {
                             app(LegerSubmitService::class)->syncTeacherSubject($record);
