@@ -3,11 +3,11 @@
 namespace App\Filament\Pages;
 
 use App\Enums\CategoryLegerEnum;
-use App\Helpers\DescriptionHelper;
 use App\Models\Leger as ModelsLeger;
-use App\Models\LegerNote;
 use App\Models\LegerRecap;
 use App\Models\TeacherSubject;
+use App\Services\LegerCalculationService;
+use App\Services\LegerSubmitService;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Hidden;
@@ -94,7 +94,6 @@ class Leger extends Page implements HasForms, HasTable
 
     public function mount($id): void
     {
-        // ambil data teacher_subject
         $teacherSubject = TeacherSubject::with([
             'teacher',
             'subject',
@@ -104,166 +103,46 @@ class Leger extends Page implements HasForms, HasTable
         ])->find($id);
 
         $this->teacherSubject = $teacherSubject;
-        $teacher_id = $teacherSubject->teacher_id;
-        $subject_id = $teacherSubject->subject_id;
+        $this->competenciesFullSemester = $teacherSubject->competency;
+        $this->competenciesHalfSemester = $teacherSubject->competency->where('half_semester', true);
 
-        // ambil data competency berdasarkan teacher_subject_id
-        $competenciesFullSemester = $teacherSubject->competency;
-        $competenciesHalfSemester = $teacherSubject->competency->where('half_semester', true);
+        $calculator = app(LegerCalculationService::class);
 
-        // subject order
-        $subjectOrder = $teacherSubject->subject->order;
+        $this->studentsFullSemester = $calculator->buildStudentsData(
+            $teacherSubject->studentGrade,
+            $this->competenciesFullSemester,
+            $teacherSubject,
+            CategoryLegerEnum::FULL_SEMESTER->value
+        );
 
-        $this->competenciesFullSemester = $competenciesFullSemester;
-        $this->competenciesHalfSemester = $competenciesHalfSemester;
+        $this->studentsHalfSemester = $calculator->buildStudentsData(
+            $teacherSubject->studentGrade,
+            $this->competenciesHalfSemester,
+            $teacherSubject,
+            CategoryLegerEnum::HALF_SEMESTER->value
+        );
 
-        // dd($competenciesHalfSemester->toArray());
-
-        // flat map full semester
-        $studentsFullSemester = $teacherSubject->studentGrade->map(function ($student) use ($competenciesFullSemester, $subjectOrder, $teacher_id, $subject_id, $teacherSubject) {
-            $filteredCompetencies = $student->studentCompetency->whereIn('competency_id', $competenciesFullSemester->pluck('id'));
-            $result = $teacherSubject->calculateLegerScore($filteredCompetencies, CategoryLegerEnum::FULL_SEMESTER->value);
-            $description = DescriptionHelper::getDescription($filteredCompetencies);
-            $avg_score = $result['avg_score'];
-            $avg_skill = $result['avg_skill'];
-            $sum_score = $filteredCompetencies->sum('score');
-            $sum_skill = $filteredCompetencies->sum('score_skill');
-            // passing grade adalah rata-rata dari passing grade competency
-            $passing_grade = $competenciesFullSemester->avg('passing_grade');
-
-            return [
-                'student_id' => $student->student->id,
-                'teacher_id' => $teacher_id,
-                'subject_id' => $subject_id,
-                'subject_order' => $subjectOrder,
-                'nis' => $student->student->nis,
-                'name' => $student->student->name,
-                'avg_score' => round($avg_score, 0),
-                'avg_skill' => round($avg_skill, 0),
-                'sum_score' => $sum_score,
-                'sum_skill' => $sum_skill,
-                'description' => $description['description'],
-                'description_skill' => $description['description_skill'],
-                'competency_count' => $competenciesFullSemester->count(),
-                'passing_grade' => round($passing_grade, 0),
-                'competencies' => $filteredCompetencies
-                    ->sortBy('competency_id')
-                    ->map(function ($competency) {
-                        return [
-                            'competency_id' => $competency->competency_id,
-                            'code' => $competency->competency->code,
-                            'score' => $competency->score,
-                            'passing_grade' => $competency->competency->passing_grade,
-                            'description' => $competency->competency->description,
-                            'score_skill' => $competency->score_skill,
-                            'description_skill' => $competency->competency->description_skill,
-                        ];
-                    }),
-
-            ];
-        });
-
-        // tambahkan ranking berdasarkan sum_score
-        $studentsFullSemester = $studentsFullSemester->sortByDesc('sum_score')->values();
-
-        // tambahkan ranking berdasarkan sum_score
-        $studentsFullSemester = $studentsFullSemester->map(function ($item, $index) {
-            $item['ranking'] = $index + 1;
-
-            return $item;
-        });
-
-        // kembalikan data sort by student_id asc
-        $studentsFullSemester = $studentsFullSemester->sortBy('student_id', SORT_ASC);
-        $this->studentsFullSemester = $studentsFullSemester;
-
-        // flat map half semester
-        $studentsHalfSemester = $teacherSubject->studentGrade->map(function ($student) use ($competenciesHalfSemester, $subjectOrder, $teacher_id, $subject_id, $teacherSubject) {
-            $filteredCompetencies = $student->studentCompetency->whereIn('competency_id', $competenciesHalfSemester->pluck('id'));
-            $result = $teacherSubject->calculateLegerScore($filteredCompetencies, CategoryLegerEnum::HALF_SEMESTER->value);
-            $description = DescriptionHelper::getDescription($filteredCompetencies);
-            $avg_score = $result['avg_score'];
-            $sum_score = $filteredCompetencies->sum('score');
-            $avg_skill = $result['avg_skill'];
-            $sum_skill = $filteredCompetencies->sum('score_skill');
-            $passing_grade = $competenciesHalfSemester->avg('passing_grade');
-
-            return [
-                'student_id' => $student->student->id,
-                'teacher_id' => $teacher_id,
-                'subject_id' => $subject_id,
-                'subject_order' => $subjectOrder,
-                'nis' => $student->student->nis,
-                'name' => $student->student->name,
-                'avg_score' => round($avg_score, 0),
-                'avg_skill' => round($avg_skill, 0),
-                'sum_score' => $sum_score,
-                'sum_skill' => $sum_skill,
-                'description' => $description['description'],
-                'description_skill' => $description['description_skill'],
-                'competency_count' => $competenciesHalfSemester->count(),
-                'passing_grade' => round($passing_grade, 0),
-                'competencies' => $filteredCompetencies
-                    ->sortBy('competency_id')
-                    ->map(function ($competency) {
-                        return [
-                            'competency_id' => $competency->competency_id,
-                            'code' => $competency->competency->code,
-                            'score' => $competency->score,
-                            'passing_grade' => $competency->competency->passing_grade,
-                            'description' => $competency->competency->description,
-                            'score_skill' => $competency->score_skill,
-                            'description_skill' => $competency->competency->description_skill,
-                        ];
-                    }),
-            ];
-        });
-
-        // tambahkan ranking berdasarkan sum_score
-        $studentsHalfSemester = $studentsHalfSemester->sortByDesc('sum_score')->values();
-
-        // tambahkan ranking berdasarkan sum_score
-        $studentsHalfSemester = $studentsHalfSemester->map(function ($item, $index) {
-            $item['ranking'] = $index + 1;
-
-            return $item;
-        });
-
-        // kembalikan data sort by student_id asc
-        $studentsHalfSemester = $studentsHalfSemester->sortBy('student_id', SORT_ASC);
-
-        $this->studentsHalfSemester = $studentsHalfSemester;
-
-        // ambil data leger recap
         $legerRecap = LegerRecap::where('academic_year_id', $teacherSubject->academic->id)
             ->where('teacher_subject_id', $teacherSubject->id)
             ->first();
 
-        $this->checkLegerRecap = $legerRecap ? true : false;
-        // dd($legerRecap);
-        if ($legerRecap) {
-            $this->descriptionLegerRecap = 'Kamu sudah mengumpulkan leger ini ke wali kelas pada tanggal '.$legerRecap->created_at->translatedFormat('l, d F Y H:i').'. Apakah kamu ingin mengrubahnya?';
-        } else {
-            $this->descriptionLegerRecap = 'Apakah anda yakin akan mengumpulkan nilai tersebut ke wali kelas?';
-        }
+        $this->checkLegerRecap = (bool) $legerRecap;
 
-        // cek apakah ada siswa yang belum memiliki nilai
-        $this->hasNoScores = $studentsFullSemester->contains(function ($item) {
-            return empty($item['competencies']);
-        });
+        $this->descriptionLegerRecap = $legerRecap
+            ? 'Kamu sudah mengumpulkan leger ini ke wali kelas pada tanggal '.$legerRecap->created_at->translatedFormat('l, d F Y H:i').'. Apakah kamu ingin mengrubahnya?'
+            : 'Apakah anda yakin akan mengumpulkan nilai tersebut ke wali kelas?';
+
+        $this->hasNoScores = $calculator->hasNoScores($this->studentsFullSemester);
 
         if (! $this->hasNoScores) {
             $this->form->fill([
                 'teacher_subject_id' => $id,
                 'academic_year_id' => $teacherSubject->academic->id,
-                'leger_full_semester' => $studentsFullSemester,
-                'leger_half_semester' => $studentsHalfSemester,
+                'leger_full_semester' => $this->studentsFullSemester,
+                'leger_half_semester' => $this->studentsHalfSemester,
                 'time_signature' => now(),
             ]);
         }
-
-        // dd($this->leger_full_semester);
-
     }
 
     public function form(Form $form): Form
@@ -319,90 +198,10 @@ class Leger extends Page implements HasForms, HasTable
     {
         $data = $this->form->getState();
 
-        // dd($data);
+        app(LegerSubmitService::class)->submit($data);
 
-        /* FULL SEMESTER */
-        // insert data ke table leger
-        foreach ($data['leger_full_semester'] as $student) {
-            $legerFullSemester = ModelsLeger::updateOrCreate([
-                'academic_year_id' => $data['academic_year_id'],
-                'student_id' => $student['student_id'],
-                'teacher_subject_id' => $data['teacher_subject_id'],
-                'teacher_id' => $student['teacher_id'],
-                'subject_id' => $student['subject_id'],
-                'category' => CategoryLegerEnum::FULL_SEMESTER->value,
-            ], [
-                'passing_grade' => $student['passing_grade'],
-                'score' => $student['avg_score'],
-                'score_skill' => $student['avg_skill'],
-                'sum' => $student['sum_score'],
-                'sum_skill' => $student['sum_skill'],
-                'rank' => $student['ranking'],
-                'description' => $student['description'],
-                'description_skill' => $student['description_skill'],
-                'metadata' => $student['competencies'],
-                'subject_order' => $student['subject_order'],
-            ]);
-
-            // insert data ke table leger_note
-            LegerNote::updateOrCreate([
-                'leger_id' => $legerFullSemester->id,
-            ], [
-                'note' => '-',
-            ]);
-        }
-
-        // insert data ke table leger_recap
-        LegerRecap::updateOrCreate([
-            'academic_year_id' => $data['academic_year_id'],
-            'teacher_subject_id' => $data['teacher_subject_id'],
-            'category' => CategoryLegerEnum::FULL_SEMESTER->value,
-        ], [
-            'updated_at' => $data['time_signature'],
-        ]);
-
-        /* HALF SEMESTER */
-        foreach ($data['leger_half_semester'] as $student) {
-            // insert data ke table leger
-            $legerHalfSemester = ModelsLeger::updateOrCreate([
-                'academic_year_id' => $data['academic_year_id'],
-                'student_id' => $student['student_id'],
-                'teacher_subject_id' => $data['teacher_subject_id'],
-                'teacher_id' => $student['teacher_id'],
-                'subject_id' => $student['subject_id'],
-                'category' => CategoryLegerEnum::HALF_SEMESTER->value,
-            ], [
-                'passing_grade' => $student['passing_grade'],
-                'score' => $student['avg_score'],
-                'score_skill' => $student['avg_skill'],
-                'sum' => $student['sum_score'],
-                'sum_skill' => $student['sum_skill'],
-                'rank' => $student['ranking'],
-                'description' => $student['description'],
-                'description_skill' => $student['description_skill'],
-                'metadata' => $student['competencies'],
-                'subject_order' => $student['subject_order'],
-            ]);
-
-            // insert data ke table leger_note
-            LegerNote::updateOrCreate([
-                'leger_id' => $legerHalfSemester->id,
-            ], [
-                'note' => '-',
-            ]);
-        }
-
-        // insert data ke table leger_recap
-        LegerRecap::updateOrCreate([
-            'academic_year_id' => $data['academic_year_id'],
-            'teacher_subject_id' => $data['teacher_subject_id'],
-            'category' => CategoryLegerEnum::HALF_SEMESTER->value,
-        ]);
-
-        // refresh page
         $this->redirect(route('filament.admin.pages.leger.{id}', ['id' => $this->teacherSubject->id]));
 
-        // notifikasi
         Notification::make()
             ->title('Berhasil')
             ->body('Leger berhasil disimpan')
