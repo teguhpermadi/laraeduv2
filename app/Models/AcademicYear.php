@@ -57,4 +57,9 @@ class AcademicYear extends Model
         return $this->hasOne(LegerWeight::class, 'academic_year_id')
             ->whereNull('teacher_subject_id');
     }
+
+    public function reportDescription()
+    {
+        return $this->hasOne(ReportDescription::class);
+    }
 }

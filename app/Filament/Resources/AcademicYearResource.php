@@ -21,6 +21,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
@@ -260,7 +261,16 @@ class AcademicYearResource extends Resource
             'index' => Pages\ListAcademicYears::route('/'),
             'create' => Pages\CreateAcademicYear::route('/create'),
             'edit' => Pages\EditAcademicYear::route('/{record}/edit'),
+            'edit-description' => Pages\EditReportDescription::route('/{record}/edit/description'),
         ];
+    }
+
+    public static function getRecordSubNavigation(Page $page): array
+    {
+        return $page->generateNavigationItems([
+            Pages\EditAcademicYear::class,
+            Pages\EditReportDescription::class,
+        ]);
     }
 
     /**
