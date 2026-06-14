@@ -5,8 +5,7 @@ namespace App\Filament\Resources\StudentCompetencyResource\Pages;
 use App\Filament\Resources\StudentCompetencyResource;
 use App\Models\AcademicYear;
 use App\Models\TeacherSubject;
-use App\Imports\RdmImport;
-use App\Imports\RdmSumatifImport;
+use App\Services\RdmImportService;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -48,7 +47,7 @@ class UploadRdmtoStudentCompetencyPage extends Page implements HasForms
                             return [$item->id => "{$item->year} - Sem. {$item->semester}"];
                         });
                     })
-                    ->default(fn() => session()->get('academic_year_id'))
+                    ->default(fn () => session()->get('academic_year_id'))
                     ->live()
                     ->required(),
 
@@ -66,7 +65,7 @@ class UploadRdmtoStudentCompetencyPage extends Page implements HasForms
                             ])
                             ->getUploadedFileNameForStorageUsing(
                                 function (TemporaryUploadedFile $file) {
-                                    return 'rdm_upload_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                                    return 'rdm_upload_'.time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
                                 }
                             )
                             ->required(),
@@ -75,9 +74,10 @@ class UploadRdmtoStudentCompetencyPage extends Page implements HasForms
                             ->label('Guru & Mata Pelajaran')
                             ->options(function (callable $get) {
                                 $academicYearId = $get('../../academic_year_id');
-                                if (!$academicYearId) {
+                                if (! $academicYearId) {
                                     return [];
                                 }
+
                                 return TeacherSubject::withoutGlobalScope(\App\Models\Scopes\AcademicYearScope::class)
                                     ->where('academic_year_id', $academicYearId)
                                     ->with(['teacher', 'subject', 'grade'])
@@ -86,6 +86,7 @@ class UploadRdmtoStudentCompetencyPage extends Page implements HasForms
                                         $teacherName = $item->teacher?->name ?? '-';
                                         $subjectName = $item->subject?->name ?? '-';
                                         $gradeName = $item->grade?->name ?? '-';
+
                                         return [$item->id => "{$teacherName} - Kelas {$gradeName} - {$subjectName}"];
                                     });
                             })
@@ -93,17 +94,10 @@ class UploadRdmtoStudentCompetencyPage extends Page implements HasForms
                             ->preload()
                             ->required(),
 
-                        Select::make('import_type')
-                            ->label('Tipe Import / Form RDM')
-                            ->options([
-                                'rdm' => 'RDM Import (Nilai Sumatif Harian)',
-                                'rdm_sumatif' => 'RDM Sumatif Import (Nilai SAS/PAS)',
-                            ])
-                            ->required(),
                     ])
-                    ->columns(3)
+                    ->columns(2)
                     ->createItemButtonLabel('Tambah Upload File')
-                    ->defaultItems(1)
+                    ->defaultItems(1),
             ]);
     }
 
@@ -118,6 +112,7 @@ class UploadRdmtoStudentCompetencyPage extends Page implements HasForms
                 ->body('Tidak ada file yang diunggah.')
                 ->warning()
                 ->send();
+
             return;
         }
 
@@ -127,26 +122,18 @@ class UploadRdmtoStudentCompetencyPage extends Page implements HasForms
         foreach ($uploads as $index => $upload) {
             $file = $upload['file'];
             $teacherSubjectId = $upload['teacher_subject_id'];
-            $importType = $upload['import_type'];
+            $academicYearId = session()->get('academic_year_id');
 
             try {
-                if ($importType === 'rdm') {
-                    $academicYearId = session()->get('academic_year_id');
-                    $import = new RdmImport($teacherSubjectId, $academicYearId);
-                    $import->processImport($file);
-                    $successCount++;
-                } elseif ($importType === 'rdm_sumatif') {
-                    $import = new RdmSumatifImport($teacherSubjectId);
-                    $result = $import->processImport($file);
+                $result = app(RdmImportService::class)->import($file, $teacherSubjectId, $academicYearId);
 
-                    if (!empty($result['error'])) {
-                        $errors[] = "Baris ke-" . ($index + 1) . ": " . $result['error'];
-                    } else {
-                        $successCount++;
-                    }
+                if ($result['success']) {
+                    $successCount++;
+                } else {
+                    $errors[] = 'Baris ke-'.($index + 1).': '.$result['error'];
                 }
             } catch (\Exception $e) {
-                $errors[] = "Baris ke-" . ($index + 1) . ": Gagal memproses file. " . $e->getMessage();
+                $errors[] = 'Baris ke-'.($index + 1).': Gagal memproses file. '.$e->getMessage();
             }
         }
 
@@ -158,7 +145,7 @@ class UploadRdmtoStudentCompetencyPage extends Page implements HasForms
                 ->send();
         }
 
-        if (!empty($errors)) {
+        if (! empty($errors)) {
             Notification::make()
                 ->title('Beberapa file gagal diimpor')
                 ->body(implode('<br>', $errors))

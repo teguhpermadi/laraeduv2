@@ -4,16 +4,15 @@ namespace App\Filament\Pages;
 
 use App\Enums\CurriculumEnum;
 use App\Exports\RdmExport;
-use App\Exports\RdmSheetExport;
 use App\Exports\RdmSumatifExport;
-use App\Imports\RdmImport;
-use App\Imports\RdmSumatifImport;
-use App\Imports\StudentCompetencyImport;
 use App\Models\Competency;
 use App\Models\Grade;
 use App\Models\StudentCompetency;
 use App\Models\Subject;
 use App\Models\TeacherSubject;
+use App\Services\AssessmentExportService;
+use App\Services\AssessmentImportService;
+use App\Services\RdmImportService;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
@@ -29,21 +28,17 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Tables\Actions\Action as TableAction;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Actions\Action as TableAction;
 use Filament\Tables\Columns\TextInputColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Services\AssessmentExportService;
-use App\Services\AssessmentImportService;
-use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class Assessment extends Page implements HasForms, HasTable
 {
@@ -63,23 +58,30 @@ class Assessment extends Page implements HasForms, HasTable
     public ?array $data = [];
 
     public $teacherSubject;
+
     public $competency_id;
+
     public $grade_id;
+
     public $subject_id;
+
     public $academic_year_id;
+
     public $teacher_subject_id;
+
     public $empty_state = [];
-    public $visible = FALSE;
+
+    public $visible = false;
 
     public function mount($id): void
     {
         $data = TeacherSubject::find($id);
 
-        if (!is_null($data)) {
+        if (! is_null($data)) {
             $this->form->fill([
                 'competency_id' => ($data->competency->first()) ? $data->competency->first()->id : '',
                 'grade_id' => $data['grade_id'],
-                'subject_id' => $data['subject_id']
+                'subject_id' => $data['subject_id'],
             ]);
 
             $this->teacherSubject = $data['id'];
@@ -151,6 +153,7 @@ class Assessment extends Page implements HasForms, HasTable
                                     $comptencies = Competency::where('teacher_subject_id', $this->teacherSubject)
                                         ->get()
                                         ->pluck('description', 'id');
+
                                     return $comptencies;
                                 }
                             )
@@ -256,7 +259,7 @@ class Assessment extends Page implements HasForms, HasTable
                     ])
                     ->action(function (Collection $records, $data) {
                         $this->scoreAdjustment($records, $data);
-                    })
+                    }),
             ])
             ->headerActions([
                 TableAction::make('reset')
@@ -266,7 +269,7 @@ class Assessment extends Page implements HasForms, HasTable
                     })
                     ->button(),
                 TableAction::make('download')
-                    ->action(fn() => $this->download())
+                    ->action(fn () => $this->download())
                     ->button(),
                 TableAction::make('upload')
                     ->slideOver()
@@ -277,10 +280,10 @@ class Assessment extends Page implements HasForms, HasTable
                             ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/x-excel'])
                             ->getUploadedFileNameForStorageUsing(
                                 function (TemporaryUploadedFile $file) {
-                                    return 'siswa.' . $file->getClientOriginalExtension();
+                                    return 'siswa.'.$file->getClientOriginalExtension();
                                 }
                             )
-                            ->required()
+                            ->required(),
                     ])
                     ->action(function (array $data, AssessmentImportService $service) {
                         $service->import($data['file']);
@@ -289,7 +292,7 @@ class Assessment extends Page implements HasForms, HasTable
                     ->color('success')
                     ->url(route('filament.admin.pages.leger.{id}', $this->teacher_subject_id)),
                 ActionGroup::make([
-                    TableAction::make('importRdm')
+                    TableAction::make('importFromRdm')
                         ->label('Import from RDM')
                         ->icon('heroicon-o-document-arrow-up')
                         ->slideOver()
@@ -300,65 +303,47 @@ class Assessment extends Page implements HasForms, HasTable
                                 ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/x-excel'])
                                 ->getUploadedFileNameForStorageUsing(
                                     function (TemporaryUploadedFile $file) {
-                                        return 'rdm_upload_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                                        return 'rdm_upload_'.time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
                                     }
                                 )
-                                ->required()
+                                ->required(),
                         ])
                         ->action(function (array $data) {
-                            $import = new RdmImport($this->teacher_subject_id, $this->academic_year_id);
-                            $import->processImport($data['file']);
+                            $result = app(RdmImportService::class)->import(
+                                $data['file'],
+                                $this->teacher_subject_id,
+                                $this->academic_year_id
+                            );
+
+                            if (! $result['success']) {
+                                \Filament\Notifications\Notification::make()
+                                    ->title('Gagal')
+                                    ->body($result['error'])
+                                    ->danger()
+                                    ->send();
+
+                                return;
+                            }
+
+                            $body = 'Data RDM berhasil diimport.';
+                            if ($result['type'] === 'rdm_sumatif') {
+                                $body = "Import selesai. {$result['imported']} data berhasil, {$result['skipped']} data dilewati.";
+                            }
 
                             \Filament\Notifications\Notification::make()
                                 ->title('Berhasil')
-                                ->body('Data RDM berhasil diimport.')
+                                ->body($body)
                                 ->success()
                                 ->send();
                         }),
                     TableAction::make('exportRdm')
                         ->label('Export to RDM')
                         ->icon('heroicon-o-document-arrow-down')
-                        ->action(fn() => $this->exportRdm()),
-                    TableAction::make('importSumatifRdm')
-                        ->label('Import Sumatif from RDM')
-                        ->icon('heroicon-o-arrow-down-on-square-stack')
-                        ->slideOver()
-                        ->closeModalByClickingAway(false)
-                        ->form([
-                            FileUpload::make('file')
-                                ->label('File Excel SAS/PAS dari RDM')
-                                ->directory('uploads')
-                                ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/x-excel'])
-                                ->getUploadedFileNameForStorageUsing(
-                                    function (TemporaryUploadedFile $file) {
-                                        return 'rdm_upload_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                                    }
-                                )
-                                ->required()
-                        ])
-                        ->action(function (array $data) {
-                            $import = new RdmSumatifImport($this->teacher_subject_id);
-                            $result = $import->processImport($data['file']);
-
-                            if ($result['error']) {
-                                \Filament\Notifications\Notification::make()
-                                    ->title('Gagal')
-                                    ->body($result['error'])
-                                    ->danger()
-                                    ->send();
-                                return;
-                            }
-
-                            \Filament\Notifications\Notification::make()
-                                ->title('Berhasil')
-                                ->body("Import selesai. {$result['imported']} data berhasil, {$result['skipped']} data dilewati.")
-                                ->success()
-                                ->send();
-                        }),
+                        ->action(fn () => $this->exportRdm()),
                     TableAction::make('exportSumatifRdm')
                         ->label('Export Sumatif to RDM')
                         ->icon('heroicon-o-document-arrow-down')
-                        ->action(fn() => $this->exportSumatifRdm()),
+                        ->action(fn () => $this->exportSumatifRdm()),
                 ])
                     ->button()
                     ->label('RDM')
@@ -389,18 +374,19 @@ class Assessment extends Page implements HasForms, HasTable
         // Cek jika originalScoreMax dan originalScoreMin sama
         if ($originalScoreMax == $originalScoreMin) {
             // Tangani kasus ini, misalnya dengan mengatur nilai default
-            $original->each(function ($item) use ($scoreMin, $scoreMax) {
+            $original->each(function ($item) use ($scoreMin) {
                 StudentCompetency::find($item['id'])
                     ->update([
                         'score' => $scoreMin, // atau nilai lain yang sesuai
                         'score_skill' => $scoreMin, // atau nilai lain yang sesuai
                     ]);
             });
+
             return;
         }
 
         // score adjusment
-        $original->map(function ($item) use ($scoreMin, $scoreMax, $originalScoreMin, $originalScoreMax, $data) {
+        $original->map(function ($item) use ($scoreMin, $scoreMax, $originalScoreMin, $originalScoreMax) {
             $newScore = $scoreMin + (($item['score'] - $originalScoreMin) / ($originalScoreMax - $originalScoreMin) * ($scoreMax - $scoreMin));
             $newScoreSkill = $scoreMin + (($item['score_skill'] - $originalScoreMin) / ($originalScoreMax - $originalScoreMin) * ($scoreMax - $scoreMin));
             StudentCompetency::find($item['id'])
@@ -460,7 +446,7 @@ class Assessment extends Page implements HasForms, HasTable
         $teacherSubject = \App\Models\TeacherSubject::with(['grade', 'subject'])->find($this->teacher_subject_id);
         $gradeName = $teacherSubject?->grade?->name ?? 'export';
         $subjectName = $teacherSubject?->subject?->name ?? 'rdm';
-        $filename = 'Import to RDM ' . $gradeName . '_' . $subjectName . '.xlsx';
+        $filename = 'Import to RDM '.$gradeName.'_'.$subjectName.'.xlsx';
 
         return (new RdmExport($this->teacher_subject_id))->download($filename);
     }
@@ -470,7 +456,7 @@ class Assessment extends Page implements HasForms, HasTable
         $teacherSubject = \App\Models\TeacherSubject::with(['grade', 'subject'])->find($this->teacher_subject_id);
         $gradeName = $teacherSubject?->grade?->name ?? 'export';
         $subjectName = $teacherSubject?->subject?->name ?? 'rdm';
-        $filename = 'Import Sumatif to RDM ' . $gradeName . '_' . $subjectName . '.xlsx';
+        $filename = 'Import Sumatif to RDM '.$gradeName.'_'.$subjectName.'.xlsx';
 
         return (new RdmSumatifExport($this->teacher_subject_id))->download($filename);
     }
