@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\LegerWeight;
 use App\Models\TeacherSubject;
+use App\Settings\TeacherWeightSetting;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action;
@@ -76,6 +77,7 @@ class MySubject extends Page implements HasTable
                         ->icon('heroicon-o-scale')
                         ->button()
                         ->color('info')
+                        ->visible(fn () => app(TeacherWeightSetting::class)->can_edit_weight || auth()->user()->hasAnyRole(['super_admin', 'admin']))
                         ->modalHeading('Atur Bobot Penilaian')
                         ->modalDescription('Atur rasio bobot penilaian untuk mata pelajaran ini')
                         ->form(function (TeacherSubject $record) {

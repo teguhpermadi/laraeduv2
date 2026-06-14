@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Illuminate\Database\Seeder;
 use Spatie\Permission\PermissionRegistrar;
 
 class ShieldSeeder extends Seeder
@@ -236,6 +236,7 @@ class ShieldSeeder extends Seeder
                     "page_MySubject",
                     "page_SchoolSettingPage",
                     "page_ScoreCriteriaSettingPage",
+                    "page_TeacherWeightSettingPage",
                     "page_EditProfilePage",
                     "widget_AcademicYearWidget",
                     "widget_UserOnlineWidget",
@@ -501,6 +502,7 @@ class ShieldSeeder extends Seeder
                     "delete_any_quran::grade",
                     "force_delete_quran::grade",
                     "force_delete_any_quran::grade",
+                    "page_TeacherWeightSettingPage",
                 ]
             }
         ]
@@ -529,7 +531,7 @@ class ShieldSeeder extends Seeder
 
                 if (! blank($rolePlusPermission['permissions'])) {
                     $permissionModels = collect($rolePlusPermission['permissions'])
-                        ->map(fn($permission) => $permissionModel::firstOrCreate([
+                        ->map(fn ($permission) => $permissionModel::firstOrCreate([
                             'name' => $permission,
                             'guard_name' => $rolePlusPermission['guard_name'],
                         ]))
