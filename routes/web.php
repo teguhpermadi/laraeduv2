@@ -29,15 +29,15 @@ Route::get('{id}/report-quran', [\App\Http\Controllers\ReportController::class, 
 Route::get('{extracurricular_id}/leger-extracurricular', \App\Livewire\LegerPreviewExtracurricular::class)->name('leger-extracurricular');
 
 // tes report
-Route::get('/report-cover', function(){
+Route::get('/report-cover', function () {
     return view('components.reports.report-cover');
 });
 
-Route::get('/school-cover', function(){
+Route::get('/school-cover', function () {
     return view('components.reports.school-cover');
 });
 
-Route::get('/student-identity', function(){
+Route::get('/student-identity', function () {
     return view('components.reports.student-identity');
 });
 
@@ -45,12 +45,15 @@ Route::get('/leger-preview-my-grade', \App\Livewire\LegerPreviewMyGrade::class)-
 
 Route::get('transcript/preview', \App\Livewire\TranscriptPreview::class)->name('transcript-preview');
 
+Route::get('/rdm-export/download/{file}', [\App\Http\Controllers\RdmExportController::class, 'download'])
+    ->name('rdm-export.download')
+    ->middleware(['auth']);
 
-Route::group(['middleware' => ['role:admin']], function () { 
+Route::group(['middleware' => ['role:admin']], function () {
     // Route untuk ProcessLegerController
     Route::get('/leger/process', [ProcessLegerController::class, 'index'])->name('leger.index');
     Route::post('/leger/process', [ProcessLegerController::class, 'process'])->name('leger.process');
-    
+
     // Route untuk leger process
     Route::post('/leger/set-academic-year', [ProcessLegerController::class, 'setAcademicYear'])->name('leger.set-academic-year');
     Route::get('/leger/get-teacher-subjects', [ProcessLegerController::class, 'getTeacherSubjects'])->name('leger.get-teacher-subjects');
