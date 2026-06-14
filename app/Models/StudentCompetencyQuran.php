@@ -32,7 +32,6 @@ class StudentCompetencyQuran extends Model
         static::addGlobalScope(new AcademicYearScope);
     }
 
-
     public function studentQuranGrade()
     {
         return $this->belongsTo(StudentQuranGrade::class, 'student_quran_grade_id', 'id');
@@ -60,6 +59,6 @@ class StudentCompetencyQuran extends Model
 
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class)->withoutGlobalScope(\App\Models\Scopes\StudentActiveScope::class);
     }
 }

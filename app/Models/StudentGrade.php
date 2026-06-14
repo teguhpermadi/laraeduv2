@@ -19,8 +19,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class StudentGrade extends Model
 {
     use HasFactory;
-    use LogsActivity;
     use HasUlids;
+    use LogsActivity;
 
     // Menentukan bahwa kita tidak menggunakan auto-increment
     public $incrementing = false;
@@ -33,13 +33,13 @@ class StudentGrade extends Model
         'academic_year_id',
         'student_id',
         'grade_id',
-    ];  
+    ];
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
             ->useLogName('Student Grade')
-            ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}")
+            ->setDescriptionForEvent(fn (string $eventName) => "This model has been {$eventName}")
             ->logOnly(['*']);
     }
 
@@ -50,7 +50,7 @@ class StudentGrade extends Model
 
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class)->withoutGlobalScope(\App\Models\Scopes\StudentActiveScope::class);
     }
 
     public function grade()
@@ -65,12 +65,12 @@ class StudentGrade extends Model
 
     public function scopeMyGrade(Builder $query)
     {
-        // ambil data berdasarkan teacher grade 
+        // ambil data berdasarkan teacher grade
         $teacherGrade = TeacherGrade::query()->myGrade()->get()->pluck('grade_id');
 
-        if (!$teacherGrade) {
+        if (! $teacherGrade) {
             abort(403, 'Anda belum memiliki kelas yang ditugaskan');
-        }   
+        }
 
         return $query->whereIn('grade_id', $teacherGrade);
     }

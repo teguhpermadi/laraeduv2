@@ -3,12 +3,11 @@
 namespace App\Models;
 
 use App\Enums\CategoryLegerEnum;
-use App\Models\Scopes\AcademicYearScope;
+use App\Models\Scopes\OrderStudentScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-use App\Models\Scopes\OrderStudentScope;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 #[ScopedBy([OrderStudentScope::class])]
 class Leger extends Model
@@ -33,7 +32,7 @@ class Leger extends Model
         'description',
         'metadata',
         'sum',
-        'rank', 
+        'rank',
         'category',
         'score_skill',
         'sum_skill',
@@ -53,7 +52,7 @@ class Leger extends Model
 
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class)->withoutGlobalScope(\App\Models\Scopes\StudentActiveScope::class);
     }
 
     public function teacherSubject()

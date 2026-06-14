@@ -2,20 +2,20 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\OrderStudentScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
-use App\Models\Scopes\OrderStudentScope;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 #[ScopedBy([OrderStudentScope::class])]
 class StudentCompetency extends Model
 {
     use HasFactory;
-    use LogsActivity;
     use HasUlids;
+    use LogsActivity;
 
     // Menentukan bahwa kita tidak menggunakan auto-increment
     public $incrementing = false;
@@ -30,7 +30,7 @@ class StudentCompetency extends Model
         'student_id',
         'score',
         'score_skill',
-    ];  
+    ];
 
     protected $hidden = ['created_at', 'updated_at'];
 
@@ -38,14 +38,14 @@ class StudentCompetency extends Model
     {
         return LogOptions::defaults()
             ->useLogName('Student Competency')
-            ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}")
+            ->setDescriptionForEvent(fn (string $eventName) => "This model has been {$eventName}")
             ->logOnly(['*'])
             ->logExcept(['created_at', 'updated_at']);
     }
 
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class)->withoutGlobalScope(\App\Models\Scopes\StudentActiveScope::class);
     }
 
     public function competency()

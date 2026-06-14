@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Models\Scopes\AcademicYearScope;
+use App\Models\Scopes\OrderStudentScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use App\Models\Scopes\OrderStudentScope;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 #[ScopedBy([AcademicYearScope::class, OrderStudentScope::class])]
 class Attendance extends Model
@@ -40,7 +40,7 @@ class Attendance extends Model
         'created_at',
         'updated_at',
     ];
-    
+
     protected static function booted(): void
     {
         static::addGlobalScope('totalAttendance', function (Builder $builder) {
@@ -55,7 +55,7 @@ class Attendance extends Model
 
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class)->withoutGlobalScope(\App\Models\Scopes\StudentActiveScope::class);
     }
 
     public function academic()
@@ -67,7 +67,7 @@ class Attendance extends Model
     {
         $grades = TeacherGrade::myGrade()->get();
 
-        if (!$grades) {
+        if (! $grades) {
             abort(403, 'Anda belum memiliki kelas yang ditugaskan');
         }
 

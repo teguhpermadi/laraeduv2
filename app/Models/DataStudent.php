@@ -11,8 +11,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class DataStudent extends Model
 {
     use HasFactory;
-    use LogsActivity;
     use HasUlids;
+    use LogsActivity;
 
     // Menentukan bahwa kita tidak menggunakan auto-increment
     public $incrementing = false;
@@ -56,7 +56,7 @@ class DataStudent extends Model
     {
         return LogOptions::defaults()
             ->useLogName('Data Student')
-            ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}")
+            ->setDescriptionForEvent(fn (string $eventName) => "This model has been {$eventName}")
             ->logOnly(['*'])
             ->logExcept(['created_at', 'updated_at']);
     }
@@ -65,9 +65,9 @@ class DataStudent extends Model
         'created_at',
         'updated_at',
     ];
-    
+
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class)->withoutGlobalScope(\App\Models\Scopes\StudentActiveScope::class);
     }
 }

@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use App\Models\Scopes\AcademicYearScope;
+use App\Models\Scopes\OrderStudentScope;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-use App\Models\Scopes\OrderStudentScope;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 #[ScopedBy([AcademicYearScope::class, OrderStudentScope::class])]
 class ProjectNote extends Model
@@ -27,14 +27,14 @@ class ProjectNote extends Model
         'student_id',
         'note',
     ];
-    
+
     public function project()
     {
         return $this->belongsTo(Project::class);
     }
-    
+
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class)->withoutGlobalScope(\App\Models\Scopes\StudentActiveScope::class);
     }
 }

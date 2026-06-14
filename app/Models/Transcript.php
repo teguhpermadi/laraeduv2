@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\TranscriptEnum;
 use App\Observers\TranscriptObserver;
 use App\Settings\TranscriptWeight;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -59,7 +58,7 @@ class Transcript extends Model
 
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class)->withoutGlobalScope(\App\Models\Scopes\StudentActiveScope::class);
     }
 
     public function subject()

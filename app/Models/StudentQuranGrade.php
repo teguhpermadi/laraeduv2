@@ -3,15 +3,15 @@
 namespace App\Models;
 
 use App\Models\Scopes\AcademicYearScope;
+use App\Models\Scopes\OrderStudentScope;
+use App\Observers\StudentQuranGradeObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-use App\Models\Scopes\OrderStudentScope;
-use App\Observers\StudentQuranGradeObserver;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 
 #[ScopedBy([AcademicYearScope::class, OrderStudentScope::class])]
 #[ObservedBy([StudentQuranGradeObserver::class])]
@@ -34,13 +34,13 @@ class StudentQuranGrade extends Model
 
     public function student(): BelongsTo
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class)->withoutGlobalScope(\App\Models\Scopes\StudentActiveScope::class);
     }
 
     public function quranGrade(): BelongsTo
     {
         return $this->belongsTo(QuranGrade::class);
-    }   
+    }
 
     public function academicYear(): BelongsTo
     {
@@ -51,5 +51,4 @@ class StudentQuranGrade extends Model
     {
         return $this->hasMany(StudentCompetencyQuran::class, 'student_id', 'student_id');
     }
-
 }
