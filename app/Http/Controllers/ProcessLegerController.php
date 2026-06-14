@@ -7,11 +7,16 @@ use App\Models\Leger as ModelsLeger;
 use App\Models\LegerNote;
 use App\Models\LegerRecap;
 use App\Models\TeacherSubject;
+use App\Services\DescriptionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ProcessLegerController extends Controller
 {
+    public function __construct(
+        private DescriptionService $descriptionService
+    ) {}
+
     /**
      * Memproses data leger untuk semester penuh dan tengah semester
      *
@@ -166,15 +171,10 @@ class ProcessLegerController extends Controller
      */
     private function processStudentData($teacherSubject, $competencies, $subjectOrder, $teacher_id, $subject_id, $category)
     {
-        // Import helper jika diperlukan
-        if (! class_exists('App\Helpers\DescriptionHelper')) {
-            throw new \Exception('DescriptionHelper tidak ditemukan');
-        }
-
         $students = $teacherSubject->studentGrade->map(function ($student) use ($competencies, $subjectOrder, $teacher_id, $subject_id, $teacherSubject, $category) {
             $filteredCompetencies = $student->studentCompetency->whereIn('competency_id', $competencies->pluck('id'));
             $result = $teacherSubject->calculateLegerScore($filteredCompetencies, $category);
-            $description = \App\Helpers\DescriptionHelper::getDescription($filteredCompetencies);
+            $description = $this->descriptionService->getDescription($filteredCompetencies);
             $avg_score = $result['avg_score'];
             $avg_skill = $result['avg_skill'];
             $sum_score = $filteredCompetencies->sum('score');

@@ -3,24 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Enums\CategoryLegerEnum;
+use App\Enums\LinkertScaleEnum;
 use App\Enums\SemesterEnum;
 use App\Models\AcademicYear;
-use App\Models\LegerRecap;
-use Illuminate\Http\Request;
-use App\Models\Student;
-use App\Models\StudentGrade;
-use App\Settings\SchoolSettings;
-use Dompdf\Dompdf;
-use PhpOffice\PhpWord\TemplateProcessor;
-use Carbon\Carbon;
-use PhpOffice\PhpWord\Element\Table;
-use PhpOffice\PhpWord\SimpleType\TblWidth;
-use PhpOffice\PhpWord\Element\TextRun;
-use App\Enums\LinkertScaleEnum;
 use App\Models\LegerQuran;
+use App\Models\Scopes\StudentActiveScope;
+use App\Models\Student;
+use App\Settings\SchoolSettings;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-use PhpOffice\PhpWord\SimpleType\DocProtect;
 use Illuminate\Support\Str;
+use PhpOffice\PhpWord\Element\Table;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 class ReportController extends Controller
 {
@@ -35,6 +29,7 @@ class ReportController extends Controller
         $student = Student::find($id);
 
         $data = $this->cover($student);
+
         return $data;
     }
 
@@ -46,8 +41,8 @@ class ReportController extends Controller
         $templateProcessor->setValue('nis', $data['nis']);
 
         // generate filename
-        $filename = 'Cover ' . $data['name'] . '.docx';
-        $file_path = storage_path('/app/public/downloads/' . $filename);
+        $filename = 'Cover '.$data['name'].'.docx';
+        $file_path = storage_path('/app/public/downloads/'.$filename);
         $templateProcessor->saveAs($file_path);
 
         // download file
@@ -65,9 +60,9 @@ class ReportController extends Controller
 
         $student = Student::with('dataStudent')->find($id);
         $data = $this->coverStudent($student);
+
         return $data;
     }
-
 
     // cover student identity
     public function coverStudent($data)
@@ -122,11 +117,10 @@ class ReportController extends Controller
         $templateProcessor->setValue('date_received', ($data['dataStudent']['date_received']) ? Carbon::createFromFormat('Y-m-d', $data['dataStudent']['date_received'])->locale('id')->translatedFormat('d F Y') : '-');
         $templateProcessor->setValue('headmaster', ($academicYear->teacher->name) ? $academicYear->teacher->name : '-');
 
-
-
-        $filename = 'Identitas ' . $data['name'] . ' - ' . $academicYear->semester . '.docx';
-        $file_path = storage_path('/app/public/downloads/' . $filename);
+        $filename = 'Identitas '.$data['name'].' - '.$academicYear->semester.'.docx';
+        $file_path = storage_path('/app/public/downloads/'.$filename);
         $templateProcessor->saveAs($file_path);
+
         return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
     }
 
@@ -144,13 +138,15 @@ class ReportController extends Controller
         // get category
         $category = CategoryLegerEnum::HALF_SEMESTER->value;
 
-        $student = Student::with([
+        $student = Student::withoutGlobalScope(StudentActiveScope::class)->with([
             'leger' => function ($query) use ($academic, $category) {
                 $query->where('academic_year_id', $academic);
                 $query->where('category', $category);
+                $query->whereNotNull('teacher_subject_id');
             },
             'studentGradeFirst.grade.teacherGradeFirst',
             'leger.teacherSubject.subject',
+            'leger.subject',
             'legerQuran',
             'attitudeFirst',
             'attendanceFirst',
@@ -158,7 +154,9 @@ class ReportController extends Controller
         ])
             ->find($id);
 
-        // dd($student->leger->toArray());
+        if (! $student) {
+            abort(404, 'Data siswa tidak ditemukan.');
+        }
 
         $report = $this->getHalfReport($academicYear, $student);
 
@@ -172,6 +170,13 @@ class ReportController extends Controller
 
         if ($leger->isEmpty()) {
             abort(403, 'Data leger tidak ditemukan');
+        }
+
+        $invalidSubjects = $leger->filter(fn ($l) => ! $l->teacherSubject);
+
+        if ($invalidSubjects->isNotEmpty()) {
+            $names = $invalidSubjects->map(fn ($l) => $l->subject->name)->implode(', ');
+            abort(403, "Mata pelajaran {$names} belum mengumpulkan nilai. Hubungi admin.");
         }
 
         if ($student->attendanceFirst == null) {
@@ -196,9 +201,9 @@ class ReportController extends Controller
         $templateProcessor->setValue('grade_name', $student->studentGradeFirst->grade->name);
         $templateProcessor->setValue('grade_level', $student->studentGradeFirst->grade->phase);
 
-        $templateProcessor->setValue('sick', $student->attendanceFirst->sick . "\u{200B}");
-        $templateProcessor->setValue('permission', $student->attendanceFirst->permission . "\u{200B}");
-        $templateProcessor->setValue('absent', $student->attendanceFirst->absent . "\u{200B}");
+        $templateProcessor->setValue('sick', $student->attendanceFirst->sick."\u{200B}");
+        $templateProcessor->setValue('permission', $student->attendanceFirst->permission."\u{200B}");
+        $templateProcessor->setValue('absent', $student->attendanceFirst->absent."\u{200B}");
 
         $templateProcessor->setValue('teacher_name', $student->studentGradeFirst->grade->teacherGradeFirst->teacher->name);
 
@@ -227,6 +232,7 @@ class ReportController extends Controller
         // tambahkan data detail
         $dataDetail = [];
         foreach ($subjects as $key => $subject) {
+
             $i = 1;
             $note = $subject->note;
             // Tambahkan grup data (judul blok)
@@ -242,16 +248,16 @@ class ReportController extends Controller
 
         // dd($dataDetail);
 
-        # Block cloning
+        // Block cloning
         $replacements = [];
         $i = 1;
         foreach ($dataDetail as $index => $detail) {
             $replacements[] = [
-                'leger_subject' => $i++ . '. ' . $detail['leger_subject'],
-                'order_subject' => '${order_subject_' . $index . '}',
-                'competency' => '${competency_' . $index . '}',
-                'score' => '${score_' . $index . '}',
-                'passing_grade' => '${passing_grade_' . $index . '}',
+                'leger_subject' => $i++.'. '.$detail['leger_subject'],
+                'order_subject' => '${order_subject_'.$index.'}',
+                'competency' => '${competency_'.$index.'}',
+                'score' => '${score_'.$index.'}',
+                'passing_grade' => '${passing_grade_'.$index.'}',
                 'avg_score' => $detail['score'],
                 'avg_passing_grade' => $detail['passing_grade'],
                 'criteria' => $detail['criteria'],
@@ -261,7 +267,7 @@ class ReportController extends Controller
 
         $templateProcessor->cloneBlock('block_name', count($replacements), true, false, $replacements);
 
-        # Table row cloning
+        // Table row cloning
         foreach ($dataDetail as $index => $detail) {
             $values = [];
             $order = 1;
@@ -283,12 +289,12 @@ class ReportController extends Controller
             $templateProcessor->cloneRowAndSetValues("order_subject_{$index}", $values);
         }
 
-
         // dd($dataDetail, $data);
-        $filename = 'Rapor Tengah Semester ' . $student->name . ' - ' . str_replace('/', ' ', $academic->year) . ' ' . $academic->semester . '.docx';
-        $file_path = storage_path('/app/public/downloads/' . $filename);
+        $filename = 'Rapor Tengah Semester '.$student->name.' - '.str_replace('/', ' ', $academic->year).' '.$academic->semester.'.docx';
+        $file_path = storage_path('/app/public/downloads/'.$filename);
         $templateProcessor->saveAs($file_path);
-        return response()->download($file_path)->deleteFileAfterSend(true);; // <<< HERE
+
+        return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
     }
 
     public function fullSemester($id)
@@ -305,21 +311,27 @@ class ReportController extends Controller
         // get category
         $category = CategoryLegerEnum::FULL_SEMESTER->value;
 
-        $student = Student::with([
+        $student = Student::withoutGlobalScope(StudentActiveScope::class)->with([
             'leger' => function ($query) use ($academic, $category) {
                 $query->where('academic_year_id', $academic);
                 $query->where('category', $category);
+                $query->whereNotNull('teacher_subject_id');
             },
             'studentGradeFirst.grade.teacherGradeFirst',
             'leger.teacherSubject.subject',
+            'leger.subject',
             'legerQuran',
             'attitudeFirst',
             'attendanceFirst',
-            'extracurricular' => function ($query) use ($academic) {
+            'extracurricular' => function ($query) {
                 $query->orderBy('extracurricular_id', 'asc');
             },
         ])
             ->find($id);
+
+        if (! $student) {
+            abort(404, 'Data siswa tidak ditemukan.');
+        }
 
         $report = $this->getFullReport($academicYear, $student);
 
@@ -333,6 +345,13 @@ class ReportController extends Controller
 
         if ($leger->isEmpty()) {
             abort(403, 'Data leger tidak ditemukan');
+        }
+
+        $invalidSubjects = $leger->filter(fn ($l) => ! $l->teacherSubject);
+
+        if ($invalidSubjects->isNotEmpty()) {
+            $names = $invalidSubjects->map(fn ($l) => $l->subject->name)->implode(', ');
+            abort(403, "Mata pelajaran {$names} belum mengumpulkan nilai. Hubungi admin.");
         }
 
         if ($student->attendanceFirst == null) {
@@ -389,16 +408,16 @@ class ReportController extends Controller
                     // jika grade saat ini adalah 6 atau kelas 9 atau kelas 12 maka
                     if ($nowGrade === 6 || $nowGrade === 9 || $nowGrade === 12) {
                         // dinyatakan LULUS
-                        $description = 'Berdasarkan pencapaian seluruh kompetensi, ananda ' . $student->name . ' dinyatakan LULUS dari ' . $schoolSettings->school_name . ' dan dapat melanjutkan ke jenjang berikutnya.';
+                        $description = 'Berdasarkan pencapaian seluruh kompetensi, ananda '.$student->name.' dinyatakan LULUS dari '.$schoolSettings->school_name.' dan dapat melanjutkan ke jenjang berikutnya.';
                     } else {
                         // dinyatakan NAIK KELAS
-                        $description = 'Berdasarkan pencapaian seluruh kompetensi, ananda ' . Str::upper($student->name) . ' dinyatakan NAIK KELAS dan dapat melanjutkan ke kelas ' . $nextGrade . '.';
+                        $description = 'Berdasarkan pencapaian seluruh kompetensi, ananda '.Str::upper($student->name).' dinyatakan NAIK KELAS dan dapat melanjutkan ke kelas '.$nextGrade.'.';
                     }
 
                     break;
 
                 case 0:
-                    $description = 'Berdasarkan pencapaian seluruh kompetensi, ananda ' . $student->name . ' dinyatakan TIDAK NAIK KELAS dan tetap berada di kelas ' . $nowGrade . '.';
+                    $description = 'Berdasarkan pencapaian seluruh kompetensi, ananda '.$student->name.' dinyatakan TIDAK NAIK KELAS dan tetap berada di kelas '.$nowGrade.'.';
                     break;
 
                 default:
@@ -429,7 +448,6 @@ class ReportController extends Controller
         // tabel nilai mata pelajaran
         $templateProcessor->cloneRowAndSetValues('order', $data);
 
-
         // setting nilai extrakurricular
         $extracurriculars = $student->extracurricular;
         $numRowExtra = 1;
@@ -453,6 +471,7 @@ class ReportController extends Controller
         // tambahkan data detail
         $dataDetail = [];
         foreach ($subjects as $key => $subject) {
+
             $i = 1;
             $note = $subject->note;
             // Tambahkan grup data (judul blok)
@@ -468,16 +487,16 @@ class ReportController extends Controller
 
         // dd($dataDetail);
 
-        # Block cloning
+        // Block cloning
         $replacements = [];
         $i = 1;
         foreach ($dataDetail as $index => $detail) {
             $replacements[] = [
-                'leger_subject' => $i++ . '. ' . $detail['leger_subject'],
-                'order_subject' => '${order_subject_' . $index . '}',
-                'competency' => '${competency_' . $index . '}',
-                'score' => '${score_' . $index . '}',
-                'passing_grade' => '${passing_grade_' . $index . '}',
+                'leger_subject' => $i++.'. '.$detail['leger_subject'],
+                'order_subject' => '${order_subject_'.$index.'}',
+                'competency' => '${competency_'.$index.'}',
+                'score' => '${score_'.$index.'}',
+                'passing_grade' => '${passing_grade_'.$index.'}',
                 'avg_score' => $detail['score'],
                 'avg_passing_grade' => $detail['passing_grade'],
                 'subject_note' => $detail['subject_note'],
@@ -486,7 +505,7 @@ class ReportController extends Controller
 
         $templateProcessor->cloneBlock('block_name', count($replacements), true, false, $replacements);
 
-        # Table row cloning
+        // Table row cloning
         foreach ($dataDetail as $index => $detail) {
             $values = [];
             $order = 1;
@@ -508,12 +527,12 @@ class ReportController extends Controller
             $templateProcessor->cloneRowAndSetValues("order_subject_{$index}", $values);
         }
 
-
         // dd($dataDetail, $data);
-        $filename = 'Rapor Akhir Semester ' . $student->name . ' - ' . str_replace('/', ' ', $academic->year) . ' ' . $academic->semester . '.docx';
-        $file_path = storage_path('/app/public/downloads/' . $filename);
+        $filename = 'Rapor Akhir Semester '.$student->name.' - '.str_replace('/', ' ', $academic->year).' '.$academic->semester.'.docx';
+        $file_path = storage_path('/app/public/downloads/'.$filename);
         $templateProcessor->saveAs($file_path);
-        return response()->download($file_path)->deleteFileAfterSend(true);; // <<< HERE
+
+        return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
     }
 
     public function project($id)
@@ -582,20 +601,20 @@ class ReportController extends Controller
         $i = 1;
         foreach ($projects as $index => $project) {
             $replacements[] = [
-                'project_number' => '${project_number_' . $i . '}',
-                'title' => '${title_' . $i . '}',
-                'description' => '${description_' . $i . '}',
-                'number_target' => '${number_target_' . $i . '}',
-                'dimention_description' => '${dimention_description_' . $i . '}',
-                'element_description' => '${element_description_' . $i . '}',
-                'value_description' => '${value_description_' . $i . '}',
-                'sub_value_description' => '${sub_value_description_' . $i . '}',
-                'target_description' => '${target_description_' . $i . '}',
-                'bsb' => '${bsb_' . $i . '}',
-                'bsh' => '${bsh_' . $i . '}',
-                'mb' => '${mb_' . $i . '}',
-                'bb' => '${bb_' . $i . '}',
-                'project_note' => '${project_note_' . $i . '}',
+                'project_number' => '${project_number_'.$i.'}',
+                'title' => '${title_'.$i.'}',
+                'description' => '${description_'.$i.'}',
+                'number_target' => '${number_target_'.$i.'}',
+                'dimention_description' => '${dimention_description_'.$i.'}',
+                'element_description' => '${element_description_'.$i.'}',
+                'value_description' => '${value_description_'.$i.'}',
+                'sub_value_description' => '${sub_value_description_'.$i.'}',
+                'target_description' => '${target_description_'.$i.'}',
+                'bsb' => '${bsb_'.$i.'}',
+                'bsh' => '${bsh_'.$i.'}',
+                'mb' => '${mb_'.$i.'}',
+                'bb' => '${bb_'.$i.'}',
+                'project_note' => '${project_note_'.$i.'}',
             ];
             $i++;
         }
@@ -645,10 +664,11 @@ class ReportController extends Controller
         }
 
         // generate filename
-        $filename = 'Rapor Proyek ' . $student->name . ' - ' . str_replace('/', ' ', $academic->year) . ' ' . $academic->semester . '.docx';
-        $file_path = storage_path('/app/public/downloads/' . $filename);
+        $filename = 'Rapor Proyek '.$student->name.' - '.str_replace('/', ' ', $academic->year).' '.$academic->semester.'.docx';
+        $file_path = storage_path('/app/public/downloads/'.$filename);
         $templateProcessor->saveAs($file_path);
-        return response()->download($file_path)->deleteFileAfterSend(true);; // <<< HERE
+
+        return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
     }
 
     public function quran($id)
@@ -675,7 +695,7 @@ class ReportController extends Controller
 
     public function getQuranReport($academicYear, $student)
     {
-        if (!$student) {
+        if (! $student) {
             abort(403, 'Data quran tidak ditemukan');
         }
 
@@ -736,9 +756,10 @@ class ReportController extends Controller
         $templateProcessor->cloneRowAndSetValues('quran_order', $data);
 
         // save
-        $filename = 'Rapor Quran ' . $student->student->name . ' - ' . str_replace('/', ' ', $academicYear->year) . ' ' . $academicYear->semester . '.docx';
-        $file_path = storage_path('/app/public/downloads/' . $filename);
+        $filename = 'Rapor Quran '.$student->student->name.' - '.str_replace('/', ' ', $academicYear->year).' '.$academicYear->semester.'.docx';
+        $file_path = storage_path('/app/public/downloads/'.$filename);
         $templateProcessor->saveAs($file_path);
+
         return response()->download($file_path)->deleteFileAfterSend(true); // <<< HERE
     }
 }

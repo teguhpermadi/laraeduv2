@@ -2,12 +2,15 @@
 
 namespace App\Services;
 
-use App\Helpers\DescriptionHelper;
 use App\Models\TeacherSubject;
 use Illuminate\Support\Collection;
 
 class LegerCalculationService
 {
+    public function __construct(
+        private DescriptionService $descriptionService
+    ) {}
+
     public function buildStudentsData(Collection $studentGrades, Collection $competencies, TeacherSubject $teacherSubject, string $category): Collection
     {
         $teacherId = $teacherSubject->teacher_id;
@@ -19,7 +22,7 @@ class LegerCalculationService
                 ->whereIn('competency_id', $competencies->pluck('id'));
 
             $result = $teacherSubject->calculateLegerScore($filteredCompetencies, $category);
-            $description = DescriptionHelper::getDescription($filteredCompetencies);
+            $description = $this->descriptionService->getDescription($filteredCompetencies);
 
             return [
                 'student_id' => $student->student->id,

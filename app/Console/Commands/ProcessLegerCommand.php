@@ -7,11 +7,18 @@ use App\Models\Leger as ModelsLeger;
 use App\Models\LegerNote;
 use App\Models\LegerRecap;
 use App\Models\TeacherSubject;
+use App\Services\DescriptionService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
 class ProcessLegerCommand extends Command
 {
+    public function __construct(
+        private DescriptionService $descriptionService
+    ) {
+        parent::__construct();
+    }
+
     /**
      * The name and signature of the console command.
      *
@@ -33,17 +40,18 @@ class ProcessLegerCommand extends Command
     {
         // Tanyakan teacher_subject_id jika tidak disediakan
         $teacherSubjectId = $this->argument('teacher_subject_id');
-        if (!$teacherSubjectId) {
+        if (! $teacherSubjectId) {
             $teacherSubjectId = $this->ask('Masukkan teacher_subject_id yang akan diproses');
-            if (!$teacherSubjectId) {
+            if (! $teacherSubjectId) {
                 $this->error('teacher_subject_id diperlukan untuk melanjutkan proses');
+
                 return 1;
             }
         }
 
         // Tanyakan time_signature jika tidak disediakan
         $timeSignature = $this->option('time_signature');
-        if (!$timeSignature) {
+        if (! $timeSignature) {
             $useCurrentTime = $this->confirm('Apakah Anda ingin menggunakan waktu saat ini untuk time_signature?', true);
             if ($useCurrentTime) {
                 $timeSignature = now();
@@ -52,8 +60,8 @@ class ProcessLegerCommand extends Command
             }
         }
 
-        $this->info('Memulai proses leger untuk teacher_subject_id: ' . $teacherSubjectId);
-        $this->info('Menggunakan time_signature: ' . $timeSignature);
+        $this->info('Memulai proses leger untuk teacher_subject_id: '.$teacherSubjectId);
+        $this->info('Menggunakan time_signature: '.$timeSignature);
 
         try {
             // Ambil data teacher_subject
@@ -62,7 +70,7 @@ class ProcessLegerCommand extends Command
                 'subject',
                 'academic',
                 'competency',
-                'studentGrade'
+                'studentGrade',
             ])->findOrFail($teacherSubjectId);
 
             $academicYearId = $teacherSubject->academic->id;
@@ -76,7 +84,7 @@ class ProcessLegerCommand extends Command
 
             // Proses data untuk full semester
             $studentsFullSemester = $this->processStudentData($teacherSubject, $competenciesFullSemester, $subjectOrder, $teacher_id, $subject_id);
-            
+
             // Proses data untuk half semester
             $studentsHalfSemester = $this->processStudentData($teacherSubject, $competenciesHalfSemester, $subjectOrder, $teacher_id, $subject_id);
 
@@ -159,10 +167,12 @@ class ProcessLegerCommand extends Command
             ]);
 
             $this->info('Proses leger berhasil diselesaikan!');
+
             return 0;
         } catch (\Exception $e) {
-            $this->error('Terjadi kesalahan: ' . $e->getMessage());
-            Log::error('Leger Process Error: ' . $e->getMessage());
+            $this->error('Terjadi kesalahan: '.$e->getMessage());
+            Log::error('Leger Process Error: '.$e->getMessage());
+
             return 1;
         }
     }
@@ -172,15 +182,8 @@ class ProcessLegerCommand extends Command
      */
     private function processStudentData($teacherSubject, $competencies, $subjectOrder, $teacher_id, $subject_id)
     {
-        // Import helper jika diperlukan
-        if (!class_exists('App\Helpers\DescriptionHelper')) {
-            $this->error('DescriptionHelper tidak ditemukan');
-            throw new \Exception('DescriptionHelper tidak ditemukan');
-        }
-
         $students = $teacherSubject->studentGrade->map(function ($student) use ($competencies, $subjectOrder, $teacher_id, $subject_id) {
-            // Buat description dengan description helper
-            $description = \App\Helpers\DescriptionHelper::getDescription($student->studentCompetency->whereIn('competency_id', $competencies->pluck('id')));
+            $description = $this->descriptionService->getDescription($student->studentCompetency->whereIn('competency_id', $competencies->pluck('id')));
             $avg_score = $student->studentCompetency->whereIn('competency_id', $competencies->pluck('id'))->avg('score');
             $avg_skill = $student->studentCompetency->whereIn('competency_id', $competencies->pluck('id'))->avg('score_skill');
             $sum_score = $student->studentCompetency->whereIn('competency_id', $competencies->pluck('id'))->sum('score');
@@ -224,6 +227,7 @@ class ProcessLegerCommand extends Command
         $students = $students->sortByDesc('sum_score')->values();
         $students = $students->map(function ($item, $index) {
             $item['ranking'] = $index + 1;
+
             return $item;
         });
 

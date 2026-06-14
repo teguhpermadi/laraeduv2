@@ -1,22 +1,23 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Services;
 
 use App\Enums\CategoryLegerEnum;
 
-class DescriptionHelper
+class DescriptionService
 {
-    public static function getDescription($data)
+    public function getDescription($data)
     {
         $string = '';
         $string_skill = '';
 
         $filter = collect($data)->reject(function ($item) {
             $code = strtolower($item['competency']['code']);
+
             return $code === CategoryLegerEnum::HALF_SEMESTER->value || $code === CategoryLegerEnum::FULL_SEMESTER->value;
         })->values();
 
-        $intro = 'Alhamdulillah, ananda ' . $data->first()->student->name;
+        $intro = 'Alhamdulillah, ananda '.$data->first()->student->name;
         $passed = ' telah menguasai materi: ';
         $notPassed = ' tetapi masih perlu peningkatan lagi pada materi: ';
         $countPassed = 0;
@@ -29,20 +30,19 @@ class DescriptionHelper
 
         foreach ($filter as $competency) {
             if ($competency->score >= $competency->competency->passing_grade) {
-                $passed .= $competency->competency->description . '; ';
+                $passed .= $competency->competency->description.'; ';
                 $countPassed++;
             } else {
-                $notPassed .= $competency->competency->description . '; ';
+                $notPassed .= $competency->competency->description.'; ';
                 $countNotPassed++;
             }
 
-            // jika competency skill ada isinya
             if ($competency->score_skill) {
                 if ($competency->score_skill >= $competency->competency->passing_grade) {
-                    $passedSkill .= $competency->competency->description_skill . '; ';
+                    $passedSkill .= $competency->competency->description_skill.'; ';
                     $countPassedSkill++;
                 } else {
-                    $notPassedSkill .= $competency->competency->description_skill . '; ';
+                    $notPassedSkill .= $competency->competency->description_skill.'; ';
                     $countNotPassedSkill++;
                 }
             }
@@ -65,8 +65,8 @@ class DescriptionHelper
         }
 
         return [
-            'description' => $intro . $string,
-            'description_skill' => ($string_skill) ? $intro . $string_skill : null,
+            'description' => $intro.$string,
+            'description_skill' => ($string_skill) ? $intro.$string_skill : null,
         ];
     }
 }
