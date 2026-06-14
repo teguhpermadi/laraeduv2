@@ -42,9 +42,9 @@ class RdmImport extends StringValueBinder implements WithCalculatedFormulas, Wit
                 [
                     'teacher_subject_id' => $this->teacher_subject_id,
                     'description' => $materi,
+                    'code' => 'Sumatif '.($sheetIndex + 1),
                 ],
                 [
-                    'code' => 'Sumatif '.($sheetIndex + 1),
                     'passing_grade' => $kktp ?? 0,
                     'half_semester' => false,
                 ]
