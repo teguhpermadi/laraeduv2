@@ -5,13 +5,12 @@ namespace App\Imports;
 use App\Models\Student;
 use App\Models\StudentRdm;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
 
-class StudentRdmImport implements ToModel, WithHeadingRow
+class StudentRdmImport extends StringValueBinder implements ToModel, WithCustomValueBinder, WithHeadingRow
 {
-    /**
-     * @param array $row
-     */
     public function model(array $row)
     {
         $student = Student::where('nisn', $row['nisn'])->first();

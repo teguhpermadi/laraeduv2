@@ -1,156 +1,49 @@
-StudentCompetency::limit(5)->lates()->get()
-StudentCompetency::limit(5)->lastes()->get()
-StudentCompetency::limit(5)->lastest()->get()
-StudentCompetency::limit(5)->get()
-StudentCompetency::with('teacherSubject')->limit(5)->get()
-StudentCompetency::with('teacherSubject')->limit(5)->get()
-StudentCompetency::with('teacherSubject')->limit(5)->get()
-StudentCompetency::with('teacherSubject')->limit(5)->get()
-StudentCompetency::with('teacherSubject')->limit(5)->get()
-StudentCompetency::with('teacherSubject')->limit(5)->get()
-StudentCompetency::with('teacherSubject')->limit(5)->get()
-StudentCompetency::withoutGlobalScope(AcademicYearScope::class)->with('teacherSubject')->limit(5)->get()
-StudentCompetency::withoutGlobalScope(AcademicYearScope::class)->with('teacherSubject')->limit(5)->get()
-StudentCompetency::withoutGlobalScope(AcademicYearScope::class)->with('teacherSubject')->limit(5)->get()
-StudentCompetency::with('teacherSubject')->limit(5)->get()
-
-TeacherSubject::find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->where('id','01JE8QJ9QK5PRDRFXRWBNRKPCB')->get();
-
-TeacherSubject::->get();
-
-TeacherSubject::get();
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
-
-TeacherSubject::withoutGlobalScope(AcademicYearScope::class)->get();
-
-TeacherSubject::withoutGlobalScope('App\Models\Scopes\AcademicYearScope')->get();
-StudentCompetency::with('teacherSubject')->limit(5)->get();
 
 
-TeacherSubject::withoutGlobalScope('App\Models\Scopes\AcademicYearScope')->find('01JE8QJ9QK5PRDRFXRWBNRKPCB');
+  
 
-TeacherSubject::withoutGlobalScope('App\Models\Scopes\AcademicYearScope')->find('01JE8QJ9QK5PRDRFXRWBNRKPCB')->teacher;
-StudentCompetency::with(['teacherSubject' => function($q){
-$q->withoutGlobalScope('App\Models\Scopes\AcademicYearScope');
-}])->limit(5)->get();
 
-StudentCompetency::with(['teacherSubject' => function($q){
-$q->withoutGlobalScope('App\Models\Scopes\AcademicYearScope');
-}], 'teacherSubject.subject.name')->limit(5)->get();
 
-StudentCompetency::with(['teacherSubject' => function($q){
-$q->withoutGlobalScope('App\Models\Scopes\AcademicYearScope');
-}], 'teacherSubject.subject.name')->limit(5)->get();
+App\Models\Student::whereRaw('LENGTH(nisn) = 9')->get();
 
-StudentCompetency::with(['teacherSubject.subject.name' => function($q){
-$q->withoutGlobalScope('App\Models\Scopes\AcademicYearScope');
-}])->limit(5)->get();
 
-StudentCompetency::with(['teacherSubject.subject.name' => function($q){
-$q->withoutGlobalScope('App\Models\Scopes\AcademicYearScope');
-}])->limit(5)->get();
+  
 
-StudentCompetency::with(['teacherSubject' => function($q){
-$q->withoutGlobalScope('App\Models\Scopes\AcademicYearScope');
-}], 'teacherSubject.subject.name')->limit(5)->get();
 
-StudentCompetency::with(['teacherSubject' => function($q){
-$q->withoutGlobalScope('App\Models\Scopes\AcademicYearScope');
-  $q->with('subject.name');
-}])->limit(5)->get();
 
-StudentCompetency::with(['teacherSubject' => function($q){
-$q->withoutGlobalScope('App\Models\Scopes\AcademicYearScope');
-  $q->with('subject.name');
-}])->limit(5)->get();
+App\Models\Student::whereRaw('LENGTH(nisn) = 9')->get();
 
-StudentCompetency::with(['teacherSubject' => function($q){
-$q->withoutGlobalScope('App\Models\Scopes\AcademicYearScope');
-  $q->with('subject.name');
-}])->limit(5)->get();
 
-StudentCompetency::with(['teacherSubject' => function($q){
-$q->withoutGlobalScope('App\Models\Scopes\AcademicYearScope');
-  $q->with('subject.name');
-}])->limit(5)->get();
+  
 
-StudentCompetency::with(['teacherSubject' => function($q){
-$q->withoutGlobalScope('App\Models\Scopes\AcademicYearScope');
-  $q->with('subject.name');
-}])->limit(5)->get();
 
-StudentCompetency::with(['teacherSubject' => function($q){
-$q->withoutGlobalScope('App\Models\Scopes\AcademicYearScope');
-  $q->with('subject');
-}])->limit(5)->get();
 
-StudentCompetency::with(['teacherSubject' => function($q){
-$q->withoutGlobalScope('App\Models\Scopes\AcademicYearScope');
-  $q->with('subject');
-}])->limit(5)->get();
+App\Models\Student::whereRaw('LENGTH(nisn) = 9')->get();
 
+
+  
+
+
+
+App\Models\Student::whereRaw('LENGTH(nisn) = 9')->get();
+
+
+  
+
+
+
+App\Models\Student::whereRaw('LENGTH(nisn) = 9')->get();
+
+
+  
+
+
+
+App\Models\Student::whereRaw('LENGTH(nisn) = 9')->get();
+
+
+  
+
+
+
+App\Models\Student::whereRaw('LENGTH(nisn) = 9')->get();

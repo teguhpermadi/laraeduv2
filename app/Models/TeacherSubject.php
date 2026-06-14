@@ -9,6 +9,7 @@ use App\Observers\TeacherSubjectObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,8 +21,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class TeacherSubject extends Model
 {
     use HasFactory;
-    use LogsActivity;
     use HasUlids;
+    use LogsActivity;
 
     // Menentukan bahwa kita tidak menggunakan auto-increment
     public $incrementing = false;
@@ -43,7 +44,7 @@ class TeacherSubject extends Model
     {
         return LogOptions::defaults()
             ->useLogName('Teacher Subject')
-            ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}")
+            ->setDescriptionForEvent(fn (string $eventName) => "This model has been {$eventName}")
             ->logOnly(['*']);
     }
 
@@ -79,25 +80,25 @@ class TeacherSubject extends Model
         return $this->hasMany(Competency::class, 'teacher_subject_id');
     }
 
-    public function scopeMySubject(Builder $query, $teacher_id = null):void 
+    public function scopeMySubject(Builder $query, $teacher_id = null): void
     {
-        if(is_null($teacher_id)){
+        if (is_null($teacher_id)) {
             $teacher_id = auth()->user()->userable->userable_id;
         }
 
         // jika user tidak memiliki pelajaran yang ditugaskan
         $hasSubject = self::where('teacher_id', $teacher_id)->whereNotNull('subject_id')->exists();
 
-        if (!$hasSubject) {
+        if (! $hasSubject) {
             abort(403, 'Anda belum memiliki pelajaran yang ditugaskan');
         }
 
         $query->where('teacher_id', $teacher_id)->with('subject');
     }
 
-    public function scopeMySubjectByGrade(Builder $query, $grade_id, $teacher_id = null):void
+    public function scopeMySubjectByGrade(Builder $query, $grade_id, $teacher_id = null): void
     {
-        if(is_null($teacher_id)){
+        if (is_null($teacher_id)) {
             $teacher_id = auth()->user()->userable->userable_id;
         }
 
@@ -106,9 +107,9 @@ class TeacherSubject extends Model
             ->with('subject');
     }
 
-    public function scopeMyGrade(Builder $query, $teacher_id = null):void
+    public function scopeMyGrade(Builder $query, $teacher_id = null): void
     {
-        if(is_null($teacher_id)){
+        if (is_null($teacher_id)) {
             $teacher_id = auth()->user()->userable->userable_id;
         }
 
@@ -150,5 +151,90 @@ class TeacherSubject extends Model
     public function note()
     {
         return $this->hasOne(TeacherSubjectNote::class);
+    }
+
+    public function legerWeight()
+    {
+        return $this->hasOne(LegerWeight::class, 'teacher_subject_id');
+    }
+
+    public function getActiveWeight(): ?LegerWeight
+    {
+        $custom = $this->legerWeight;
+        if ($custom) {
+            return $custom;
+        }
+
+        return LegerWeight::where('academic_year_id', $this->academic_year_id)
+            ->whereNull('teacher_subject_id')
+            ->first();
+    }
+
+    public function calculateLegerScore(Collection $studentCompetencies, string $category): array
+    {
+        $dailyCompetencies = $studentCompetencies->filter(fn ($sc) => $sc->competency && ! $sc->competency->half_semester && $sc->competency->code !== CategoryLegerEnum::FULL_SEMESTER->value
+        );
+        $midCompetencies = $studentCompetencies->filter(fn ($sc) => $sc->competency && $sc->competency->half_semester);
+        $finalCompetencies = $studentCompetencies->filter(fn ($sc) => $sc->competency && $sc->competency->code === CategoryLegerEnum::FULL_SEMESTER->value);
+
+        $weight = $this->getActiveWeight();
+
+        $fallbackAvg = $studentCompetencies->avg('score');
+        $fallbackAvgSkill = $studentCompetencies->avg('score_skill');
+
+        if (! $weight || ($weight->daily_weight === 0 && $weight->mid_weight === 0 && $weight->final_weight === 0)) {
+            return [
+                'avg_score' => round($fallbackAvg, 0),
+                'avg_skill' => round($fallbackAvgSkill, 0),
+            ];
+        }
+
+        $dailyWeight = $weight->daily_weight;
+        $midWeight = $weight->mid_weight;
+        $finalWeight = $weight->final_weight;
+
+        $dailyAvg = $dailyCompetencies->isNotEmpty() ? $dailyCompetencies->avg('score') : 0;
+        $dailyAvgSkill = $dailyCompetencies->isNotEmpty() ? $dailyCompetencies->avg('score_skill') : 0;
+        $midAvg = $midCompetencies->isNotEmpty() ? $midCompetencies->avg('score') : 0;
+        $finalAvg = $finalCompetencies->isNotEmpty() ? $finalCompetencies->avg('score') : 0;
+
+        if ($category === CategoryLegerEnum::HALF_SEMESTER->value) {
+            $totalWeight = 0;
+            $weightedSum = 0;
+
+            if ($dailyWeight > 0 && $dailyCompetencies->isNotEmpty()) {
+                $totalWeight += $dailyWeight;
+                $weightedSum += $dailyAvg * $dailyWeight;
+            }
+
+            if ($midWeight > 0 && $midCompetencies->isNotEmpty()) {
+                $totalWeight += $midWeight;
+                $weightedSum += $midAvg * $midWeight;
+            }
+
+            $avgScore = $totalWeight > 0 ? $weightedSum / $totalWeight : ($fallbackAvg ?: 0);
+            $avgSkill = $dailyCompetencies->isNotEmpty() ? $dailyAvgSkill : ($fallbackAvgSkill ?: 0);
+        } else {
+            $totalWeight = 0;
+            $weightedSum = 0;
+
+            if ($dailyWeight > 0 && $dailyCompetencies->isNotEmpty()) {
+                $totalWeight += $dailyWeight;
+                $weightedSum += $dailyAvg * $dailyWeight;
+            }
+
+            if ($finalWeight > 0 && $finalCompetencies->isNotEmpty()) {
+                $totalWeight += $finalWeight;
+                $weightedSum += $finalAvg * $finalWeight;
+            }
+
+            $avgScore = $totalWeight > 0 ? $weightedSum / $totalWeight : ($fallbackAvg ?: 0);
+            $avgSkill = $dailyCompetencies->isNotEmpty() ? $dailyAvgSkill : ($fallbackAvgSkill ?: 0);
+        }
+
+        return [
+            'avg_score' => round($avgScore, 0),
+            'avg_skill' => round($avgSkill, 0),
+        ];
     }
 }

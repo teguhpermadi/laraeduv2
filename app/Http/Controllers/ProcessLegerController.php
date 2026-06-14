@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Enums\CategoryLegerEnum;
-use App\Models\AcademicYear;
 use App\Models\Leger as ModelsLeger;
 use App\Models\LegerNote;
 use App\Models\LegerRecap;
@@ -15,8 +14,7 @@ class ProcessLegerController extends Controller
 {
     /**
      * Memproses data leger untuk semester penuh dan tengah semester
-     * 
-     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function process(Request $request)
@@ -28,7 +26,7 @@ class ProcessLegerController extends Controller
         ]);
 
         $teacherSubjectId = $request->input('teacher_subject_id');
-        
+
         // Perbaikan pengolahan time_signature
         $timeSignature = $request->input('time_signature');
         if (empty($timeSignature)) {
@@ -41,7 +39,7 @@ class ProcessLegerController extends Controller
                 $timeSignature = now();
             }
         }
-        
+
         try {
             // Ambil data teacher_subject
             $teacherSubject = TeacherSubject::with([
@@ -49,7 +47,7 @@ class ProcessLegerController extends Controller
                 'subject',
                 'academic',
                 'competency',
-                'studentGrade'
+                'studentGrade.studentCompetency.competency',
             ])->where('id', $teacherSubjectId)->firstOrFail();
 
             $academicYearId = $teacherSubject->academic->id;
@@ -62,10 +60,10 @@ class ProcessLegerController extends Controller
             $competenciesHalfSemester = $teacherSubject->competency->where('half_semester', true);
 
             // Proses data untuk full semester
-            $studentsFullSemester = $this->processStudentData($teacherSubject, $competenciesFullSemester, $subjectOrder, $teacher_id, $subject_id);
-            
+            $studentsFullSemester = $this->processStudentData($teacherSubject, $competenciesFullSemester, $subjectOrder, $teacher_id, $subject_id, CategoryLegerEnum::FULL_SEMESTER->value);
+
             // Proses data untuk half semester
-            $studentsHalfSemester = $this->processStudentData($teacherSubject, $competenciesHalfSemester, $subjectOrder, $teacher_id, $subject_id);
+            $studentsHalfSemester = $this->processStudentData($teacherSubject, $competenciesHalfSemester, $subjectOrder, $teacher_id, $subject_id, CategoryLegerEnum::HALF_SEMESTER->value);
 
             // Simpan data full semester
             foreach ($studentsFullSemester as $student) {
@@ -151,14 +149,14 @@ class ProcessLegerController extends Controller
                     'time_signature' => $timeSignature,
                     'full_semester_count' => count($studentsFullSemester),
                     'half_semester_count' => count($studentsHalfSemester),
-                ]
+                ],
             ]);
         } catch (\Exception $e) {
-            Log::error('Leger Process Error: ' . $e->getMessage());
-            
+            Log::error('Leger Process Error: '.$e->getMessage());
+
             return response()->json([
                 'status' => 'error',
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+                'message' => 'Terjadi kesalahan: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -166,21 +164,21 @@ class ProcessLegerController extends Controller
     /**
      * Proses data siswa untuk leger
      */
-    private function processStudentData($teacherSubject, $competencies, $subjectOrder, $teacher_id, $subject_id)
+    private function processStudentData($teacherSubject, $competencies, $subjectOrder, $teacher_id, $subject_id, $category)
     {
         // Import helper jika diperlukan
-        if (!class_exists('App\Helpers\DescriptionHelper')) {
+        if (! class_exists('App\Helpers\DescriptionHelper')) {
             throw new \Exception('DescriptionHelper tidak ditemukan');
         }
 
-        $students = $teacherSubject->studentGrade->map(function ($student) use ($competencies, $subjectOrder, $teacher_id, $subject_id) {
-            // Buat description dengan description helper
-            $description = \App\Helpers\DescriptionHelper::getDescription($student->studentCompetency->whereIn('competency_id', $competencies->pluck('id')));
-            $avg_score = $student->studentCompetency->whereIn('competency_id', $competencies->pluck('id'))->avg('score');
-            $avg_skill = $student->studentCompetency->whereIn('competency_id', $competencies->pluck('id'))->avg('score_skill');
-            $sum_score = $student->studentCompetency->whereIn('competency_id', $competencies->pluck('id'))->sum('score');
-            $sum_skill = $student->studentCompetency->whereIn('competency_id', $competencies->pluck('id'))->sum('score_skill');
-            // Passing grade adalah rata-rata dari passing grade competency
+        $students = $teacherSubject->studentGrade->map(function ($student) use ($competencies, $subjectOrder, $teacher_id, $subject_id, $teacherSubject, $category) {
+            $filteredCompetencies = $student->studentCompetency->whereIn('competency_id', $competencies->pluck('id'));
+            $result = $teacherSubject->calculateLegerScore($filteredCompetencies, $category);
+            $description = \App\Helpers\DescriptionHelper::getDescription($filteredCompetencies);
+            $avg_score = $result['avg_score'];
+            $avg_skill = $result['avg_skill'];
+            $sum_score = $filteredCompetencies->sum('score');
+            $sum_skill = $filteredCompetencies->sum('score_skill');
             $passing_grade = $competencies->avg('passing_grade');
 
             return [
@@ -198,8 +196,7 @@ class ProcessLegerController extends Controller
                 'description_skill' => $description['description_skill'],
                 'competency_count' => $competencies->count(),
                 'passing_grade' => round($passing_grade, 0),
-                'competencies' => $student->studentCompetency
-                    ->whereIn('competency_id', $competencies->pluck('id'))
+                'competencies' => $filteredCompetencies
                     ->sortBy('competency_id')
                     ->map(function ($competency) {
                         return [
@@ -219,6 +216,7 @@ class ProcessLegerController extends Controller
         $students = $students->sortByDesc('sum_score')->values();
         $students = $students->map(function ($item, $index) {
             $item['ranking'] = $index + 1;
+
             return $item;
         });
 
@@ -228,21 +226,21 @@ class ProcessLegerController extends Controller
 
     /**
      * Tampilkan form untuk memproses leger
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         // Ambil daftar teacher subject untuk dropdown
         $academicYearId = session('academic_year_id');
-        
+
         $query = TeacherSubject::with(['teacher', 'subject', 'academic', 'grade'])->whereDoesntHave('leger');
-        
+
         // Filter berdasarkan academic_year_id jika ada di session
         if ($academicYearId) {
             $query->where('academic_year_id', $academicYearId);
         }
-        
+
         $teacherSubjects = $query->orderBy('teacher_id', 'desc')
             ->orderBy('grade_id', 'asc')
             ->take(100)
@@ -250,14 +248,14 @@ class ProcessLegerController extends Controller
             ->map(function ($item) {
                 return [
                     'id' => $item->id,
-                    'text' => $item->teacher->name . ' - ' . $item->subject->code . ' ' . $item->grade->name . ' (' . $item->academic->year . ' '. $item->academic->semester.')',
+                    'text' => $item->teacher->name.' - '.$item->subject->code.' '.$item->grade->name.' ('.$item->academic->year.' '.$item->academic->semester.')',
                 ];
             });
-            
+
         // Ambil daftar teacher subject yang sudah memiliki leger
         $teacherSubjectsWithLeger = TeacherSubject::with(['teacher', 'subject', 'grade', 'academic'])
             ->whereHas('leger')
-            ->when($academicYearId, function($query) use ($academicYearId) {
+            ->when($academicYearId, function ($query) use ($academicYearId) {
                 return $query->where('academic_year_id', $academicYearId);
             })
             ->orderBy('teacher_id', 'desc')
@@ -269,11 +267,10 @@ class ProcessLegerController extends Controller
             'teacherSubjectsWithLeger' => $teacherSubjectsWithLeger,
         ]);
     }
-    
+
     /**
      * Menyimpan academic_year_id ke session
-     * 
-     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function setAcademicYear(Request $request)
@@ -282,20 +279,19 @@ class ProcessLegerController extends Controller
         $request->validate([
             'academic_year_id' => 'required|exists:academic_years,id',
         ]);
-        
+
         // Simpan ke session
         session(['academic_year_id' => $request->input('academic_year_id')]);
-        
+
         return response()->json([
             'status' => 'success',
             'message' => 'Tahun akademik berhasil disimpan ke session',
         ]);
     }
-    
+
     /**
      * Mendapatkan daftar teacher subject berdasarkan academic_year_id
-     * 
-     * @param Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function getTeacherSubjects(Request $request)
@@ -304,9 +300,9 @@ class ProcessLegerController extends Controller
         $request->validate([
             'academic_year_id' => 'required|exists:academic_years,id',
         ]);
-        
+
         $academicYearId = $request->input('academic_year_id');
-        
+
         // Ambil daftar teacher subject berdasarkan academic_year_id
         $teacherSubjects = TeacherSubject::with(['teacher', 'subject', 'academic', 'grade'])
             ->where('academic_year_id', $academicYearId)
@@ -317,10 +313,10 @@ class ProcessLegerController extends Controller
             ->map(function ($item) {
                 return [
                     'id' => $item->id,
-                    'text' => $item->teacher->name . ' - ' . $item->subject->code . ' ' . $item->grade->name . ' (' . $item->academic->year . ' '. $item->academic->semester.')',
+                    'text' => $item->teacher->name.' - '.$item->subject->code.' '.$item->grade->name.' ('.$item->academic->year.' '.$item->academic->semester.')',
                 ];
             });
-        
+
         return response()->json([
             'status' => 'success',
             'message' => 'Berhasil mendapatkan daftar teacher subject',

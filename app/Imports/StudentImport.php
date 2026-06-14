@@ -4,35 +4,30 @@ namespace App\Imports;
 
 use App\Models\DataStudent;
 use App\Models\Student;
-use Carbon\Carbon;
-use DateTime;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
-use Maatwebsite\Excel\Concerns\SkipsFailures;
-use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithUpserts;
-use Maatwebsite\Excel\Concerns\WithValidation;
+use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
 
-class StudentImport implements ToCollection, WithHeadingRow
+class StudentImport extends StringValueBinder implements ToCollection, WithCustomValueBinder, WithHeadingRow
 {
     use Importable, SkipsErrors;
+
     /**,
     * @param Collection $collection
     */
     public function collection(Collection $rows)
     {
-        foreach ($rows as $row) 
-        {
+        foreach ($rows as $row) {
             try {
                 $student = Student::updateOrCreate([
                     'nisn' => $row['nisn'],
                     'nis' => $row['nis'],
-                ],[
+                ], [
                     'nisn' => $row['nisn'],
                     'nis' => $row['nis'],
                     'name' => $row['nama_lengkap'],
@@ -41,16 +36,16 @@ class StudentImport implements ToCollection, WithHeadingRow
                     'birthday' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal_lahir'])->format('Y-m-d'),
                     'nick_name' => $row['nama_panggilan'],
                 ]);
-    
+
                 DataStudent::updateOrCreate([
                     'student_id' => $student->id,
-                ],[
+                ], [
                     'student_id' => $student->id,
                     'student_address' => $row['alamat_siswa'],
-                    'student_province'=> $row['provinsi_siswa'],
-                    'student_city'=> $row['kota_siswa'],
-                    'student_district'=> $row['kecamatan_siswa'],
-                    'student_village'=> $row['kelurahan_siswa'],
+                    'student_province' => $row['provinsi_siswa'],
+                    'student_city' => $row['kota_siswa'],
+                    'student_district' => $row['kecamatan_siswa'],
+                    'student_village' => $row['kelurahan_siswa'],
                     'religion' => $row['agama'],
                     'previous_school' => $row['asal_sekolah'],
                     'date_received' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['tanggal_diterima'])->format('Y-m-d'),
@@ -72,19 +67,19 @@ class StudentImport implements ToCollection, WithHeadingRow
                     'parent_address' => $row['alamat_orangtua'],
                     'parent_village' => $row['kelurahan_orangtua'],
                     'parent_address' => $row['alamat_orangtua'],
-                    'parent_province'=> $row['provinsi_orangtua'],
-                    'parent_city'=> $row['kota_orangtua'],
-                    'parent_district'=> $row['kecamatan_orangtua'],
-                    'parent_village'=> $row['kelurahan_orangtua'],
+                    'parent_province' => $row['provinsi_orangtua'],
+                    'parent_city' => $row['kota_orangtua'],
+                    'parent_district' => $row['kecamatan_orangtua'],
+                    'parent_village' => $row['kelurahan_orangtua'],
                 ]);
             } catch (\Exception  $e) {
-                //throw $th;
+                // throw $th;
                 session()->push('import_errors', [
                     'row' => $row,
                     'error' => $e->getMessage(),
                 ]);
             }
-            
+
         }
     }
 }

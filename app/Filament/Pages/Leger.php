@@ -13,7 +13,6 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ViewField;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -24,8 +23,8 @@ use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\TextInputColumn;
-use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,26 +48,46 @@ class Leger extends Page implements HasForms, HasTable
 
     public ?array $data = [];
 
-    public $teacherGrade,
-        $teacherSubject,
-        $students,
-        $competencyCount,
-        $time_signature,
-        $preview_full_semester,
-        $preview_half_semester,
-        $leger,
-        $agree,
-        $grade_id,
-        $academic_year_id,
-        $teacher_subject_id,
-        $leger_full_semester,
-        $leger_half_semester,
-        $competenciesFullSemester,
-        $competenciesHalfSemester,
-        $studentsFullSemester,
-        $studentsHalfSemester;
+    public $teacherGrade;
+
+    public $teacherSubject;
+
+    public $students;
+
+    public $competencyCount;
+
+    public $time_signature;
+
+    public $preview_full_semester;
+
+    public $preview_half_semester;
+
+    public $leger;
+
+    public $agree;
+
+    public $grade_id;
+
+    public $academic_year_id;
+
+    public $teacher_subject_id;
+
+    public $leger_full_semester;
+
+    public $leger_half_semester;
+
+    public $competenciesFullSemester;
+
+    public $competenciesHalfSemester;
+
+    public $studentsFullSemester;
+
+    public $studentsHalfSemester;
+
     public $checkLegerRecap = false;
+
     public $hasNoScores = false;
+
     public $descriptionLegerRecap = '';
 
     public $visible = false;
@@ -81,7 +100,7 @@ class Leger extends Page implements HasForms, HasTable
             'subject',
             'academic',
             'competency',
-            'studentGrade'
+            'studentGrade.studentCompetency.competency',
         ])->find($id);
 
         $this->teacherSubject = $teacherSubject;
@@ -101,19 +120,20 @@ class Leger extends Page implements HasForms, HasTable
         // dd($competenciesHalfSemester->toArray());
 
         // flat map full semester
-        $studentsFullSemester = $teacherSubject->studentGrade->map(function ($student) use ($competenciesFullSemester, $subjectOrder, $teacher_id, $subject_id) {
-            // buat description dengan description helper
-            $description = DescriptionHelper::getDescription($student->studentCompetency->whereIn('competency_id', $competenciesFullSemester->pluck('id')));
-            $avg_score = $student->studentCompetency->whereIn('competency_id', $competenciesFullSemester->pluck('id'))->avg('score');
-            $avg_skill = $student->studentCompetency->whereIn('competency_id', $competenciesFullSemester->pluck('id'))->avg('score_skill');
-            $sum_score = $student->studentCompetency->whereIn('competency_id', $competenciesFullSemester->pluck('id'))->sum('score');
-            $sum_skill = $student->studentCompetency->whereIn('competency_id', $competenciesFullSemester->pluck('id'))->sum('score_skill');
+        $studentsFullSemester = $teacherSubject->studentGrade->map(function ($student) use ($competenciesFullSemester, $subjectOrder, $teacher_id, $subject_id, $teacherSubject) {
+            $filteredCompetencies = $student->studentCompetency->whereIn('competency_id', $competenciesFullSemester->pluck('id'));
+            $result = $teacherSubject->calculateLegerScore($filteredCompetencies, CategoryLegerEnum::FULL_SEMESTER->value);
+            $description = DescriptionHelper::getDescription($filteredCompetencies);
+            $avg_score = $result['avg_score'];
+            $avg_skill = $result['avg_skill'];
+            $sum_score = $filteredCompetencies->sum('score');
+            $sum_skill = $filteredCompetencies->sum('score_skill');
             // passing grade adalah rata-rata dari passing grade competency
             $passing_grade = $competenciesFullSemester->avg('passing_grade');
 
             return [
                 'student_id' => $student->student->id,
-                'teacher_id' => $teacher_id,    
+                'teacher_id' => $teacher_id,
                 'subject_id' => $subject_id,
                 'subject_order' => $subjectOrder,
                 'nis' => $student->student->nis,
@@ -126,9 +146,7 @@ class Leger extends Page implements HasForms, HasTable
                 'description_skill' => $description['description_skill'],
                 'competency_count' => $competenciesFullSemester->count(),
                 'passing_grade' => round($passing_grade, 0),
-                'competencies' => $student->studentCompetency
-                    // ambil data competency berdasarkan competencies yang ada di $competencies
-                    ->whereIn('competency_id', $competenciesFullSemester->pluck('id'))
+                'competencies' => $filteredCompetencies
                     ->sortBy('competency_id')
                     ->map(function ($competency) {
                         return [
@@ -141,7 +159,7 @@ class Leger extends Page implements HasForms, HasTable
                             'description_skill' => $competency->competency->description_skill,
                         ];
                     }),
-               
+
             ];
         });
 
@@ -151,6 +169,7 @@ class Leger extends Page implements HasForms, HasTable
         // tambahkan ranking berdasarkan sum_score
         $studentsFullSemester = $studentsFullSemester->map(function ($item, $index) {
             $item['ranking'] = $index + 1;
+
             return $item;
         });
 
@@ -159,13 +178,16 @@ class Leger extends Page implements HasForms, HasTable
         $this->studentsFullSemester = $studentsFullSemester;
 
         // flat map half semester
-        $studentsHalfSemester = $teacherSubject->studentGrade->map(function ($student) use ($competenciesHalfSemester, $subjectOrder, $teacher_id, $subject_id) {
-            $description = DescriptionHelper::getDescription($student->studentCompetency->whereIn('competency_id', $competenciesHalfSemester->pluck('id')));
-            $avg_score = $student->studentCompetency->whereIn('competency_id', $competenciesHalfSemester->pluck('id'))->avg('score');
-            $sum_score = $student->studentCompetency->whereIn('competency_id', $competenciesHalfSemester->pluck('id'))->sum('score');
-            $avg_skill = $student->studentCompetency->whereIn('competency_id', $competenciesHalfSemester->pluck('id'))->avg('score_skill');
-            $sum_skill = $student->studentCompetency->whereIn('competency_id', $competenciesHalfSemester->pluck('id'))->sum('score_skill');
+        $studentsHalfSemester = $teacherSubject->studentGrade->map(function ($student) use ($competenciesHalfSemester, $subjectOrder, $teacher_id, $subject_id, $teacherSubject) {
+            $filteredCompetencies = $student->studentCompetency->whereIn('competency_id', $competenciesHalfSemester->pluck('id'));
+            $result = $teacherSubject->calculateLegerScore($filteredCompetencies, CategoryLegerEnum::HALF_SEMESTER->value);
+            $description = DescriptionHelper::getDescription($filteredCompetencies);
+            $avg_score = $result['avg_score'];
+            $sum_score = $filteredCompetencies->sum('score');
+            $avg_skill = $result['avg_skill'];
+            $sum_skill = $filteredCompetencies->sum('score_skill');
             $passing_grade = $competenciesHalfSemester->avg('passing_grade');
+
             return [
                 'student_id' => $student->student->id,
                 'teacher_id' => $teacher_id,
@@ -181,8 +203,7 @@ class Leger extends Page implements HasForms, HasTable
                 'description_skill' => $description['description_skill'],
                 'competency_count' => $competenciesHalfSemester->count(),
                 'passing_grade' => round($passing_grade, 0),
-                'competencies' => $student->studentCompetency
-                    ->whereIn('competency_id', $competenciesHalfSemester->pluck('id'))
+                'competencies' => $filteredCompetencies
                     ->sortBy('competency_id')
                     ->map(function ($competency) {
                         return [
@@ -204,6 +225,7 @@ class Leger extends Page implements HasForms, HasTable
         // tambahkan ranking berdasarkan sum_score
         $studentsHalfSemester = $studentsHalfSemester->map(function ($item, $index) {
             $item['ranking'] = $index + 1;
+
             return $item;
         });
 
@@ -220,7 +242,7 @@ class Leger extends Page implements HasForms, HasTable
         $this->checkLegerRecap = $legerRecap ? true : false;
         // dd($legerRecap);
         if ($legerRecap) {
-            $this->descriptionLegerRecap = 'Kamu sudah mengumpulkan leger ini ke wali kelas pada tanggal ' . $legerRecap->created_at->translatedFormat('l, d F Y H:i') . '. Apakah kamu ingin mengrubahnya?';
+            $this->descriptionLegerRecap = 'Kamu sudah mengumpulkan leger ini ke wali kelas pada tanggal '.$legerRecap->created_at->translatedFormat('l, d F Y H:i').'. Apakah kamu ingin mengrubahnya?';
         } else {
             $this->descriptionLegerRecap = 'Apakah anda yakin akan mengumpulkan nilai tersebut ke wali kelas?';
         }
@@ -230,7 +252,7 @@ class Leger extends Page implements HasForms, HasTable
             return empty($item['competencies']);
         });
 
-        if (!$this->hasNoScores) {
+        if (! $this->hasNoScores) {
             $this->form->fill([
                 'teacher_subject_id' => $id,
                 'academic_year_id' => $teacherSubject->academic->id,
@@ -257,7 +279,7 @@ class Leger extends Page implements HasForms, HasTable
                                 'teacherSubject' => $this->teacherSubject,
                                 'competencies' => $this->competenciesHalfSemester,
                                 'students' => $this->studentsHalfSemester,
-                            ])
+                            ]),
                     ])
                     ->collapsible(),
                 // section full semester
@@ -270,12 +292,12 @@ class Leger extends Page implements HasForms, HasTable
                                 'teacherSubject' => $this->teacherSubject,
                                 'competencies' => $this->competenciesFullSemester,
                                 'students' => $this->studentsFullSemester,
-                            ])
+                            ]),
                     ])
                     ->collapsible(),
-                
+
                 Section::make('Persetujuan')
-                    ->description(fn() => $this->descriptionLegerRecap)
+                    ->description(fn () => $this->descriptionLegerRecap)
                     ->schema([
                         Hidden::make('teacher_subject_id'),
                         Hidden::make('academic_year_id'),
@@ -289,7 +311,7 @@ class Leger extends Page implements HasForms, HasTable
                             ->inlineLabel()
                             ->required(),
                     ])
-                    ->columns(2)
+                    ->columns(2),
             ]);
     }
 
@@ -398,10 +420,10 @@ class Leger extends Page implements HasForms, HasTable
                 TextColumn::make('student.name'),
                 TextColumn::make('category')
                     ->badge(),
-                    // ->color(fn (string $state): string => match ($state) {
-                    //     CategoryLegerEnum::HALF_SEMESTER->value => 'warning',
-                    //     CategoryLegerEnum::FULL_SEMESTER->value => 'primary',
-                    // }),
+                // ->color(fn (string $state): string => match ($state) {
+                //     CategoryLegerEnum::HALF_SEMESTER->value => 'warning',
+                //     CategoryLegerEnum::FULL_SEMESTER->value => 'primary',
+                // }),
                 TextInputColumn::make('note.note'),
             ])
             ->filters([
@@ -422,7 +444,7 @@ class Leger extends Page implements HasForms, HasTable
                         foreach ($legers as $item) {
                             $item->note()->updateOrCreate(['leger_id' => $item->id], ['note' => '-']);
                         }
-                    })
+                    }),
             ])
             ->bulkActions([
                 BulkAction::make('catatan')
@@ -436,7 +458,7 @@ class Leger extends Page implements HasForms, HasTable
                         foreach ($records as $record) {
                             $record->note()->updateOrCreate(['leger_id' => $record->id], ['note' => $data['note']]);
                         }
-                    })
+                    }),
             ])
             ->modifyQueryUsing(function (Builder $query) {
                 $query->where('teacher_subject_id', $this->teacherSubject->id);

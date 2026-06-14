@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Enums\SemesterEnum;
 use App\Filament\Resources\AcademicYearResource\Pages;
-use App\Filament\Resources\AcademicYearResource\RelationManagers;
 use App\Jobs\CopyProjectCoordinatorJob;
 use App\Jobs\CopyStudentExtracurricularJob;
 use App\Jobs\CopyStudentGradeJob;
@@ -12,14 +11,11 @@ use App\Jobs\CopyTeacherExtracurricularJob;
 use App\Jobs\CopyTeacherGradeJob;
 use App\Jobs\CopyTeacherSubjectsJob;
 use App\Models\AcademicYear;
-use App\Models\StudentGrade;
+use App\Models\LegerWeight;
 use App\Models\Teacher;
-use App\Models\TeacherGrade;
-use App\Models\TeacherSubject;
-use Filament\Forms;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -30,8 +26,6 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AcademicYearResource extends Resource
 {
@@ -73,6 +67,26 @@ class AcademicYearResource extends Resource
                         return $get('semester') == SemesterEnum::GENAP->value;
                     })
                     ->label('Tanggal lulus'),
+                Section::make('Bobot Leger')
+                    ->description('Atur rasio bobot penilaian leger untuk tahun akademik ini')
+                    ->schema([
+                        TextInput::make('daily_weight')
+                            ->label('Bobot Harian')
+                            ->numeric()
+                            ->default(0)
+                            ->required(),
+                        TextInput::make('mid_weight')
+                            ->label('Bobot STS (Tengah Semester)')
+                            ->numeric()
+                            ->default(0)
+                            ->required(),
+                        TextInput::make('final_weight')
+                            ->label('Bobot SAS (Akhir Semester)')
+                            ->numeric()
+                            ->default(0)
+                            ->required(),
+                    ])
+                    ->columns(3),
             ]);
     }
 
@@ -102,9 +116,57 @@ class AcademicYearResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 // Tables\Actions\DeleteAction::make(),
+                Action::make('weight_setting')
+                    ->label('Bobot Leger')
+                    ->icon('heroicon-o-scale')
+                    ->button()
+                    ->color('info')
+                    ->modalHeading('Atur Bobot Leger Default')
+                    ->modalDescription('Atur rasio bobot penilaian leger untuk tahun akademik ini')
+                    ->form(function (AcademicYear $record) {
+                        $weight = LegerWeight::where('academic_year_id', $record->id)
+                            ->whereNull('teacher_subject_id')
+                            ->first();
+
+                        return [
+                            \Filament\Forms\Components\TextInput::make('daily_weight')
+                                ->label('Bobot Harian')
+                                ->numeric()
+                                ->default($weight?->daily_weight ?? 0)
+                                ->required(),
+                            \Filament\Forms\Components\TextInput::make('mid_weight')
+                                ->label('Bobot STS (Tengah Semester)')
+                                ->numeric()
+                                ->default($weight?->mid_weight ?? 0)
+                                ->required(),
+                            \Filament\Forms\Components\TextInput::make('final_weight')
+                                ->label('Bobot SAS (Akhir Semester)')
+                                ->numeric()
+                                ->default($weight?->final_weight ?? 0)
+                                ->required(),
+                        ];
+                    })
+                    ->action(function (array $data, AcademicYear $record) {
+                        LegerWeight::updateOrCreate(
+                            [
+                                'academic_year_id' => $record->id,
+                                'teacher_subject_id' => null,
+                            ],
+                            [
+                                'daily_weight' => $data['daily_weight'],
+                                'mid_weight' => $data['mid_weight'],
+                                'final_weight' => $data['final_weight'],
+                            ]
+                        );
+
+                        Notification::make()
+                            ->title('Bobot leger berhasil disimpan')
+                            ->success()
+                            ->send();
+                    }),
                 Action::make('copy')
                     ->label('Copy')
-                    ->visible(fn(AcademicYear $record) => $record->semester == SemesterEnum::GENAP->value) // tampilkan tombol copy hanya pada semester genap
+                    ->visible(fn (AcademicYear $record) => $record->semester == SemesterEnum::GENAP->value) // tampilkan tombol copy hanya pada semester genap
                     ->accessSelectedRecords()
                     ->button()
                     ->form([
@@ -117,7 +179,7 @@ class AcademicYearResource extends Resource
                                     ->map(function ($item) {
                                         return [
                                             'id' => $item->id,
-                                            'year' => $item->year . ' - ' . $item->semester,
+                                            'year' => $item->year.' - '.$item->semester,
                                         ];
                                     })
                                     ->pluck('year', 'id');
@@ -204,8 +266,8 @@ class AcademicYearResource extends Resource
     /**
      * Copy data nilai siswa dari satu tahun akademik ke tahun akademik lain
      *
-     * @param int $sourceAcademicYearId
-     * @param int $targetAcademicYearId
+     * @param  int  $sourceAcademicYearId
+     * @param  int  $targetAcademicYearId
      * @return void
      */
     private static function copyStudentGrades($sourceAcademicYearId, $targetAcademicYearId)
@@ -217,8 +279,8 @@ class AcademicYearResource extends Resource
     /**
      * Copy data wali kelas dari satu tahun akademik ke tahun akademik lain
      *
-     * @param int $sourceAcademicYearId
-     * @param int $targetAcademicYearId
+     * @param  int  $sourceAcademicYearId
+     * @param  int  $targetAcademicYearId
      * @return void
      */
     private static function copyTeacherGrades($sourceAcademicYearId, $targetAcademicYearId)

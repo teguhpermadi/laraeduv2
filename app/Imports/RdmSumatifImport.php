@@ -3,12 +3,14 @@
 namespace App\Imports;
 
 use App\Models\Competency;
+use App\Models\Student;
 use App\Models\StudentCompetency;
-use App\Models\StudentRdm;
 use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
 
-class RdmSumatifImport implements WithCalculatedFormulas
+class RdmSumatifImport extends StringValueBinder implements WithCalculatedFormulas, WithCustomValueBinder
 {
     protected $teacher_subject_id;
 
@@ -27,8 +29,7 @@ class RdmSumatifImport implements WithCalculatedFormulas
      *   Row 5  : Header (No, ID Siswa, NIS, Nisn, Nama, Nilai)
      *   Row 6+ : Data siswa
      *
-     * Kolom 1 (ID Siswa) berisi RDM ID yang dicocokkan dengan StudentRdm.rdm_id
-     * untuk menemukan student_id yang sesuai.
+     * Kolom 4 (Nisn) digunakan untuk mencocokkan dengan tabel Student.
      */
     public function processImport(string $file): array
     {
@@ -50,33 +51,33 @@ class RdmSumatifImport implements WithCalculatedFormulas
         }
 
         $imported = 0;
-        $skipped  = 0;
+        $skipped = 0;
 
         // Data siswa dimulai dari Row 6 (index 6)
         for ($i = 6; $i < count($sheet); $i++) {
-            $row   = $sheet[$i];
-            $rdmId = $row[1] ?? null;
+            $row = $sheet[$i];
+            $nisn = $row[3] ?? null;
             $nilai = $row[5] ?? null;
 
-            if (empty($rdmId) || is_null($nilai)) {
+            if (empty($nisn) || is_null($nilai)) {
                 $skipped++;
+
                 continue;
             }
 
-            // Cari StudentRdm berdasarkan rdm_id
-            $studentRdm = StudentRdm::where('rdm_id', $rdmId)->first();
+            $student = Student::where('nisn', $nisn)->first();
 
-            if (! $studentRdm) {
+            if (! $student) {
                 $skipped++;
+
                 continue;
             }
 
-            // Update atau buat StudentCompetency
             StudentCompetency::updateOrCreate(
                 [
                     'teacher_subject_id' => $this->teacher_subject_id,
-                    'competency_id'      => $competency->id,
-                    'student_id'         => $studentRdm->student_id,
+                    'competency_id' => $competency->id,
+                    'student_id' => $student->id,
                 ],
                 [
                     'score' => $nilai,
@@ -88,8 +89,8 @@ class RdmSumatifImport implements WithCalculatedFormulas
 
         return [
             'imported' => $imported,
-            'skipped'  => $skipped,
-            'error'    => null,
+            'skipped' => $skipped,
+            'error' => null,
         ];
     }
 }

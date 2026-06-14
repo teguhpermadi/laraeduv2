@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class AcademicYear extends Model
 {
     use HasFactory;
-    use LogsActivity;
     use HasUlids;
+    use LogsActivity;
 
     // Menentukan bahwa kita tidak menggunakan auto-increment
     public $incrementing = false;
@@ -35,7 +35,7 @@ class AcademicYear extends Model
     {
         return LogOptions::defaults()
             ->useLogName('Academic Year')
-            ->setDescriptionForEvent(fn(string $eventName) => "This model has been {$eventName}")
+            ->setDescriptionForEvent(fn (string $eventName) => "This model has been {$eventName}")
             ->logOnly(['*'])
             ->logExcept(['created_at', 'updated_at']);
     }
@@ -50,5 +50,11 @@ class AcademicYear extends Model
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);
+    }
+
+    public function legerWeight()
+    {
+        return $this->hasOne(LegerWeight::class, 'academic_year_id')
+            ->whereNull('teacher_subject_id');
     }
 }
