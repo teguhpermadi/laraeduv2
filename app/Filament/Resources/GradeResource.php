@@ -7,6 +7,7 @@ use App\Filament\Exports\GradeExporter;
 use App\Filament\Resources\GradeResource\Pages;
 use App\Filament\Resources\GradeResource\RelationManagers\StudentGradeRelationManager;
 use App\Filament\Resources\GradeResource\RelationManagers\TeacherGradeRelationManager;
+use App\Filament\Resources\GradeResource\RelationManagers\TeacherSubjectRelationManager;
 use App\Models\Grade;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -101,6 +102,12 @@ class GradeResource extends Resource
                     ->closeModalByClickingAway(false)
                     ->button()
                     ->relationManager(TeacherGradeRelationManager::class),
+                RelationManagerAction::make('teacher-subject-relation-manager')
+                    ->label('mapel')
+                    ->slideOver()
+                    ->closeModalByClickingAway(false)
+                    ->button()
+                    ->relationManager(TeacherSubjectRelationManager::class),
                 // Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
@@ -124,6 +131,7 @@ class GradeResource extends Resource
         return [
             TeacherGradeRelationManager::class,
             StudentGradeRelationManager::class,
+            TeacherSubjectRelationManager::class,
         ];
     }
 
@@ -133,7 +141,6 @@ class GradeResource extends Resource
             'index' => Pages\ListGrades::route('/'),
             'create' => Pages\CreateGrade::route('/create'),
             'edit' => Pages\EditGrade::route('/{record}/edit'),
-            'teacher-subjects' => Pages\ManageTeacherSubject::route('/{record}/teacher-subjects'),
         ];
     }
 }
