@@ -24,6 +24,8 @@ class TeacherSubjectRelationManager extends RelationManager
 {
     protected static string $relationship = 'teacherSubject';
 
+    protected static bool $shouldSkipAuthorization = true;
+
     public function form(Form $form): Form
     {
         return $form
