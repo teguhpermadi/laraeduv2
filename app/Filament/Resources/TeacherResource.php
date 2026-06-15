@@ -7,10 +7,9 @@ use App\Filament\Resources\TeacherResource\RelationManagers;
 use App\Filament\Resources\TeacherResource\RelationManagers\SubjectsRelationManager;
 use App\Filament\Resources\TeacherResource\RelationManagers\TeacherExtracurricularRelationManager;
 use App\Filament\Resources\TeacherResource\RelationManagers\TeacherGradesRelationManager;
-use App\Filament\Resources\TeacherResource\Widgets\TeacherWidget;
-use App\Jobs\UserableJob;
 use App\Models\Teacher;
-use Filament\Forms;
+use App\Models\User;
+use App\Models\Userable;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -18,17 +17,14 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Guava\FilamentModalRelationManagers\Actions\Table\RelationManagerAction;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use App\Models\User;
-use App\Models\Userable;
-use Guava\FilamentModalRelationManagers\Actions\Table\RelationManagerAction;
-use Illuminate\Database\Eloquent\Collection;
 
 class TeacherResource extends Resource
 {
@@ -56,7 +52,7 @@ class TeacherResource extends Resource
                     ->label(__('teacher.list.gender'))
                     ->options([
                         'laki-laki' => 'laki-laki',
-                        'perempuan' => 'perempuan'
+                        'perempuan' => 'perempuan',
                     ])
                     ->required(),
                 TextInput::make('nip')
@@ -68,7 +64,7 @@ class TeacherResource extends Resource
                     ->maxSize('1000')
                     ->image()
                     ->directory('teacher-signature')
-                    ->downloadable()
+                    ->downloadable(),
             ]);
     }
 
@@ -91,7 +87,7 @@ class TeacherResource extends Resource
                 RelationManagerAction::make('subject-relation-manager')
                     ->label('mata pelajaran')
                     ->button()
-                    ->slideOver()   
+                    ->slideOver()
                     ->closeModalByClickingAway(false)
                     ->relationManager(SubjectsRelationManager::class),
                 RelationManagerAction::make('teacher-grade-relation-manager')
@@ -128,7 +124,7 @@ class TeacherResource extends Resource
                                 self::userable($record);
                             }
                         }),
-                        
+
                 ]),
             ]);
     }
@@ -167,12 +163,12 @@ class TeacherResource extends Resource
 
         $user = User::firstOrCreate(
             [
-                'email' => Str::replace(' ', '', $name) . '@laraedu.com',
+                'email' => Str::replace(' ', '', $name).'@laraedu.com',
             ],
             [
                 'name' => $name,
-                'username' => fake()->numerify(Str::replace(' ', '', $name) . '_##'),
-                'email' => Str::replace(' ', '', $name) . '@laraedu.com',
+                'username' => Str::lower(Str::replace(' ', '', $name)).rand(1000, 9999),
+                'email' => Str::replace(' ', '', $name).'@laraedu.com',
                 'password' => Hash::make('password'),
             ]
         );
@@ -185,7 +181,7 @@ class TeacherResource extends Resource
             [
                 'user_id' => $user->id,
                 'userable_id' => $userable_id,
-                'userable_type' => $userable_type
+                'userable_type' => $userable_type,
             ]
         );
     }

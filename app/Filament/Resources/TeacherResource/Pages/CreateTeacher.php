@@ -6,7 +6,6 @@ use App\Filament\Resources\TeacherResource;
 use App\Models\Teacher;
 use App\Models\User;
 use App\Models\Userable;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
@@ -32,12 +31,12 @@ class CreateTeacher extends CreateRecord
 
         $user = User::firstOrCreate(
             [
-                'email' => Str::replace(' ', '', $name) . '@laraedu.com',
+                'email' => Str::replace(' ', '', $name).'@laraedu.com',
             ],
             [
                 'name' => $name,
-                'username' => fake()->numerify(Str::replace(' ', '', $name) . '_##'),
-                'email' => Str::replace(' ', '', $name) . '@laraedu.com',
+                'username' => Str::lower(Str::replace(' ', '', $name)).rand(1000, 9999),
+                'email' => Str::replace(' ', '', $name).'@laraedu.com',
                 'password' => Hash::make('password'),
             ]
         );
@@ -50,7 +49,7 @@ class CreateTeacher extends CreateRecord
             [
                 'user_id' => $user->id,
                 'userable_id' => $userable_id,
-                'userable_type' => $userable_type
+                'userable_type' => $userable_type,
             ]
         );
 
