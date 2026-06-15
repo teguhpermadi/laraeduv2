@@ -2,14 +2,12 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\PhaseEnum;
+use App\Filament\Exports\GradeExporter;
 use App\Filament\Resources\GradeResource\Pages;
-use App\Filament\Resources\GradeResource\RelationManagers;
 use App\Filament\Resources\GradeResource\RelationManagers\StudentGradeRelationManager;
 use App\Filament\Resources\GradeResource\RelationManagers\TeacherGradeRelationManager;
 use App\Models\Grade;
-use App\Enums\PhaseEnum;
-use App\Filament\Exports\GradeExporter;
-use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
@@ -21,8 +19,6 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Guava\FilamentModalRelationManagers\Actions\Table\RelationManagerAction;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class GradeResource extends Resource
 {
@@ -38,7 +34,6 @@ class GradeResource extends Resource
     }
 
     protected static ?int $navigationSort = 4;
-
 
     public static function form(Form $form): Form
     {
@@ -138,6 +133,7 @@ class GradeResource extends Resource
             'index' => Pages\ListGrades::route('/'),
             'create' => Pages\CreateGrade::route('/create'),
             'edit' => Pages\EditGrade::route('/{record}/edit'),
+            'teacher-subjects' => Pages\ManageTeacherSubject::route('/{record}/teacher-subjects'),
         ];
     }
 }

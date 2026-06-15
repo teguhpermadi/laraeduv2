@@ -13,6 +13,9 @@ class EditGrade extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('teacherSubjects')
+                ->label('Atur Mata Pelajaran')
+                ->url(fn () => GradeResource::getUrl('teacher-subjects', ['record' => $this->record])),
             Actions\DeleteAction::make(),
         ];
     }
