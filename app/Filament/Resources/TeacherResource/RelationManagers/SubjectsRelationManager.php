@@ -9,6 +9,7 @@ use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
@@ -95,18 +96,45 @@ class SubjectsRelationManager extends RelationManager
                             ->required(),
                     ])
                     ->action(function (array $data) {
-                        foreach ($data['grade_ids'] as $grade_id) {
-                            TeacherSubject::firstOrCreate(
-                                [
-                                    'academic_year_id' => session('academic_year_id'),
-                                    'teacher_id' => $this->ownerRecord->id,
-                                    'subject_id' => $data['subject_id'],
-                                    'grade_id' => $grade_id,
-                                ],
-                                [
-                                    'time_allocation' => $data['time_allocation'],
-                                ]
-                            );
+                        $existingIds = TeacherSubject::where('academic_year_id', session('academic_year_id'))
+                            ->where('teacher_id', $this->ownerRecord->id)
+                            ->where('subject_id', $data['subject_id'])
+                            ->whereIn('grade_id', $data['grade_ids'])
+                            ->pluck('grade_id')
+                            ->toArray();
+
+                        $newIds = array_diff($data['grade_ids'], $existingIds);
+
+                        foreach ($newIds as $gradeId) {
+                            TeacherSubject::create([
+                                'academic_year_id' => session('academic_year_id'),
+                                'teacher_id' => $this->ownerRecord->id,
+                                'subject_id' => $data['subject_id'],
+                                'grade_id' => $gradeId,
+                                'time_allocation' => $data['time_allocation'],
+                            ]);
+                        }
+
+                        $created = count($newIds);
+                        $skipped = count($existingIds);
+
+                        if ($created && ! $skipped) {
+                            Notification::make()
+                                ->title('Data berhasil disimpan')
+                                ->success()
+                                ->send();
+                        } elseif ($created && $skipped) {
+                            $names = Grade::whereIn('id', $existingIds)->pluck('name')->implode(', ');
+                            Notification::make()
+                                ->title("{$created} data disimpan, {$skipped} dilewati (sudah ada)")
+                                ->body($names)
+                                ->warning()
+                                ->send();
+                        } else {
+                            Notification::make()
+                                ->title('Tidak ada data baru (semua kelas sudah memiliki mata pelajaran ini)')
+                                ->danger()
+                                ->send();
                         }
                     }),
             ])

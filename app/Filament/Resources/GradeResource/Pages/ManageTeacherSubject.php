@@ -76,26 +76,50 @@ class ManageTeacherSubject extends Page implements HasForms, HasTable
     public function save(): void
     {
         $data = $this->form->getState();
+        $created = 0;
+        $skipped = 0;
 
         foreach ($data['subjects'] as $item) {
-            TeacherSubject::firstOrCreate(
-                [
-                    'academic_year_id' => session('academic_year_id'),
-                    'teacher_id' => $item['teacher_id'],
-                    'subject_id' => $item['subject_id'],
-                    'grade_id' => $this->record,
-                ],
-                [
-                    'time_allocation' => $item['time_allocation'],
-                    'passing_grade' => $item['passing_grade'] ?? 70,
-                ]
-            );
+            $exists = TeacherSubject::where([
+                'academic_year_id' => session('academic_year_id'),
+                'teacher_id' => $item['teacher_id'],
+                'subject_id' => $item['subject_id'],
+                'grade_id' => $this->record,
+            ])->exists();
+
+            if ($exists) {
+                $skipped++;
+
+                continue;
+            }
+
+            TeacherSubject::create([
+                'academic_year_id' => session('academic_year_id'),
+                'teacher_id' => $item['teacher_id'],
+                'subject_id' => $item['subject_id'],
+                'grade_id' => $this->record,
+                'time_allocation' => $item['time_allocation'],
+                'passing_grade' => $item['passing_grade'] ?? 70,
+            ]);
+            $created++;
         }
 
-        Notification::make()
-            ->title('Data berhasil disimpan')
-            ->success()
-            ->send();
+        if ($created && ! $skipped) {
+            Notification::make()
+                ->title("{$created} data berhasil disimpan")
+                ->success()
+                ->send();
+        } elseif ($created && $skipped) {
+            Notification::make()
+                ->title("{$created} disimpan, {$skipped} dilewati (sudah ada)")
+                ->warning()
+                ->send();
+        } else {
+            Notification::make()
+                ->title('Semua data sudah ada, tidak ada yang disimpan')
+                ->danger()
+                ->send();
+        }
 
         $this->form->fill();
     }
