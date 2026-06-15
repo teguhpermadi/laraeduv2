@@ -5,16 +5,15 @@ namespace App\Filament\Resources\TeacherResource\RelationManagers;
 use App\Models\Grade;
 use App\Models\Subject;
 use App\Models\TeacherSubject;
-use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Validation\Rules\Unique;
 
 class SubjectsRelationManager extends RelationManager
 {
@@ -28,18 +27,10 @@ class SubjectsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Hidden::make('academic_year_id')
-                    ->default(session('academic_year_id')),
                 Select::make('subject_id')
                     ->label(__('teacher.relation.subjects.subject'))
                     ->options(Subject::get()->pluck('name', 'id'))
-                    ->required()
-                    ->unique(modifyRuleUsing: function (Unique $rule, callable $get) {
-                        return $rule->where('academic_year_id', $get('academic_year_id'))
-                            ->where('teacher_id', $get('teacher_id'))
-                            ->where('subject_id', $get('subject_id'))
-                            ->where('grade_id', $get('grade_id'));
-                    }),
+                    ->required(),
                 Select::make('grade_id')
                     ->label(__('teacher.relation.subjects.grade'))
                     ->options(
@@ -47,13 +38,7 @@ class SubjectsRelationManager extends RelationManager
                             return [$grade->id => $grade->name.($grade->is_inclusive ? ' (inklusif)' : '')];
                         })
                     )
-                    ->required()
-                    ->unique(modifyRuleUsing: function (Unique $rule, callable $get) {
-                        return $rule->where('academic_year_id', $get('academic_year_id'))
-                            ->where('teacher_id', $get('teacher_id'))
-                            ->where('subject_id', $get('subject_id'))
-                            ->where('grade_id', $get('grade_id'));
-                    }),
+                    ->required(),
                 TextInput::make('time_allocation')
                     ->label(__('teacher.relation.subjects.time_allocation'))
                     ->numeric()
@@ -82,14 +67,55 @@ class SubjectsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                Action::make('addSubjects')
+                    ->label('Tambah Mata Pelajaran')
+                    ->modalHeading('Tambah Mata Pelajaran')
                     ->slideOver()
                     ->closeModalByClickingAway(false)
-                    ->using(function (array $data): Model {
-                        return TeacherSubject::updateOrCreate(
-                            ['academic_year_id' => session('academic_year_id'), 'teacher_id' => $this->ownerRecord->id, 'subject_id' => $data['subject_id'], 'grade_id' => $data['grade_id']],
-                            ['academic_year_id' => session('academic_year_id'), 'teacher_id' => $this->ownerRecord->id, 'subject_id' => $data['subject_id'], 'grade_id' => $data['grade_id']]
-                        );
+                    ->form([
+                        Repeater::make('subjects')
+                            ->schema([
+                                Select::make('subject_id')
+                                    ->label(__('teacher.relation.subjects.subject'))
+                                    ->options(Subject::get()->pluck('name', 'id'))
+                                    ->required()
+                                    ->distinct()
+                                    ->disableOptionsWhenSelectedInSiblingRepeaterItems(),
+                                Select::make('grade_id')
+                                    ->label(__('teacher.relation.subjects.grade'))
+                                    ->options(
+                                        Grade::all()->mapWithKeys(function ($grade) {
+                                            return [$grade->id => $grade->name.($grade->is_inclusive ? ' (inklusif)' : '')];
+                                        })
+                                    )
+                                    ->required()
+                                    ->distinct()
+                                    ->disableOptionsWhenSelectedInSiblingRepeaterItems(),
+                                TextInput::make('time_allocation')
+                                    ->label(__('teacher.relation.subjects.time_allocation'))
+                                    ->numeric()
+                                    ->default(0)
+                                    ->required(),
+                            ])
+                            ->columns(2)
+                            ->defaultItems(1)
+                            ->minItems(1)
+                            ->addActionLabel('Tambah Baris'),
+                    ])
+                    ->action(function (array $data) {
+                        foreach ($data['subjects'] as $item) {
+                            TeacherSubject::firstOrCreate(
+                                [
+                                    'academic_year_id' => session('academic_year_id'),
+                                    'teacher_id' => $this->ownerRecord->id,
+                                    'subject_id' => $item['subject_id'],
+                                    'grade_id' => $item['grade_id'],
+                                ],
+                                [
+                                    'time_allocation' => $item['time_allocation'],
+                                ]
+                            );
+                        }
                     }),
             ])
             ->actions([
