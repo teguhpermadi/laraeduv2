@@ -78,9 +78,7 @@ class SubjectsRelationManager extends RelationManager
                                 Select::make('subject_id')
                                     ->label(__('teacher.relation.subjects.subject'))
                                     ->options(Subject::get()->pluck('name', 'id'))
-                                    ->required()
-                                    ->distinct()
-                                    ->disableOptionsWhenSelectedInSiblingRepeaterItems(),
+                                    ->required(),
                                 Select::make('grade_id')
                                     ->label(__('teacher.relation.subjects.grade'))
                                     ->options(
@@ -88,9 +86,7 @@ class SubjectsRelationManager extends RelationManager
                                             return [$grade->id => $grade->name.($grade->is_inclusive ? ' (inklusif)' : '')];
                                         })
                                     )
-                                    ->required()
-                                    ->distinct()
-                                    ->disableOptionsWhenSelectedInSiblingRepeaterItems(),
+                                    ->required(),
                                 TextInput::make('time_allocation')
                                     ->label(__('teacher.relation.subjects.time_allocation'))
                                     ->numeric()
