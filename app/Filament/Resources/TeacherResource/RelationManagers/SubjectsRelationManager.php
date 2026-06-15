@@ -5,7 +5,7 @@ namespace App\Filament\Resources\TeacherResource\RelationManagers;
 use App\Models\Grade;
 use App\Models\Subject;
 use App\Models\TeacherSubject;
-use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -73,42 +73,38 @@ class SubjectsRelationManager extends RelationManager
                     ->slideOver()
                     ->closeModalByClickingAway(false)
                     ->form([
-                        Repeater::make('subjects')
-                            ->schema([
-                                Select::make('subject_id')
-                                    ->label(__('teacher.relation.subjects.subject'))
-                                    ->options(Subject::get()->pluck('name', 'id'))
-                                    ->required(),
-                                Select::make('grade_id')
-                                    ->label(__('teacher.relation.subjects.grade'))
-                                    ->options(
-                                        Grade::all()->mapWithKeys(function ($grade) {
-                                            return [$grade->id => $grade->name.($grade->is_inclusive ? ' (inklusif)' : '')];
-                                        })
-                                    )
-                                    ->required(),
-                                TextInput::make('time_allocation')
-                                    ->label(__('teacher.relation.subjects.time_allocation'))
-                                    ->numeric()
-                                    ->default(0)
-                                    ->required(),
-                            ])
-                            ->columns(2)
-                            ->defaultItems(1)
-                            ->minItems(1)
-                            ->addActionLabel('Tambah Baris'),
+                        Select::make('subject_id')
+                            ->label(__('teacher.relation.subjects.subject'))
+                            ->options(Subject::get()->pluck('name', 'id'))
+                            ->searchable()
+                            ->required(),
+                        CheckboxList::make('grade_ids')
+                            ->label(__('teacher.relation.subjects.grade'))
+                            ->options(
+                                Grade::all()->mapWithKeys(function ($grade) {
+                                    return [$grade->id => $grade->name.($grade->is_inclusive ? ' (inklusif)' : '')];
+                                })
+                            )
+                            ->columns(3)
+                            ->required()
+                            ->bulkToggleable(),
+                        TextInput::make('time_allocation')
+                            ->label(__('teacher.relation.subjects.time_allocation'))
+                            ->numeric()
+                            ->default(0)
+                            ->required(),
                     ])
                     ->action(function (array $data) {
-                        foreach ($data['subjects'] as $item) {
+                        foreach ($data['grade_ids'] as $grade_id) {
                             TeacherSubject::firstOrCreate(
                                 [
                                     'academic_year_id' => session('academic_year_id'),
                                     'teacher_id' => $this->ownerRecord->id,
-                                    'subject_id' => $item['subject_id'],
-                                    'grade_id' => $item['grade_id'],
+                                    'subject_id' => $data['subject_id'],
+                                    'grade_id' => $grade_id,
                                 ],
                                 [
-                                    'time_allocation' => $item['time_allocation'],
+                                    'time_allocation' => $data['time_allocation'],
                                 ]
                             );
                         }
