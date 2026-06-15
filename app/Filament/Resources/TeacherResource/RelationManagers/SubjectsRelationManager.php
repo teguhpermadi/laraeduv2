@@ -2,14 +2,10 @@
 
 namespace App\Filament\Resources\TeacherResource\RelationManagers;
 
-use App\Models\AcademicYear;
 use App\Models\Grade;
 use App\Models\Subject;
 use App\Models\TeacherSubject;
-use Filament\Forms;
 use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -23,6 +19,8 @@ use Illuminate\Validation\Rules\Unique;
 class SubjectsRelationManager extends RelationManager
 {
     protected static string $relationship = 'subject';
+
+    protected static bool $shouldSkipAuthorization = true;
 
     protected static ?string $title = 'Mata Pelajaran';
 
@@ -46,7 +44,7 @@ class SubjectsRelationManager extends RelationManager
                     ->label(__('teacher.relation.subjects.grade'))
                     ->options(
                         Grade::all()->mapWithKeys(function ($grade) {
-                            return [$grade->id => $grade->name . ($grade->is_inclusive ? ' (inklusif)' : '')];
+                            return [$grade->id => $grade->name.($grade->is_inclusive ? ' (inklusif)' : '')];
                         })
                     )
                     ->required()
@@ -87,7 +85,7 @@ class SubjectsRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make()
                     ->slideOver()
                     ->closeModalByClickingAway(false)
-                    ->using(function (array $data):Model {
+                    ->using(function (array $data): Model {
                         return TeacherSubject::updateOrCreate(
                             ['academic_year_id' => session('academic_year_id'), 'teacher_id' => $this->ownerRecord->id, 'subject_id' => $data['subject_id'], 'grade_id' => $data['grade_id']],
                             ['academic_year_id' => session('academic_year_id'), 'teacher_id' => $this->ownerRecord->id, 'subject_id' => $data['subject_id'], 'grade_id' => $data['grade_id']]
