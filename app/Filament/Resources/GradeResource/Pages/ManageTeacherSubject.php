@@ -5,146 +5,106 @@ namespace App\Filament\Resources\GradeResource\Pages;
 use App\Filament\Resources\GradeResource;
 use App\Models\Subject;
 use App\Models\Teacher;
-use App\Models\TeacherSubject;
-use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
-use Filament\Notifications\Notification;
-use Filament\Resources\Pages\Page;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Tables\Contracts\HasTable;
+use Filament\Resources\Pages\ManageRelatedRecords;
+use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rules\Unique;
 
-class ManageTeacherSubject extends Page implements HasForms, HasTable
+class ManageTeacherSubject extends ManageRelatedRecords
 {
-    use InteractsWithForms;
-    use InteractsWithTable;
-
     protected static string $resource = GradeResource::class;
 
-    protected static string $view = 'filament.resources.grade-resource.pages.manage-teacher-subject';
+    protected static string $relationship = 'teacherSubject';
 
-    public $record;
+    protected static bool $shouldSkipAuthorization = true;
 
-    public ?array $data = [];
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public function mount($record): void
+    public static function getModelLabel(): string
     {
-        $this->record = $record;
-        $this->form->fill();
+        return __('subject.subject');
     }
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                Repeater::make('subjects')
-                    ->schema([
-                        Select::make('teacher_id')
-                            ->label('Guru')
-                            ->options(Teacher::all()->pluck('name', 'id'))
-                            ->required()
-                            ->searchable(),
-                        Select::make('subject_id')
-                            ->label('Mata Pelajaran')
-                            ->options(Subject::all()->pluck('name', 'id'))
-                            ->required()
-                            ->searchable(),
-                        TextInput::make('time_allocation')
-                            ->label('Alokasi Waktu')
-                            ->numeric()
-                            ->default(0)
-                            ->required(),
-                        TextInput::make('passing_grade')
-                            ->label('KKM')
-                            ->numeric()
-                            ->default(70),
-                    ])
-                    ->columns(2)
-                    ->defaultItems(1)
-                    ->minItems(1)
-                    ->addActionLabel('Tambah Baris'),
-            ])
-            ->statePath('data');
-    }
-
-    public function save(): void
-    {
-        $data = $this->form->getState();
-        $created = 0;
-        $skipped = 0;
-
-        foreach ($data['subjects'] as $item) {
-            $exists = TeacherSubject::where([
-                'academic_year_id' => session('academic_year_id'),
-                'teacher_id' => $item['teacher_id'],
-                'subject_id' => $item['subject_id'],
-                'grade_id' => $this->record,
-            ])->exists();
-
-            if ($exists) {
-                $skipped++;
-
-                continue;
-            }
-
-            TeacherSubject::create([
-                'academic_year_id' => session('academic_year_id'),
-                'teacher_id' => $item['teacher_id'],
-                'subject_id' => $item['subject_id'],
-                'grade_id' => $this->record,
-                'time_allocation' => $item['time_allocation'],
-                'passing_grade' => $item['passing_grade'] ?? 70,
+                Hidden::make('academic_year_id')
+                    ->default(session()->get('academic_year_id')),
+                Select::make('subject_id')
+                    ->label('Mata Pelajaran')
+                    ->options(Subject::all()->pluck('name', 'id'))
+                    ->unique(modifyRuleUsing: function (Unique $rule, callable $get) {
+                        return $rule
+                            ->where('academic_year_id', $get('academic_year_id'))
+                            ->where('grade_id', $this->getOwnerRecord()->getKey())
+                            ->where('subject_id', $get('subject_id'));
+                    }, ignoreRecord: true)
+                    ->required()
+                    ->searchable(),
+                Select::make('teacher_id')
+                    ->label('Guru')
+                    ->options(Teacher::all()->pluck('name', 'id'))
+                    ->required()
+                    ->searchable(),
+                TextInput::make('time_allocation')
+                    ->label('Alokasi Waktu')
+                    ->numeric()
+                    ->default(0),
+                TextInput::make('passing_grade')
+                    ->label('KKM')
+                    ->numeric()
+                    ->default(70),
             ]);
-            $created++;
-        }
-
-        if ($created && ! $skipped) {
-            Notification::make()
-                ->title("{$created} data berhasil disimpan")
-                ->success()
-                ->send();
-        } elseif ($created && $skipped) {
-            Notification::make()
-                ->title("{$created} disimpan, {$skipped} dilewati (sudah ada)")
-                ->warning()
-                ->send();
-        } else {
-            Notification::make()
-                ->title('Semua data sudah ada, tidak ada yang disimpan')
-                ->danger()
-                ->send();
-        }
-
-        $this->form->fill();
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->query(TeacherSubject::where('grade_id', $this->record))
             ->columns([
-                TextColumn::make('teacher.name')
-                    ->label('Guru')
-                    ->sortable()
-                    ->searchable(),
-                TextColumn::make('subject.name')
+                Tables\Columns\TextColumn::make('subject.name')
                     ->label('Mata Pelajaran')
                     ->sortable()
                     ->searchable(),
-                TextColumn::make('time_allocation')
+                Tables\Columns\TextColumn::make('teacher.name')
+                    ->label('Guru')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('time_allocation')
                     ->label('Alokasi Waktu'),
-                TextColumn::make('passing_grade')
+                Tables\Columns\TextColumn::make('passing_grade')
                     ->label('KKM'),
             ])
-            ->actions([
-                DeleteAction::make(),
+            ->filters([])
+            ->headerActions([
+                Tables\Actions\CreateAction::make()
+                    ->slideOver()
+                    ->closeModalByClickingAway(false)
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['grade_id'] = $this->getOwnerRecord()->getKey();
+
+                        return $data;
+                    }),
             ])
-            ->paginated(false);
+            ->actions([
+                Tables\Actions\EditAction::make()
+                    ->slideOver()
+                    ->closeModalByClickingAway(false),
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [];
     }
 }
