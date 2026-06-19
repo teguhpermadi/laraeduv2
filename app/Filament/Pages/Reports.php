@@ -4,7 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Models\AcademicYear;
 use App\Models\Grade;
-use App\Models\StudentGrade;
+use App\Models\Student;
 use Filament\Facades\Filament;
 use Filament\Pages\Page;
 use Filament\Support\Colors\Color;
@@ -55,22 +55,22 @@ class Reports extends Page implements HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(StudentGrade::query()->with(['student', 'grade']))
+            ->query(Student::query()->with(['studentGradeFirst.grade', 'attendanceFirst']))
             ->columns([
                 Stack::make([
-                    TextColumn::make('student.nisn')
+                    TextColumn::make('nisn')
                         ->label('NISN')
                         ->sortable(),
-                    TextColumn::make('student.name')
+                    TextColumn::make('name')
                         ->label('Nama Siswa')
                         ->wrap()
                         ->searchable()
                         ->sortable(),
-                    TextColumn::make('grade.name')
+                    TextColumn::make('studentGradeFirst.grade.name')
                         ->label('Kelas')
                         ->sortable(),
                 ]),
-                IconColumn::make('student.attendanceFirst.status')
+                IconColumn::make('attendanceFirst.status')
                     ->label('Naik Kelas')
                     ->boolean()
                     ->hidden(
@@ -92,7 +92,7 @@ class Reports extends Page implements HasTable
                     ->searchable()
                     ->query(function (Builder $query, $state) {
                         if ($state) {
-                            $query->where('grade_id', $state);
+                            $query->whereHas('studentGradeFirst', fn (Builder $q) => $q->where('grade_id', $state));
                         }
                     }),
             ])
@@ -107,41 +107,41 @@ class Reports extends Page implements HasTable
                     ->label('Cover')
                     ->size(ActionSize::Small)
                     ->color(Color::Emerald)
-                    ->url(fn ($record) => route('report-cover', $record->student_id))
+                    ->url(fn ($record) => route('report-cover', $record->id))
                     ->button(),
                 Action::make('identitas')
                     ->size(ActionSize::Small)
                     ->label('Identitas')
                     ->color(Color::Fuchsia)
-                    ->url(fn ($record) => route('report-cover-student', $record->student_id))
+                    ->url(fn ($record) => route('report-cover-student', $record->id))
                     ->button(),
                 Action::make('middle')
                     ->label('Tengah Semester')
                     ->size(ActionSize::Small)
                     ->color(Color::Amber)
-                    ->url(fn ($record) => route('report-half-semester', $record->student_id))
+                    ->url(fn ($record) => route('report-half-semester', $record->id))
                     ->color('warning')
                     ->button(),
                 Action::make('full')
                     ->label('Akhir Semester')
                     ->size(ActionSize::Small)
                     ->color(Color::Pink)
-                    ->url(fn ($record) => route('report-full-semester', $record->student_id))
+                    ->url(fn ($record) => route('report-full-semester', $record->id))
                     ->button(),
                 Action::make('project')
                     ->label('Project')
                     ->size(ActionSize::Small)
                     ->color(Color::Indigo)
-                    ->url(fn ($record) => route('report-project', $record->student_id))
+                    ->url(fn ($record) => route('report-project', $record->id))
                     ->button(),
                 Action::make('quran')
                     ->label('Quran')
                     ->size(ActionSize::Small)
                     ->color(Color::Blue)
-                    ->url(fn ($record) => route('report-quran', $record->student_id))
+                    ->url(fn ($record) => route('report-quran', $record->id))
                     ->button(),
             ])
-            ->defaultSort('grade.name')
+            ->defaultSort('name')
             ->paginated(false);
     }
 }
