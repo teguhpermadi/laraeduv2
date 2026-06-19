@@ -24,11 +24,11 @@ class LegerSubmitService
                     'academic_year_id' => $data['academic_year_id'],
                     'student_id' => $student['student_id'],
                     'teacher_subject_id' => $data['teacher_subject_id'],
-                    'teacher_id' => $student['teacher_id'],
-                    'subject_id' => $student['subject_id'],
                     'category' => $category,
                 ],
                 [
+                    'teacher_id' => $student['teacher_id'],
+                    'subject_id' => $student['subject_id'],
                     'passing_grade' => $student['passing_grade'],
                     'score' => $student['avg_score'],
                     'score_skill' => $student['avg_skill'],
