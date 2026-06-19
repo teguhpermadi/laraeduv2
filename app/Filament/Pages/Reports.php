@@ -5,7 +5,7 @@ namespace App\Filament\Pages;
 use App\Models\AcademicYear;
 use App\Models\Grade;
 use App\Models\StudentGrade;
-use BezhanSalleh\FilamentShield\Traits\HasPageShield;
+use Filament\Facades\Filament;
 use Filament\Pages\Page;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\ActionSize;
@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Reports extends Page implements HasTable
 {
-    use HasPageShield;
     use InteractsWithTable;
 
     protected static ?string $navigationIcon = 'heroicon-o-presentation-chart-bar';
@@ -40,6 +39,17 @@ class Reports extends Page implements HasTable
     public static function getModelLabel(): string
     {
         return 'Rapor Semua Siswa';
+    }
+
+    public static function canAccess(array $parameters = []): bool
+    {
+        $user = Filament::auth()->user();
+
+        if (! $user) {
+            return false;
+        }
+
+        return $user->hasRole('super_admin');
     }
 
     public function table(Table $table): Table
@@ -81,8 +91,8 @@ class Reports extends Page implements HasTable
                     ->options(Grade::pluck('name', 'id'))
                     ->searchable()
                     ->query(function (Builder $query, $state) {
-                        if ($state['value'] ?? null) {
-                            $query->where('grade_id', $state['value']);
+                        if ($state) {
+                            $query->where('grade_id', $state);
                         }
                     }),
             ])
