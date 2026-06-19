@@ -55,7 +55,7 @@ class Reports extends Page implements HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(StudentGrade::query())
+            ->query(StudentGrade::query()->with(['student', 'grade']))
             ->columns([
                 Stack::make([
                     TextColumn::make('student.nisn')
