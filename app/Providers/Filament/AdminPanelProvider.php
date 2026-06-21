@@ -59,7 +59,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
-                AcademicYearWidget::class,
+                // AcademicYearWidget::class,
                 UserOnlineWidget::class,
                 TeacherWidget::class,
                 StudentWidget::class,

@@ -2,16 +2,16 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\AcademicYearSwitcher;
 use App\Models\AcademicYear;
 use App\Models\Grade;
+use App\Models\Scopes\StudentActiveScope;
 use App\Models\Student;
 use Filament\Facades\Filament;
 use Filament\Pages\Page;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\ActionSize;
 use Filament\Tables\Actions\Action;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -36,11 +36,6 @@ class Reports extends Page implements HasTable
         return 'Rapor Semua Siswa';
     }
 
-    public static function getModelLabel(): string
-    {
-        return 'Rapor Semua Siswa';
-    }
-
     public static function canAccess(array $parameters = []): bool
     {
         $user = Filament::auth()->user();
@@ -49,58 +44,57 @@ class Reports extends Page implements HasTable
             return false;
         }
 
-        return $user->hasRole('super_admin');
+        return $user->hasRole(['super_admin', 'admin']);
+    }
+
+    public function mount(): void
+    {
+        if (! session()->has('academic_year_id')) {
+            $academic = AcademicYear::first();
+
+            if ($academic) {
+                session()->put('academic_year_id', $academic->id);
+            }
+        }
+    }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [AcademicYearSwitcher::class];
+    }
+
+    public function getHeaderWidgetsColumns(): int|string|array
+    {
+        return 1;
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->query(Student::query()->withoutGlobalScope(\App\Models\Scopes\StudentActiveScope::class)->with(['studentGradeFirst.grade', 'attendanceFirst']))
+            ->query(
+                Student::query()
+                    ->withoutGlobalScope(StudentActiveScope::class)
+                    ->with(['studentGradeFirst.grade'])
+                    ->whereHas('studentGradeFirst')
+            )
             ->columns([
-                Stack::make([
-                    TextColumn::make('nisn')
-                        ->label('NISN')
-                        ->sortable(),
-                    TextColumn::make('name')
-                        ->label('Nama Siswa')
-                        ->wrap()
-                        ->searchable()
-                        ->sortable(),
-                    TextColumn::make('studentGradeFirst.grade.name')
-                        ->label('Kelas')
-                        ->sortable(),
-                ]),
-                IconColumn::make('attendanceFirst.status')
-                    ->label('Naik Kelas')
-                    ->boolean()
-                    ->hidden(
-                        function () {
-                            $academic = AcademicYear::find(session('academic_year_id'));
-
-                            if ($academic && $academic->semester == 'ganjil') {
-                                return true;
-                            }
-
-                            return false;
-                        }
-                    ),
+                TextColumn::make('name')
+                    ->label('Nama')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('studentGradeFirst.grade.name')
+                    ->label('Kelas')
+                    ->sortable(),
             ])
+            ->defaultSort('studentGradeFirst.grade.name', 'asc')
             ->filters([
                 SelectFilter::make('grade_id')
                     ->label('Kelas')
-                    ->options(Grade::pluck('name', 'id'))
-                    ->searchable()
-                    ->query(function (Builder $query, $state) {
-                        if ($state) {
-                            $query->whereHas('studentGradeFirst', fn (Builder $q) => $q->where('grade_id', $state));
-                        }
-                    }),
-            ])
-            ->headerActions([
-                Action::make('preview')
-                    ->label('Leger Kelas')
-                    ->url(fn () => route('leger-preview-my-grade'))
-                    ->button(),
+                    ->options(Grade::all()->pluck('name', 'id'))
+                    ->query(fn (Builder $query, array $data) => $data['value']
+                            ? $query->whereHas('studentGradeFirst', fn ($q) => $q->where('grade_id', $data['value']))
+                            : $query
+                    ),
             ])
             ->actions([
                 Action::make('cover')
@@ -110,8 +104,8 @@ class Reports extends Page implements HasTable
                     ->url(fn ($record) => route('report-cover', $record->id))
                     ->button(),
                 Action::make('identitas')
-                    ->size(ActionSize::Small)
                     ->label('Identitas')
+                    ->size(ActionSize::Small)
                     ->color(Color::Fuchsia)
                     ->url(fn ($record) => route('report-cover-student', $record->id))
                     ->button(),
@@ -120,7 +114,6 @@ class Reports extends Page implements HasTable
                     ->size(ActionSize::Small)
                     ->color(Color::Amber)
                     ->url(fn ($record) => route('report-half-semester', $record->id))
-                    ->color('warning')
                     ->button(),
                 Action::make('full')
                     ->label('Akhir Semester')
@@ -140,8 +133,6 @@ class Reports extends Page implements HasTable
                     ->color(Color::Blue)
                     ->url(fn ($record) => route('report-quran', $record->id))
                     ->button(),
-            ])
-            ->defaultSort('name')
-            ->paginated(false);
+            ]);
     }
 }
