@@ -55,7 +55,7 @@ class Reports extends Page implements HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->query(Student::query()->with(['studentGradeFirst.grade', 'attendanceFirst']))
+            ->query(Student::query()->withoutGlobalScope(\App\Models\Scopes\StudentActiveScope::class)->with(['studentGradeFirst.grade', 'attendanceFirst']))
             ->columns([
                 Stack::make([
                     TextColumn::make('nisn')
@@ -77,7 +77,7 @@ class Reports extends Page implements HasTable
                         function () {
                             $academic = AcademicYear::find(session('academic_year_id'));
 
-                            if ($academic->semester == 'ganjil') {
+                            if ($academic && $academic->semester == 'ganjil') {
                                 return true;
                             }
 
